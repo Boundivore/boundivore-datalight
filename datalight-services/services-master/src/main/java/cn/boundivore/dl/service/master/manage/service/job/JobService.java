@@ -24,7 +24,6 @@ import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.cloud.config.async.executors.CustomThreadPoolTaskExecutor;
-import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
@@ -34,6 +33,7 @@ import cn.boundivore.dl.plugin.base.bean.MasterWorkerMeta;
 import cn.boundivore.dl.plugin.base.bean.PluginClusterMeta;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
+import cn.boundivore.dl.service.master.cache.MySQLCache;
 import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
@@ -505,11 +505,11 @@ public class JobService {
         // 设置数据库源
         pluginConfig.setMysqlEnv(
                 new PluginConfig.MySQLEnv(
-                        SpringContextUtil.DB_HOST,
-                        SpringContextUtil.DB_PORT,
-                        SpringContextUtil.DB_NAME,
-                        SpringContextUtil.DB_USER,
-                        SpringContextUtil.DB_PORT
+                        MySQLCache.DB_HOST,
+                        MySQLCache.DB_PORT,
+                        MySQLCache.DB_NAME,
+                        MySQLCache.DB_USER,
+                        MySQLCache.DB_PORT
                 )
         );
 

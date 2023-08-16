@@ -21,7 +21,6 @@ import cn.hutool.core.io.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -39,14 +38,6 @@ public class SpringContextUtil implements ApplicationContextAware {
 
     public static final String USER_DATALIGHT = "datalight";
     public static final String USER_GROUP = "datalight";
-
-    // Database
-    public static String DB_HOST;
-    public static String DB_PORT;
-    public static String DB_NAME;
-    public static String DB_USER;
-    public static String DB_PASSWORD;
-
 
     public static final ApplicationHome APP_HOME = new ApplicationHome(SpringContextUtil.class);
 
@@ -97,40 +88,6 @@ public class SpringContextUtil implements ApplicationContextAware {
     @PostConstruct
     public void init() {
         log.info("APP_DIR: {}", APP_DIR);
-
-        log.info(
-                "DB_HOST: {}, DB_PORT: {}, DB_NAME: {}, DB_USER: {}, DB_PASSWORD: {}",
-                DB_HOST,
-                DB_PORT,
-                DB_NAME,
-                DB_USER,
-                DB_PASSWORD
-        );
-    }
-
-    @Value("${server.datalight.database.mysql.host}")
-    public void setDbHost(String dbHost) {
-        SpringContextUtil.DB_HOST = dbHost;
-    }
-
-    @Value("${server.datalight.database.mysql.port}")
-    public void setDbPort(String dbPort) {
-        SpringContextUtil.DB_PORT = dbPort;
-    }
-
-    @Value("${server.datalight.database.mysql.dbName}")
-    public void setDbName(String dbName) {
-        SpringContextUtil.DB_NAME = dbName;
-    }
-
-    @Value("${server.datalight.database.mysql.user}")
-    public void setDbUser(String dbUser) {
-        SpringContextUtil.DB_USER = dbUser;
-    }
-
-    @Value("${server.datalight.database.mysql.password}")
-    public void setDbPassword(String dbPassword) {
-        SpringContextUtil.DB_PASSWORD = dbPassword;
     }
 
 
