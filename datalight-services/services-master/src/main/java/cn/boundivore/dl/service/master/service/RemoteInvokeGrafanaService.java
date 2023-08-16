@@ -17,12 +17,17 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
-import cn.boundivore.dl.api.third.define.IThirdPrometheusAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
+import cn.hutool.core.codec.Base64;
 import feign.Feign;
+import feign.optionals.OptionalDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
+import org.springframework.cloud.openfeign.support.SpringDecoder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -51,17 +56,40 @@ public class RemoteInvokeGrafanaService {
      * Modified by:
      * Modification time:
      * Throws:
+     * add("Accept", "application/json");
+     * add("Content-Type", "application/json");
+     * add("Authorization", basicAuthValue(user, password));
      *
-     * @param grafanaIp   Grafana IP 地址
-     * @param grafanaPort Grafana 端口号
+     * @param grafanaIp       Grafana IP 地址
+     * @param grafanaPort     Grafana 端口号
+     * @param grafanaUser     Grafana 用户名
+     * @param grafanaPassword Grafana 密码
      * @return IWorkerExecAPI 可调用 API 实例
      */
-    public IThirdGrafanaAPI iThirdGrafanaAPI(String grafanaIp, String grafanaPort) {
+    public IThirdGrafanaAPI iThirdGrafanaAPI(String grafanaIp,
+                                             String grafanaPort,
+                                             String grafanaUser,
+                                             String grafanaPassword) {
         return feignBuilder
                 .options(RequestOptionsGenerator.getRequestOptions(
                                 2 * 1000L,
                                 5 * 1000L
                         )
+                )
+                .requestInterceptor(
+                        template -> template
+                                .header(
+                                        "Accept",
+                                        "application/json"
+                                )
+                                .header(
+                                        "Content-Type",
+                                        "application/json"
+                                )
+                                .header(
+                                        "Authorization",
+                                        basicAuthValue(grafanaUser, grafanaPassword)
+                                )
                 )
                 .target(
                         IThirdGrafanaAPI.class,
@@ -72,5 +100,9 @@ public class RemoteInvokeGrafanaService {
                                 IUrlPrefixConstants.NONE_PREFIX
                         )
                 );
+    }
+
+    private String basicAuthValue(String user, String password) {
+        return String.format("Basic %s", Base64.encode(user + ":" + password));
     }
 }

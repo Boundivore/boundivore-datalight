@@ -26,7 +26,6 @@ import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
-import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.context.annotation.Configuration;
 
@@ -54,16 +53,13 @@ public class FeignClientResponseDecoder extends SpringDecoder {
     @Override
     public Object decode(Response response, Type type) throws IOException, FeignException {
 
-
-
         String bodyJson = Util.toString(response.body().asReader(Util.UTF_8));
+
         Result<?> result = JsonUtil.getObject(bodyJson, Result.class);
 
-        assert result != null;
-        if (ResultEnum.getByCode(result.getCode()) != ResultEnum.SUCCESS) {
+        if (result.getCode() != null && ResultEnum.getByCode(result.getCode()) != ResultEnum.SUCCESS) {
             throw new RuntimeException(result.getMessage());
         }
-
 
         return super.decode(
                 response.toBuilder()

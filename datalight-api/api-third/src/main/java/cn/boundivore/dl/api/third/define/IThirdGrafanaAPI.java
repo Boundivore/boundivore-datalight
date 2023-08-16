@@ -48,4 +48,8 @@ public interface IThirdGrafanaAPI {
             @PathVariable("id")
             String id
     );
+
+    @GetMapping(value = "/api/admin/stats")
+    @ApiOperation(notes = "获取 Grafana 状态信息", value = "获取 Grafana 状态信息")
+    String getStats();
 }

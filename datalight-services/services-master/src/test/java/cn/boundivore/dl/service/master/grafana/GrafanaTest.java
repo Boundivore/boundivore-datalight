@@ -22,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import javax.annotation.PostConstruct;
@@ -57,7 +56,9 @@ public class GrafanaTest {
     public void init() {
         this.iThirdGrafanaAPI = this.remoteInvokeGrafanaService.iThirdGrafanaAPI(
                 GRAFANA_HOST,
-                GRAFANA_PORT
+                GRAFANA_PORT,
+                GRAFANA_USER_ADMIN,
+                GRAFANA_PASSWORD_ADMIN
         );
     }
 
@@ -71,9 +72,15 @@ public class GrafanaTest {
      * Modification time:
      * Throws:
      */
+//    @Test
+//    public void getUserById() {
+//        String result = this.iThirdGrafanaAPI.getUserById("1");
+//        log.info(result);
+//    }
+
     @Test
-    public void getUserById() {
-        String result = this.iThirdGrafanaAPI.getUserById("1");
+    public void getStats() {
+        String result = this.iThirdGrafanaAPI.getStats();
         log.info(result);
     }
 }

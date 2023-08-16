@@ -44,7 +44,6 @@ public class DataLightApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
         // ./conf/datalight
         ResolverYamlDirectory.resolver(SpringContextUtil.CONF_ENV_DIR);
 
