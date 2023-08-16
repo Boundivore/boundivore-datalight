@@ -27,7 +27,7 @@ datalight_dir=$(realpath "${bin_dir}/../")
 app_dir=$(realpath "${datalight_dir}/app/")
 app_conf_dir=$(realpath "${datalight_dir}/app/config")
 
-# 函数：启动 Spring Boot 程序
+# 启动 Spring Boot 程序
 start_service() {
   local jar_name="$1"
   local api_type="$2"
@@ -45,8 +45,14 @@ start_service() {
 
     if [ -n "${port}" ] && [ -n "${api_type}" ]; then
       # 等待Jar包初始化完成
+      local attempt=0
       while ! curl -s "http://localhost:${port}/api/v1/${api_type}/actuator/health" | grep -q '"status":"UP"'; do
         sleep 1
+        attempt=$((attempt + 1))
+        if [ $attempt -ge 20 ]; then
+          echo "${api_type} failed to start after 20 attempts."
+          exit 1
+        fi
       done
     fi
 
@@ -54,7 +60,7 @@ start_service() {
   fi
 }
 
-# 函数：停止 Spring Boot 程序
+# 停止 Spring Boot 程序
 stop_service() {
   local jar_name="$1"
   local api_type="$2"
@@ -102,7 +108,7 @@ execute_operation() {
   *)
     echo "Invalid operation. Usage: $0 <start|stop|restart> <master|worker>"
     exit 1
-       ;;
+    ;;
   esac
 }
 
