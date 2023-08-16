@@ -87,7 +87,12 @@ public class FeignClientResponseDecoder extends SpringDecoder {
                 );
             }
 
-            return result;
+            return super.decode(
+                    response.toBuilder()
+                            .body(objectMapper.writeValueAsString(result), Util.UTF_8)
+                            .build(),
+                    type
+            );
         }
 
         if (result.getCode() != null && ResultEnum.getByCode(result.getCode()) != ResultEnum.SUCCESS) {
