@@ -124,7 +124,7 @@ subprojects {
 
         freemarkerVersion = "2.3.30"
         init4JVersion = "0.5.4"
-        junitVersion = "4.12"
+        junitVersion = "5.9.2"
         lombokVersion = "1.18.24"
         mapstructVersion = '1.5.3.Final'
         lombokMapStructBindingVersion = '0.2.0'
@@ -287,7 +287,8 @@ subprojects {
     }
 
     dependencies {
-        testImplementation group: 'junit', name: 'junit', version: junitVersion
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
 
 
         implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion

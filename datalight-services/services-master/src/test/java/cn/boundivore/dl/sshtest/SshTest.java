@@ -14,14 +14,11 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.service.master;
+package cn.boundivore.dl.sshtest;
 
 import cn.boundivore.dl.ssh.tools.SshTool;
 import net.schmizz.sshj.SSHClient;
-import net.schmizz.sshj.connection.channel.direct.Session;
-
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Test;
 
 /**
  * Description: SSH 测试
@@ -33,8 +30,19 @@ import java.nio.charset.StandardCharsets;
  * Modification time:
  * Version: V1.0
  */
-public class JavaTest {
-    public static void main(String[] args) {
+public class SshTest {
+    /**
+     * Description: Test ssh connection
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/16
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Test
+    public void testSshConnection() {
         try {
             SshTool sshTool = SshTool.getInstance();
             SSHClient sshClient = sshTool.connect(
@@ -62,6 +70,5 @@ public class JavaTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
