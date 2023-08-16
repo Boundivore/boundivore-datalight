@@ -16,11 +16,10 @@
  */
 package cn.boundivore.dl.api.third.define;
 
-import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 
@@ -42,5 +41,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
         path = NONE_PREFIX
 )
 public interface IThirdGrafanaAPI {
-
+    @GetMapping(value = "/-/reload")
+    @ApiOperation(notes = "获取 Grafana 账号信息", value = "获取 Grafana 账号信息")
+    String getGrafanaAccountInfo();
 }

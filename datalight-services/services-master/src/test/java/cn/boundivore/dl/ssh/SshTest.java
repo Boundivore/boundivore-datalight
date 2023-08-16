@@ -14,9 +14,10 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.sshtest;
+package cn.boundivore.dl.ssh;
 
 import cn.boundivore.dl.ssh.tools.SshTool;
+import lombok.extern.slf4j.Slf4j;
 import net.schmizz.sshj.SSHClient;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
  * Modification time:
  * Version: V1.0
  */
+@Slf4j
 public class SshTest {
     /**
      * Description: Test ssh connection
@@ -63,7 +65,7 @@ public class SshTest {
 //            session.close();
 //            sshClient.disconnect();
 
-            SshTool.ExecResult execResult = sshTool.exec(sshClient, "/opt/datalight/node/scripts/action-restart.sh");
+            SshTool.ExecResult execResult = sshTool.exec(sshClient, "echo ${SERVICE_DIR}");
             System.out.println(execResult);
             sshTool.disconnect(sshClient);
 
