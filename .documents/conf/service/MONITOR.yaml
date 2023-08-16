@@ -58,7 +58,7 @@ datalight:
       - service-conf-dir: '{{service-dir}}/MONITOR/grafana/conf'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/grafana/conf'
 
-    config-event-handler-jar: 'plugin-monitor-1.0.0.jar'
+    config-event-handler-jar: 'plugins-monitor-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.monitor.config.event.ConfigEventHandler'
     components:
       - name: Prometheus
@@ -74,7 +74,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-monitor-1.0.0.jar'
+                jar: 'plugins-monitor-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
                 args: [ ]
                 interactions: [ ]
@@ -133,7 +133,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-monitor-1.0.0.jar'
+                jar: 'plugins-monitor-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
                 args: [ ]
                 interactions: [ ]
@@ -192,7 +192,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-monitor-1.0.0.jar'
+                jar: 'plugins-monitor-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
                 args: [ ]
                 interactions: [ ]
@@ -251,7 +251,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-monitor-1.0.0.jar'
+                jar: 'plugins-monitor-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
                 args: [ ]
                 interactions: [ ]
@@ -310,7 +310,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-monitor-1.0.0.jar'
+                jar: 'plugins-monitor-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
                 args: [ ]
                 interactions: [ ]

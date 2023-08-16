@@ -22,7 +22,7 @@ datalight:
       - service-conf-dir: '{{data-dir}}'
         templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/id'
 
-    config-event-handler-jar: 'plugin-zookeeper-1.0.0.jar'
+    config-event-handler-jar: 'plugins-zookeeper-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.zookeeper.config.event.ConfigEventHandler'
     components:
       - name: QuarumPeermain
@@ -38,7 +38,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-zookeeper-1.0.0.jar'
+                jar: 'plugins-zookeeper-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
                 args: [ ]
                 interactions: [ ]
@@ -97,7 +97,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-zookeeper-1.0.0.jar'
+                jar: 'plugins-zookeeper-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
                 args: [ ]
                 interactions: [ ]

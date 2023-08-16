@@ -23,7 +23,7 @@ datalight:
       - service-conf-dir: '{{service-dir}}/HDFS/sbin'
         templated-dir: 'D:/datalight/plugins/HDFS/templated/sbin'
 
-    config-event-handler-jar: 'plugin-hdfs-1.0.0.jar'
+    config-event-handler-jar: 'plugins-hdfs-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.hdfs.config.event.ConfigEventHandler'
     components:
       - name: JournalNode
@@ -39,7 +39,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -101,7 +101,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -172,7 +172,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -243,7 +243,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -314,7 +314,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -376,7 +376,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -438,7 +438,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]
@@ -500,7 +500,7 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
+                jar: 'plugins-hdfs-1.0.0.jar'
                 clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
                 args: [ ]
                 interactions: [ ]

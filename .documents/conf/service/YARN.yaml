@@ -13,8 +13,8 @@ datalight:
       - service-conf-dir: '{{service-dir}}/YARN/sbin'
         templated-dir: '{{datalight-dir}}/plugins/YARN/templated/sbin'
 
-    config-event-handler-jar: 'plugin-hdfs-1.0.0.jar'
-    config-event-handler-clazz: 'cn.boundivore.dl.plugin.hdfs.config.event.ConfigEventHandler'
+    config-event-handler-jar: 'plugins-yarn-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.yarn.config.event.ConfigEventHandler'
     components:
       - name: ResourceManager1
         priority: 1
@@ -29,8 +29,8 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                jar: 'plugins-yarn-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
@@ -91,8 +91,8 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                jar: 'plugins-yarn-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
@@ -153,8 +153,8 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                jar: 'plugins-yarn-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
@@ -215,8 +215,8 @@ datalight:
             steps:
               - type: JAR
                 name: '正在配置服务'
-                jar: 'plugin-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                jar: 'plugins-yarn-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
