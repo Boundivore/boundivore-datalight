@@ -39,54 +39,61 @@ public class SpringContextUtil implements ApplicationContextAware {
     public static final String USER_DATALIGHT = "datalight";
     public static final String USER_GROUP = "datalight";
 
-    public static final ApplicationHome APP_HOME = new ApplicationHome(SpringContextUtil.class);
-
-    public static final String APP_DIR = APP_HOME.getSource().getAbsolutePath();
-
-    // ./datalight
-    public static final String APP_PARENT_DIR = FileUtil.getParent(APP_DIR, 2);
-
-    // ./datalight/assistant
-    public static final String ASSISTANT_DIR = APP_PARENT_DIR + File.separator + "assistant";
-
-    // ./datalight/bin
-    public static final String BIN_DIR = APP_PARENT_DIR + File.separator + "bin";
-
-    // ./datalight/conf
-    public static final String CONF_DIR = APP_PARENT_DIR + File.separator + "conf";
-
-    // ./datalight/conf/env
-    public static final String CONF_ENV_DIR = CONF_DIR + File.separator + "env";
-
-    // ./datalight/conf/service
-    public static final String CONF_SERVICE_DIR = CONF_DIR + File.separator + "service";
-
-    // ./datalight/docs
-    public static final String DOCS_DIR = APP_PARENT_DIR + File.separator + "docs";
-
-    // ./datalight/node
-    public static final String NODE_DIR = APP_PARENT_DIR + File.separator + "node";
-
-    // ./datalight/node/conf
-    public static final String NODE_CONF_DIR = NODE_DIR + File.separator + "conf";
-
-    // ./datalight/node/scripts
-    public static final String NODE_SCRIPTS_DIR = NODE_DIR + File.separator + "scripts";
-
-
-    // ./datalight/orm
-    public static final String ORM_DIR = APP_PARENT_DIR + File.separator + "orm";
-
-    // ./datalight/plugins
-    public static final String PLUGINS_DIR = APP_PARENT_DIR + File.separator + "plugins";
-
-    // ./datalight/scripts
-    public static final String SCRIPTS_DIR = APP_PARENT_DIR + File.separator + "scripts";
-
     public static final String PRIVATE_KEY_PATH = "~/.ssh/id_rsa";
 
-    @PostConstruct
-    public void init() {
+    public static ApplicationHome APP_HOME;
+    public static String APP_DIR;
+
+    public static String APP_PARENT_DIR;
+
+    public static String ASSISTANT_DIR;
+
+    public static String BIN_DIR;
+
+    public static String CONF_DIR;
+
+    public static String CONF_ENV_DIR;
+
+    public static String CONF_SERVICE_DIR;
+
+    public static String DOCS_DIR;
+
+    public static String NODE_DIR;
+
+    public static String NODE_CONF_DIR;
+
+    public static String NODE_SCRIPTS_DIR;
+
+    public static String ORM_DIR;
+
+    public static String PLUGINS_DIR;
+
+    public static String SCRIPTS_DIR;
+
+
+    public static void init() {
+        APP_HOME = new ApplicationHome(SpringContextUtil.class);
+        if (APP_HOME.getSource() == null) {
+            APP_DIR = "/opt/datalight";
+            log.error("当前无法定位当前进程家目录，将使用默认目录: {}", APP_DIR);
+        } else {
+            APP_DIR = APP_HOME.getSource().getAbsolutePath();
+        }
+
+        APP_PARENT_DIR = FileUtil.getParent(APP_DIR, 2);
+        ASSISTANT_DIR = APP_PARENT_DIR + File.separator + "assistant";
+        BIN_DIR = APP_PARENT_DIR + File.separator + "bin";
+        CONF_DIR = APP_PARENT_DIR + File.separator + "conf";
+        CONF_ENV_DIR = CONF_DIR + File.separator + "env";
+        CONF_SERVICE_DIR = CONF_DIR + File.separator + "service";
+        DOCS_DIR = APP_PARENT_DIR + File.separator + "docs";
+        NODE_DIR = APP_PARENT_DIR + File.separator + "node";
+        NODE_CONF_DIR = NODE_DIR + File.separator + "conf";
+        NODE_SCRIPTS_DIR = NODE_DIR + File.separator + "scripts";
+        ORM_DIR = APP_PARENT_DIR + File.separator + "orm";
+        PLUGINS_DIR = APP_PARENT_DIR + File.separator + "plugins";
+        SCRIPTS_DIR = APP_PARENT_DIR + File.separator + "scripts";
+
         log.info("APP_DIR: {}", APP_DIR);
     }
 
@@ -96,6 +103,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
         SpringContextUtil.applicationContext = applicationContext;
+        SpringContextUtil.init();
     }
 
     public static ApplicationContext getApplicationContext() {

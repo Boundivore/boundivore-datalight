@@ -14,15 +14,16 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.grafana;
+package cn.boundivore.dl.service.master.grafana;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import javax.annotation.PostConstruct;
 
@@ -37,10 +38,11 @@ import javax.annotation.PostConstruct;
  * Version: V1.0
  */
 @SpringBootTest
-@RequiredArgsConstructor
+@TestPropertySource(locations = "classpath:application-test.yaml")
 @Slf4j
 public class GrafanaTest {
 
+    @Autowired
     private RemoteInvokeGrafanaService remoteInvokeGrafanaService;
     private final static String GRAFANA_HOST = "node01";
     private final static String GRAFANA_PORT = "3000";
@@ -58,6 +60,7 @@ public class GrafanaTest {
                 GRAFANA_PORT
         );
     }
+
     /**
      * Description: 获取账号信息
      * Created by: Boundivore
@@ -66,11 +69,11 @@ public class GrafanaTest {
      * Modification description:
      * Modified by:
      * Modification time:
-     * Throws: 
+     * Throws:
      */
     @Test
-    public void getGrafanaAccountInfo() {
-        String result = this.iThirdGrafanaAPI.getGrafanaAccountInfo();
+    public void getUserById() {
+        String result = this.iThirdGrafanaAPI.getUserById("1");
         log.info(result);
     }
 }

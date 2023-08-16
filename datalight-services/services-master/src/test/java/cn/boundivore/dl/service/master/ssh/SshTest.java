@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.ssh;
+package cn.boundivore.dl.service.master.ssh;
 
 import cn.boundivore.dl.ssh.tools.SshTool;
 import lombok.extern.slf4j.Slf4j;

@@ -20,6 +20,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 
@@ -41,7 +42,10 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
         path = NONE_PREFIX
 )
 public interface IThirdGrafanaAPI {
-    @GetMapping(value = "/-/reload")
-    @ApiOperation(notes = "获取 Grafana 账号信息", value = "获取 Grafana 账号信息")
-    String getGrafanaAccountInfo();
+    @GetMapping(value = "/api/admin/users/{id}")
+    @ApiOperation(notes = "根据用户 ID 获取用户信息", value = "根据用户 ID 获取用户信息")
+    String getUserById(
+            @PathVariable("id")
+            String id
+    );
 }
