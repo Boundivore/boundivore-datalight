@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.api.third.define;
 
+import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -34,15 +35,15 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IWorkerPrometheusAPI", tags = {"Prometheus 接口：直接调用 Prometheus 接口"})
+@Api(value = "IThirdPrometheusAPI", tags = {"Prometheus 接口：直接调用 Prometheus 接口"})
 @FeignClient(
-        name = "IWorkerPrometheusAPI",
-        contextId = "IWorkerPrometheusAPI",
+        name = "IThirdPrometheusAPI",
+        contextId = "IThirdPrometheusAPI",
         path = NONE_PREFIX
 )
 public interface IThirdPrometheusAPI {
     @PostMapping(value = "/-/reload")
     @ApiOperation(notes = "重新加载 Prometheus 配置", value = "重新加载 Prometheus 配置")
-    String reloadPrometheus();
+    Result<String> reloadPrometheus();
 
 }

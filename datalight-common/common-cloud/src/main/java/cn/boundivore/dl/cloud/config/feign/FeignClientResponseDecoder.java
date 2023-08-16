@@ -16,9 +16,10 @@
  */
 package cn.boundivore.dl.cloud.config.feign;
 
+import cn.boundivore.dl.base.result.ErrorMessage;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.result.ResultEnum;
-import cn.boundivore.dl.base.utils.JsonUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import feign.Response;
 import feign.Util;
@@ -45,6 +46,8 @@ import java.lang.reflect.Type;
 @Configuration
 public class FeignClientResponseDecoder extends SpringDecoder {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     public FeignClientResponseDecoder(ObjectFactory<HttpMessageConverters> messageConverters,
                                       ObjectProvider<HttpMessageConverterCustomizer> customizers) {
         super(messageConverters, customizers);
@@ -53,17 +56,50 @@ public class FeignClientResponseDecoder extends SpringDecoder {
     @Override
     public Object decode(Response response, Type type) throws IOException, FeignException {
 
-        String bodyJson = Util.toString(response.body().asReader(Util.UTF_8));
+        Result<?> result = null;
 
-        Result<?> result = JsonUtil.getObject(bodyJson, Result.class);
+        // 如果没有任何返回内容，则直接通过状态码判定，返回成功
+        if (response.body() == null) {
+            if (response.status() >= 200 && response.status() < 300) {
+                result = Result.success();
+            } else {
+                result = Result.fail(
+                        ResultEnum.FAIL_UNKNOWN,
+                        new ErrorMessage(response.status() + ":" + response.reason())
+                );
+            }
+
+            return result;
+        }
+
+        // 正常解析
+        String bodyJson = Util.toString(response.body().asReader(Util.UTF_8));
+        try {
+            result = objectMapper.readValue(bodyJson, Result.class);
+        } catch (Exception ignored) {
+            // 解析 Json 失败
+            if (response.status() >= 200 && response.status() < 300) {
+                result = Result.success(bodyJson);
+            }else{
+                result = Result.fail(
+                        ResultEnum.FAIL_UNKNOWN,
+                        new ErrorMessage(response.status() + ":" + response.reason())
+                );
+            }
+
+            return result;
+        }
 
         if (result.getCode() != null && ResultEnum.getByCode(result.getCode()) != ResultEnum.SUCCESS) {
-            throw new RuntimeException(result.getMessage());
+            result = Result.fail(
+                    ResultEnum.FAIL_UNKNOWN,
+                    new ErrorMessage(response.status() + ":" + response.reason() + "->" + result.getMessage())
+            );
         }
 
         return super.decode(
                 response.toBuilder()
-                        .body(bodyJson, Util.UTF_8)
+                        .body(objectMapper.writeValueAsString(result), Util.UTF_8)
                         .build(),
                 type
         );

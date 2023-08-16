@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.api.third.define;
 
+import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -44,12 +45,12 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 public interface IThirdGrafanaAPI {
     @GetMapping(value = "/api/admin/users/{id}")
     @ApiOperation(notes = "根据用户 ID 获取用户信息", value = "根据用户 ID 获取用户信息")
-    String getUserById(
+    Result<String> getUserById(
             @PathVariable("id")
             String id
     );
 
     @GetMapping(value = "/api/admin/stats")
     @ApiOperation(notes = "获取 Grafana 状态信息", value = "获取 Grafana 状态信息")
-    String getStats();
+    Result<String> getStats();
 }

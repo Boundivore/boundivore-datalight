@@ -14,11 +14,12 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.service.master.grafana;
+package cn.boundivore.dl.service.master.prometheus;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
+import cn.boundivore.dl.api.third.define.IThirdPrometheusAPI;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
+import cn.boundivore.dl.service.master.service.RemoteInvokePrometheusService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ import org.springframework.test.context.TestPropertySource;
 import javax.annotation.PostConstruct;
 
 /**
- * Description: 测试 Grafana API
+ * Description: 测试 Prometheus API
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/8/16
@@ -37,51 +38,31 @@ import javax.annotation.PostConstruct;
  * Modification time:
  * Version: V1.0
  */
+
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.yaml")
 @Slf4j
-public class GrafanaTest {
+public class PrometheusTest {
 
     @Autowired
-    private RemoteInvokeGrafanaService remoteInvokeGrafanaService;
-    private final static String GRAFANA_HOST = "node01";
-    private final static String GRAFANA_PORT = "3000";
+    private RemoteInvokePrometheusService remoteInvokePrometheusService;
 
+    private final static String PROMETHEUS_HOST = "node01";
+    private final static String PROMETHEUS_PORT = "9090";
 
-    private final static String GRAFANA_USER_ADMIN = "admin";
-    private final static String GRAFANA_PASSWORD_ADMIN = "admin";
-
-    private IThirdGrafanaAPI iThirdGrafanaAPI;
+    private IThirdPrometheusAPI iThirdPrometheusAPI;
 
     @PostConstruct
     public void init() {
-        this.iThirdGrafanaAPI = this.remoteInvokeGrafanaService.iThirdGrafanaAPI(
-                GRAFANA_HOST,
-                GRAFANA_PORT,
-                GRAFANA_USER_ADMIN,
-                GRAFANA_PASSWORD_ADMIN
+        this.iThirdPrometheusAPI = this.remoteInvokePrometheusService.iThirdPrometheusAPI(
+                PROMETHEUS_HOST,
+                PROMETHEUS_PORT
         );
     }
 
-    /**
-     * Description: 获取账号信息
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/16
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
-//    @Test
-//    public void getUserById() {
-//        String result = this.iThirdGrafanaAPI.getUserById("1");
-//        log.info(result);
-//    }
-
     @Test
-    public void getStats() {
-        Result<String> result = this.iThirdGrafanaAPI.getStats();
+    public void reloadPrometheus() {
+        Result<String> result = this.iThirdPrometheusAPI.reloadPrometheus();
         log.info(result.toString());
     }
 }
