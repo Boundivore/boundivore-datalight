@@ -1,0 +1,71 @@
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
+
+sourceSets {
+    mainClassName = 'cn.boundivore.dl.service.worker.DataLightWorkerApplication'
+}
+
+dependencies {
+    implementation project(":datalight-common:common-boot")
+    implementation project(":datalight-api:api-master")
+    implementation project(":datalight-api:api-worker")
+
+    implementation(group: 'org.springframework.boot', name: 'spring-boot-starter-web') {
+        exclude(module: 'org.apache.logging.log4j:log4j-to-slf4j')
+        exclude(module: 'org.apache.logging.log4j:log4j-api')
+    }
+
+    implementation 'org.apache.logging.log4j:log4j-to-slf4j'
+    implementation 'org.apache.logging.log4j:log4j-api'
+    implementation 'org.apache.logging.log4j:log4j'
+    implementation 'log4j:log4j'
+
+    implementation project(":datalight-common:common-base")
+    implementation project(":datalight-common:common-cloud")
+    implementation project(":datalight-common:common-exception")
+
+    implementation group: 'cn.hutool', name: 'hutool-all'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
+    implementation group: 'com.alibaba', name: 'fastjson'
+    implementation group: 'com.thoughtworks.xstream', name: 'xstream'
+    implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt'
+    implementation group: 'com.alibaba', name: 'transmittable-thread-local'
+
+    implementation group: 'org.springframework.data', name: 'spring-data-commons'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-loadbalancer'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'io.github.openfeign', name: 'feign-okhttp'
+
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder'
+    implementation group: 'org.apache.skywalking', name: 'apm-toolkit-logback-1.x'
+    implementation group: 'org.apache.skywalking', name: 'apm-toolkit-trace'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'
+
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
+
+    implementation group: 'com.belerweb', name: 'pinyin4j'
+    implementation group: 'p6spy', name: 'p6spy'
+    implementation group: 'com.google.code.gson', name: 'gson'
+    implementation group: 'com.googlecode.java-diff-utils', name: 'diffutils'
+    implementation group: 'commons-net', name: 'commons-net'
+    implementation group: 'org.yaml', name: 'snakeyaml'
+
+    implementation group: 'org.ini4j', name: 'ini4j'
+    implementation group: 'org.freemarker', name: 'freemarker'
+
+    implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus'
+    implementation group: 'io.micrometer', name: 'micrometer-registry-jmx'
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -1,0 +1,185 @@
+server:
+  datalight:
+    url:
+      master: /api/v1/master
+      master-port: 8001
+      worker: /api/v1/worker
+      worker-port: 8002
+    database:
+      mysql:
+        host: node01
+        port: 3306
+        dbName: db_datalight
+        user: root
+        password: "1qaz!QAZ"
+  port: 8001
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: ${server.datalight.url.master}
+spring:
+  #  cloud:
+  #    loadbalancer:
+  #      enabled: false
+  servlet:
+    multipart:
+      max-request-size: 5MB
+      max-file-size: 5MB
+      enabled: true
+  jackson:
+    generator:
+      write-numbers-as-strings: true
+  application:
+    name: datalight-master
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    static-path-pattern: /**
+    servlet:
+      load-on-startup: 1
+    async:
+      request-timeout: 60000
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #    driver-class-name: org.gjt.mm.mysql.Driver
+    #    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${server.datalight.database.mysql.host}:${server.datalight.database.mysql.port}/${server.datalight.database.mysql.dbName}?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    #    url: jdbc:p6spy:mysql://node01:3306/db_datalight?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: ${server.datalight.database.mysql.user}
+    password: ${server.datalight.database.mysql.password}
+    druid:
+      #  初始连接数
+      initialSize: 5
+      # 最小空闲连接数
+      minIdle: 5
+      # 最大连接数
+      maxActive: 20
+      # 超时等待时间以毫秒为单位
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      # 检测查询处理
+      validationQuery: SELECT 1
+      # 申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      testWhileIdle: true
+      # 申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnBorrow: false
+      # 归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能
+      testOnReturn: false
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭
+      poolPreparedStatements: false
+      # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+      filters: stat,wall,log4j
+      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      maxPoolPreparedStatementPerConnectionSize: 20
+      #合并多个DruidDataSource的监控数据
+      useGlobalDataSourceStat: true
+      # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      # 自己配置监控统计拦截的filter
+      filter:
+        # 开启 druid datasource 的状态监控
+        stat:
+          enabled: true
+          db-type: mysql
+          # 开启慢sql监控，超过1.5s 就认为是慢sql，记录到日志中
+          log-slow-sql: true
+          slow-sql-millis: 1500
+        # 日志监控，使用slf4j 进行日志输出
+        slf4j:
+          enabled: true
+          statement-log-error-enabled: true
+          statement-create-after-log-enabled: false
+          statement-close-after-log-enabled: false
+          result-set-open-after-log-enabled: false
+          result-set-close-after-log-enabled: false
+      ########## 配置WebStatFilter，用于采集web关联监控的数据 ##########
+      web-stat-filter:
+        enabled: true                   # 启动 StatFilter
+        url-pattern: /*                 # 过滤所有url
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" # 排除一些不必要的url
+        session-stat-enable: true       # 开启session统计功能
+        session-stat-max-count: 1000    # session的最大个数,默认100
+      ########## 配置StatViewServlet（监控页面），用于展示Druid的统计信息 ##########
+      stat-view-servlet:
+        enabled: true                   # 启用StatViewServlet
+        url-pattern: /druid/*           # 访问内置监控页面的路径，内置监控页面的首页是/druid/index.html
+        reset-enable: false              # 不允许清空统计数据,重新计算
+        login-username: admin            # 配置监控页面访问密码
+        login-password: 123456
+        # 允许访问的地址，如果allow没有配置或者为空，则允许所有访问
+        allow:
+        deny:
+  redis:
+    host: node01
+    port: 6379
+    database: 0
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: 1ms
+        max-idle: 4
+        min-idle: 0
+
+
+rest:
+  connection:
+    timeout: 60000
+  read:
+    timeout: 60000
+
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+    auto-startup: true
+
+knife4j:
+  basic:
+    enable: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+feign:
+  sentinel:
+    enabled: false
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000
+        loggerLevel: basic
+
+
+sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: satoken
+  # token有效期，单位s 默认30天, -1代表永不过期
+  timeout: 86400
+  # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
+  activity-timeout: -1
+  # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录)
+  is-concurrent: false
+  # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token)
+  is-share: false
+  # token风格
+  token-style: uuid
+  # 是否输出操作日志
+  is-log: true

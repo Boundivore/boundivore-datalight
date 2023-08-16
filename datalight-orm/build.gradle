@@ -1,0 +1,22 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation project(":datalight-common:common-base")
+
+    implementation group: 'cn.hutool', name: 'hutool-all'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
+    implementation group: 'com.alibaba', name: 'fastjson'
+    implementation group: 'com.thoughtworks.xstream', name: 'xstream'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api'
+    implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt'
+
+    implementation  group: 'com.alibaba', name: 'transmittable-thread-local'
+    implementation group: 'com.alibaba', name: 'druid-spring-boot-starter'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-generator'
+    implementation group: 'icu.mhb', name: 'mybatis-plus-join'
+    implementation group: 'mysql', name: 'mysql-connector-java'
+    implementation group: 'org.freemarker', name: 'freemarker'
+}

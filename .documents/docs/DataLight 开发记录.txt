@@ -1,0 +1,418 @@
+使用 Java 代码实现如下功能：
+1、用户输入如下格式的信息：
+node[1-3]
+node[01-04]
+[1-4]node
+node[a-c]
+linux[1-3].com
+node109
+linux103.com
+hadoop202.com
+
+2、上述信息对应解析结果应该为，下面的规则必须满足，仔细阅读并理解规则：
+node[1-3]解析为：node1 node2 node3
+node[01-04]解析为：node01 node02 node03 node04
+[1-4]node解析为：1node 2node 3node 4node
+node[a-c]解析为：nodea nodeb nodec
+linux[1-3].com解析为：linux1 linux2 linux3
+hadoop202.com 解析为：hadoop202.com
+node109 解析为：node109
+linux103.com 解析为：linux103.com
+
+即：
+不包含方括号的那一行，主机名所见即所得，包含方括号的那一项将方括号展开，拼接出多组数据；
+不允许输入特殊字符*、中文汉字或符号等，如果出现这些内容，则抛出异常；
+主机名中可以包含 @ . 和英文字母或数字以以及下划线；
+解析后的主机名中不可以包含 -；
+最后输出两个集合，均需要去重，一个是有效的主机名 List<String> 类型，一个是无效的主机名 List<String> 类型；
+用户填写时，分割的每一项不一定是回车\n，也有可能是空格或者 \t；
+注意，代码的每一行上方加上单行注释；
+代码尽量优雅；
+
+测试数据集：
+node[1-3]
+node[01-12]
+[1-4]node
+node[a-c]
+linux[1-3].com
+linux-admin[1-3].com
+node109
+linux103.com
+hadoop202.com
+
+bm9kZVsxLTNdCm5vZGVbMDEtMTJdClsxLTRdbm9kZQpub2RlW2EtY10KbGludXhbMS0zXS5jb20KbGludXgtYWRtaW5bMS0zXS5jb20Kbm9kZTEwOQpsaW51eDEwMy5jb20KaGFkb29wMjAyLmNvbQ==
+
+
+node[01-05]
+node-[1-3]
+
+bm9kZVswMS0wNV0Kbm9kZS1bMS0zXQ==
+
+
+优化以下脚本，满足以下要求：
+1、加上注释
+2、去掉脚本中没有使用的变量
+3、同时更优雅一些
+4、不要出现 Double quote to prevent globbing and word splitting.See SC2086. 警告
+5、不要出现 Consider using { cmd1; cmd2; } >> file instead of individual redirects. See SC2129. 警告
+6、不要出现 Use 'cd ... || exit' or 'cd ... || return' in case cd fails. See SC2164. 警告
+7、不要出现 Argument mixes string and array. Use * or separate argument. See SC2145. 警告
+8、不要出现 Consider using grep -c instead of grep|wc -l.See SC2126.
+9、不要出现 appears unused. Verify use (or export if used externally).See SC2034.
+10、不要出现 Don't use ls | grep. Use a glob or a for loop with a condition to allow non-alphanumeric filenames. See SC2010.
+11、不要出现 Quotes/backslashes will be treated literally. Use an array.See SC2089.
+12、不要出现 Quote the right-hand side of != in [[ ]] to prevent glob matching.See SC2053.
+13、不要出现 Modification of xxxx is local (to subshell caused by pipeline).See SC2030.
+14、不要出现 Check exit code directly with e.g. 'if mycmd;', not indirectly with $?.See SC2181.
+15、脚本以 set -e 开头，每一步如果执行正常已 exit 0 退出，否则以 exit 1 退出
+
+最后：脚本最后以 echo "Job done" 结束
+
+
+# 探测节点 IP 地址
+hostname -I
+# 获取 CPU 架构
+lscpu | grep 'Architecture' | awk '{print $2}'
+# 获取 CPU 核数
+lscpu | sed -n '4p' | awk '{print $2}'
+# 获取内存大小
+free -m | awk 'NR==2{printf \"%.2f\n\", $2/1024}'
+# 获取磁盘大小
+df -h --total | tail -n 1 | awk '{print $2 \"\n\" $4}'
+
+
+
+
+$(realpath "$(dirname "$0")")
+
+$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+
+rm -rf /tmp/hsperfdata_*
+
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-namenode1-format.sh
+su -c "/srv/datalight/HDFS/bin/hdfs namenode -format" "datalight"
+su -c "/srv/datalight/HDFS/bin/hdfs zkfc -formatZK" "datalight"
+
+rm -rf /data/datalight/HDFS/jnData/DataLightCluster1
+
+sh /opt/datalight/plugins/ZOOKEEPER/scripts/zookeeper-operation.sh QuarumPeermain start;
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh JournalNode start
+
+
+java -jar /opt/datalight/app/service-worker-1.0.0.jar
+
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh HttpFS stop; \
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh DataNode stop; \
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh ZKFailoverController stop; \
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh NameNode stop; \
+sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh JournalNode stop; \
+sh /opt/datalight/plugins/ZOOKEEPER/scripts/zookeeper-operation.sh QuarumPeermain stop; \
+rm -rf /data/datalight/*; \
+rm -rf /srv/datalight/*
+
+
+
+
+
+
+新建集群：
+{
+    "ClusterDesc": "第1个集群（MIXED 集群）",
+    "ClusterName": "DataLightCluster1",
+    "ClusterType": "MIXED",
+    "DlcVersion": "1.0.0",
+    "RelativeClusterId": null
+}
+
+解析节点主机名；
+{
+    "ClusterId": 1,
+    "HostnameBase64": "bm9kZVswMS0wNV0Kbm9kZS1bMS0zXQ==",
+    "SshPort": 22
+}
+
+连通性验证：
+{
+    "ClusterId": 1,
+    "NodeActionTypeEnum": "DETECT",
+    "NodeInfoList": [
+        {
+            "Hostname": "node01",
+            "NodeId": 1
+        },
+        {
+            "Hostname": "node02",
+            "NodeId": 2
+        },
+        {
+            "Hostname": "node03",
+            "NodeId": 3
+        }
+    ],
+    "SshPort": 22
+}
+
+节点初始化检查：
+{
+    "ClusterId": 1,
+    "NodeActionTypeEnum": "CHECK",
+    "NodeInfoList": [
+        {
+            "Hostname": "node01",
+            "NodeId": 1
+        },
+        {
+            "Hostname": "node02",
+            "NodeId": 2
+        },
+        {
+            "Hostname": "node03",
+            "NodeId": 3
+        }
+    ],
+    "SshPort": 22
+}
+
+分发节点安装包：
+{
+    "ClusterId": 1,
+    "NodeActionTypeEnum": "DISPATCH",
+    "NodeInfoList": [
+        {
+            "Hostname": "node01",
+            "NodeId": 1
+        },
+        {
+            "Hostname": "node02",
+            "NodeId": 2
+        },
+        {
+            "Hostname": "node03",
+            "NodeId": 3
+        }
+    ],
+    "SshPort": 22
+}
+
+
+服役到指定集群：
+{
+    "ClusterId": 1,
+    "NodeInfoList": [
+        {
+            "Hostname": "node01",
+            "NodeId": 1
+        },
+        {
+            "Hostname": "node02",
+            "NodeId": 2
+        },
+        {
+            "Hostname": "node03",
+            "NodeId": 3
+        }
+    ]
+}
+
+选择部署服务：
+{
+    "ClusterId": 1,
+    "ServiceList": [
+        {
+            "ServiceName": "MONITOR",
+            "SCStateEnum": "SELECTED"
+        },
+        {
+            "ServiceName": "ZOOKEEPER",
+            "SCStateEnum": "SELECTED"
+        },
+        {
+            "ServiceName": "HDFS",
+            "SCStateEnum": "UNSELECTED"
+        },
+        {
+            "ServiceName": "YARN",
+            "SCStateEnum": "UNSELECTED"
+        }
+    ]
+}
+
+设置组件：不含HDFS
+{
+    "ClusterId": 1,
+    "ComponentList": [
+        {
+            "ComponentName": "Prometheus",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "MONITOR"
+        },
+        {
+            "ComponentName": "AlertManager",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "MONITOR"
+        },
+        {
+            "ComponentName": "Grafana",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "MONITOR"
+        },
+        {
+            "ComponentName": "QuarumPeermain",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "ZOOKEEPER"
+        }
+    ]
+}
+
+
+设置组件-含HDFS
+{
+    "ClusterId": 1,
+    "ComponentList": [
+        {
+            "ComponentName": "QuarumPeermain",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "ZOOKEEPER"
+        },
+        {
+            "ComponentName": "JournalNode",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "NameNode1",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "NameNode2",
+            "NodeIdList": [
+                2
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "ZKFailoverController1",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "ZKFailoverController2",
+            "NodeIdList": [
+                2
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "DataNode",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "HttpFS",
+            "NodeIdList": [
+                1,
+                2
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "HDFSClient",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        }
+    ]
+}
+
+设置预配置文件：
+{
+    "ClusterId": 1,
+    "ServiceList": [
+        {
+            "PlaceholderInfoList": [
+                {
+                    "PropertyList": [
+                        {
+                            "Default": "/data/datalight/data/ZOOKEEPER/zkData",
+                            "Describe": "该目录为 Zookeeper 的数据目录以及 myid 文件所在目录",
+                            "Placeholder": "{{data-dir}}",
+                            "Value": "/data/datalight/data/ZOOKEEPER/zkData"
+                        }
+                    ],
+                    "TemplatedFilePath": "D:/datalight/plugins/ZOOKEEPER/templated/conf/zoo.cfg"
+                }
+            ],
+            "ServiceName": "ZOOKEEPER"
+        },
+        {
+            "PlaceholderInfoList": [
+                {
+                    "PropertyList": [
+                        {
+                            "Default": "/data/datalight/HDFS",
+                            "Describe": "DataNode 中数据的存储目录",
+                            "Placeholder": "{{dfs.datanode.data.dir}}",
+                            "Value": "/data/datalight/HDFS"
+                        }
+                    ],
+                    "TemplatedFilePath": "D:/datalight/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml"
+                }
+            ],
+            "ServiceName": "HDFS"
+        }
+    ]
+}
+
+
+部署服务：
+{
+    "ActionTypeEnum": "DEPLOY",
+    "ClusterId": 1,
+    "ServiceNameList": [
+        "MONITOR",
+        "ZOOKEEPER"
+    ]
+}

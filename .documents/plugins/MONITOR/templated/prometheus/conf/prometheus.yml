@@ -1,0 +1,152 @@
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  scrape_timeout: 10s # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: [ ]
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - 'rules/*.yml'
+
+#remote_write:
+#  - url: "http://{{remote.write.addr}}:{{remote.write.port}}/api/v1/prom/write?db=prometheus"
+#    basic_auth:
+#      username: admin
+#      password: admin
+#remote_read:
+#  - url: "http://{{remote.read.addr}}:{{remote.read.port}}/api/v1/prom/read?db=prometheus"
+#    basic_auth:
+#      username: admin
+#      password: admin
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+# The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+#  - job_name: "<job_name>"
+# metrics_path defaults to '/metrics'
+# scheme defaults to 'http'.
+#    static_configs:
+#      - targets: ['localhost:9090']
+
+  - job_name: "MONITOR-Prometheus"
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: [ 'localhost:9090' ]
+
+  - job_name: "MONITOR-AlertManager"
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: "MONITOR-Grafana"
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: [ 'localhost:3000' ]
+
+  - job_name: "MONITOR-MySQLExporter"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: [ ]
+
+  - job_name: "MONITOR-NodeExporter"
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DATALIGHT-Master'
+    metrics_path: ' /api/v1/master/actuator/prometheus'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DATALIGHT-Worker'
+    metrics_path: ' /api/v1/worker/actuator/prometheus'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'ZOOKEEPER-QuarumPeermain'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HDFS-JournalNode'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HDFS-NameNode'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HDFS-ZKFailoverController'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HDFS-DataNode'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HDFS-HttpFS'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HBASE-HMaster'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HBASE-HRegionServer'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HIVE-MetaStore'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HIVE-HiveServer2'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'PRESTO-PrestoCoordinator'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'PRESTO-PrestoWorker'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'TEZ-TezUI'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'SPARK-SparkHistoryServer'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'FLINK-FlinkHistoryServer'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'KAFKA-KafkaBroker'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'ELASTICSEARCH-ElasticSearch'
+    metrics_path: "/_prometheus/metrics"
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'LIVY-LivyServer'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'KYLIN-KylinServer'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'RANGER-RangerAdmin'
+    static_configs:
+      - targets: [ ]

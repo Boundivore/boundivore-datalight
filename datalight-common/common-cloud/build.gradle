@@ -1,0 +1,34 @@
+dependencies {
+    implementation project(":datalight-common:common-base")
+
+    implementation (group: 'org.springframework.boot', name: 'spring-boot-starter-web'){
+        exclude(module: 'org.apache.logging.log4j:log4j-to-slf4j')
+        exclude(module: 'org.apache.logging.log4j:log4j-api')
+    }
+
+    implementation 'org.apache.logging.log4j:log4j-to-slf4j'
+    implementation 'org.apache.logging.log4j:log4j-api'
+    implementation 'org.apache.logging.log4j:log4j'
+    implementation 'log4j:log4j'
+
+    implementation group: 'cn.hutool', name: 'hutool-all'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
+    implementation group: 'com.alibaba', name: 'fastjson'
+    implementation group: 'com.thoughtworks.xstream', name: 'xstream'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-api'
+    implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt'
+    implementation group: 'com.alibaba', name: 'transmittable-thread-local'
+    implementation group: 'org.springframework.data', name: 'spring-data-commons'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-loadbalancer'
+    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
+    implementation group: 'io.github.openfeign', name: 'feign-okhttp'
+    implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder'
+    implementation group: 'org.apache.skywalking', name: 'apm-toolkit-logback-1.x'
+    implementation group: 'org.apache.skywalking', name: 'apm-toolkit-trace'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+}

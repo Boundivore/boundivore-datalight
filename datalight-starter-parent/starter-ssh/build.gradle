@@ -1,0 +1,18 @@
+dependencies {
+    implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
+    implementation group: 'cn.hutool', name: 'hutool-all'
+
+    implementation group: 'org.springframework', name: 'spring-tx'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
+
+    implementation group: 'com.hierynomus', name: 'sshj'
+    implementation group: 'com.jcraft', name: 'jsch.agentproxy.sshj'
+    implementation group: 'com.jcraft', name: 'jsch.agentproxy.connector-factory'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

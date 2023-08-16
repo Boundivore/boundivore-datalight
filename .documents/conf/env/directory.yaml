@@ -1,0 +1,7 @@
+datalight:
+  datalight-dir: /opt/datalight
+  service-dir: /srv/datalight
+  # 以下基础目录不要修改，否则请检查所有可能的引用，要保持一致
+  log-dir: /data/datalight/logs
+  pid-dir: /data/datalight/pids
+  data-dir: /data/datalight/data

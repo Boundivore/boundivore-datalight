@@ -1,0 +1,76 @@
+server:
+  datalight:
+    url:
+      master: /api/v1/master
+      master-port: 8001
+      worker: /api/v1/worker
+      worker-port: 8002
+  port: 8002
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    context-path: ${server.datalight.url.worker}
+spring:
+  #  cloud:
+  #    loadbalancer:
+  #      enabled: false
+  servlet:
+    multipart:
+      max-request-size: 5MB
+      max-file-size: 5MB
+      enabled: true
+  jackson:
+    generator:
+      write-numbers-as-strings: true
+  application:
+    name: datalight-worker
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+    static-path-pattern: /**
+    servlet:
+      load-on-startup: 1
+    async:
+      request-timeout: 60000
+  web:
+    resources:
+      static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+springfox:
+  documentation:
+    swagger-ui:
+      enabled: true
+    auto-startup: true
+
+rest:
+  connection:
+    timeout: 60000
+  read:
+    timeout: 60000
+
+feign:
+  ribbon:
+    enabled: false
+  sentinel:
+    enabled: false
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 60000
+        readTimeout: 60000
+        loggerLevel: basic
+
+knife4j:
+  basic:
+    enable: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  metrics:
+    tags:
+      application: ${spring.application.name}

@@ -1,0 +1,357 @@
+datalight:
+  service:
+    name: MONITOR
+    version: 2.46.0
+    tgz: dlc-monitor-2.46.0.tar.gz
+    conf-dirs:
+#      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus/bin'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/prometheus/bin'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/prometheus/conf'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager/bin'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/alertmanager/bin'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/alertmanager/conf'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql/bin'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/exporter/mysql/bin'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/exporter/mysql/conf'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/node/bin'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/exporter/node/bin'
+#
+#      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/bin'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/grafana/bin'
+#
+  #      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/conf'
+#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/grafana/conf'
+      # TODO FOR TEST
+      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus/bin'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/prometheus/bin'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/prometheus/conf'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager/bin'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/alertmanager/bin'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/alertmanager/conf'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql/bin'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/exporter/mysql/bin'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/exporter/mysql/conf'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/node/bin'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/exporter/node/bin'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/bin'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/grafana/bin'
+
+      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/conf'
+        templated-dir: 'D:/datalight/plugins/MONITOR/templated/grafana/conf'
+
+    config-event-handler-jar: 'plugin-monitor-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.monitor.config.event.ConfigEventHandler'
+    components:
+      - name: Prometheus
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-monitor-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 Prometheus'
+                shell: 'monitor-operation.sh'
+                args: [ 'Prometheus', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 Prometheus'
+                shell: 'monitor-operation.sh'
+                args: [ 'Prometheus', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 Prometheus'
+                shell: 'monitor-operation.sh'
+                args: [ 'Prometheus', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 Prometheus'
+                shell: 'monitor-operation.sh'
+                args: [ 'Prometheus', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: AlertManager
+        priority: 2
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-monitor-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 AlertManager'
+                shell: 'monitor-operation.sh'
+                args: [ 'AlertManager', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 AlertManager'
+                shell: 'monitor-operation.sh'
+                args: [ 'AlertManager', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 AlertManager'
+                shell: 'monitor-operation.sh'
+                args: [ 'AlertManager', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 AlertManager'
+                shell: 'monitor-operation.sh'
+                args: [ 'AlertManager', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: MySQLExporter
+        priority: 3
+        max: -1
+        min: -1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-monitor-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 MySQLExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'MySQLExporter', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 MySQLExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'MySQLExporter', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 MySQLExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'MySQLExporter', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 MySQLExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'MySQLExporter', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: NodeExporter
+        priority: 4
+        max: -1
+        min: -1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-monitor-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 NodeExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'NodeExporter', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 NodeExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'NodeExporter', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 NodeExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'NodeExporter', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 NodeExporter'
+                shell: 'monitor-operation.sh'
+                args: [ 'NodeExporter', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: Grafana
+        priority: 5
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-monitor-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 Grafana'
+                shell: 'monitor-operation.sh'
+                args: [ 'Grafana', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 Grafana'
+                shell: 'monitor-operation.sh'
+                args: [ 'Grafana', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 Grafana'
+                shell: 'monitor-operation.sh'
+                args: [ 'Grafana', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 Grafana'
+                shell: 'monitor-operation.sh'
+                args: [ 'Grafana', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000

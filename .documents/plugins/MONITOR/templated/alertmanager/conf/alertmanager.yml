@@ -1,0 +1,21 @@
+global:
+  resolve_timeout: 5m  # 当警报停止后，等待多久才将其状态从 'firing' 改为 'resolved'
+
+route:
+  group_by: ['DataLight']  # 根据哪些标签对警报进行分组
+  group_wait: 30s  # 在首次发送警报前等待多久
+  group_interval: 5m  # 在第一次发送警报后，等待多久才发送新的一组警报
+  repeat_interval: 1h  # 在警报解决后，等待多久才重复发送
+  receiver: 'webhook_receiver'  # 默认的接收器
+
+receivers:
+  - name: 'webhook_receiver'
+    webhook_configs:
+      - url: 'http://127.0.0.1:8001/api/v1/master/alert/receiveOriginalAlertMsg'  # 接收器的 Webhook URL
+
+inhibit_rules:
+  - source_match:  # 源匹配器，匹配哪些警报应该抑制其他警报
+      severity: 'critical'
+    target_match:  # 目标匹配器，匹配哪些警报应该被抑制
+      severity: 'warning'
+    equal: ['DataLight', 'dev', 'instance']  # 在源匹配器和目标匹配器之间，哪些标签应该相等

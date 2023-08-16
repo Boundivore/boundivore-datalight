@@ -1,0 +1,11 @@
+dependencies {
+    implementation group: 'org.redisson', name: 'redisson-spring-boot-starter'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

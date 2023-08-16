@@ -1,0 +1,10 @@
+
+---
+startDelaySeconds: 0
+hostPort: {{HOST-PORT}}
+ssl: false
+lowercaseOutputName: false
+lowercaseOutputLabelNames: false
+
+rules:
+ - pattern: '.*'

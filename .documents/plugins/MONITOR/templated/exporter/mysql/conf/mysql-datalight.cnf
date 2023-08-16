@@ -1,0 +1,10 @@
+[client]
+host = {{mysql.host}}
+port = {{mysql.port}}
+user = {{mysql.user}}
+password = {{mysql.password}}
+[mysqladmin]
+host = {{mysql.host}}
+port = {{mysql.port}}
+user = {{mysql.user}}
+password = {{mysql.password}}

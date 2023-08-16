@@ -1,0 +1,74 @@
+datalight:
+  actions:
+    # 关机
+    - type: SHUTDOWN
+      start-state: STOPPING
+      success-state: STOPPED
+      fail-state: STARTED
+      steps:
+        - type: SCRIPT
+          name: '关机节点'
+          shell: 'action-shutdown.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    # 重启
+    - type: RESTART
+      start-state: RESTARTING
+      success-state: RESTARTING
+      fail-state: RESTARTING
+      steps:
+        - type: SCRIPT
+          name: '重启节点'
+          shell: 'action-restart.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    # 探测节点
+    - type: DETECT
+      start-state: DETECTING
+      success-state: ACTIVE
+      fail-state: INACTIVE
+      steps:
+        - type: SCAN
+          name: '探测节点 SSH 可用性'
+          sleep: 0
+
+        - type: SCAN_RESOURCES
+          name: '扫描节点资源'
+          shell: "scan-resources.sh"
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    # 初始化检查
+    - type: CHECK
+      start-state: CHECKING
+      success-state: CHECK_OK
+      fail-state: CHECK_ERROR
+      steps:
+        - type: CHECK_ENV
+          name: '检查节点环境'
+          shell: 'check-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    # 推送安装包
+    - type: DISPATCH
+      start-state: PUSHING
+      success-state: PUSH_OK
+      fail-state: PUSH_ERROR
+      steps:
+        - type: PUSH
+          name: '推送安装包'

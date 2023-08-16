@@ -1,0 +1,105 @@
+datalight:
+  service:
+    name: ZOOKEEPER
+    version: 3.8.2
+    tgz: dlc-zookeeper-3.8.2.tar.gz
+    conf-dirs:
+#      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
+#        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/bin'
+#
+#      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
+#        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/conf'
+#
+#      - service-conf-dir: '{{data-dir}}'
+#        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/id'
+# TODO FOR TEST
+      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
+        templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/bin'
+
+      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
+        templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/conf'
+
+      - service-conf-dir: '{{data-dir}}'
+        templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/id'
+
+    config-event-handler-jar: 'plugin-zookeeper-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.zookeeper.config.event.ConfigEventHandler'
+    components:
+      - name: QuarumPeermain
+        priority: 1
+        max: -1
+        min: 3
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-zookeeper-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 QuarumPeermain'
+                shell: 'zookeeper-operation.sh'
+                args: [ 'QuarumPeermain', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 QuarumPeermain'
+                shell: 'zookeeper-operation.sh'
+                args: [ 'QuarumPeermain', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 QuarumPeermain'
+                shell: 'zookeeper-operation.sh'
+                args: [ 'QuarumPeermain', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 QuarumPeermain'
+                shell: 'zookeeper-operation.sh'
+                args: [ 'QuarumPeermain', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: ZookeeperClient
+        priority: 2
+        max: -1
+        min: 0
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-zookeeper-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0

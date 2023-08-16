@@ -1,0 +1,223 @@
+datalight:
+  service:
+    name: YARN
+    version: 3.2.4
+    tgz: dlc-yarn-3.2.4.tar.gz
+    conf-dirs:
+      - service-conf-dir: '{{service-dir}}/YARN/bin'
+        templated-dir: '{{datalight-dir}}/plugins/YARN/templated/bin'
+
+      - service-conf-dir: '{{service-dir}}/YARN/etc/hadoop'
+        templated-dir: '{{datalight-dir}}/plugins/YARN/templated/etc/hadoop'
+
+      - service-conf-dir: '{{service-dir}}/YARN/sbin'
+        templated-dir: '{{datalight-dir}}/plugins/YARN/templated/sbin'
+
+    config-event-handler-jar: 'plugin-hdfs-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.hdfs.config.event.ConfigEventHandler'
+    components:
+      - name: ResourceManager1
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ 'ResourceManager2' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-hdfs-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 NameNode1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 NameNode1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 NameNode1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 NameNode1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: ResourceManager2
+        priority: 2
+        max: 1
+        min: 1
+        mutexes: [ 'ResourceManager1' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-hdfs-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 NameNode2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 NameNode2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 NameNode2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 NameNode2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: NodeManager
+        priority: 3
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-hdfs-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 DataNode'
+                shell: 'hdfs-operation.sh'
+                args: [ 'DataNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 DataNode'
+                shell: 'hdfs-operation.sh'
+                args: [ 'DataNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 DataNode'
+                shell: 'hdfs-operation.sh'
+                args: [ 'DataNode', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 DataNode'
+                shell: 'hdfs-operation.sh'
+                args: [ 'DataNode', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: YARNClient
+        priority: 4
+        max: -1
+        min: 0
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: JAR
+                name: '正在配置服务'
+                jar: 'plugin-hdfs-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0

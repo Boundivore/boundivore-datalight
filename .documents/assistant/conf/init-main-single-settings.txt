@@ -1,0 +1,12 @@
+init-stop-firewall.sh
+init-ssh-remove-ask.sh
+init-close-swap.sh
+init-optimize-sysctl.sh
+init-systemd-conf.sh
+init-hostname.sh
+init-user-group.sh
+init-datalight-env.sh
+init-jdk.sh
+init-yum-install.sh
+init-chrony-server-config.sh
+init-chrony-client-config.sh

@@ -1,0 +1,21 @@
+group 'cn.boundivore.dl'
+version '1.0.0'
+apply plugin: 'java-library'
+
+subprojects {
+    version = rootProject.version
+    group = rootProject.group
+
+    // disable source dir generator
+    if (project.childProjects.size() != 0) {
+        return
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.compilerArgs += ['-Xdoclint:none', '-Xlint:none', '-nowarn']
+    }
+}

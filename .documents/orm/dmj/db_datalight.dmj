@@ -1,0 +1,2657 @@
+{
+  "RootName": "DataModels",
+  "CTVER": "43543335",
+  "TableCount": 22,
+  "Count": 1,
+  "items": [{
+    "ID": 9,
+    "Name": "db_data_light",
+    "CreateDate": "2023/4/17 9:37:49",
+    "OrderNo": 1,
+    "DefDbEngine": "MYSQL",
+    "DbConnectStr": "TCtMetaMysqlDb",
+    "Tables": {
+      "Count": 22,
+      "items": [
+        {
+          "ID": 1,
+          "Name": "t_dl_login_event",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 1,
+          "GraphDesc": "Left=27.50\r\nTop=167.00",
+          "MetaFields": {
+            "Count": 6,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_dl",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_dl",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_dl",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_dl",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "user_id",
+                "OrderNo": 5,
+                "DisplayName": "用户 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 6,
+                "Name": "last_login",
+                "OrderNo": 6,
+                "DisplayName": "最近一次登录时间",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_user_auth",
+          "Caption": "用户认证信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 2,
+          "GraphDesc": "Left=527.50\r\nTop=167.00",
+          "MetaFields": {
+            "Count": 8,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_dl_login_event",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_dl_login_event",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_dl_login_event",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_dl_login_event",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "user_id",
+                "Memo": "用户基础表主键 ID",
+                "OrderNo": 5,
+                "DisplayName": "用户 ID",
+                "DataType": 2,
+                "RelateTable": "t_dl_login_event",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 6,
+                "Name": "identity_type",
+                "Memo": "枚举：EMAIL, PHONE, USERNAME",
+                "OrderNo": 6,
+                "DisplayName": "账户类型",
+                "DataType": 1,
+                "RelateTable": "t_dl_login_event",
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "principal",
+                "Memo": "登录的账户名",
+                "OrderNo": 7,
+                "DisplayName": "认证主体",
+                "DataType": 1,
+                "RelateTable": "t_dl_login_event",
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "credential",
+                "Memo": "认证凭证，密码 或 Token",
+                "OrderNo": 8,
+                "DisplayName": "认证凭证",
+                "DataType": 1,
+                "RelateTable": "t_dl_login_event",
+                "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_user",
+          "Caption": "用户基础信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 3,
+          "GraphDesc": "Left=307.00\r\nTop=167.00",
+          "MetaFields": {
+            "Count": 7,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_dl_login_event",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_dl_login_event",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_dl_login_event",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_dl_login_event",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "nickname",
+                "OrderNo": 5,
+                "DisplayName": "用户昵称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "realname",
+                "OrderNo": 6,
+                "DisplayName": "真实姓名",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "avatar",
+                "OrderNo": 7,
+                "DisplayName": "头像",
+                "DataType": 1,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 4,
+          "GraphDesc": "Left=28.00\r\nTop=12.50",
+          "MetaFields": {
+            "Count": 4,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_node",
+          "Caption": "节点信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 5,
+          "GraphDesc": "Left=291.21\r\nTop=568.53",
+          "MetaFields": {
+            "Count": 15,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 15,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "hostname",
+                "OrderNo": 6,
+                "DisplayName": "主机名",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "ipv4",
+                "OrderNo": 7,
+                "DisplayName": "IPV4 地址",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "ipv6",
+                "OrderNo": 8,
+                "DisplayName": "IPV6 地址",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "ssh_port",
+                "Memo": "默认为 22 端口，可自定义修改",
+                "OrderNo": 9,
+                "DisplayName": "SSH 端口",
+                "DataType": 2,
+                "DefaultValue": "22",
+                "DataLength": 20
+              },
+              {
+                "ID": 14,
+                "Name": "cpu_arch",
+                "OrderNo": 10,
+                "DisplayName": "CPU 架构",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 12,
+                "Name": "cpu_cores",
+                "Memo": "单位：个",
+                "OrderNo": 11,
+                "DisplayName": "CPU 核心数",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "ram",
+                "Memo": "单位：K-bytes",
+                "OrderNo": 12,
+                "DisplayName": "内存总大小",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 10,
+                "Name": "disk",
+                "Memo": "单位：K-bytes",
+                "OrderNo": 13,
+                "DisplayName": "磁盘总容量",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "node_state",
+                "Memo": "状态枚举，见代码",
+                "OrderNo": 14,
+                "DisplayName": "节点状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 13,
+                "Name": "os_version",
+                "OrderNo": 15,
+                "DisplayName": "系统版本",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_node_init",
+          "Caption": "节点初始化信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 6,
+          "GraphDesc": "Left=26.87\r\nTop=569.29",
+          "MetaFields": {
+            "Count": 15,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "hostname",
+                "OrderNo": 6,
+                "DisplayName": "主机名",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "ipv4",
+                "OrderNo": 7,
+                "DisplayName": "IPV4 地址",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "ipv6",
+                "OrderNo": 8,
+                "DisplayName": "IPV6 地址",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "ssh_port",
+                "Memo": "默认为 22 端口，可自定义修改",
+                "OrderNo": 9,
+                "DisplayName": "SSH 端口",
+                "DataType": 2,
+                "DefaultValue": "22",
+                "DataLength": 20
+              },
+              {
+                "ID": 14,
+                "Name": "cpu_arch",
+                "OrderNo": 10,
+                "DisplayName": "CPU 架构",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 12,
+                "Name": "cpu_cores",
+                "Memo": "单位：个",
+                "OrderNo": 11,
+                "DisplayName": "CPU 核心数",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "ram",
+                "Memo": "单位：K-bytes",
+                "OrderNo": 12,
+                "DisplayName": "内存总大小",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 10,
+                "Name": "disk",
+                "Memo": "单位：K-bytes",
+                "OrderNo": 13,
+                "DisplayName": "磁盘总容量",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "os_version",
+                "OrderNo": 14,
+                "DisplayName": "系统版本",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 15,
+                "Name": "node_init_state",
+                "Memo": "枚举，见代码",
+                "OrderNo": 15,
+                "DisplayName": "当前初始化状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_service",
+          "Caption": "服务信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 7,
+          "GraphDesc": "Left=19.93\r\nTop=1119.43",
+          "MetaFields": {
+            "Count": 8,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "service_name",
+                "OrderNo": 6,
+                "DisplayName": "服务名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "service_state",
+                "OrderNo": 7,
+                "DisplayName": "服务状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "priority",
+                "Memo": "数字越小，优先级越高",
+                "OrderNo": 8,
+                "DisplayName": "优先级",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_component",
+          "Caption": "组件信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 8,
+          "GraphDesc": "Left=256.70\r\nTop=1118.75",
+          "MetaFields": {
+            "Count": 10,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "node_id",
+                "OrderNo": 6,
+                "DisplayName": "节点 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 9,
+                "Name": "service_name",
+                "OrderNo": 7,
+                "DisplayName": "服务名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 5,
+                "Name": "component_name",
+                "OrderNo": 8,
+                "DisplayName": "组件名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "component_state",
+                "OrderNo": 9,
+                "DisplayName": "组件状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "priority",
+                "Memo": "数字越小，优先级越高",
+                "OrderNo": 10,
+                "DisplayName": "优先级",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_job",
+          "Caption": "Job 信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 9,
+          "GraphDesc": "Left=12.93\r\nTop=1373.78",
+          "MetaFields": {
+            "Count": 11,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "job_name",
+                "OrderNo": 7,
+                "DisplayName": "Job 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "job_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 8,
+                "DisplayName": "Job 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 9,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 10,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 11,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_stage",
+          "Caption": "Stage 信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 10,
+          "GraphDesc": "Left=290.50\r\nTop=1367.03",
+          "MetaFields": {
+            "Count": 13,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "job_id",
+                "OrderNo": 7,
+                "DisplayName": "Job ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "stage_name",
+                "OrderNo": 8,
+                "DisplayName": "Stage 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "stage_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 9,
+                "DisplayName": "Stage 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "service_name",
+                "Memo": "全大写英文命名法，可以唯一 标识服务",
+                "OrderNo": 10,
+                "DisplayName": "服务名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 11,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 12,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 13,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_task",
+          "Caption": "Task 信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 11,
+          "GraphDesc": "Left=573.50\r\nTop=1366.03",
+          "MetaFields": {
+            "Count": 19,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 6,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "job_id",
+                "OrderNo": 7,
+                "DisplayName": "Job ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 14,
+                "Name": "stage_id",
+                "OrderNo": 8,
+                "DisplayName": "Stage ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 16,
+                "Name": "node_id",
+                "OrderNo": 9,
+                "DisplayName": "节点 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 17,
+                "Name": "hostname",
+                "OrderNo": 10,
+                "DisplayName": "节点主机名",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 15,
+                "Name": "node_ip",
+                "Memo": "内网地址",
+                "OrderNo": 11,
+                "DisplayName": "IPV4 地址",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 5,
+                "Name": "task_name",
+                "OrderNo": 12,
+                "DisplayName": "Task 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "task_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 13,
+                "DisplayName": "Task 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 18,
+                "Name": "action_type",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 14,
+                "DisplayName": "操作类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "service_name",
+                "Memo": "全大写英文命名法，可以唯一 标识服务",
+                "OrderNo": 15,
+                "DisplayName": "服务名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "component_name",
+                "Memo": "帕斯卡命名法，可以唯一组件",
+                "OrderNo": 16,
+                "DisplayName": "组件名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 17,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 18,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 19,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_step",
+          "Caption": "Step 信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 12,
+          "GraphDesc": "Left=856.19\r\nTop=1365.60",
+          "MetaFields": {
+            "Count": 15,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "job_id",
+                "OrderNo": 7,
+                "DisplayName": "Job ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 14,
+                "Name": "stage_id",
+                "OrderNo": 8,
+                "DisplayName": "Stage ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 15,
+                "Name": "task_id",
+                "OrderNo": 9,
+                "DisplayName": "Task ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "step_name",
+                "OrderNo": 10,
+                "DisplayName": "Step 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "step_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 11,
+                "DisplayName": "Step 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 17,
+                "Name": "step_type",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 12,
+                "DisplayName": "Step 类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 13,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 14,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 15,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_cluster",
+          "Caption": "集群信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 13,
+          "GraphDesc": "Left=32.64\r\nTop=347.79",
+          "MetaFields": {
+            "Count": 10,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 9,
+                "Name": "dlc_version",
+                "Memo": "当前服务组件套装的版本：DataLightComponents",
+                "OrderNo": 5,
+                "DisplayName": "服务组件版本",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 5,
+                "Name": "cluster_name",
+                "OrderNo": 6,
+                "DisplayName": "主机名",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 16,
+                "Name": "cluster_type",
+                "Memo": "存储、计算、混合，枚举见代码",
+                "OrderNo": 7,
+                "DisplayName": "集群类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "cluster_state",
+                "Memo": "枚举值，见代码",
+                "OrderNo": 8,
+                "DisplayName": "集群状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 17,
+                "Name": "cluster_desc",
+                "OrderNo": 9,
+                "DisplayName": "集群描述",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "relative_cluster_id",
+                "Memo": "只有计算集群可以关联存储或混合集群",
+                "OrderNo": 10,
+                "DisplayName": "关联集群 ID",
+                "DataType": 1
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_init_procedure",
+          "Caption": "初始化步骤缓存信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 14,
+          "GraphDesc": "Left=792.24\r\nTop=160.37",
+          "MetaFields": {
+            "Count": 8,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 9,
+                "Name": "tag",
+                "OrderNo": 6,
+                "DisplayName": "本次进度唯一编码",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "procedure_name",
+                "OrderNo": 7,
+                "DisplayName": "进度名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "procedure_state",
+                "Memo": "枚举，具体见代码",
+                "OrderNo": 8,
+                "DisplayName": "进度状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_config",
+          "Caption": "配置信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 15,
+          "GraphDesc": "Left=821.83\r\nTop=1119.43",
+          "MetaFields": {
+            "Count": 12,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "node_id",
+                "OrderNo": 6,
+                "DisplayName": "节点 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 9,
+                "Name": "service_name",
+                "OrderNo": 7,
+                "DisplayName": "服务名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 5,
+                "Name": "component_name",
+                "OrderNo": 8,
+                "DisplayName": "组件名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "config_content_id",
+                "OrderNo": 9,
+                "DisplayName": "配置文件内容 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "filename",
+                "OrderNo": 10,
+                "DisplayName": "配置文件名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "config_path",
+                "OrderNo": 11,
+                "DisplayName": "配置文件路径",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 12,
+                "Name": "config_version",
+                "OrderNo": 12,
+                "DisplayName": "当前版本号",
+                "DataType": 2,
+                "DefaultValue": "1",
+                "Not_Nullable": true,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_config_pre",
+          "Caption": "服务组件预配置信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 16,
+          "GraphDesc": "Left=507.72\r\nTop=1120.27",
+          "MetaFields": {
+            "Count": 10,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 9,
+                "Name": "service_name",
+                "OrderNo": 6,
+                "DisplayName": "服务名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 14,
+                "Name": "placeholder",
+                "Memo": "templated 中各类被{{}}包括的占位项",
+                "OrderNo": 7,
+                "DisplayName": "配置文件占位符",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "value",
+                "OrderNo": 8,
+                "DisplayName": "占位符修改后的值",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "default_value",
+                "OrderNo": 9,
+                "DisplayName": "占位符的默认值",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 15,
+                "Name": "templated_config_path",
+                "Memo": "绝对路径",
+                "OrderNo": 10,
+                "DisplayName": "配置模板文件路径",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_node_step",
+          "Caption": "Step 节点步骤信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 17,
+          "GraphDesc": "Left=1075.19\r\nTop=567.50",
+          "MetaFields": {
+            "Count": 14,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "node_job_id",
+                "OrderNo": 7,
+                "DisplayName": "Job ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 15,
+                "Name": "node_task_id",
+                "OrderNo": 8,
+                "DisplayName": "Task ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "node_step_name",
+                "OrderNo": 9,
+                "DisplayName": "Step 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "node_step_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 10,
+                "DisplayName": "Step 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 17,
+                "Name": "node_step_type",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 11,
+                "DisplayName": "Step 类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 12,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 13,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 14,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_node_task",
+          "Caption": "Task 节点任务信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 18,
+          "GraphDesc": "Left=797.92\r\nTop=568.81",
+          "MetaFields": {
+            "Count": 16,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 6,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "node_job_id",
+                "OrderNo": 7,
+                "DisplayName": "Job ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 16,
+                "Name": "node_id",
+                "OrderNo": 8,
+                "DisplayName": "节点 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 17,
+                "Name": "hostname",
+                "OrderNo": 9,
+                "DisplayName": "节点主机名",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 15,
+                "Name": "node_ip",
+                "Memo": "内网地址",
+                "OrderNo": 10,
+                "DisplayName": "IPV4 地址",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 5,
+                "Name": "node_task_name",
+                "OrderNo": 11,
+                "DisplayName": "Task 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "node_task_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 12,
+                "DisplayName": "Task 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 18,
+                "Name": "node_action_type",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 13,
+                "DisplayName": "操作类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 14,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 15,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 16,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_node_job",
+          "Caption": "Job 节点工作信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 19,
+          "GraphDesc": "Left=520.42\r\nTop=568.81",
+          "MetaFields": {
+            "Count": 11,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "node_job_name",
+                "OrderNo": 7,
+                "DisplayName": "Job 名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "node_job_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 8,
+                "DisplayName": "Job 状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "start_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 9,
+                "DisplayName": "执行起始时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "end_time",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 10,
+                "DisplayName": "执行结束时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "duration",
+                "Memo": "毫秒时间戳",
+                "OrderNo": 11,
+                "DisplayName": "耗时",
+                "DataType": 2,
+                "DataLength": 20
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_node_job_log",
+          "Caption": "Job 节点工作日志信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 20,
+          "GraphDesc": "Left=1075.50\r\nTop=826.50",
+          "MetaFields": {
+            "Count": 11,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "node_job_id",
+                "OrderNo": 7,
+                "DisplayName": "NodeJob ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 6,
+                "Name": "node_task_id",
+                "OrderNo": 8,
+                "DisplayName": "NodeTask ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "node_step_id",
+                "OrderNo": 9,
+                "DisplayName": "NodeStep ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "log_stdout",
+                "OrderNo": 10,
+                "DisplayName": "标准日志",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "log_errout",
+                "OrderNo": 11,
+                "DisplayName": "错误日志",
+                "DataType": 1,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_job_log",
+          "Caption": "Job 工作日志信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 21,
+          "GraphDesc": "Left=857.44\r\nTop=1649.59",
+          "MetaFields": {
+            "Count": 12,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 5,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 6,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "job_id",
+                "OrderNo": 7,
+                "DisplayName": "Job ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "stage_id",
+                "OrderNo": 8,
+                "DisplayName": "Stage ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 6,
+                "Name": "task_id",
+                "OrderNo": 9,
+                "DisplayName": "Task ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "step_id",
+                "OrderNo": 10,
+                "DisplayName": "Step ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 12,
+                "Name": "log_stdout",
+                "OrderNo": 11,
+                "DisplayName": "标准日志",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "log_errout",
+                "OrderNo": 12,
+                "DisplayName": "错误日志",
+                "DataType": 1,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_config_content",
+          "Caption": "配置文件内容信息表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 22,
+          "GraphDesc": "Left=1107.89\r\nTop=1117.66",
+          "MetaFields": {
+            "Count": 8,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 13,
+                "Name": "filename",
+                "OrderNo": 6,
+                "DisplayName": "配置文件名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "config_data",
+                "Memo": "配置文件内容的 Base64",
+                "OrderNo": 7,
+                "DisplayName": "配置文件内容",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 14,
+                "Name": "sha256",
+                "Memo": "256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容+文件绝对路径）",
+                "OrderNo": 8,
+                "DisplayName": "文件内容摘要",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }]
+}
