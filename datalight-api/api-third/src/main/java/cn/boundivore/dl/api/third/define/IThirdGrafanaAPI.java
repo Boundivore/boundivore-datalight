@@ -145,7 +145,7 @@ public interface IThirdGrafanaAPI {
     @ApiOperation(notes = "根据 ID 删除指定用户", value = "根据 ID 删除指定用户")
     Result<String> deleteUserById(
             @PathVariable("userId")
-            String orgId
+            String userId
     );
 
     @DeleteMapping(value = "/api/orgs/{orgId}")

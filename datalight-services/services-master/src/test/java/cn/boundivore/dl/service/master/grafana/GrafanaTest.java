@@ -120,4 +120,22 @@ public class GrafanaTest {
         );
         log.info(result.toString());
     }
+
+    /**
+     * Description: 搜索所有组织
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Test
+    public void searchAllOrgs(){
+        Result<String> result = this.remoteInvokeGrafanaService.searchAllOrgs(
+                this.iThirdGrafanaAPI
+        );
+        log.info(result.toString());
+    }
 }

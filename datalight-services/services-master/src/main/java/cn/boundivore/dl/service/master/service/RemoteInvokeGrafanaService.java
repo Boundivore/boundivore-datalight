@@ -161,23 +161,6 @@ public class RemoteInvokeGrafanaService {
     }
 
     /**
-     * Description: 创建用户
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @return Result<String> Grafana 响应体存在于 Result data 中
-     */
-    public Result<String> getStats(IThirdGrafanaAPI iThirdGrafanaAPI) {
-        return iThirdGrafanaAPI.getStats();
-    }
-
-    /**
      * Description: 添加用户到指定组织
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -300,7 +283,6 @@ public class RemoteInvokeGrafanaService {
                         put("folderUid", null);
                         put("message", "");
                         put("overwrite", true);
-
                     }
                 }
         );
@@ -340,5 +322,186 @@ public class RemoteInvokeGrafanaService {
         );
     }
 
+    /**
+     * Description: 获取指定组织下的用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param orgId            组织 ID
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> getUserInOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                       String orgId) {
+        return iThirdGrafanaAPI.getUserInOrg(
+                orgId
+        );
+    }
 
+    /**
+     * Description: 根据名称获取组织信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param orgName          组织 ID
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> getOrgByName(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                       String orgName) {
+        return iThirdGrafanaAPI.getOrgByName(
+                orgName
+        );
+    }
+
+    /**
+     * Description: 根据登录名获取用户信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param loginOrEmail     登录名
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> getUserByLoginName(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                             String loginOrEmail) {
+        return iThirdGrafanaAPI.getUserByLoginName(
+                loginOrEmail
+        );
+    }
+
+    /**
+     * Description: 获取所有用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> searchAllUsers(IThirdGrafanaAPI iThirdGrafanaAPI) {
+        return iThirdGrafanaAPI.searchAllUsers(
+                "1000",
+                "1"
+        );
+    }
+
+    /**
+     * Description: 获取所有组织
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> searchAllOrgs(IThirdGrafanaAPI iThirdGrafanaAPI) {
+        return iThirdGrafanaAPI.searchAllOrgs();
+    }
+
+    /**
+     * Description: 根据 ID 删除指定用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param userId           用户 ID
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> deleteUserById(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                         String userId) {
+        return iThirdGrafanaAPI.deleteUserById(userId);
+    }
+
+    /**
+     * Description: 根据 ID 删除指定组织
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> deleteOrgById(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                        String orgId) {
+        return iThirdGrafanaAPI.deleteOrgById(orgId);
+    }
+
+
+    /**
+     * Description: 变更用户名密码
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param oldPassword      旧密码
+     * @param newPassword      新密码
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> changeUserPassword(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                             String oldPassword,
+                                             String newPassword) {
+        return iThirdGrafanaAPI.changeUserPassword(
+                new HashMap<String, Object>() {
+                    {
+                        put("oldPassword", oldPassword);
+                        put("newPassword", newPassword);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Description: 获取 Grafana 状态信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> getStats(IThirdGrafanaAPI iThirdGrafanaAPI) {
+        return iThirdGrafanaAPI.getStats();
+    }
 }
