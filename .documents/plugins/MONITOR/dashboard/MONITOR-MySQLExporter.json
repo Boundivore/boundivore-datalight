@@ -55,7 +55,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -68,7 +68,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -77,7 +77,7 @@
     },
     {
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "**Uptime**\n\nThe amount of time since the last restart of the MySQL server process.",
       "fieldConfig": {
@@ -139,7 +139,7 @@
         {
           "calculatedInterval": "10m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -158,7 +158,7 @@
     },
     {
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "**Current QPS**\n\nBased on the queries reported by MySQL's ``SHOW STATUS`` command, it is the number of statements executed by the server within the last second. This variable includes statements executed within stored programs, unlike the Questions variable. It does not count \n``COM_PING`` or ``COM_STATISTICS`` commands.",
       "fieldConfig": {
@@ -226,7 +226,7 @@
         {
           "calculatedInterval": "10m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -245,7 +245,7 @@
     },
     {
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "**InnoDB Buffer Pool Size**\n\nInnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.  Knowing how the InnoDB buffer pool works, and taking advantage of it to keep frequently accessed data in memory, is one of the most important aspects of MySQL tuning. The goal is to keep the working set in memory. In most cases, this should be between 60%-90% of available memory on a dedicated database host, but depends on many factors.",
       "fieldConfig": {
@@ -313,7 +313,7 @@
         {
           "calculatedInterval": "10m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -333,7 +333,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -346,7 +346,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -360,7 +360,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 0,
       "description": "**Max Connections** \n\nMax Connections is the maximum permitted number of simultaneous client connections. By default, this is 151. Increasing this value increases the number of file descriptors that mysqld requires. If the required number of descriptors are not available, the server reduces the value of Max Connections.\n\nmysqld actually permits Max Connections + 1 clients to connect. The extra connection is reserved for use by accounts that have the SUPER privilege, such as root.\n\nMax Used Connections is the maximum number of connections that have been in use simultaneously since the server started.\n\nConnections is the number of connection attempts (successful or not) to the MySQL server.",
@@ -427,7 +427,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -443,7 +443,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -460,7 +460,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -516,7 +516,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Active Threads**\n\nThreads Connected is the number of open connections, while Threads Running is the number of threads not sleeping.",
@@ -588,7 +588,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -605,7 +605,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -620,7 +620,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(avg_over_time(mysql_global_status_threads_running{job=~\"$job\", instance=~\"$instance\"}[$__interval]))",
           "format": "time_series",
@@ -671,7 +671,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -684,7 +684,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -698,7 +698,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Questions**\n\nThe number of statements executed by the server. This includes only statements sent to the server by clients and not statements executed within stored programs, unlike the Queries used in the QPS calculation. \n\nThis variable does not count the following commands:\n* ``COM_PING``\n* ``COM_STATISTICS``\n* ``COM_STMT_PREPARE``\n* ``COM_STMT_CLOSE``\n* ``COM_STMT_RESET``",
@@ -760,7 +760,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -813,7 +813,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Thread Cache**\n\nThe thread_cache_size variable sets how many threads the server should cache to reuse. When a client disconnects, the client's threads are put in the cache if the cache is not full. It is autosized in MySQL 5.6.8 and above (capped to 100). Requests for threads are satisfied by reusing threads taken from the cache if possible, and only when the cache is empty is a new thread created.\n\n* *Threads_created*: The number of threads created to handle connections.\n* *Threads_cached*: The number of threads in the thread cache.",
@@ -879,7 +879,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -895,7 +895,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -911,7 +911,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -961,7 +961,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -974,7 +974,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -988,7 +988,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "editable": true,
@@ -1043,7 +1043,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1058,7 +1058,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1073,7 +1073,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1125,7 +1125,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Select Types**\n\nAs with most relational databases, selecting based on indexes is more efficient than scanning an entire table's data. Here we see the counters for selects not done with indexes.\n\n* ***Select Scan*** is how many queries caused full table scans, in which all the data in the table had to be read and either discarded or returned.\n* ***Select Range*** is how many queries used a range scan, which means MySQL scanned all rows in a given range.\n* ***Select Full Join*** is the number of joins that are not joined on an index, this is usually a huge performance hit.",
@@ -1183,7 +1183,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1199,7 +1199,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1215,7 +1215,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1231,7 +1231,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1247,7 +1247,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1297,7 +1297,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -1310,7 +1310,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -1324,7 +1324,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Sorts**\n\nDue to a query's structure, order, or other requirements, MySQL sorts the rows before returning them. For example, if a table is ordered 1 to 10 but you want the results reversed, MySQL then has to sort the rows to return 10 to 1.\n\nThis graph also shows when sorts had to scan a whole table or a given range of a table in order to return the results and which could not have been sorted via an index.",
@@ -1381,7 +1381,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1397,7 +1397,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1413,7 +1413,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1429,7 +1429,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1482,7 +1482,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Slow Queries**\n\nSlow queries are defined as queries being slower than the long_query_time setting. For example, if you have long_query_time set to 3, all queries that take longer than 3 seconds to complete will show on this graph.",
@@ -1537,7 +1537,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1589,7 +1589,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -1602,7 +1602,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -1616,7 +1616,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**Aborted Connections**\n\nWhen a given host connects to MySQL and the connection is interrupted in the middle (for example due to bad credentials), MySQL keeps that info in a system table (since 5.6 this table is exposed in performance_schema).\n\nIf the amount of failed requests without a successful connection reaches the value of max_connect_errors, mysqld assumes that something is wrong and blocks the host from further connection.\n\nTo allow connections from that host again, you need to issue the ``FLUSH HOSTS`` statement.",
@@ -1671,7 +1671,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1687,7 +1687,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1743,7 +1743,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**Table Locks**\n\nMySQL takes a number of different locks for varying reasons. In this graph we see how many Table level locks MySQL has requested from the storage engine. In the case of InnoDB, many times the locks could actually be row locks as it only takes table level locks in a few specific cases.\n\nIt is most useful to compare Locks Immediate and Locks Waited. If Locks waited is rising, it means you have lock contention. Otherwise, Locks Immediate rising and falling is normal activity.",
@@ -1799,7 +1799,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1815,7 +1815,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1865,7 +1865,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -1878,7 +1878,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -1892,7 +1892,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Network Traffic**\n\nHere we can see how much network traffic is generated by MySQL. Outbound is network traffic sent from MySQL and Inbound is network traffic MySQL has received.",
@@ -1948,7 +1948,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -1964,7 +1964,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2014,7 +2014,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -2027,7 +2027,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -2041,7 +2041,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 0,
       "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Data***: InnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB ‘s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
@@ -2109,7 +2109,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_status_innodb_page_size{job=~\"$job\", instance=~\"$instance\"} * on (instance) mysql_global_status_buffer_pool_pages{job=~\"$job\", instance=~\"$instance\", state=\"data\"})",
           "format": "time_series",
@@ -2122,7 +2122,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_variables_innodb_log_buffer_size{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2134,7 +2134,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_variables_innodb_additional_mem_pool_size{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2146,7 +2146,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_status_innodb_mem_dictionary{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2158,7 +2158,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_variables_key_buffer_size{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2170,7 +2170,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_variables_query_cache_size{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2182,7 +2182,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_status_innodb_mem_adaptive_hash{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2194,7 +2194,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "sum(mysql_global_variables_tokudb_cache_size{job=~\"$job\", instance=~\"$instance\"})",
           "format": "time_series",
@@ -2241,7 +2241,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -2254,7 +2254,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -2268,7 +2268,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
@@ -2331,7 +2331,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2385,7 +2385,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Handlers**\n\nHandler statistics are internal statistics on how MySQL is selecting, updating, inserting, and modifying rows, tables, and indexes.\n\nThis is in fact the layer between the Storage Engine and MySQL.\n\n* `read_rnd_next` is incremented when the server performs a full table scan and this is a counter you don't really want to see with a high value.\n* `read_key` is incremented when a read is done with an index.\n* `read_next` is incremented when the storage engine is asked to 'read the next index entry'. A high value means a lot of index scans are being done.",
@@ -2442,7 +2442,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2495,7 +2495,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "editable": true,
@@ -2551,7 +2551,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2603,7 +2603,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "editable": true,
@@ -2659,7 +2659,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2712,7 +2712,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "editable": true,
@@ -2768,7 +2768,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2818,7 +2818,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -2831,7 +2831,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -2845,7 +2845,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Query Cache Memory**\n\nThe query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time. This serialization is true not only for SELECTs, but also for INSERT/UPDATE/DELETE.\n\nThis also means that the larger the `query_cache_size` is set to, the slower those operations become. In concurrent environments, the MySQL Query Cache quickly becomes a contention point, decreasing performance. MariaDB and AWS Aurora have done work to try and eliminate the query cache contention in their flavors of MySQL, while MySQL 8.0 has eliminated the query cache feature.\n\nThe recommended settings for most environments is to set:\n  ``query_cache_type=0``\n  ``query_cache_size=0``\n\nNote that while you can dynamically change these values, to completely remove the contention point you have to restart the database.",
@@ -2901,7 +2901,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2917,7 +2917,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -2970,7 +2970,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Query Cache Activity**\n\nThe query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time. This serialization is true not only for SELECTs, but also for INSERT/UPDATE/DELETE.\n\nThis also means that the larger the `query_cache_size` is set to, the slower those operations become. In concurrent environments, the MySQL Query Cache quickly becomes a contention point, decreasing performance. MariaDB and AWS Aurora have done work to try and eliminate the query cache contention in their flavors of MySQL, while MySQL 8.0 has eliminated the query cache feature.\n\nThe recommended settings for most environments is to set:\n``query_cache_type=0``\n``query_cache_size=0``\n\nNote that while you can dynamically change these values, to completely remove the contention point you have to restart the database.",
@@ -3027,7 +3027,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3043,7 +3043,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3059,7 +3059,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3075,7 +3075,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3091,7 +3091,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3141,7 +3141,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -3154,7 +3154,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -3168,7 +3168,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "editable": true,
@@ -3223,7 +3223,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3275,7 +3275,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "editable": true,
@@ -3330,7 +3330,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3345,7 +3345,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3359,7 +3359,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "mysql_global_status_innodb_num_open_files{job=~\"$job\", instance=~\"$instance\"}",
           "interval": "1m",
@@ -3405,7 +3405,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -3418,7 +3418,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -3432,7 +3432,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Table Open Cache Status**\n\nThe recommendation is to set the `table_open_cache_instances` to a loose correlation to virtual CPUs, keeping in mind that more instances means the cache is split more times. If you have a cache set to 500 but it has 10 instances, each cache will only have 50 cached.\n\nThe `table_definition_cache` and `table_open_cache` can be left as default as they are auto-sized MySQL 5.6 and above (ie: do not set them to any value).",
@@ -3498,7 +3498,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3513,7 +3513,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "rate(mysql_global_status_table_open_cache_hits{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_table_open_cache_hits{job=~\"$job\", instance=~\"$instance\"}[5m])",
           "format": "time_series",
@@ -3525,7 +3525,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "rate(mysql_global_status_table_open_cache_misses{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_table_open_cache_misses{job=~\"$job\", instance=~\"$instance\"}[5m])",
           "format": "time_series",
@@ -3537,7 +3537,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "rate(mysql_global_status_table_open_cache_overflows{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_table_open_cache_overflows{job=~\"$job\", instance=~\"$instance\"}[5m])",
           "format": "time_series",
@@ -3549,7 +3549,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "(rate(mysql_global_status_table_open_cache_hits{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_table_open_cache_hits{job=~\"$job\", instance=~\"$instance\"}[5m]))/((rate(mysql_global_status_table_open_cache_hits{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_table_open_cache_hits{job=~\"$job\", instance=~\"$instance\"}[5m]))+(rate(mysql_global_status_table_open_cache_misses{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_table_open_cache_misses{job=~\"$job\", instance=~\"$instance\"}[5m])))",
           "format": "time_series",
@@ -3599,7 +3599,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Open Tables**\n\nThe recommendation is to set the `table_open_cache_instances` to a loose correlation to virtual CPUs, keeping in mind that more instances means the cache is split more times. If you have a cache set to 500 but it has 10 instances, each cache will only have 50 cached.\n\nThe `table_definition_cache` and `table_open_cache` can be left as default as they are auto-sized MySQL 5.6 and above (ie: do not set them to any value).",
@@ -3660,7 +3660,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3676,7 +3676,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3726,7 +3726,7 @@
     {
       "collapsed": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "gridPos": {
         "h": 1,
@@ -3739,7 +3739,7 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "refId": "A"
         }
@@ -3753,7 +3753,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$datasource"
+        "uid": "MONITOR-Prometheus"
       },
       "decimals": 2,
       "description": "**MySQL Table Definition Cache**\n\nThe recommendation is to set the `table_open_cache_instances` to a loose correlation to virtual CPUs, keeping in mind that more instances means the cache is split more times. If you have a cache set to 500 but it has 10 instances, each cache will only have 50 cached.\n\nThe `table_definition_cache` and `table_open_cache` can be left as default as they are auto-sized MySQL 5.6 and above (ie: do not set them to any value).",
@@ -3819,7 +3819,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3835,7 +3835,7 @@
         {
           "calculatedInterval": "2m",
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "datasourceErrors": {},
           "errors": {},
@@ -3850,7 +3850,7 @@
         },
         {
           "datasource": {
-            "uid": "$datasource"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "rate(mysql_global_status_opened_table_definitions{job=~\"$job\", instance=~\"$instance\"}[$__interval]) or irate(mysql_global_status_opened_table_definitions{job=~\"$job\", instance=~\"$instance\"}[5m])",
           "format": "time_series",
@@ -3922,7 +3922,7 @@
       {
         "current": {},
         "datasource": {
-          "uid": "$datasource"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values(mysql_up, job)",
         "hide": 0,
@@ -3943,7 +3943,7 @@
       {
         "current": {},
         "datasource": {
-          "uid": "$datasource"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values(mysql_up, instance)",
         "hide": 0,

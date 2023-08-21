@@ -59,16 +59,6 @@ public class GrafanaTest {
         );
     }
 
-    /**
-     * Description: 1 获取账号信息
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/16
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
     @Test
     public void createOrg() {
         Result<String> result = this.remoteInvokeGrafanaService.createOrg(
@@ -78,16 +68,7 @@ public class GrafanaTest {
         log.info(result.toString());
     }
 
-    /**
-     * Description: 2 创建用户
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/16
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
+
     @Test
     public void createUsers() {
         Result<String> result = this.remoteInvokeGrafanaService.createUsers(
@@ -98,32 +79,12 @@ public class GrafanaTest {
         log.info(result.toString());
     }
 
-    /**
-     * Description: 获取状态信息
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
     @Test
     public void getStats() {
         Result<String> result = this.remoteInvokeGrafanaService.getStats();
         log.info(result.toString());
     }
 
-    /**
-     * Description: 搜索所有组织
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
     @Test
     public void searchAllOrgs() {
         Result<String> result = this.remoteInvokeGrafanaService.searchAllOrgs();
@@ -131,12 +92,60 @@ public class GrafanaTest {
     }
 
     @Test
+    public void getDatasourceByName() {
+        Result<String> result = this.remoteInvokeGrafanaService.getDatasourceByName("MONITOR-Prometheus");
+        log.info(result.toString());
+    }
+
+    @Test
+    public void createDataSources() {
+        Result<String> result = this.remoteInvokeGrafanaService.createDataSources(
+                "2",
+                "node01",
+                "9090"
+        );
+        log.info(result.toString());
+    }
+
+    @Test
     public void createOrUpdateDashboard() {
-        String dashboardJson = FileUtil.readString(
+        String dashboardJson1 = FileUtil.readString(
                 "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\DATALIGHT.json",
                 StandardCharsets.UTF_8
         );
-        Result<String> result = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson);
-        log.info(result.toString());
+        String dashboardJson2 = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\MONITOR-Alertmanager.json",
+                StandardCharsets.UTF_8
+        );
+        String dashboardJson3 = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\MONITOR-Grafana.json",
+                StandardCharsets.UTF_8
+        );
+        String dashboardJson4 = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\MONITOR-MySQLExporter.json",
+                StandardCharsets.UTF_8
+        );
+        String dashboardJson5 = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\MONITOR-NodeExporter.json",
+                StandardCharsets.UTF_8
+        );
+        String dashboardJson6 = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\MONITOR-Prometheus.json",
+                StandardCharsets.UTF_8
+        );
+
+        Result<String> result1 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson1);
+        Result<String> result2 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson2);
+        Result<String> result3 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson3);
+        Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson4);
+        Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson5);
+        Result<String> result6 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson6);
+
+        log.info(result1.toString());
+        log.info(result2.toString());
+        log.info(result3.toString());
+        log.info(result4.toString());
+        log.info(result5.toString());
+        log.info(result6.toString());
     }
 }

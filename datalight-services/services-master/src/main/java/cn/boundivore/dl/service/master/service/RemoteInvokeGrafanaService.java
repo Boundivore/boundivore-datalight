@@ -248,6 +248,26 @@ public class RemoteInvokeGrafanaService {
     }
 
     /**
+     * Description: 根据 UID 获取数据源信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param name 数据源名称
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> getDatasourceByName(String name) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.getDatasourceByName(
+                name
+        );
+    }
+
+    /**
      * Description: 创建 DataSources
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -258,23 +278,25 @@ public class RemoteInvokeGrafanaService {
      * Throws:
      *
      * @param orgId             组织 ID
-     * @param prometheusBaseUri Prometheus 请求地址
+     * @param prometheusHost Prometheus 节点地址
+     * @param prometheusPort Prometheus 端口号
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
     public Result<String> createDataSources(String orgId,
-                                            String prometheusBaseUri) {
+                                            String prometheusHost,
+                                            String prometheusPort) {
         this.checkInit();
         return this.iThirdGrafanaAPI.createDataSources(
                 MapUtil.of(
                         new Object[][]{
                                 {"id", null},
                                 {"orgId", orgId},
-                                {"name", "Prometheus"},
-                                {"label", "Prometheus"},
+                                {"name", "MONITOR-Prometheus"},
+                                {"label", "MONITOR-Prometheus"},
                                 {"type", "prometheus"},
                                 {"typeLogoUrl", ""},
                                 {"access", "proxy"},
-                                {"url", prometheusBaseUri},
+                                {"url", String.format("http://%s:%s", prometheusHost, prometheusPort)},
                                 {"user", "admin"},
                                 {"password", "admin"},
                                 {"database", ""},

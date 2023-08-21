@@ -79,6 +79,14 @@ public interface IThirdGrafanaAPI {
             String userId
     );
 
+    @GetMapping(value = "/api/datasources/name/{name}")
+    @ApiOperation(notes = "根据 UID 获取数据源信息", value = "根据 UID 获取数据源信息")
+    Result<String> getDatasourceByName(
+            @PathVariable("name")
+            String name
+    );
+
+
     @PostMapping(value = "/api/datasources")
     @ApiOperation(notes = "创建 DataSources", value = "创建 DataSources")
     Result<String> createDataSources(
