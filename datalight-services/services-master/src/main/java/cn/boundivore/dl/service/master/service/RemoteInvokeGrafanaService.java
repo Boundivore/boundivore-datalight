@@ -18,11 +18,14 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
+import cn.boundivore.dl.base.enumeration.impl.GrafanaRoleEnum;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.utils.JsonUtil;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.bean.GrafanaUser;
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import feign.Feign;
@@ -66,6 +69,15 @@ public class RemoteInvokeGrafanaService {
     private String grafanaPassword;
 
     private IThirdGrafanaAPI iThirdGrafanaAPI;
+
+    private final static String ADMIN_USER = "admin";
+    private final static String ADMIN_PASSWORD = "admin";
+
+    private final static String ADMIN_SUB_USER = "admin-%s";
+    private final static String ADMIN_SUB_PASSWORD = "admin-%s";
+
+    private final static String EDITOR_SUB_USER = "%s";
+    private final static String EDITOR_SUB_PASSWORD = "%s";
 
     public void init(String grafanaIp,
                      String grafanaPort,
@@ -277,7 +289,7 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param orgId             组织 ID
+     * @param orgId          组织 ID
      * @param prometheusHost Prometheus 节点地址
      * @param prometheusPort Prometheus 端口号
      * @return Result<String> Grafana 响应体存在于 Result data 中
@@ -549,5 +561,36 @@ public class RemoteInvokeGrafanaService {
     public Result<String> getStats() {
         this.checkInit();
         return this.iThirdGrafanaAPI.getStats();
+    }
+
+    /**
+     * Description:
+     * 1、修改 Grafana 主账号（userId1）密码
+     * 2、为当前集群创建 Org，并获取 orgId
+     * 3、为当前集群 Org 创建用户（Admin），并获取该用户的 userId2
+     * 4、将 userId2 加入到 orgId 中
+     * 5、将 userId2 从主 org 中移除
+     * 6、为当前集群 Org 创建用户（Editor），并获取该用户的 userId3
+     * 7、将 userId3 加入到 orgId 中
+     * 8、将 userId3 从主 org 中移除
+     * 9、使用 userId2 的账号密码创建数据源，名称为 MONITOR-Prometheus，且为默认
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param
+     * @return
+     */
+    public void initGrafanaSettings() {
+        try {
+            GrafanaUser.getGrafanaUser("", GrafanaRoleEnum.ADMIN);
+        } catch (Exception e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+            throw new BException(e.getMessage());
+        }
     }
 }
