@@ -40,7 +40,7 @@ import javax.annotation.PostConstruct;
  */
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yaml")
+//@TestPropertySource(locations = "classpath:application-test.yaml")
 @Slf4j
 public class PrometheusTest {
 

@@ -56,19 +56,11 @@ public class FeignClientResponseDecoder extends SpringDecoder {
     @Override
     public Object decode(Response response, Type type) throws IOException, FeignException {
 
-        Result<?> result = null;
+        Result<?> result;
 
         // 如果没有任何返回内容，则直接通过状态码判定，返回成功
         if (response.body() == null) {
-            if (response.status() >= 200 && response.status() < 300) {
-                result = Result.success();
-            } else {
-                result = Result.fail(
-                        ResultEnum.FAIL_UNKNOWN,
-                        new ErrorMessage(response.status() + ":" + response.reason())
-                );
-            }
-
+            result = getResultByResponseCode(response, null);
             return result;
         }
 
@@ -78,30 +70,76 @@ public class FeignClientResponseDecoder extends SpringDecoder {
             result = objectMapper.readValue(bodyJson, Result.class);
         } catch (Exception ignored) {
             // 解析 Json 失败
-            if (response.status() >= 200 && response.status() < 300) {
-                result = Result.success(bodyJson);
-            }else{
-                result = Result.fail(
-                        ResultEnum.FAIL_UNKNOWN,
-                        new ErrorMessage(response.status() + ":" + response.reason())
-                );
-            }
-
-            return super.decode(
-                    response.toBuilder()
-                            .body(objectMapper.writeValueAsString(result), Util.UTF_8)
-                            .build(),
-                    type
-            );
+            result = getResultByResponseCode(response, bodyJson);
+            return decodeResponse(response, result, type);
         }
 
+        // 如果结果对象中的状态码字段不为空，并且不等于成功的状态码，则根据响应和结果对象中的消息创建一个失败的结果对象。
         if (result.getCode() != null && ResultEnum.getByCode(result.getCode()) != ResultEnum.SUCCESS) {
-            result = Result.fail(
-                    ResultEnum.FAIL_UNKNOWN,
-                    new ErrorMessage(response.status() + ":" + response.reason() + "->" + result.getMessage())
-            );
+            result = createFailResult(response, result.getMessage());
         }
 
+        return decodeResponse(response, result, type);
+    }
+
+    /**
+     * Description: 根据响应状态码生成结果。如果状态码在200~300之间，返回成功结果，否则返回失败结果。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     *
+     * @param response Feign的响应对象
+     * @param bodyJson 消息体字符串
+     * @return Result 返回封装后的结果对象
+     */
+    private Result<?> getResultByResponseCode(Response response, String bodyJson) {
+        if (response.status() >= 200 && response.status() < 300) {
+            return bodyJson != null ? Result.success(bodyJson) : Result.success();
+        } else {
+            return createFailResult(response, null);
+        }
+    }
+
+    /**
+     * Description: 根据响应和额外的消息创建失败的结果对象
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     *
+     * @param response          Feign的响应对象
+     * @param additionalMessage 额外的消息
+     * @return Result 返回封装后的结果对象
+     */
+    private Result<?> createFailResult(Response response, String additionalMessage) {
+        String message = response.status() + ":" + response.reason();
+        if (additionalMessage != null) {
+            message += "->" + additionalMessage;
+        }
+        return Result.fail(ResultEnum.FAIL_UNKNOWN, new ErrorMessage(message));
+    }
+
+    /**
+     * Description: 解码响应对象，并返回处理后的结果
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: IOException, FeignException
+     *
+     * @param response 需要解码的Feign响应对象
+     * @param result   封装后的结果对象
+     * @param type     解码的类型
+     * @return Object 解码后的对象
+     */
+    private Object decodeResponse(Response response, Result<?> result, Type type) throws IOException, FeignException {
         return super.decode(
                 response.toBuilder()
                         .body(objectMapper.writeValueAsString(result), Util.UTF_8)

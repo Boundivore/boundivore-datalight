@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import javax.annotation.PostConstruct;
 
@@ -38,7 +37,7 @@ import javax.annotation.PostConstruct;
  * Version: V1.0
  */
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.yaml")
+//@TestPropertySource(locations = "classpath:application-test.yaml")
 @Slf4j
 public class GrafanaTest {
 
@@ -64,7 +63,7 @@ public class GrafanaTest {
     }
 
     /**
-     * Description: 获取账号信息
+     * Description: 1 获取账号信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/8/16
@@ -73,15 +72,52 @@ public class GrafanaTest {
      * Modification time:
      * Throws:
      */
-//    @Test
-//    public void getUserById() {
-//        String result = this.iThirdGrafanaAPI.getUserById("1");
-//        log.info(result);
-//    }
+    @Test
+    public void createOrg() {
+        Result<String> result = this.remoteInvokeGrafanaService.createOrg(
+                this.iThirdGrafanaAPI,
+                "datalight"
+        );
 
+        log.info(result.toString());
+    }
+
+    /**
+     * Description: 2 创建用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/16
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Test
+    public void createUsers() {
+        Result<String> result = this.remoteInvokeGrafanaService.createUsers(
+                this.iThirdGrafanaAPI,
+                "datalight",
+                "datalight",
+                "datalight"
+        );
+        log.info(result.toString());
+    }
+
+    /**
+     * Description: 获取状态信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
     @Test
     public void getStats() {
-        Result<String> result = this.iThirdGrafanaAPI.getStats();
+        Result<String> result = this.remoteInvokeGrafanaService.getStats(
+                this.iThirdGrafanaAPI
+        );
         log.info(result.toString());
     }
 }

@@ -20,8 +20,9 @@ import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 
@@ -43,11 +44,122 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
         path = NONE_PREFIX
 )
 public interface IThirdGrafanaAPI {
-    @GetMapping(value = "/api/admin/users/{id}")
-    @ApiOperation(notes = "根据用户 ID 获取用户信息", value = "根据用户 ID 获取用户信息")
-    Result<String> getUserById(
-            @PathVariable("id")
-            String id
+
+    @PostMapping(value = "/api/orgs")
+    @ApiOperation(notes = "创建组织", value = "创建组织")
+    Result<String> createOrg(
+            @RequestBody
+            Map<String, Object> request
+    );
+
+    @PostMapping(value = "/api/admin/users")
+    @ApiOperation(notes = "创建用户", value = "创建用户")
+    Result<String> createUsers(
+            @RequestBody
+            Map<String, Object> request
+    );
+
+    @PostMapping(value = "/api/orgs/{orgId}/users")
+    @ApiOperation(notes = "向指定组织中添加用户", value = "向指定组织中添加用户")
+    Result<String> addUserInOrg(
+            @PathVariable("orgId")
+            String orgId,
+
+            @RequestBody
+            Map<String, Object> request
+    );
+
+    @DeleteMapping(value = "/api/orgs/{orgId}/users/{userId}")
+    @ApiOperation(notes = "从指定组织中删除用户", value = "从指定组织中删除用户")
+    Result<String> deleteUserFromOrg(
+            @PathVariable("orgId")
+            String orgId,
+
+            @PathVariable("userId")
+            String userId
+    );
+
+    @PostMapping(value = "/api/datasources")
+    @ApiOperation(notes = "创建 DataSources", value = "创建 DataSources")
+    Result<String> createDataSources(
+            @RequestBody
+            Map<String, Object> request
+    );
+
+    @PostMapping(value = "/api/dashboards/db")
+    @ApiOperation(notes = "创建或更新 Dashboard", value = "创建或更新 Dashboard")
+    Result<String> createOrUpdateDashboard(
+            @RequestBody
+            Map<String, Object> request
+    );
+
+    @PatchMapping(value = "/api/orgs/{orgId}/users/{userId}")
+    @ApiOperation(notes = "更新指定组织下的用户", value = "更新指定组织下的用户")
+    Result<String> updateUserInOrg(
+            @PathVariable("orgId")
+            String orgId,
+
+            @PathVariable("userId")
+            String userId,
+
+            @RequestBody
+            Map<String, Object> request
+    );
+
+    @GetMapping(value = "/api/orgs/{orgId}/users")
+    @ApiOperation(notes = "获取指定组织下的用户信息", value = "获取指定组织下的用户信息")
+    Result<String> getUserInOrg(
+            @PathVariable("orgId")
+            String orgId
+    );
+
+    @GetMapping(value = "/api/orgs/name/{orgName}")
+    @ApiOperation(notes = "根据名称获取组织信息", value = "根据名称获取组织信息")
+    Result<String> getOrgByName(
+            @PathVariable("orgName")
+            String orgName
+    );
+
+    @GetMapping(value = "/api/users/lookup")
+    @ApiOperation(notes = "根据登录账号获取用户信息", value = "根据登录账号获取用户信息")
+    Result<String> getUserByLoginName(
+            @RequestParam("loginOrEmail")
+            String loginOrEmail
+    );
+
+    @GetMapping(value = "/api/users")
+    @ApiOperation(notes = "获取所有用户", value = "获取所有用户")
+    Result<String> searchAllUsers(
+            @RequestParam("perpage")
+            String perpage,
+
+            @RequestParam("page")
+            String page
+    );
+
+    @GetMapping(value = "/api/orgs")
+    @ApiOperation(notes = "获取所有组织", value = "获取所有组织")
+    Result<String> searchAllOrgs();
+
+    @DeleteMapping(value = "/api/admin/users/{userId}")
+    @ApiOperation(notes = "根据 ID 删除指定用户", value = "根据 ID 删除指定用户")
+    Result<String> deleteUserById(
+            @PathVariable("userId")
+            String orgId
+    );
+
+    @DeleteMapping(value = "/api/orgs/{orgId}")
+    @ApiOperation(notes = "根据 ID 删除指定组织", value = "根据 ID 删除指定组织")
+    Result<String> deleteOrgById(
+            @PathVariable("orgId")
+            String orgId
+    );
+
+    @PutMapping(value = "/api/user/password")
+    @ApiOperation(notes = "变更用户名密码", value = "变更用户名密码")
+    Result<String> changeUserPassword(
+            @RequestBody
+            Map<String, Object> request
     );
 
     @GetMapping(value = "/api/admin/stats")

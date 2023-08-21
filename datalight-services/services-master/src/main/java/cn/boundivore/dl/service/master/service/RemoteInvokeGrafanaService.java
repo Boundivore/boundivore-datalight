@@ -18,17 +18,15 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
+import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
 import cn.hutool.core.codec.Base64;
 import feign.Feign;
-import feign.optionals.OptionalDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
-import org.springframework.cloud.openfeign.support.SpringDecoder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 /**
  * Description: 通过 Feign 远程调用指定节点上的 IThirdGrafanaAPI 接口的一系列封装
@@ -105,4 +103,242 @@ public class RemoteInvokeGrafanaService {
     private String basicAuthValue(String user, String password) {
         return String.format("Basic %s", Base64.encode(user + ":" + password));
     }
+
+    /**
+     * Description: 获取账号信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param orgName          组织名称
+     * @return @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> createOrg(IThirdGrafanaAPI iThirdGrafanaAPI, String orgName) {
+        return iThirdGrafanaAPI.createOrg(
+                new HashMap<String, Object>() {
+                    {
+                        put("name", orgName);
+                    }
+                }
+        );
+    }
+
+
+    /**
+     * Description: 创建用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param userName         用户名
+     * @param loginName        登录名
+     * @param password         密码
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> createUsers(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                      String userName,
+                                      String loginName,
+                                      String password) {
+        return iThirdGrafanaAPI.createUsers(
+                new HashMap<String, Object>() {
+                    {
+                        put("name", userName);
+                        put("login", loginName);
+                        put("password", password);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Description: 创建用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> getStats(IThirdGrafanaAPI iThirdGrafanaAPI) {
+        return iThirdGrafanaAPI.getStats();
+    }
+
+    /**
+     * Description: 添加用户到指定组织
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param orgId            组织 ID
+     * @param loginName        用户登录名
+     * @param role             用户在组织中的角色
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> addUserInOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                       String orgId,
+                                       String loginName,
+                                       String role) {
+        return iThirdGrafanaAPI.addUserInOrg(
+                orgId,
+                new HashMap<String, Object>() {
+                    {
+                        put("loginOrEmail", loginName);
+                        put("role", role);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Description: 从指定组织中删除用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param orgId            组织 ID
+     * @param userId           用户 ID
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> deleteUserFromOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                            String orgId,
+                                            String userId) {
+        return iThirdGrafanaAPI.deleteUserFromOrg(
+                orgId,
+                userId
+        );
+    }
+
+    /**
+     * Description: 创建 DataSources
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI  Grafana API 接口集合
+     * @param orgId             组织 ID
+     * @param prometheusBaseUri Prometheus 请求地址
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> createDataSources(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                            String orgId,
+                                            String prometheusBaseUri) {
+        return iThirdGrafanaAPI.createDataSources(
+                new HashMap<String, Object>() {
+                    {
+                        put("id", null);
+                        put("orgId", orgId);
+                        put("name", "Prometheus");
+                        put("type", "prometheus");
+                        put("typeLogoUrl", "");
+                        put("access", "proxy");
+                        put("url", prometheusBaseUri);
+                        put("user", "admin");
+                        put("password", "admin");
+                        put("database", "");
+                        put("basicAuth", false);
+                        put("basicAuthUser", "");
+                        put("basicAuthPassword", "");
+                        put("withCredentials", false);
+                        put("isDefault", true);
+                        put("jsonData", new HashMap<String, Object>());
+                        put("secureJsonFields", new HashMap<String, Object>());
+                        put("version", 1);
+                        put("readOnly", false);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Description: 保存或更新 Dashboard
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param dashboard        dashboard 完整文件
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> createOrUpdateDashboard(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                                  String dashboard) {
+        return iThirdGrafanaAPI.createDataSources(
+                new HashMap<String, Object>() {
+                    {
+                        put("dashboard", dashboard);
+                        put("folderUid", null);
+                        put("message", "");
+                        put("overwrite", true);
+
+                    }
+                }
+        );
+    }
+
+    /**
+     * Description: 更新指定组织下的用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param iThirdGrafanaAPI Grafana API 接口集合
+     * @param orgId            组织 ID
+     * @param userId           用户 ID
+     * @param loginName        登录名
+     * @param role             角色
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> updateUserInOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
+                                          String orgId,
+                                          String userId,
+                                          String loginName,
+                                          String role) {
+        return iThirdGrafanaAPI.updateUserInOrg(
+                orgId,
+                userId,
+                new HashMap<String, Object>() {
+                    {
+                        put("loginOrEmail", loginName);
+                        put("role", role);
+                    }
+                }
+        );
+    }
+
+
 }
