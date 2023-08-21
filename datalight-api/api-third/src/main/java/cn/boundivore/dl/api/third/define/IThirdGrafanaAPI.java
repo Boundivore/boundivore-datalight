@@ -49,14 +49,14 @@ public interface IThirdGrafanaAPI {
     @ApiOperation(notes = "创建组织", value = "创建组织")
     Result<String> createOrg(
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @PostMapping(value = "/api/admin/users")
     @ApiOperation(notes = "创建用户", value = "创建用户")
     Result<String> createUsers(
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @PostMapping(value = "/api/orgs/{orgId}/users")
@@ -66,7 +66,7 @@ public interface IThirdGrafanaAPI {
             String orgId,
 
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @DeleteMapping(value = "/api/orgs/{orgId}/users/{userId}")
@@ -83,14 +83,14 @@ public interface IThirdGrafanaAPI {
     @ApiOperation(notes = "创建 DataSources", value = "创建 DataSources")
     Result<String> createDataSources(
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @PostMapping(value = "/api/dashboards/db")
     @ApiOperation(notes = "创建或更新 Dashboard", value = "创建或更新 Dashboard")
     Result<String> createOrUpdateDashboard(
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @PatchMapping(value = "/api/orgs/{orgId}/users/{userId}")
@@ -103,7 +103,7 @@ public interface IThirdGrafanaAPI {
             String userId,
 
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @GetMapping(value = "/api/orgs/{orgId}/users")
@@ -159,7 +159,7 @@ public interface IThirdGrafanaAPI {
     @ApiOperation(notes = "变更用户名密码", value = "变更用户名密码")
     Result<String> changeUserPassword(
             @RequestBody
-            Map<String, Object> request
+            Map<Object, Object> request
     );
 
     @GetMapping(value = "/api/admin/stats")

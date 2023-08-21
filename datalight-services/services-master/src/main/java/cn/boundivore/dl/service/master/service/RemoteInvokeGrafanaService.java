@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.map.MapUtil;
 import feign.Feign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,13 @@ import java.util.HashMap;
 @Slf4j
 @RequiredArgsConstructor
 public class RemoteInvokeGrafanaService {
+
+    private static final String ACCEPT = "Accept";
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String APPLICATION_JSON = "application/json";
+    private static final long CONNECT_TIMEOUT = 2 * 1000L;
+    private static final long READ_TIMEOUT = 5 * 1000L;
 
     private final Feign.Builder feignBuilder;
 
@@ -69,25 +77,17 @@ public class RemoteInvokeGrafanaService {
                                              String grafanaUser,
                                              String grafanaPassword) {
         return feignBuilder
-                .options(RequestOptionsGenerator.getRequestOptions(
-                                2 * 1000L,
-                                5 * 1000L
+                .options(
+                        RequestOptionsGenerator.getRequestOptions(
+                                CONNECT_TIMEOUT,
+                                READ_TIMEOUT
                         )
                 )
                 .requestInterceptor(
                         template -> template
-                                .header(
-                                        "Accept",
-                                        "application/json"
-                                )
-                                .header(
-                                        "Content-Type",
-                                        "application/json"
-                                )
-                                .header(
-                                        "Authorization",
-                                        basicAuthValue(grafanaUser, grafanaPassword)
-                                )
+                                .header(ACCEPT, APPLICATION_JSON)
+                                .header(CONTENT_TYPE, APPLICATION_JSON)
+                                .header(AUTHORIZATION, basicAuthValue(grafanaUser, grafanaPassword))
                 )
                 .target(
                         IThirdGrafanaAPI.class,
@@ -101,7 +101,16 @@ public class RemoteInvokeGrafanaService {
     }
 
     private String basicAuthValue(String user, String password) {
-        return String.format("Basic %s", Base64.encode(user + ":" + password));
+        return String.format(
+                "Basic %s",
+                Base64.encode(
+                        String.format(
+                                "%s:%s",
+                                user,
+                                password
+                        )
+                )
+        );
     }
 
     /**
@@ -120,11 +129,11 @@ public class RemoteInvokeGrafanaService {
      */
     public Result<String> createOrg(IThirdGrafanaAPI iThirdGrafanaAPI, String orgName) {
         return iThirdGrafanaAPI.createOrg(
-                new HashMap<String, Object>() {
-                    {
-                        put("name", orgName);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"name", orgName}
+                        }
+                )
         );
     }
 
@@ -150,13 +159,13 @@ public class RemoteInvokeGrafanaService {
                                       String loginName,
                                       String password) {
         return iThirdGrafanaAPI.createUsers(
-                new HashMap<String, Object>() {
-                    {
-                        put("name", userName);
-                        put("login", loginName);
-                        put("password", password);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"name", userName},
+                                {"login", loginName},
+                                {"password", password}
+                        }
+                )
         );
     }
 
@@ -182,12 +191,12 @@ public class RemoteInvokeGrafanaService {
                                        String role) {
         return iThirdGrafanaAPI.addUserInOrg(
                 orgId,
-                new HashMap<String, Object>() {
-                    {
-                        put("loginOrEmail", loginName);
-                        put("role", role);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"loginOrEmail", loginName},
+                                {"role", role}
+                        }
+                )
         );
     }
 
@@ -234,29 +243,29 @@ public class RemoteInvokeGrafanaService {
                                             String orgId,
                                             String prometheusBaseUri) {
         return iThirdGrafanaAPI.createDataSources(
-                new HashMap<String, Object>() {
-                    {
-                        put("id", null);
-                        put("orgId", orgId);
-                        put("name", "Prometheus");
-                        put("type", "prometheus");
-                        put("typeLogoUrl", "");
-                        put("access", "proxy");
-                        put("url", prometheusBaseUri);
-                        put("user", "admin");
-                        put("password", "admin");
-                        put("database", "");
-                        put("basicAuth", false);
-                        put("basicAuthUser", "");
-                        put("basicAuthPassword", "");
-                        put("withCredentials", false);
-                        put("isDefault", true);
-                        put("jsonData", new HashMap<String, Object>());
-                        put("secureJsonFields", new HashMap<String, Object>());
-                        put("version", 1);
-                        put("readOnly", false);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"id", null},
+                                {"orgId", orgId},
+                                {"name", "Prometheus"},
+                                {"type", "prometheus"},
+                                {"typeLogoUrl", ""},
+                                {"access", "proxy"},
+                                {"url", prometheusBaseUri},
+                                {"user", "admin"},
+                                {"password", "admin"},
+                                {"database", ""},
+                                {"basicAuth", false},
+                                {"basicAuthUser", ""},
+                                {"basicAuthPassword", ""},
+                                {"withCredentials", false},
+                                {"isDefault", true},
+                                {"jsonData", new HashMap<String, Object>()},
+                                {"secureJsonFields", new HashMap<String, Object>()},
+                                {"version", 1},
+                                {"readOnly", false}
+                        }
+                )
         );
     }
 
@@ -277,14 +286,14 @@ public class RemoteInvokeGrafanaService {
     public Result<String> createOrUpdateDashboard(IThirdGrafanaAPI iThirdGrafanaAPI,
                                                   String dashboard) {
         return iThirdGrafanaAPI.createDataSources(
-                new HashMap<String, Object>() {
-                    {
-                        put("dashboard", dashboard);
-                        put("folderUid", null);
-                        put("message", "");
-                        put("overwrite", true);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"dashboard", dashboard},
+                                {"folderUid", null},
+                                {"message", ""},
+                                {"overwrite", true}
+                        }
+                )
         );
     }
 
@@ -313,12 +322,12 @@ public class RemoteInvokeGrafanaService {
         return iThirdGrafanaAPI.updateUserInOrg(
                 orgId,
                 userId,
-                new HashMap<String, Object>() {
-                    {
-                        put("loginOrEmail", loginName);
-                        put("role", role);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"loginOrEmail", loginName},
+                                {"role", role}
+                        }
+                )
         );
     }
 
@@ -479,12 +488,12 @@ public class RemoteInvokeGrafanaService {
                                              String oldPassword,
                                              String newPassword) {
         return iThirdGrafanaAPI.changeUserPassword(
-                new HashMap<String, Object>() {
-                    {
-                        put("oldPassword", oldPassword);
-                        put("newPassword", newPassword);
-                    }
-                }
+                MapUtil.of(
+                        new Object[][]{
+                                {"oldPassword", oldPassword},
+                                {"newPassword", newPassword}
+                        }
+                )
         );
     }
 
