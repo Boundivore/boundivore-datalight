@@ -16,15 +16,16 @@
  */
 package cn.boundivore.dl.service.master.grafana;
 
-import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
+import cn.hutool.core.io.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Description: 测试 Grafana API
@@ -45,16 +46,12 @@ public class GrafanaTest {
     private RemoteInvokeGrafanaService remoteInvokeGrafanaService;
     private final static String GRAFANA_HOST = "node01";
     private final static String GRAFANA_PORT = "3000";
-
-
     private final static String GRAFANA_USER_ADMIN = "admin";
     private final static String GRAFANA_PASSWORD_ADMIN = "admin";
 
-    private IThirdGrafanaAPI iThirdGrafanaAPI;
-
     @PostConstruct
     public void init() {
-        this.iThirdGrafanaAPI = this.remoteInvokeGrafanaService.iThirdGrafanaAPI(
+        this.remoteInvokeGrafanaService.init(
                 GRAFANA_HOST,
                 GRAFANA_PORT,
                 GRAFANA_USER_ADMIN,
@@ -75,7 +72,6 @@ public class GrafanaTest {
     @Test
     public void createOrg() {
         Result<String> result = this.remoteInvokeGrafanaService.createOrg(
-                this.iThirdGrafanaAPI,
                 "DataLight"
         );
 
@@ -95,7 +91,6 @@ public class GrafanaTest {
     @Test
     public void createUsers() {
         Result<String> result = this.remoteInvokeGrafanaService.createUsers(
-                this.iThirdGrafanaAPI,
                 "datalight",
                 "datalight",
                 "datalight"
@@ -115,9 +110,7 @@ public class GrafanaTest {
      */
     @Test
     public void getStats() {
-        Result<String> result = this.remoteInvokeGrafanaService.getStats(
-                this.iThirdGrafanaAPI
-        );
+        Result<String> result = this.remoteInvokeGrafanaService.getStats();
         log.info(result.toString());
     }
 
@@ -132,10 +125,18 @@ public class GrafanaTest {
      * Throws:
      */
     @Test
-    public void searchAllOrgs(){
-        Result<String> result = this.remoteInvokeGrafanaService.searchAllOrgs(
-                this.iThirdGrafanaAPI
+    public void searchAllOrgs() {
+        Result<String> result = this.remoteInvokeGrafanaService.searchAllOrgs();
+        log.info(result.toString());
+    }
+
+    @Test
+    public void createOrUpdateDashboard() {
+        String dashboardJson = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\DATALIGHT.json",
+                StandardCharsets.UTF_8
         );
+        Result<String> result = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson);
         log.info(result.toString());
     }
 }

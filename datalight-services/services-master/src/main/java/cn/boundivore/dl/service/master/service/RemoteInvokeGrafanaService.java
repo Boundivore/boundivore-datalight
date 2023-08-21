@@ -19,8 +19,11 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.base.utils.JsonUtil;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
+import cn.boundivore.dl.exception.BException;
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import feign.Feign;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +56,37 @@ public class RemoteInvokeGrafanaService {
 
     private final Feign.Builder feignBuilder;
 
+    // Grafana IP 地址
+    private String grafanaIp;
+    // Grafana 端口号
+    private String grafanaPort;
+    // Grafana 用户名
+    private String grafanaUser;
+    // Grafana 密码
+    private String grafanaPassword;
+
+    private IThirdGrafanaAPI iThirdGrafanaAPI;
+
+    public void init(String grafanaIp,
+                     String grafanaPort,
+                     String grafanaUser,
+                     String grafanaPassword) {
+
+        this.grafanaIp = grafanaIp;
+        this.grafanaPort = grafanaPort;
+        this.grafanaUser = grafanaUser;
+        this.grafanaPassword = grafanaPassword;
+
+        this.iThirdGrafanaAPI = this.iThirdGrafanaAPI();
+    }
+
+    private void checkInit() {
+        Assert.notNull(
+                iThirdGrafanaAPI,
+                () -> new BException("请先初始化 Grafana API 客户端")
+        );
+    }
+
     /**
      * Description: Feign 远程调用指定节点的 IThirdGrafanaAPI 的接口
      * Created by: Boundivore
@@ -66,16 +100,9 @@ public class RemoteInvokeGrafanaService {
      * add("Content-Type", "application/json");
      * add("Authorization", basicAuthValue(user, password));
      *
-     * @param grafanaIp       Grafana IP 地址
-     * @param grafanaPort     Grafana 端口号
-     * @param grafanaUser     Grafana 用户名
-     * @param grafanaPassword Grafana 密码
      * @return IWorkerExecAPI 可调用 API 实例
      */
-    public IThirdGrafanaAPI iThirdGrafanaAPI(String grafanaIp,
-                                             String grafanaPort,
-                                             String grafanaUser,
-                                             String grafanaPassword) {
+    private IThirdGrafanaAPI iThirdGrafanaAPI() {
         return feignBuilder
                 .options(
                         RequestOptionsGenerator.getRequestOptions(
@@ -87,14 +114,14 @@ public class RemoteInvokeGrafanaService {
                         template -> template
                                 .header(ACCEPT, APPLICATION_JSON)
                                 .header(CONTENT_TYPE, APPLICATION_JSON)
-                                .header(AUTHORIZATION, basicAuthValue(grafanaUser, grafanaPassword))
+                                .header(AUTHORIZATION, basicAuthValue(this.grafanaUser, this.grafanaPassword))
                 )
                 .target(
                         IThirdGrafanaAPI.class,
                         String.format(
                                 "http://%s:%s%s",
-                                grafanaIp,
-                                grafanaPort,
+                                this.grafanaIp,
+                                this.grafanaPort,
                                 IUrlPrefixConstants.NONE_PREFIX
                         )
                 );
@@ -123,12 +150,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param orgName          组织名称
+     * @param orgName 组织名称
      * @return @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createOrg(IThirdGrafanaAPI iThirdGrafanaAPI, String orgName) {
-        return iThirdGrafanaAPI.createOrg(
+    public Result<String> createOrg(String orgName) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.createOrg(
                 MapUtil.of(
                         new Object[][]{
                                 {"name", orgName}
@@ -136,7 +163,6 @@ public class RemoteInvokeGrafanaService {
                 )
         );
     }
-
 
     /**
      * Description: 创建用户
@@ -148,17 +174,16 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param userName         用户名
-     * @param loginName        登录名
-     * @param password         密码
+     * @param userName  用户名
+     * @param loginName 登录名
+     * @param password  密码
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createUsers(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                      String userName,
+    public Result<String> createUsers(String userName,
                                       String loginName,
                                       String password) {
-        return iThirdGrafanaAPI.createUsers(
+        this.checkInit();
+        return this.iThirdGrafanaAPI.createUsers(
                 MapUtil.of(
                         new Object[][]{
                                 {"name", userName},
@@ -179,17 +204,16 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param orgId            组织 ID
-     * @param loginName        用户登录名
-     * @param role             用户在组织中的角色
+     * @param orgId     组织 ID
+     * @param loginName 用户登录名
+     * @param role      用户在组织中的角色
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> addUserInOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                       String orgId,
+    public Result<String> addUserInOrg(String orgId,
                                        String loginName,
                                        String role) {
-        return iThirdGrafanaAPI.addUserInOrg(
+        this.checkInit();
+        return this.iThirdGrafanaAPI.addUserInOrg(
                 orgId,
                 MapUtil.of(
                         new Object[][]{
@@ -210,15 +234,14 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param orgId            组织 ID
-     * @param userId           用户 ID
+     * @param orgId  组织 ID
+     * @param userId 用户 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteUserFromOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                            String orgId,
+    public Result<String> deleteUserFromOrg(String orgId,
                                             String userId) {
-        return iThirdGrafanaAPI.deleteUserFromOrg(
+        this.checkInit();
+        return this.iThirdGrafanaAPI.deleteUserFromOrg(
                 orgId,
                 userId
         );
@@ -234,20 +257,20 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI  Grafana API 接口集合
      * @param orgId             组织 ID
      * @param prometheusBaseUri Prometheus 请求地址
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createDataSources(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                            String orgId,
+    public Result<String> createDataSources(String orgId,
                                             String prometheusBaseUri) {
-        return iThirdGrafanaAPI.createDataSources(
+        this.checkInit();
+        return this.iThirdGrafanaAPI.createDataSources(
                 MapUtil.of(
                         new Object[][]{
                                 {"id", null},
                                 {"orgId", orgId},
                                 {"name", "Prometheus"},
+                                {"label", "Prometheus"},
                                 {"type", "prometheus"},
                                 {"typeLogoUrl", ""},
                                 {"access", "proxy"},
@@ -260,8 +283,8 @@ public class RemoteInvokeGrafanaService {
                                 {"basicAuthPassword", ""},
                                 {"withCredentials", false},
                                 {"isDefault", true},
-                                {"jsonData", new HashMap<String, Object>()},
-                                {"secureJsonFields", new HashMap<String, Object>()},
+                                {"jsonData", new HashMap<Object, Object>()},
+                                {"secureJsonFields", new HashMap<Object, Object>()},
                                 {"version", 1},
                                 {"readOnly", false}
                         }
@@ -279,17 +302,16 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param dashboard        dashboard 完整文件
+     * @param dashboard dashboard 完整文件
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createOrUpdateDashboard(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                                  String dashboard) {
-        return iThirdGrafanaAPI.createDataSources(
+    public Result<String> createOrUpdateDashboard(String dashboard) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.createOrUpdateDashboard(
                 MapUtil.of(
                         new Object[][]{
-                                {"dashboard", dashboard},
-                                {"folderUid", null},
+                                {"dashboard", JsonUtil.getMapObj(dashboard)},
+                                {"folderUid", ""},
                                 {"message", ""},
                                 {"overwrite", true}
                         }
@@ -307,19 +329,18 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param orgId            组织 ID
-     * @param userId           用户 ID
-     * @param loginName        登录名
-     * @param role             角色
+     * @param orgId     组织 ID
+     * @param userId    用户 ID
+     * @param loginName 登录名
+     * @param role      角色
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> updateUserInOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                          String orgId,
+    public Result<String> updateUserInOrg(String orgId,
                                           String userId,
                                           String loginName,
                                           String role) {
-        return iThirdGrafanaAPI.updateUserInOrg(
+        this.checkInit();
+        return this.iThirdGrafanaAPI.updateUserInOrg(
                 orgId,
                 userId,
                 MapUtil.of(
@@ -341,13 +362,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param orgId            组织 ID
+     * @param orgId 组织 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getUserInOrg(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                       String orgId) {
-        return iThirdGrafanaAPI.getUserInOrg(
+    public Result<String> getUserInOrg(String orgId) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.getUserInOrg(
                 orgId
         );
     }
@@ -362,13 +382,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param orgName          组织 ID
+     * @param orgName 组织 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getOrgByName(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                       String orgName) {
-        return iThirdGrafanaAPI.getOrgByName(
+    public Result<String> getOrgByName(String orgName) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.getOrgByName(
                 orgName
         );
     }
@@ -383,13 +402,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param loginOrEmail     登录名
+     * @param loginOrEmail 登录名
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getUserByLoginName(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                             String loginOrEmail) {
-        return iThirdGrafanaAPI.getUserByLoginName(
+    public Result<String> getUserByLoginName(String loginOrEmail) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.getUserByLoginName(
                 loginOrEmail
         );
     }
@@ -404,11 +422,11 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> searchAllUsers(IThirdGrafanaAPI iThirdGrafanaAPI) {
-        return iThirdGrafanaAPI.searchAllUsers(
+    public Result<String> searchAllUsers() {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.searchAllUsers(
                 "1000",
                 "1"
         );
@@ -424,11 +442,11 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> searchAllOrgs(IThirdGrafanaAPI iThirdGrafanaAPI) {
-        return iThirdGrafanaAPI.searchAllOrgs();
+    public Result<String> searchAllOrgs() {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.searchAllOrgs();
     }
 
     /**
@@ -441,13 +459,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param userId           用户 ID
+     * @param userId 用户 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteUserById(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                         String userId) {
-        return iThirdGrafanaAPI.deleteUserById(userId);
+    public Result<String> deleteUserById(String userId) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.deleteUserById(userId);
     }
 
     /**
@@ -460,12 +477,11 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteOrgById(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                        String orgId) {
-        return iThirdGrafanaAPI.deleteOrgById(orgId);
+    public Result<String> deleteOrgById(String orgId) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.deleteOrgById(orgId);
     }
 
 
@@ -479,15 +495,14 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
-     * @param oldPassword      旧密码
-     * @param newPassword      新密码
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> changeUserPassword(IThirdGrafanaAPI iThirdGrafanaAPI,
-                                             String oldPassword,
+    public Result<String> changeUserPassword(String oldPassword,
                                              String newPassword) {
-        return iThirdGrafanaAPI.changeUserPassword(
+        this.checkInit();
+        return this.iThirdGrafanaAPI.changeUserPassword(
                 MapUtil.of(
                         new Object[][]{
                                 {"oldPassword", oldPassword},
@@ -507,10 +522,10 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param iThirdGrafanaAPI Grafana API 接口集合
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getStats(IThirdGrafanaAPI iThirdGrafanaAPI) {
-        return iThirdGrafanaAPI.getStats();
+    public Result<String> getStats() {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.getStats();
     }
 }
