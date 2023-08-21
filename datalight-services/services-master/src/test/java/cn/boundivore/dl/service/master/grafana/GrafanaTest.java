@@ -76,7 +76,7 @@ public class GrafanaTest {
     public void createOrg() {
         Result<String> result = this.remoteInvokeGrafanaService.createOrg(
                 this.iThirdGrafanaAPI,
-                "datalight"
+                "DataLight"
         );
 
         log.info(result.toString());
