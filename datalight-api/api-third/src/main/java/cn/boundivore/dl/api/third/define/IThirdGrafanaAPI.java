@@ -94,6 +94,13 @@ public interface IThirdGrafanaAPI {
             Map<Object, Object> request
     );
 
+    @DeleteMapping(value = "/api/datasources/name/{datasourceName}")
+    @ApiOperation(notes = "根据名称删除 DataSource", value = "根据名称删除 DataSource")
+    Result<String> deleteDataSourceByName(
+            @PathVariable("datasourceName")
+            String datasourceName
+    );
+
     @PostMapping(value = "/api/dashboards/db")
     @ApiOperation(notes = "创建或更新 Dashboard", value = "创建或更新 Dashboard")
     Result<String> createOrUpdateDashboard(

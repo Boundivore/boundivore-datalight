@@ -111,6 +111,7 @@ public class GrafanaTest {
     public void createDataSources() {
         Result<String> result = this.remoteInvokeGrafanaService.createDataSources(
                 "2",
+                "MONITOR-Prometheus",
                 "node01",
                 "9090",
                 "admin",

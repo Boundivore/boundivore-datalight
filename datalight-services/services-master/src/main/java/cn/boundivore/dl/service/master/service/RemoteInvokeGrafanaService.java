@@ -18,15 +18,11 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
-import cn.boundivore.dl.base.enumeration.impl.GrafanaUserRoleEnum;
-import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.utils.JsonUtil;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
 import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.service.master.bean.GrafanaUser;
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.map.MapUtil;
 import feign.Feign;
@@ -34,11 +30,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.AbstractMap;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Description: 通过 Feign 远程调用指定节点上的 IThirdGrafanaAPI 接口的一系列封装
@@ -335,11 +327,13 @@ public class RemoteInvokeGrafanaService {
      * Throws:
      *
      * @param orgId          组织 ID
+     * @param datasourceName datasource 名称
      * @param prometheusHost Prometheus 节点地址
      * @param prometheusPort Prometheus 端口号
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
     public Result<String> createDataSources(String orgId,
+                                            String datasourceName,
                                             String prometheusHost,
                                             String prometheusPort,
                                             String grafanaUser,
@@ -350,8 +344,8 @@ public class RemoteInvokeGrafanaService {
                         new Object[][]{
                                 {"id", null},
                                 {"orgId", orgId},
-                                {"name", "MONITOR-Prometheus"},
-                                {"label", "MONITOR-Prometheus"},
+                                {"name", datasourceName},
+                                {"label", "datasource"},
                                 {"type", "prometheus"},
                                 {"typeLogoUrl", ""},
                                 {"access", "proxy"},
@@ -371,6 +365,24 @@ public class RemoteInvokeGrafanaService {
                         }
                 )
         );
+    }
+
+    /**
+     * Description: 根据名称删除 DataSources
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param datasourceName DataSource 名称
+     * @return Result<String> Grafana 响应体存在于 Result data 中
+     */
+    public Result<String> deleteDataSource(String datasourceName) {
+        this.checkInit();
+        return this.iThirdGrafanaAPI.deleteDataSourceByName(datasourceName);
     }
 
     /**
