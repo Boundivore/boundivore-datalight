@@ -56,6 +56,8 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                         .collect(Collectors.toList())
         );
 
+        // 如果有其他配置文件需要联动（例如除了 PROMETHEUS_CONFIG_PATH )，则在此进行逻辑判断
+
         return relativeConfigPathList;
     }
 
