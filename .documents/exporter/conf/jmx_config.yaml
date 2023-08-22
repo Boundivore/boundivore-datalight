@@ -1,0 +1,16 @@
+---
+startDelaySeconds: 0
+# hostPort: 0.0.0.0:{{exporterPort}}
+ssl: false
+lowercaseOutputName: false  # 是否将输出的指标名称转为小写，默认为false
+lowercaseOutputLabelNames: false  # 是否将输出的标签名称转为小写，默认为false
+whitelistObjectNames: []  # 白名单，用于筛选要公开的JMX对象的名称
+blacklistObjectNames: []  # 黑名单，用于筛选要排除的JMX对象的名称
+
+rules:
+  - pattern: '.*'
+    attrNameSnakeCase: false  # 是否将JMX属性名称转为蛇形命名，默认为false
+    attrNameCamelCase: false  # 是否将JMX属性名称转为驼峰命名，默认为false
+    valueFactor: 1.0  # 可选的值缩放因子，默认为1.0
+    cache: false
+    type: GAUGE

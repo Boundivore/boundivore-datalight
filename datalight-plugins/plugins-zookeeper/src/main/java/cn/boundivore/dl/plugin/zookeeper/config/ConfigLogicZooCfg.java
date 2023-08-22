@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.plugin.zookeeper.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import lombok.extern.slf4j.Slf4j;
@@ -78,6 +79,11 @@ public class ConfigLogicZooCfg extends AbstractConfigLogic {
                                 "/data/datalight/data/%s/zkData",
                                 super.currentMetaService.getServiceName()
                         )
+                )
+                .replace(
+                        "{{exporterPort}}",
+                        PortConstants.MONITOR_EXPORTER_PORT_MAP.get("ZOOKEEPER-QuarumPeermain")
+
                 );
     }
 }

@@ -26,7 +26,7 @@ CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
 # 检查参数是否为空
 if [ -z "$1" ]; then
-  echo "Usage: $0 <component_name> <start|stop|restart>"
+  echo "Usage: $0 <JournalNode|NameNode|ZKFailoverController|DataNode|HttpFS> <start|stop|restart>"
   exit 1
 fi
 

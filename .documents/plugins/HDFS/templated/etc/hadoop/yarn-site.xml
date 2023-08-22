@@ -15,5 +15,15 @@
 <configuration>
 
 <!-- Site specific YARN configuration properties -->
+    <!-- YARN任务（containers）随机端口号范围 -->
+    <property>
+        <name>yarn.nodemanager.port-range</name>
+        <value>12000-65535</value>
+    </property>
 
+    <!-- NodeManager随机端口号范围 -->
+    <property>
+        <name>yarn.nodemanager.webapp.https.address.range</name>
+        <value>12000-65535</value>
+    </property>
 </configuration>

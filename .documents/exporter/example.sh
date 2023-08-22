@@ -1,1 +1,0 @@
-java -javaagent:./jmx_exporter.jar=12345:config.yaml -jar yourJar.jar

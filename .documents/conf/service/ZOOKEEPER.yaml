@@ -4,6 +4,9 @@ datalight:
     version: 3.8.2
     tgz: dlc-zookeeper-3.8.2.tar.gz
     conf-dirs:
+#      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
+#        templated-dir: '{{datalight-dir}}/exporter/conf'
+#
 #      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
 #        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/bin'
 #
@@ -13,6 +16,9 @@ datalight:
 #      - service-conf-dir: '{{data-dir}}'
 #        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/id'
 # TODO FOR TEST
+      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
+        templated-dir: 'D:/datalight/exporter/conf'
+
       - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
         templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/bin'
 
