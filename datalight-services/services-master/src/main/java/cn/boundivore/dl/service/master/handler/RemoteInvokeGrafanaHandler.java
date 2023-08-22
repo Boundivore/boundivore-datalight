@@ -168,11 +168,15 @@ public class RemoteInvokeGrafanaHandler {
             } catch (Exception ignore) {
             }
 
-            // 9、使用 userId2 的账号密码创建数据源，名称为 MONITOR-Prometheus，且为默认
+            // 9、删除已存在的 MONITOR-Prometheus datasource
             try {
                 Result<String> deleteDataSourceResult = this.remoteInvokeGrafanaService.deleteDataSource("MONITOR-Prometheus");
                 log.info("deleteDataSource: {}", deleteDataSourceResult);
+            } catch (Exception ignore) {
+            }
 
+            // 10、使用 userId2 的账号密码创建数据源，名称为 MONITOR-Prometheus，且为默认
+            try {
                 Result<String> createDataSourcesResult = this.remoteInvokeGrafanaService.createDataSources(
                         orgId,
                         "MONITOR-Prometheus",
