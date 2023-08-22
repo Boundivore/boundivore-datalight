@@ -118,14 +118,16 @@ public class ConfigLogicPrometheusYml extends AbstractConfigLogic {
                                         );
                                 break;
                             case JOB_NAME_Master:
-                                i.getStaticConfigs().get(0).setTargets(
-                                        this.getMasterWorkerMetaList(MasterWorkerEnum.MASTER)
-                                );
+                                i.getStaticConfigs().get(0)
+                                        .setTargets(
+                                                this.getMasterWorkerMetaList(MasterWorkerEnum.MASTER)
+                                        );
                                 break;
                             case JOB_NAME_Worker:
-                                i.getStaticConfigs().get(0).setTargets(
-                                        this.getMasterWorkerMetaList(MasterWorkerEnum.WORKER)
-                                );
+                                i.getStaticConfigs().get(0)
+                                        .setTargets(
+                                                this.getMasterWorkerMetaList(MasterWorkerEnum.WORKER)
+                                        );
                                 break;
                             default:
                                 break;
