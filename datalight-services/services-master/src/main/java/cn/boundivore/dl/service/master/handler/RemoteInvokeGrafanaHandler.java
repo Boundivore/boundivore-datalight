@@ -16,19 +16,27 @@
  */
 package cn.boundivore.dl.service.master.handler;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.base.enumeration.impl.GrafanaUserRoleEnum;
 import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.utils.JsonUtil;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.orm.po.single.TDlComponent;
+import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.service.master.bean.GrafanaUser;
+import cn.boundivore.dl.service.master.service.MasterComponentService;
+import cn.boundivore.dl.service.master.service.MasterNodeService;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.AbstractMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -59,7 +67,11 @@ public class RemoteInvokeGrafanaHandler {
 
     private final RemoteInvokeGrafanaService remoteInvokeGrafanaService;
 
-    public void initGrafanaSettings(String prometheusHost, String prometheusPort) {
+    private final MasterComponentService masterComponentService;
+
+    private final MasterNodeService masterNodeService;
+
+    public void initGrafanaSettings(Long clusterId) {
         try {
             String orgName = "datalight";
 
@@ -175,13 +187,24 @@ public class RemoteInvokeGrafanaHandler {
             } catch (Exception ignore) {
             }
 
+
             // 10、使用 userId2 的账号密码创建数据源，名称为 MONITOR-Prometheus，且为默认
             try {
+                List<TDlComponent> tDlComponentList = this.masterComponentService.getTDlComponentListByServiceName(
+                                clusterId,
+                                "MONITOR"
+                        ).stream()
+                        .filter(i -> i.getComponentName().equals("Prometheus") && i.getComponentState() != SCStateEnum.REMOVED)
+                        .collect(Collectors.toList());
+                TDlComponent tDlComponent = CollUtil.getFirst(tDlComponentList);
+                Map<Long, TDlNode> nodeMap = this.masterNodeService.getNodeMap(CollUtil.newArrayList(tDlComponent.getNodeId()));
+                TDlNode tDlNode = nodeMap.get(tDlComponent.getNodeId());
+
                 Result<String> createDataSourcesResult = this.remoteInvokeGrafanaService.createDataSources(
                         orgId,
                         "MONITOR-Prometheus",
-                        prometheusHost,
-                        prometheusPort,
+                        tDlNode.getHostname(),
+                        PortConstants.MONITOR_EXPORTER_PORT_MAP.get("MONITOR-Prometheus"),
                         grafanaUser2.getLoginName(),
                         grafanaUser2.getLoginPassword()
                 );

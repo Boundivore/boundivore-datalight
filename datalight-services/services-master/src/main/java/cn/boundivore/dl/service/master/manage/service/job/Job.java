@@ -24,6 +24,8 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.service.master.converter.IStepConverter;
+import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
+import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
 import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
@@ -76,7 +78,9 @@ public class Job extends Thread {
 
     private boolean isInit;
 
-    protected final RemoteInvokePrometheusService remoteInvokePrometheusService = SpringContextUtil.getBean(RemoteInvokePrometheusService.class);
+    protected final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler = SpringContextUtil.getBean(RemoteInvokePrometheusHandler.class);
+
+    protected final RemoteInvokeGrafanaHandler remoteInvokeGrafanaHandler = SpringContextUtil.getBean(RemoteInvokeGrafanaHandler.class);
 
     public Job(Intention intention) {
         this.intention = intention;
@@ -418,27 +422,36 @@ public class Job extends Thread {
             }
         }
 
-        // 异步任务最后，重新加载 Prometheus 配置
-        this.invokePrometheusReload(
-                this.jobMeta
-                        .getClusterMeta()
-                        .getCurrentClusterId()
-        );
+        ExecStateEnum execStateEnum;
+        try{
+            // 重配置 Prometheus: 异步任务最后，重新加载 Prometheus 配置
+            this.remoteInvokePrometheusHandler.invokePrometheusReload(
+                    this.jobMeta
+                            .getClusterMeta()
+                            .getCurrentClusterId()
+            );
 
+            // 重新配置 Grafana: 异步任务最后，以幂等方式重新配置 Grafana
+            this.remoteInvokeGrafanaHandler.initGrafanaSettings(jobMeta.getClusterMeta().getCurrentClusterId());
 
-        //记录 Job 结束时间(自动计算耗时)
-        this.jobMeta.setEndTime(System.currentTimeMillis());
+            //记录 Job 结束时间(自动计算耗时)
+            this.jobMeta.setEndTime(System.currentTimeMillis());
 
-        log.info(
-                "结束 Job: {}, 耗时: {} ms",
-                jobMeta.getName(),
-                jobMeta.getDuration()
-        );
+            log.info(
+                    "结束 Job: {}, 耗时: {} ms",
+                    jobMeta.getName(),
+                    jobMeta.getDuration()
+            );
 
-
-        ExecStateEnum execStateEnum = this.jobMeta.getJobResult().isSuccess() ?
-                ExecStateEnum.OK :
-                ExecStateEnum.ERROR;
+            execStateEnum = this.jobMeta.getJobResult().isSuccess() ?
+                    ExecStateEnum.OK :
+                    ExecStateEnum.ERROR;
+            this.jobService.saveLog(jobMeta, "MONITOR settings ready", null);
+        } catch (Exception e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+            this.jobService.saveLog(jobMeta, null, e.getMessage());
+            execStateEnum = ExecStateEnum.ERROR;
+        }
 
         //更新当前 Job 执行状态到内存缓存和数据库
         this.updateJobExecutionStatus(execStateEnum);
@@ -488,43 +501,4 @@ public class Job extends Thread {
         this.jobService.updateJobDatabase(this.jobMeta);
     }
 
-    /**
-     * Description: 重新加载 Prometheus
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/5/31
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     */
-    private void invokePrometheusReload(Long clusterId) {
-
-        try {
-            TDlComponent prometheusServerTDlComponent = this.jobService
-                    .getTDlComponentListByServiceName(
-                            clusterId,
-                            "MONITOR"
-                    )
-                    .stream()
-                    .filter(i -> i.getComponentName().equals("Prometheus"))
-                    .collect(Collectors.toList())
-                    .get(0);
-
-            if (prometheusServerTDlComponent != null && prometheusServerTDlComponent.getComponentState() == SCStateEnum.STARTED) {
-                TDlNode tDlNodePrometheus = this.jobService.masterNodeService.getNodeListInNodeIds(
-                                clusterId,
-                                CollUtil.newArrayList(prometheusServerTDlComponent.getNodeId())
-                        )
-                        .get(0);
-
-                this.remoteInvokePrometheusService.iThirdPrometheusAPI(
-                                tDlNodePrometheus.getIpv4(),
-                                "9090"
-                        )
-                        .reloadPrometheus();
-            }
-        } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-        }
-    }
 }

@@ -777,7 +777,9 @@ public class JobService {
      * Modification time:
      * Throws: DatabaseException
      *
-     * @param stepMeta Step 元数据信息
+     * @param stepMeta  Step 元数据信息
+     * @param logStdout 标准输出
+     * @param logErrout 标准错误输出
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -819,6 +821,48 @@ public class JobService {
                         logErrout
                 )
         );
+
+        Assert.isTrue(
+                this.tDlJobLogService.save(tDlJobLog),
+                () -> new DatabaseException("保存服务组件任务日志失败")
+        );
+
+    }
+
+    /**
+     * Description: 记录当前 NodeStep 执行日志到数据库。
+     * 提示：所有 NodeStep 日志可以聚合为 NodeTask 日志，所有 NodeTask 日志，可以聚合为 NodeJob 日志
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/7
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: DatabaseException
+     *
+     * @param jobMeta   Job 元数据信息
+     * @param logStdout 标准输出
+     * @param logErrout 标准错误输出
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void saveLog(JobMeta jobMeta,
+                        String logStdout,
+                        String logErrout) {
+        TDlJobLog tDlJobLog = new TDlJobLog();
+
+        tDlJobLog.setTag(jobMeta.getTag());
+        tDlJobLog.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId());
+
+        tDlJobLog.setJobId(jobMeta.getId());
+        tDlJobLog.setStageId(null);
+        tDlJobLog.setTaskId(null);
+        tDlJobLog.setStepId(null);
+
+        tDlJobLog.setLogStdout(logStdout);
+        tDlJobLog.setLogErrout(logErrout);
 
         Assert.isTrue(
                 this.tDlJobLogService.save(tDlJobLog),

@@ -865,7 +865,9 @@ public class MasterComponentService {
      * @param serviceName 服务名称
      * @return 返回组件列表
      */
-    public List<TDlComponent> getTDlComponentListByServiceNameInNode(Long clusterId, Long nodeId, String serviceName) {
+    public List<TDlComponent> getTDlComponentListByServiceNameInNode(Long clusterId,
+                                                                     Long nodeId,
+                                                                     String serviceName) {
         return this.tDlComponentService.lambdaQuery()
                 .select()
                 .eq(TDlComponent::getClusterId, clusterId)

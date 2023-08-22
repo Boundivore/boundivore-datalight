@@ -166,8 +166,7 @@ public class GrafanaTest {
     @Test
     public void grafanaAllTest() {
         this.remoteInvokeGrafanaHandler.initGrafanaSettings(
-                "node01",
-                "9090"
+                1L
         );
 
         this.createOrUpdateDashboard();

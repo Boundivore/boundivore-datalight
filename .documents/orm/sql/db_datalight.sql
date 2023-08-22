@@ -154,9 +154,9 @@ CREATE TABLE `t_dl_job_log`  (
   `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `job_id` bigint(20) NOT NULL COMMENT 'Job ID',
-  `stage_id` bigint(20) NOT NULL COMMENT 'Stage ID',
-  `task_id` bigint(20) NOT NULL COMMENT 'Task ID',
-  `step_id` bigint(20) NOT NULL COMMENT 'Step ID',
+  `stage_id` bigint(20) NULL DEFAULT NULL COMMENT 'Stage ID',
+  `task_id` bigint(20) NULL DEFAULT NULL COMMENT 'Task ID',
+  `step_id` bigint(20) NULL DEFAULT NULL COMMENT 'Step ID',
   `log_stdout` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '标准日志',
   `log_errout` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '错误日志',
   PRIMARY KEY (`id`) USING BTREE
@@ -253,8 +253,8 @@ CREATE TABLE `t_dl_node_job_log`  (
   `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `node_job_id` bigint(20) NOT NULL COMMENT 'NodeJob ID',
-  `node_task_id` bigint(20) NOT NULL COMMENT 'NodeTask ID',
-  `node_step_id` bigint(20) NOT NULL COMMENT 'NodeStep ID',
+  `node_task_id` bigint(20) NULL DEFAULT NULL COMMENT 'NodeTask ID',
+  `node_step_id` bigint(20) NULL DEFAULT NULL COMMENT 'NodeStep ID',
   `log_stdout` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '标准日志',
   `log_errout` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '错误日志',
   PRIMARY KEY (`id`) USING BTREE

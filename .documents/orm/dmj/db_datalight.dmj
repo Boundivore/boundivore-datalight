@@ -2402,7 +2402,6 @@
                 "OrderNo": 8,
                 "DisplayName": "NodeTask ID",
                 "DataType": 2,
-                "Not_Nullable": true,
                 "DataLength": 20
               },
               {
@@ -2411,7 +2410,6 @@
                 "OrderNo": 9,
                 "DisplayName": "NodeStep ID",
                 "DataType": 2,
-                "Not_Nullable": true,
                 "DataLength": 20
               },
               {
@@ -2518,7 +2516,6 @@
                 "OrderNo": 8,
                 "DisplayName": "Stage ID",
                 "DataType": 2,
-                "Not_Nullable": true,
                 "DataLength": 20
               },
               {
@@ -2527,7 +2524,6 @@
                 "OrderNo": 9,
                 "DisplayName": "Task ID",
                 "DataType": 2,
-                "Not_Nullable": true,
                 "DataLength": 20
               },
               {
@@ -2536,7 +2532,6 @@
                 "OrderNo": 10,
                 "DisplayName": "Step ID",
                 "DataType": 2,
-                "Not_Nullable": true,
                 "DataLength": 20
               },
               {
