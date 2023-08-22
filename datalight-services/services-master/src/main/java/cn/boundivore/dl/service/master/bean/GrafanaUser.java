@@ -16,13 +16,9 @@
  */
 package cn.boundivore.dl.service.master.bean;
 
-import cn.boundivore.dl.base.enumeration.impl.GrafanaRoleEnum;
+import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.exception.BException;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
 /**
  * Description: Grafana 初始化用户信息
@@ -37,7 +33,7 @@ import lombok.experimental.Accessors;
 @Getter
 public class GrafanaUser {
 
-    private GrafanaRoleEnum grafanaRoleEnum;
+    private GrafanaUserTypeEnum grafanaUserTypeEnum;
 
     private String loginName;
 
@@ -51,55 +47,55 @@ public class GrafanaUser {
      * Modification description:
      * Modified by:
      * Modification time:
-     * Throws: 
-     * 
-     * @param clusterName 集群名称（也是 Grafana 的 org 名称）
-     * @param grafanaRoleEnum Grafana 用户角色类型
+     * Throws:
+     *
+     * @param orgName         Grafana 的 org 名称（也是 集群名称，此处将 OrgName 作为 LoginName）
+     * @param grafanaUserTypeEnum Grafana 用户角色类型
      * @return GrafanaUser 用户实例
      */
-    public static GrafanaUser getGrafanaUser(String clusterName,
-                                             GrafanaRoleEnum grafanaRoleEnum) {
+    public static GrafanaUser getGrafanaUser(String orgName,
+                                             GrafanaUserTypeEnum grafanaUserTypeEnum) {
         GrafanaUser grafanaUser = new GrafanaUser();
-        switch (grafanaRoleEnum) {
+        switch (grafanaUserTypeEnum) {
             case ADMIN:
-                grafanaUser.grafanaRoleEnum = GrafanaRoleEnum.ADMIN;
+                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.ADMIN;
                 grafanaUser.loginName = "admin";
                 grafanaUser.loginPassword = "admin";
                 break;
             case ADMIN_ORG:
-                grafanaUser.grafanaRoleEnum = GrafanaRoleEnum.ADMIN_ORG;
+                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.ADMIN_ORG;
                 grafanaUser.loginName = String.format(
                         "admin-%s",
-                        clusterName
+                        orgName
                 );
                 grafanaUser.loginPassword = String.format(
                         "admin-%s",
-                        clusterName
+                        orgName
                 );
                 break;
             case EDITOR_ORG:
-                grafanaUser.grafanaRoleEnum = GrafanaRoleEnum.EDITOR_ORG;
+                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.EDITOR_ORG;
                 grafanaUser.loginName = String.format(
                         "editor-%s",
-                        clusterName
+                        orgName
                 );
                 grafanaUser.loginPassword = String.format(
                         "editor-%s",
-                        clusterName
+                        orgName
                 );
                 break;
             case VIEWER_ORG:
                 throw new BException(
                         String.format(
                                 "暂未支持的 Grafana 角色: %s",
-                                grafanaRoleEnum
+                                grafanaUserTypeEnum
                         )
                 );
             default:
                 throw new BException(
                         String.format(
                                 "未知的 Grafana 角色: %s",
-                                grafanaRoleEnum
+                                grafanaUserTypeEnum
                         )
                 );
         }

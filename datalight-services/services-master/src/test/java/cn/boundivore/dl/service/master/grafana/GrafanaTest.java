@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.grafana;
 
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
 import cn.hutool.core.io.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ public class GrafanaTest {
 
     @Autowired
     private RemoteInvokeGrafanaService remoteInvokeGrafanaService;
+
+    @Autowired
+    private RemoteInvokeGrafanaHandler remoteInvokeGrafanaHandler;
     private final static String GRAFANA_HOST = "node01";
     private final static String GRAFANA_PORT = "3000";
     private final static String GRAFANA_USER_ADMIN = "admin";
@@ -80,6 +84,12 @@ public class GrafanaTest {
     }
 
     @Test
+    public void getOrgByName() {
+        Result<String> result = this.remoteInvokeGrafanaService.getOrgByName("datalight");
+        log.info(result.toString());
+    }
+
+    @Test
     public void getStats() {
         Result<String> result = this.remoteInvokeGrafanaService.getStats();
         log.info(result.toString());
@@ -102,7 +112,9 @@ public class GrafanaTest {
         Result<String> result = this.remoteInvokeGrafanaService.createDataSources(
                 "2",
                 "node01",
-                "9090"
+                "9090",
+                "admin",
+                "admin"
         );
         log.info(result.toString());
     }
@@ -134,12 +146,13 @@ public class GrafanaTest {
                 StandardCharsets.UTF_8
         );
 
-        Result<String> result1 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson1);
-        Result<String> result2 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson2);
-        Result<String> result3 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson3);
-        Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson4);
-        Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson5);
-        Result<String> result6 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson6);
+        String tempStr = "admin-datalight";
+        Result<String> result1 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson1, tempStr, tempStr);
+        Result<String> result2 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson2, tempStr, tempStr);
+        Result<String> result3 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson3, tempStr, tempStr);
+        Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson4, tempStr, tempStr);
+        Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson5, tempStr, tempStr);
+        Result<String> result6 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson6, tempStr, tempStr);
 
         log.info(result1.toString());
         log.info(result2.toString());
@@ -147,5 +160,13 @@ public class GrafanaTest {
         log.info(result4.toString());
         log.info(result5.toString());
         log.info(result6.toString());
+    }
+
+    @Test
+    public void grafanaAllTest() {
+        this.remoteInvokeGrafanaHandler.initGrafanaSettings(
+                "node01",
+                "9090"
+        );
     }
 }

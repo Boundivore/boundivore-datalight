@@ -1,4 +1,4 @@
-package cn.ucloud.udp.utils;
+package cn.boundivore.dl.service.master.tools;
 
 import cn.boundivore.dl.base.result.ErrorMessage;
 import cn.boundivore.dl.base.result.Result;
@@ -39,11 +39,6 @@ public class GrafanaHandler {
         this.adminPassword = adminPassword;
     }
 
-    /**
-     * 1.create organization
-     *
-     * @return
-     */
     public Result<String> createOrgRequest(String orgName) {
         val map = new HashMap<String, Object>() {
             {
@@ -54,13 +49,6 @@ public class GrafanaHandler {
         return post("/api/orgs", map);
     }
 
-    /**
-     * 2.create user
-     *
-     * @param userName
-     * @param loginName
-     * @return
-     */
     public Result<String> createUserRequest(String userName, String loginName, String password) {
 
         val map = new HashMap<String, Object>() {
@@ -74,14 +62,6 @@ public class GrafanaHandler {
         return post("/api/admin/users", map);
     }
 
-    /**
-     * 3.add user to organization
-     *
-     * @param loginName
-     * @param role
-     * @param orgId
-     * @return
-     */
     public Result<String> addUser2OrgRequest(String loginName, String role, String orgId) {
         val map = new HashMap<String, Object>() {
             {
@@ -94,25 +74,10 @@ public class GrafanaHandler {
     }
 
 
-    /**
-     * 4、delete user from organization
-     *
-     * @param orgId
-     * @param userId
-     * @return
-     */
     public Result<String> deleteUserFromOrgRequest(String orgId, String userId) {
         return delete(String.format("/api/orgs/%s/users/%s", orgId, userId));
     }
 
-
-    /**
-     * 5、create Prometheus datasources
-     *
-     * @param orgId
-     * @param prometheusBaseUri
-     * @return
-     */
     public Result<String> createPrometheusDataSourcesRequest(String orgId, String prometheusBaseUri, String loginName, String password) {
         val map = new HashMap<String, Object>() {
             {
@@ -141,13 +106,6 @@ public class GrafanaHandler {
         return post("/api/datasources", map, loginName, password);
     }
 
-    /**
-     * 5.1、create InfluxDB datasources
-     *
-     * @param orgId
-     * @param influxDBBaseUri
-     * @return
-     */
     public Result<String> createInfluxDBDataSourcesRequest(String orgId, String influxDBBaseUri, String loginName, String password) {
         val map = new HashMap<String, Object>() {
             {
@@ -176,25 +134,10 @@ public class GrafanaHandler {
         return post("/api/datasources", map, loginName, password);
     }
 
-    /**
-     * 6、update panel by templated
-     *
-     * @param dashboard
-     * @return
-     */
     public Result<String> updateDashboardRequest(String dashboard, String loginName, String password) {
         return post("/api/dashboards/db", dashboard, loginName, password);
     }
 
-    /**
-     * 7、update role of the user in organization
-     *
-     * @param orgId
-     * @param userId
-     * @param loginName
-     * @param role
-     * @return
-     */
     public Result<String> updateUserInOrgRequest(String orgId, String userId, String loginName, String role) {
         val map = new HashMap<String, Object>() {
             {
@@ -207,33 +150,15 @@ public class GrafanaHandler {
     }
 
 
-    /**
-     * get users in org
-     *
-     * @param orgId
-     * @return
-     */
     public Result<String> getUserInOrg(String orgId) {
         return get(String.format("/api/orgs/%s/users", orgId));
     }
 
-    /**
-     * get org by orgName
-     *
-     * @param orgName
-     * @return
-     */
     public Result<String> getOrgByName(String orgName) {
         return get(String.format("/api/orgs/name/%s", orgName));
     }
 
 
-    /**
-     * get user by userName
-     *
-     * @param loginName
-     * @return
-     */
     public Result<String> getUserByName(String loginName) {
         val map = new HashMap<String, Object>() {
             {
@@ -243,11 +168,6 @@ public class GrafanaHandler {
         return get("/api/users/lookup", map);
     }
 
-    /**
-     * search all users
-     *
-     * @return
-     */
     public Result<String> searchAllUsers() {
         val map = new HashMap<String, Object>() {
             {
@@ -258,41 +178,20 @@ public class GrafanaHandler {
         return get("/api/users", map);
     }
 
-    /**
-     * search all organization
-     *
-     * @return
-     */
     public Result<String> searchAllOrgs() {
         return get("/api/orgs");
     }
 
 
-    /**
-     * delete user
-     *
-     * @param userId
-     * @return
-     */
     public Result<String> deleteUser(String userId) {
         return delete(String.format("/api/admin/users/%s", userId));
     }
 
-    /**
-     * delete organization
-     *
-     * @param orgId
-     * @return
-     */
+
     public Result<String> deleteOrg(String orgId) {
         return delete(String.format("/api/orgs/%s", orgId));
     }
 
-    /**
-     * The API is buggy and should not be used for now
-     * @param orgId
-     * @return
-     */
 //    public Result<String> switchOrg(String orgId){
 //        val map = new HashMap<String, Object>(){
 //            {
@@ -303,13 +202,6 @@ public class GrafanaHandler {
 //    }
 
 
-    /**
-     * changes the password for the user
-     *
-     * @param oldPassword
-     * @param newPassword
-     * @return
-     */
     public Result<String> changePassword(String loginName, String oldPassword, String newPassword) {
         val map = new HashMap<String, Object>() {
             {
@@ -328,18 +220,18 @@ public class GrafanaHandler {
 
 
     @SneakyThrows
-    private synchronized Result<String> post(String relativePath, Map<String, Object> bodyMap) {
+    private Result<String> post(String relativePath, Map<String, Object> bodyMap) {
         return post(relativePath, bodyMap, adminUserName, adminPassword);
     }
 
     @SneakyThrows
-    private synchronized Result<String> post(String relativePath, String body) {
+    private Result<String> post(String relativePath, String body) {
         return post(relativePath, body, adminUserName, adminPassword);
     }
 
 
     @SneakyThrows
-    private synchronized Result<String> post(String relativePath, Map<String, Object> bodyMap, String loginName, String password) {
+    private Result<String> post(String relativePath, Map<String, Object> bodyMap, String loginName, String password) {
         val body = objectMapper.writer().writeValueAsString(bodyMap);
 
         val headers = headers(loginName, password);
@@ -351,7 +243,7 @@ public class GrafanaHandler {
     }
 
     @SneakyThrows
-    private synchronized Result<String> post(String relativePath, String body, String loginName, String password) {
+    private Result<String> post(String relativePath, String body, String loginName, String password) {
 
         val headers = headers(loginName, password);
         val entity = entity(body, headers);
@@ -362,7 +254,7 @@ public class GrafanaHandler {
 
 
     @SneakyThrows
-    private synchronized Result<String> get(String relativePath, Map<String, Object> paramsMap) {
+    private Result<String> get(String relativePath, Map<String, Object> paramsMap) {
         val headers = headers(adminUserName, adminPassword);
         val entity = entity(headers);
 
@@ -378,7 +270,7 @@ public class GrafanaHandler {
     }
 
     @SneakyThrows
-    private synchronized Result<String> get(String relativePath) {
+    private Result<String> get(String relativePath) {
         val headers = headers(adminUserName, adminPassword);
         val entity = entity(headers);
 
@@ -389,7 +281,7 @@ public class GrafanaHandler {
 
 
     @SneakyThrows
-    private synchronized Result<String> delete(String relativePath) {
+    private Result<String> delete(String relativePath) {
         val headers = headers(adminUserName, adminPassword);
         val entity = entity(headers);
 
@@ -399,7 +291,7 @@ public class GrafanaHandler {
     }
 
     @SneakyThrows
-    private synchronized Result<String> patch(String relativePath, Map<String, Object> bodyMap) {
+    private Result<String> patch(String relativePath, Map<String, Object> bodyMap) {
         val body = objectMapper.writer().writeValueAsString(bodyMap);
 
         val headers = headers(adminUserName, adminPassword);
@@ -411,12 +303,12 @@ public class GrafanaHandler {
     }
 
     @SneakyThrows
-    private synchronized Result<String> put(String relativePath, Map<String, Object> bodyMap) {
+    private Result<String> put(String relativePath, Map<String, Object> bodyMap) {
         return put(relativePath, bodyMap, adminUserName, adminPassword);
     }
 
     @SneakyThrows
-    private synchronized Result<String> put(String relativePath, Map<String, Object> bodyMap, String loginName, String password) {
+    private Result<String> put(String relativePath, Map<String, Object> bodyMap, String loginName, String password) {
         val body = objectMapper.writer().writeValueAsString(bodyMap);
 
         val headers = headers(loginName, password);
@@ -428,15 +320,15 @@ public class GrafanaHandler {
     }
 
 
-    private synchronized HttpEntity<String> entity(String body, HttpHeaders headers) {
+    private HttpEntity<String> entity(String body, HttpHeaders headers) {
         return new HttpEntity<>(body, headers);
     }
 
-    private synchronized HttpEntity<String> entity(HttpHeaders headers) {
+    private HttpEntity<String> entity(HttpHeaders headers) {
         return new HttpEntity<>(headers);
     }
 
-    private synchronized HttpHeaders headers(String user, String password) {
+    private HttpHeaders headers(String user, String password) {
         return new HttpHeaders() {
             {
                 add("Accept", "application/json");
@@ -446,7 +338,7 @@ public class GrafanaHandler {
         };
     }
 
-    private synchronized String basicAuthValue(String user, String password) {
+    private String basicAuthValue(String user, String password) {
         return String.format("Basic %s", Base64.encode(user + ":" + password));
     }
 }

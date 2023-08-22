@@ -29,7 +29,7 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  * Modification time:
  * Version: V1.0
  */
-public enum GrafanaRoleEnum implements IBaseEnum {
+public enum GrafanaUserTypeEnum implements IBaseEnum {
 
     ADMIN("0", "唯一主账号"),
     ADMIN_ORG("1", "对应集群中的主账号(即对应 org 中主账号)"),
@@ -39,7 +39,7 @@ public enum GrafanaRoleEnum implements IBaseEnum {
     private final String code;
     private final String message;
 
-    GrafanaRoleEnum(String code, String message) {
+    GrafanaUserTypeEnum(String code, String message) {
         this.code = code;
         this.message = message;
     }

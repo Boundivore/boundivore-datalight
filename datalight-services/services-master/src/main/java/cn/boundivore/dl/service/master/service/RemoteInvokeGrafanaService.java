@@ -18,7 +18,8 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.api.third.define.IThirdGrafanaAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
-import cn.boundivore.dl.base.enumeration.impl.GrafanaRoleEnum;
+import cn.boundivore.dl.base.enumeration.impl.GrafanaUserRoleEnum;
+import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.utils.JsonUtil;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
@@ -33,7 +34,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Description: 通过 Feign 远程调用指定节点上的 IThirdGrafanaAPI 接口的一系列封装
@@ -127,6 +132,46 @@ public class RemoteInvokeGrafanaService {
                                 .header(ACCEPT, APPLICATION_JSON)
                                 .header(CONTENT_TYPE, APPLICATION_JSON)
                                 .header(AUTHORIZATION, basicAuthValue(this.grafanaUser, this.grafanaPassword))
+                )
+                .target(
+                        IThirdGrafanaAPI.class,
+                        String.format(
+                                "http://%s:%s%s",
+                                this.grafanaIp,
+                                this.grafanaPort,
+                                IUrlPrefixConstants.NONE_PREFIX
+                        )
+                );
+    }
+
+    /**
+     * Description: Feign 远程调用指定节点的 IThirdGrafanaAPI 的接口，同时临时指定 BasicAuth 的用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     * add("Accept", "application/json");
+     * add("Content-Type", "application/json");
+     * add("Authorization", basicAuthValue(user, password));
+     *
+     * @return IWorkerExecAPI 可调用 API 实例
+     */
+    private IThirdGrafanaAPI iThirdGrafanaAPI(String grafanaUser, String grafanaPassword) {
+        return feignBuilder
+                .options(
+                        RequestOptionsGenerator.getRequestOptions(
+                                CONNECT_TIMEOUT,
+                                READ_TIMEOUT
+                        )
+                )
+                .requestInterceptor(
+                        template -> template
+                                .header(ACCEPT, APPLICATION_JSON)
+                                .header(CONTENT_TYPE, APPLICATION_JSON)
+                                .header(AUTHORIZATION, basicAuthValue(grafanaUser, grafanaPassword))
                 )
                 .target(
                         IThirdGrafanaAPI.class,
@@ -296,9 +341,11 @@ public class RemoteInvokeGrafanaService {
      */
     public Result<String> createDataSources(String orgId,
                                             String prometheusHost,
-                                            String prometheusPort) {
+                                            String prometheusPort,
+                                            String grafanaUser,
+                                            String grafanaPassword) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.createDataSources(
+        return this.iThirdGrafanaAPI(grafanaUser, grafanaPassword).createDataSources(
                 MapUtil.of(
                         new Object[][]{
                                 {"id", null},
@@ -309,8 +356,8 @@ public class RemoteInvokeGrafanaService {
                                 {"typeLogoUrl", ""},
                                 {"access", "proxy"},
                                 {"url", String.format("http://%s:%s", prometheusHost, prometheusPort)},
-                                {"user", "admin"},
-                                {"password", "admin"},
+                                {"user", grafanaUser},
+                                {"password", grafanaPassword},
                                 {"database", ""},
                                 {"basicAuth", false},
                                 {"basicAuthUser", ""},
@@ -339,9 +386,9 @@ public class RemoteInvokeGrafanaService {
      * @param dashboard dashboard 完整文件
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createOrUpdateDashboard(String dashboard) {
+    public Result<String> createOrUpdateDashboard(String dashboard, String grafanaUser, String grafanaPassword) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.createOrUpdateDashboard(
+        return this.iThirdGrafanaAPI(grafanaUser, grafanaPassword).createOrUpdateDashboard(
                 MapUtil.of(
                         new Object[][]{
                                 {"dashboard", JsonUtil.getMapObj(dashboard)},
@@ -563,34 +610,4 @@ public class RemoteInvokeGrafanaService {
         return this.iThirdGrafanaAPI.getStats();
     }
 
-    /**
-     * Description:
-     * 1、修改 Grafana 主账号（userId1）密码
-     * 2、为当前集群创建 Org，并获取 orgId
-     * 3、为当前集群 Org 创建用户（Admin），并获取该用户的 userId2
-     * 4、将 userId2 加入到 orgId 中
-     * 5、将 userId2 从主 org 中移除
-     * 6、为当前集群 Org 创建用户（Editor），并获取该用户的 userId3
-     * 7、将 userId3 加入到 orgId 中
-     * 8、将 userId3 从主 org 中移除
-     * 9、使用 userId2 的账号密码创建数据源，名称为 MONITOR-Prometheus，且为默认
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param
-     * @return
-     */
-    public void initGrafanaSettings() {
-        try {
-            GrafanaUser.getGrafanaUser("", GrafanaRoleEnum.ADMIN);
-        } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-            throw new BException(e.getMessage());
-        }
-    }
 }
