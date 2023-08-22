@@ -169,5 +169,7 @@ public class GrafanaTest {
                 "node01",
                 "9090"
         );
+
+        this.createOrUpdateDashboard();
     }
 }
