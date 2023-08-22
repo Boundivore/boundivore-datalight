@@ -18,6 +18,7 @@ package cn.boundivore.dl.plugin.monitor.config;
 
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
+import cn.hutool.core.lang.Assert;
 
 import java.io.File;
 
@@ -42,6 +43,38 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
     public String config(File file, String replacedTemplated) {
         super.printFilename(file);
 
-        return replacedTemplated;
+        String grafanaHomeDashboardFilePath = this.grafanaHomeDashboardFilePath();
+
+        return replacedTemplated
+                .replace(
+                        "{{default_home_dashboard_path}}",
+                        grafanaHomeDashboardFilePath
+                )
+                ;
+    }
+
+    /**
+     * Description: 获取 Grafana 默认家页面的配置文件路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Grafana 默认家页面的配置文件路径
+     */
+    private String grafanaHomeDashboardFilePath() {
+        String serviceDir = super.pluginConfig.getUnixEnv().getSERVICE_DIR();
+        Assert.notNull(
+                serviceDir,
+                () -> new RuntimeException("无法读取环境变量 SERVICE_DIR")
+        );
+
+        return String.format(
+                "%s/MONITOR/grafana/conf/GrafanaDefaultHome.json",
+                serviceDir
+        );
     }
 }
