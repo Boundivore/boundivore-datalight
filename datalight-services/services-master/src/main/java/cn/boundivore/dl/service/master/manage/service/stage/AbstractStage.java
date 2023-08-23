@@ -70,6 +70,7 @@ public abstract class AbstractStage implements IStage {
             this.updateStageExecutionStatus(ExecStateEnum.RUNNING);
 
             //执行前：变更当前服务起始状态到数据库
+            //TODO 考虑如果执行的不是部署任务，则成功或失败状态该如何变更
             this.stageMeta.setCurrentState(SCStateEnum.CHANGING);
             this.jobService.switchServiceState(this.stageMeta);
 

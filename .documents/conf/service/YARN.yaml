@@ -15,6 +15,36 @@ datalight:
 
     config-event-handler-jar: 'plugins-yarn-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.yarn.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-yarn-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
     components:
       - name: ResourceManager1
         priority: 1
@@ -27,19 +57,10 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-yarn-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
-                name: '部署后启动 NameNode1'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'start' ]
+                name: '部署后启动 ResourceManager1'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -48,9 +69,9 @@ datalight:
           - type: START
             steps:
               - type: SCRIPT
-                name: '启动 NameNode1'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'start' ]
+                name: '启动 ResourceManager1'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManager', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -59,9 +80,9 @@ datalight:
           - type: STOP
             steps:
               - type: SCRIPT
-                name: '停止 NameNode1'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'stop' ]
+                name: '停止 ResourceManager1'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'stop' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -70,9 +91,9 @@ datalight:
           - type: RESTART
             steps:
               - type: SCRIPT
-                name: '重启 NameNode1'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'restart' ]
+                name: '重启 ResourceManager1'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -99,9 +120,9 @@ datalight:
                 sleep: 0
 
               - type: SCRIPT
-                name: '部署后启动 NameNode2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'start' ]
+                name: '部署后启动 ResourceManage2'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -110,9 +131,9 @@ datalight:
           - type: START
             steps:
               - type: SCRIPT
-                name: '启动 NameNode2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'start' ]
+                name: '启动 ResourceManage2'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -121,9 +142,9 @@ datalight:
           - type: STOP
             steps:
               - type: SCRIPT
-                name: '停止 NameNode2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'stop' ]
+                name: '停止 ResourceManage2'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'stop' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -132,9 +153,9 @@ datalight:
           - type: RESTART
             steps:
               - type: SCRIPT
-                name: '重启 NameNode2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'NameNode', 'restart' ]
+                name: '重启 ResourceManage2'
+                shell: 'yarn-operation.sh'
+                args: [ 'ResourceManage', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -161,9 +182,9 @@ datalight:
                 sleep: 0
 
               - type: SCRIPT
-                name: '部署后启动 DataNode'
-                shell: 'hdfs-operation.sh'
-                args: [ 'DataNode', 'start' ]
+                name: '部署后启动 NodeManager'
+                shell: 'yarn-operation.sh'
+                args: [ 'NodeManager', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -172,9 +193,9 @@ datalight:
           - type: START
             steps:
               - type: SCRIPT
-                name: '启动 DataNode'
-                shell: 'hdfs-operation.sh'
-                args: [ 'DataNode', 'start' ]
+                name: '启动 NodeManager'
+                shell: 'yarn-operation.sh'
+                args: [ 'NodeManager', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -183,9 +204,9 @@ datalight:
           - type: STOP
             steps:
               - type: SCRIPT
-                name: '停止 DataNode'
-                shell: 'hdfs-operation.sh'
-                args: [ 'DataNode', 'stop' ]
+                name: '停止 NodeManager'
+                shell: 'yarn-operation.sh'
+                args: [ 'NodeManager', 'stop' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -194,9 +215,9 @@ datalight:
           - type: RESTART
             steps:
               - type: SCRIPT
-                name: '重启 DataNode'
-                shell: 'hdfs-operation.sh'
-                args: [ 'DataNode', 'restart' ]
+                name: '重启 NodeManager'
+                shell: 'yarn-operation.sh'
+                args: [ 'NodeManager', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -213,10 +234,9 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-yarn-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
+              - type: COMMAND
+                name: '正在完成 Client 部署'
+                shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'

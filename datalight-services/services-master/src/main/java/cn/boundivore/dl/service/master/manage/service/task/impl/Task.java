@@ -71,6 +71,9 @@ public class Task extends AbstractTask {
                     case SCRIPT:
                         output = super.script(stepMeta);
                         break;
+                    case COMMON_SCRIPT:
+                        output = super.commonScript(stepMeta);
+                        break;
                     case JAR:
                         output = super.jar(stepMeta);
                         break;

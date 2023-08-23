@@ -92,6 +92,15 @@ public class YamlServiceDetail {
         @JsonProperty(value = "config-event-handler-clazz", required = true)
         private String configEventHandlerClazz;
 
+        /**
+         * 服务操作，即组件通用操作
+         */
+        @JsonProperty(value = "initialize", required = true)
+        private Initialize initialize;
+
+        /**
+         * 组件操作
+         */
         @JsonProperty(value = "components", required = true)
         private List<Component> components;
     }
@@ -106,6 +115,11 @@ public class YamlServiceDetail {
 
     }
 
+    @Data
+    public static class Initialize {
+        @JsonProperty(value = "steps", required = true)
+        private List<Step> steps;
+    }
 
     @Data
     public static class Component {

@@ -14,42 +14,42 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.base.enumeration.impl;
+package cn.boundivore.dl.service.master.test;
 
-import cn.boundivore.dl.base.enumeration.IBaseEnum;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
- * Description: StepTypeEnum
+ * Description: 临时 CoreJava 测试
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/7
+ * Creation time: 2023/8/23
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-public enum StepTypeEnum implements IBaseEnum {
+public class CoreJavaTest {
 
-    SCRIPT("0", "执行 .plugins/<SERVICE_NAME>/script目录下脚本"),
-    COMMON_SCRIPT("1", "执行./script目录下脚本"),
-    COMMAND("2", "执行指定脚本或命令"),
-    JAR("3", "执行指定 Jar 包");
+    @Test
+    public void javaPerformanceTest() {
+        List<Integer> initList1 = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            initList1.add(i);
+        }
 
-    private final String code;
-    private final String message;
+        List<Integer> initList2 = new ArrayList<>();
+        for (int i = 11; i <= 20; i++) {
+            initList2.add(i);
+        }
 
-    StepTypeEnum(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+        List<Integer> resultList = new LinkedList<>(initList1);
+        resultList.addAll(0, initList2);
 
-    @Override
-    public String getCode() {
-        return code;
-    }
+        System.out.println(resultList);
 
-    @Override
-    public String getMessage() {
-        return message;
     }
 }

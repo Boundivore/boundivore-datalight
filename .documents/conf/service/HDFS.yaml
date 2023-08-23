@@ -25,6 +25,36 @@ datalight:
 
     config-event-handler-jar: 'plugins-hdfs-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.hdfs.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-hdfs-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
     components:
       - name: JournalNode
         priority: 1
@@ -37,15 +67,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 JournalNode'
                 shell: 'hdfs-operation.sh'
@@ -99,15 +120,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '格式化 NameNode1'
                 shell: 'hdfs-namenode1-format.sh'
@@ -170,15 +182,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '待命 NameNode2'
                 shell: 'hdfs-namenode2-standby.sh'
@@ -230,26 +233,17 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: ZKFailoverController1
+      - name: ZKFailoverController
         priority: 4
-        max: 1
-        min: 1
-        mutexes: [ 'ZKFailoverController2' ]
+        max: 2
+        min: 2
+        mutexes: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '格式化 ZKFC'
                 shell: 'hdfs-zkfc-format.sh'
@@ -260,7 +254,7 @@ datalight:
                 sleep: 1000
 
               - type: SCRIPT
-                name: '部署后启动 ZKFailoverController1'
+                name: '部署后启动 ZKFailoverController'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'start' ]
                 interactions: [ ]
@@ -271,7 +265,7 @@ datalight:
           - type: START
             steps:
               - type: SCRIPT
-                name: '启动 ZKFailoverController1'
+                name: '启动 ZKFailoverController'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'start' ]
                 interactions: [ ]
@@ -282,7 +276,7 @@ datalight:
           - type: STOP
             steps:
               - type: SCRIPT
-                name: '停止 ZKFailoverController1'
+                name: '停止 ZKFailoverController'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'stop' ]
                 interactions: [ ]
@@ -293,69 +287,7 @@ datalight:
           - type: RESTART
             steps:
               - type: SCRIPT
-                name: '重启 ZKFailoverController1'
-                shell: 'hdfs-operation.sh'
-                args: [ 'ZKFailoverController', 'restart' ]
-                interactions: [ ]
-                exits: '0'
-                timeout: 60000
-                sleep: 1000
-
-      - name: ZKFailoverController2
-        priority: 5
-        max: 1
-        min: 1
-        mutexes: [ 'ZKFailoverController1' ]
-        actions:
-          - type: DEPLOY
-            start-state: DEPLOYING
-            success-state: STARTED
-            fail-state: SELECTED
-            steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
-              - type: SCRIPT
-                name: '部署后启动 ZKFailoverController2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'ZKFailoverController', 'start' ]
-                interactions: [ ]
-                exits: '0'
-                timeout: 60000
-                sleep: 1000
-
-          - type: START
-            steps:
-              - type: SCRIPT
-                name: '启动 ZKFailoverController2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'ZKFailoverController', 'start' ]
-                interactions: [ ]
-                exits: '0'
-                timeout: 60000
-                sleep: 1000
-
-          - type: STOP
-            steps:
-              - type: SCRIPT
-                name: '停止 ZKFailoverController2'
-                shell: 'hdfs-operation.sh'
-                args: [ 'ZKFailoverController', 'stop' ]
-                interactions: [ ]
-                exits: '0'
-                timeout: 60000
-                sleep: 1000
-
-          - type: RESTART
-            steps:
-              - type: SCRIPT
-                name: '重启 ZKFailoverController2'
+                name: '重启 ZKFailoverController'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'restart' ]
                 interactions: [ ]
@@ -364,7 +296,7 @@ datalight:
                 sleep: 1000
 
       - name: DataNode
-        priority: 6
+        priority: 5
         max: -1
         min: 1
         mutexes: [ ]
@@ -374,15 +306,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 DataNode'
                 shell: 'hdfs-operation.sh'
@@ -426,7 +349,7 @@ datalight:
                 sleep: 1000
 
       - name: HttpFS
-        priority: 7
+        priority: 6
         max: 2
         min: 2
         mutexes: [ ]
@@ -436,15 +359,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 HttpFS'
                 shell: 'hdfs-operation.sh'
@@ -488,7 +402,7 @@ datalight:
                 sleep: 1000
 
       - name: HDFSClient
-        priority: 8
+        priority: 7
         max: -1
         min: 0
         mutexes: [ ]
@@ -498,10 +412,9 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-hdfs-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+              - type: COMMAND
+                name: '正在完成 Client 部署'
+                shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'

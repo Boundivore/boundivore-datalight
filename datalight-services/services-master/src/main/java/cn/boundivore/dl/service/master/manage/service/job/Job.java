@@ -16,13 +16,12 @@
  */
 package cn.boundivore.dl.service.master.manage.service.job;
 
+import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
-import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
-import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.service.master.converter.IStepConverter;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
@@ -36,9 +35,6 @@ import cn.boundivore.dl.service.master.manage.service.task.ITask;
 import cn.boundivore.dl.service.master.manage.service.task.impl.Task;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
-import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
-import cn.boundivore.dl.service.master.service.RemoteInvokePrometheusService;
-import cn.boundivore.dl.service.master.service.RemoteInvokeWorkerService;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
@@ -46,8 +42,7 @@ import cn.hutool.core.util.IdUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -197,12 +192,44 @@ public class Job extends Thread {
                 .setTaskMetaMap(new LinkedHashMap<>());
 
 
-        //根据意图中待部署的组件列表，初始化若干 TaskMeta（同一个组件，在不同节点上的部署，属于不同 TaskMeta 实例）
+
+
+        /* 如果满足以下条件，则需要为当前异步 Job 中的每一个节点的、每一个服务的 第一个 Task 添加一个 通用的 Step 操作：
+            1、当前为部署操作；
+            2、当前所在节点在此次操作之前，该不存在任何已存在的组件；
+            3、当前为该节点、该服务的第一个 Task；
+        */
+
+        // 用于记录该服务目前在哪些节点执行过初始化步骤
+        final Set<Long> haveInitServiceSet = new HashSet<>();
+        if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) { // 判断是否为部署操作
+            // 判断当前服务在当前节点是否为第一次部署
+            List<SCStateEnum> unDeployedComponentStateEnumList = CollUtil.newArrayList(
+                    SCStateEnum.SELECTED,
+                    SCStateEnum.UNSELECTED,
+                    SCStateEnum.REMOVED
+            );
+
+            haveInitServiceSet.addAll(
+                    this.jobService.getTDlComponentListByServiceName(
+                                    this.jobMeta.getClusterMeta().getCurrentClusterId(),
+                                    stageMeta.getServiceName()
+                            )
+                            .stream()
+                            .filter(i -> !unDeployedComponentStateEnumList.contains(i.getComponentState()))
+                            .map(TDlComponent::getNodeId)
+                            .collect(Collectors.toSet())
+            );
+        }
+
         componentList.forEach(i -> {
+            //根据意图中待部署的组件列表，初始化若干 TaskMeta（同一个组件，在不同节点上的部署，属于不同 TaskMeta 实例）
             List<TaskMeta> taskMetaList = this.initTaskMeta(
                     stageMeta,
-                    i
+                    i,
+                    haveInitServiceSet // 用于记录该服务目前在哪些节点执行过初始化步骤
             );
+
             taskMetaList.forEach(
                     taskMeta -> stageMeta.getTaskMetaMap().put(taskMeta.getId(), taskMeta)
             );
@@ -224,10 +251,12 @@ public class Job extends Thread {
      *
      * @param stageMeta          Stage 元数据信息
      * @param intentionComponent 意图中的组件信息
+     * @param haveInitServiceSet 用于记录该服务目前在哪些节点执行过初始化步骤
      * @return List<TaskMeta>
      */
     private List<TaskMeta> initTaskMeta(final StageMeta stageMeta,
-                                        final Intention.Component intentionComponent) {
+                                        final Intention.Component intentionComponent,
+                                        final Set<Long> haveInitServiceSet) {
         String serviceName = stageMeta.getServiceName();
         String componentName = intentionComponent.getComponentName();
         Long priority = intentionComponent.getPriority();
@@ -260,7 +289,7 @@ public class Job extends Thread {
                 .map(i -> {
                             TaskMeta taskMeta = new TaskMeta()
                                     .setStageMeta(stageMeta)
-                                    .setWait(false)//TODO 传入必要参数，比如滚动重启这样的需求
+                                    .setWait(false)//TODO 如需滚动重启等需求，可控制该参数
                                     .setId(IdUtil.getSnowflakeNextId())
                                     .setName(String.format(
                                                     "%s:%s[%s]",
@@ -278,6 +307,7 @@ public class Job extends Thread {
 
                                     .setServiceName(serviceName)
                                     .setComponentName(componentName)
+                                    .setFirstDeployInNode(!haveInitServiceSet.contains(i.getNodeId()))
                                     .setStartState(finalStartState)
                                     .setFailState(finalFailState)
                                     .setSuccessState(finalSuccessState)
@@ -285,6 +315,9 @@ public class Job extends Thread {
                                     .setTaskStateEnum(ExecStateEnum.SUSPEND)
                                     .setTaskResult(new TaskMeta.TaskResult(false))
                                     .setStepMetaMap(new LinkedHashMap<>());
+
+                            // 当前服务、当前组件、当前节点，判断是否服务初始化后，必将执行初始化，因此，添加到已初始化列表
+                            haveInitServiceSet.add(i.getNodeId());
 
                             //同一个 TaskMeta 中，会根据 ActionTypeEnum，封装一组 StepMeta
                             List<StepMeta> stepMetaList = this.initStepMeta(taskMeta);
@@ -301,7 +334,7 @@ public class Job extends Thread {
 
 
     /**
-     * Description: 初始化当前 StepMeta，StepMeta 为具体某个Service，某个 Compoent，某个 Node，某个 Action 的一个操作；
+     * Description: 初始化当前 StepMeta，StepMeta 为具体某个Service，某个 Component，某个 Node，某个 Action 的一个操作；
      * 因为 TaskMeta 会包含一组 StepMeta，因此返回 List<StepMeta>
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -325,7 +358,15 @@ public class Job extends Thread {
                 i -> i.getType() == taskMeta.getActionTypeEnum()
         );
 
-        return action.getSteps()
+        List<YamlServiceDetail.Step> finalSteps = new LinkedList<>(action.getSteps());
+        if (taskMeta.isFirstDeployInNode()) {
+            YamlServiceDetail.Initialize initialize = ResolverYamlServiceDetail.SERVICE_MAP
+                    .get(taskMeta.getServiceName()).getInitialize();
+
+            finalSteps.addAll(0, initialize.getSteps());
+        }
+
+        return finalSteps
                 .stream()
                 //转换器转换部分属性值，其余属性值通过 set 方法设定
                 .map(i -> iStepConverter.convert2StepMeta(i)
@@ -423,16 +464,45 @@ public class Job extends Thread {
         }
 
         ExecStateEnum execStateEnum;
-        try{
+        try {
             // 重配置 Prometheus: 异步任务最后，重新加载 Prometheus 配置
-            this.remoteInvokePrometheusHandler.invokePrometheusReload(
-                    this.jobMeta
-                            .getClusterMeta()
-                            .getCurrentClusterId()
-            );
+            Optional<StageMeta> monitorStageMetaOptional = this.jobMeta.getStageMetaMap()
+                    .values()
+                    .stream()
+                    .filter(i -> i.getServiceName().equals("MONITOR"))
+                    .findFirst();
 
-            // 重新配置 Grafana: 异步任务最后，以幂等方式重新配置 Grafana
-            this.remoteInvokeGrafanaHandler.initGrafanaSettings(jobMeta.getClusterMeta().getCurrentClusterId());
+            if (monitorStageMetaOptional.isPresent()) {
+                StageMeta monitorStageMeta = monitorStageMetaOptional.get();
+
+                Optional<TaskMeta> prometheusTaskMetaOptional = monitorStageMeta.getTaskMetaMap()
+                        .values()
+                        .stream()
+                        .filter(i -> i.getComponentName().equals("Prometheus"))
+                        .findFirst();
+
+                if (prometheusTaskMetaOptional.isPresent()) {
+                    // 重新加载 Prometheus 配置
+                    this.remoteInvokePrometheusHandler.invokePrometheusReload(
+                            this.jobMeta
+                                    .getClusterMeta()
+                                    .getCurrentClusterId()
+                    );
+                }
+
+                Optional<TaskMeta> grafanaTaskMetaOptional = monitorStageMeta.getTaskMetaMap()
+                        .values()
+                        .stream()
+                        .filter(i -> i.getComponentName().equals("Grafana"))
+                        .findFirst();
+
+                if (grafanaTaskMetaOptional.isPresent()) {
+                    // 重新配置 Grafana: 异步任务最后，以幂等方式重新配置 Grafana
+                    this.remoteInvokeGrafanaHandler.initGrafanaSettings(
+                            jobMeta.getClusterMeta().getCurrentClusterId()
+                    );
+                }
+            }
 
             //记录 Job 结束时间(自动计算耗时)
             this.jobMeta.setEndTime(System.currentTimeMillis());
@@ -446,7 +516,9 @@ public class Job extends Thread {
             execStateEnum = this.jobMeta.getJobResult().isSuccess() ?
                     ExecStateEnum.OK :
                     ExecStateEnum.ERROR;
+
             this.jobService.saveLog(jobMeta, "MONITOR settings ready", null);
+
         } catch (Exception e) {
             log.error(ExceptionUtil.stacktraceToString(e));
             this.jobService.saveLog(jobMeta, null, e.getMessage());

@@ -28,6 +28,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 
+import static cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService.GRAFANA_BASE_ORG_NAME;
+
 /**
  * Description: 测试 Grafana API
  * Created by: Boundivore
@@ -53,6 +55,7 @@ public class GrafanaTest {
     private final static String GRAFANA_USER_ADMIN = "admin";
     private final static String GRAFANA_PASSWORD_ADMIN = "admin";
 
+
     @PostConstruct
     public void init() {
         this.remoteInvokeGrafanaService.init(
@@ -66,7 +69,7 @@ public class GrafanaTest {
     @Test
     public void createOrg() {
         Result<String> result = this.remoteInvokeGrafanaService.createOrg(
-                "DataLight"
+                GRAFANA_BASE_ORG_NAME
         );
 
         log.info(result.toString());

@@ -54,6 +54,9 @@ public class RemoteInvokeGrafanaService {
     private static final long CONNECT_TIMEOUT = 2 * 1000L;
     private static final long READ_TIMEOUT = 5 * 1000L;
 
+    public final static String GRAFANA_BASE_ORG_NAME = "datalight";
+
+
     private final Feign.Builder feignBuilder;
 
     // Grafana IP 地址
@@ -66,15 +69,6 @@ public class RemoteInvokeGrafanaService {
     private String grafanaPassword;
 
     private IThirdGrafanaAPI iThirdGrafanaAPI;
-
-    private final static String ADMIN_USER = "admin";
-    private final static String ADMIN_PASSWORD = "admin";
-
-    private final static String ADMIN_SUB_USER = "admin-%s";
-    private final static String ADMIN_SUB_PASSWORD = "admin-%s";
-
-    private final static String EDITOR_SUB_USER = "%s";
-    private final static String EDITOR_SUB_PASSWORD = "%s";
 
     public void init(String grafanaIp,
                      String grafanaPort,

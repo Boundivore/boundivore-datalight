@@ -110,7 +110,9 @@ public class MasterDeployService {
         final Map<String, TDlService> tDlServiceMap = this.masterServiceService
                 .getTDlServiceList(clusterId)
                 .stream()
-                .filter(i -> i.getServiceState() == SCStateEnum.SELECTED || i.getServiceState() == SCStateEnum.SELECTED_ADDITION)
+                .filter(i -> i.getServiceState() == SCStateEnum.SELECTED
+                        || i.getServiceState() == SCStateEnum.SELECTED_ADDITION
+                        || i.getServiceState() == SCStateEnum.CHANGING)
                 .collect(Collectors.toMap(TDlService::getServiceName, i -> i));
 
         serviceNameList.forEach(i ->
@@ -118,9 +120,10 @@ public class MasterDeployService {
                         tDlServiceMap.get(i),
                         () -> new BException(
                                 String.format(
-                                        "部署操作必须选择 %s 或 %s 状态的服务",
+                                        "部署操作必须选择处于 %s、%s、%s状态的服务",
                                         SCStateEnum.SELECTED,
-                                        SCStateEnum.SELECTED_ADDITION
+                                        SCStateEnum.SELECTED_ADDITION,
+                                        SCStateEnum.CHANGING
                                 )
                         )
                 )

@@ -82,6 +82,8 @@ public class TaskMeta extends TimeMeta {
 
     private String componentName;
 
+    private boolean isFirstDeployInNode;
+
     private ExecStateEnum taskStateEnum;
 
     private ActionTypeEnum actionTypeEnum;

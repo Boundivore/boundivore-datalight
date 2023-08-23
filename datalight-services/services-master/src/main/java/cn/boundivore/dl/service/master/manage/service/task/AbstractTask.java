@@ -87,9 +87,6 @@ public abstract class AbstractTask implements ITask {
             //更新当前 Task 执行状态到内存缓存和数据库
             this.updateTaskExecutionStatus(ExecStateEnum.RUNNING);
 
-            // 判断并移除历史遗留目录
-            this.initServiceEnv();
-
             //设置 Task 开始执行时，当前组件状态到 TaskMeta 内存缓存中
             this.taskMeta.setCurrentState(this.taskMeta.getStartState());
 
@@ -182,13 +179,49 @@ public abstract class AbstractTask implements ITask {
      */
     protected String script(StepMeta stepMeta) throws BException {
         stepMeta.setShell(
-                this.absoluteCommandPath(stepMeta)
+                this.pluginAbsoluteCommandPath(stepMeta)
         );
         return this.command(stepMeta);
     }
 
     /**
-     * Description: 获取服务脚本的绝对路径
+     * Description: 执行 Step 类型为 COMMON_SCRIPT 的操作
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/5/31
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     *
+     * @param stepMeta 步骤元数据信息
+     * @return boolean 成功返回 true 失败返回 false
+     */
+    protected String commonScript(StepMeta stepMeta) throws BException {
+
+        if (stepMeta.getShell().equals("service-init-env.sh")) {
+            stepMeta.getArgs().clear();
+            stepMeta.getArgs().add(taskMeta.getServiceName());
+            stepMeta.getArgs().add(ResolverYamlServiceDetail.SERVICE_MAP
+                    .get(taskMeta.getServiceName())
+                    .getTgz()
+            );
+        }
+
+        if (stepMeta.getShell().equals("service-remove.sh")) {
+            stepMeta.getArgs().clear();
+            stepMeta.getArgs().add(taskMeta.getServiceName());
+        }
+
+        stepMeta.setShell(
+                this.commonAbsoluteCommandPath(stepMeta)
+        );
+
+
+        return this.command(stepMeta);
+    }
+
+    /**
+     * Description: 获取插件（服务）脚本的绝对路径
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/21
@@ -200,7 +233,29 @@ public abstract class AbstractTask implements ITask {
      * @param stepMeta 当前步骤的元数据信息
      * @return 服务插件下脚本的绝对路径
      */
-    protected String absoluteCommandPath(StepMeta stepMeta) {
+    protected String pluginAbsoluteCommandPath(StepMeta stepMeta) {
+        return String.format(
+                "%s/%s",
+                //TODO FOR TEST
+                SpringContextUtilTest.SCRIPTS_PATH_DIR_REMOTE,
+                stepMeta.getShell()
+        );
+    }
+
+    /**
+     * Description: 获取公共脚本的绝对路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param stepMeta 当前步骤的元数据信息
+     * @return 服务插件下脚本的绝对路径
+     */
+    protected String commonAbsoluteCommandPath(StepMeta stepMeta) {
         return String.format(
                 "%s/%s/scripts/%s",
                 //TODO FOR TEST
@@ -301,148 +356,6 @@ public abstract class AbstractTask implements ITask {
         this.jobService.updateTaskMemory(this.taskMeta, execStateEnum);
         // 更新当前作业的执行状态到数据库
         this.jobService.updateTaskDatabase(this.taskMeta);
-    }
-
-    /**
-     * Description: 移除并初始化当前节点服务相关目录
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/27
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
-    protected void initServiceEnv() {
-        // 判断当前是否需要删除原有目录
-        StageMeta stageMeta = this.taskMeta.getStageMeta();
-        JobMeta jobMeta = stageMeta.getJobMeta();
-        ClusterMeta clusterMeta = jobMeta.getClusterMeta();
-
-        String serviceName =  this.taskMeta.getServiceName();
-        String tgzFilename = ResolverYamlServiceDetail.SERVICE_MAP.get(serviceName).getTgz();
-
-        // 如果该节点该服务没有任何已部署的组件，则清除历史遗留目录
-        if (this.jobService.isInit(
-                clusterMeta.getCurrentClusterId(),
-                this.taskMeta.getNodeId(),
-                this.taskMeta.getServiceName())) {
-
-            // 清除相关目录
-            String removeCmd = this.absoluteRemovedCommandPath();
-            boolean removeResult = this.invokeWorkerExecCmd(
-                    "移除服务遗留目录",
-                    removeCmd,
-                    serviceName,
-                    tgzFilename
-            );
-            Assert.isTrue(
-                    removeResult,
-                    () -> new BException(
-                            String.format(
-                                    "移除服务遗留目录失败: %s, %s",
-                                    this.taskMeta.getServiceName(),
-                                    this.taskMeta.getHostname()
-                            )
-                    )
-            );
-
-            // 创建相关目录
-            String createCmd = this.absoluteCreateEnvCommandPath();
-            boolean createResult = this.invokeWorkerExecCmd(
-                    "初始化服务目录",
-                    createCmd,
-                    serviceName,
-                    tgzFilename
-            );
-            Assert.isTrue(
-                    createResult,
-                    () -> new BException(
-                            String.format(
-                                    "初始化服务目录失败: %s, %s",
-                                    this.taskMeta.getServiceName(),
-                                    this.taskMeta.getHostname()
-                            )
-                    )
-            );
-
-        }
-    }
-
-    /**
-     * Description: 获取清除目录的脚本路径
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return 服务插件下脚本的绝对路径
-     */
-    protected String absoluteRemovedCommandPath() {
-        return String.format(
-                "%s/%s",
-                //TODO FOR TEST
-                SpringContextUtilTest.SCRIPTS_PATH_DIR_REMOTE,
-                "service-remove-dir.sh"
-        );
-    }
-
-    /**
-     * Description: 获取初始化目录的脚本路径
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return 服务插件下脚本的绝对路径
-     */
-    protected String absoluteCreateEnvCommandPath() {
-        return String.format(
-                "%s/%s",
-                //TODO FOR TEST
-                SpringContextUtilTest.SCRIPTS_PATH_DIR_REMOTE,
-                "service-init-env.sh"
-        );
-    }
-
-    /**
-     * Description: 执行 Step 类型为 COMMAND 的操作
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/5/31
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * TODO 参数中应包含全部应该清除的目录，用户自定义目录等
-     * @param shell 清除脚本的绝对路径，shell
-     * @return boolean 成功返回 true 失败返回 false
-     */
-    protected boolean invokeWorkerExecCmd(String cmdName,
-                                          String shell,
-                                          String serviceName,
-                                          String targzFilename) throws BException {
-
-        Result<String> result = this.remoteInvokeWorkerService.iWorkerExecAPI(this.taskMeta.getNodeIp())
-                .exec(
-                        new ExecRequest(
-                                ExecTypeEnum.COMMAND,
-                                cmdName,
-                                shell,
-                                0,
-                                30 * 3000L,
-                                new String[]{serviceName, targzFilename},
-                                new String[0],
-                                true
-                        )
-                );
-
-        return result.isSuccess();
     }
 
 }

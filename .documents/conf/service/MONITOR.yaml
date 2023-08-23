@@ -60,6 +60,36 @@ datalight:
 
     config-event-handler-jar: 'plugins-monitor-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.monitor.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-monitor-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
     components:
       - name: Prometheus
         priority: 1
@@ -72,15 +102,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-monitor-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 Prometheus'
                 shell: 'monitor-operation.sh'
@@ -131,15 +152,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-monitor-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 AlertManager'
                 shell: 'monitor-operation.sh'
@@ -190,15 +202,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-monitor-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 MySQLExporter'
                 shell: 'monitor-operation.sh'
@@ -249,15 +252,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-monitor-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 NodeExporter'
                 shell: 'monitor-operation.sh'
@@ -308,15 +302,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-monitor-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.monitor.config.ConfigMonitor'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 Grafana'
                 shell: 'monitor-operation.sh'

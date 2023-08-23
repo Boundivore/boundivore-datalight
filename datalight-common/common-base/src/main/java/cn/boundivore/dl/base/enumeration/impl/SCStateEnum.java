@@ -43,18 +43,20 @@ public enum SCStateEnum implements IBaseEnum {
     STOPPING("3", "停止中"),
     STOPPED("4", "已停止"),
 
-    BEING_DECOMMISSIONED("5", "退役中"),
-    DECOMMISSIONED("6", "已退役"),
+    RESTARTING("5", "重启中"),
+
+    BEING_DECOMMISSIONED("6", "退役中"),
+    DECOMMISSIONED("7", "已退役"),
 
     /**
      * 服务的枚举
      */
     // 已部署的服务，在其下新增组件时，将处于 SELECTED_ADDITION 状态
-    SELECTED_ADDITION("7", "选择增量部署"),
+    SELECTED_ADDITION("8", "选择增量部署"),
     // 无论是第一次部署还是增量部署，部署过程中，服务处于：CHANGING
-    CHANGING("8", "变更中"),
+    CHANGING("9", "变更中"),
     // 当服务部署完成时，处于该状态
-    DEPLOYED("9", "已部署"),
+    DEPLOYED("10", "已部署"),
 
     /**
      * 服务与组件共同使用的枚举
@@ -62,11 +64,11 @@ public enum SCStateEnum implements IBaseEnum {
     // 当所有组件均处于 REMOVED 状态时，对应服务也处于 REMOVED 状态，同时设计原则上，
     // 为了防止在长期频繁操作过程中垃圾数据过多 REMOVED 状态的记录将从数据库中移除，
     // 同时，审计操作记录将记录在另外的审计表中
-    REMOVED("10", "已移除"),
+    REMOVED("11", "已移除"),
     // 当服务、组件处于被选中，等待部署的状态时，处于该状态
-    SELECTED("11", "选择部署"),
+    SELECTED("12", "选择部署"),
     // 当服务、组件在页面中反复修改，最终处于“不部署”的意图时，则由 SELECTED 转为 UNSELECTED 并，删除数据库该条记录
-    UNSELECTED("12", "取消选择部署");
+    UNSELECTED("13", "取消选择部署");
 
     private final String code;
     private final String message;

@@ -30,6 +30,36 @@ datalight:
 
     config-event-handler-jar: 'plugins-zookeeper-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.zookeeper.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-zookeeper-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
     components:
       - name: QuarumPeermain
         priority: 1
@@ -42,15 +72,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-zookeeper-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 QuarumPeermain'
                 shell: 'zookeeper-operation.sh'
@@ -61,6 +82,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 QuarumPeermain'
@@ -71,6 +95,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 QuarumPeermain'
@@ -81,6 +108,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '重启 QuarumPeermain'
@@ -101,11 +131,11 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-zookeeper-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.zookeeper.config.ConfigZookeeper'
+              - type: COMMAND
+                name: '正在完成 Client 部署'
+                shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
                 sleep: 0
+
