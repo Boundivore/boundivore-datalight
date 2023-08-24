@@ -43,9 +43,7 @@ import org.springframework.stereotype.Component;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -345,24 +343,31 @@ public class ConfigEventSubscriber {
     private PluginConfigSelf assemblePluginConfigEventSelf(Long clusterId,
                                                            String serviceName,
                                                            List<String> configPath) {
-
-        PluginConfigSelf pluginConfigSelf = new PluginConfigSelf();
-        pluginConfigSelf.setClusterId(clusterId);
-        pluginConfigSelf.setServiceName(serviceName);
+        //<ComponentName, List<ConfigSelfNode>>
+        final Map<String, List<PluginConfigSelf.ConfigSelfNode>> configSelfComponentMap = new LinkedHashMap<>();
 
         List<PluginConfigSelf.ConfigSelfData> configSelfDataList = configPath.stream()
                 .map(i -> this.masterConfigService.getConfigListByGroup(clusterId, serviceName, i).getData())
-                .flatMap(i -> i.getConfigGroupList().stream())
+                .flatMap(i -> {
+                            i.getConfigComponentList().forEach(
+                                    configComponentVo -> configSelfComponentMap.put(
+                                            configComponentVo.getComponentName(),
+                                            configComponentVo.getConfigNodeList()
+                                                    .stream()
+                                                    .map(q -> new PluginConfigSelf.ConfigSelfNode(
+                                                                    q.getNodeId(),
+                                                                    q.getHostname(),
+                                                                    q.getNodeIp(),
+                                                                    q.getConfigVersion()
+                                                            )
+                                                    ).collect(Collectors.toList())
+                                    )
+                            );
+                            return i.getConfigGroupList().stream();
+                        }
+                )
                 .map(i -> {
-                    PluginConfigSelf.ConfigSelfData configSelfData = new PluginConfigSelf.ConfigSelfData();
-                    configSelfData.setConfigPath(i.getConfigPath());
-                    configSelfData.setConfigData(i.getConfigData());
-                    configSelfData.setFilename(i.getFilename());
-                    configSelfData.setSha256(i.getSha256());
-                    configSelfData.setComponentName(i.getComponentName());
-
-                    configSelfData.setConfigSelfNodeList(
-                            i.getConfigNodeList()
+                            List<PluginConfigSelf.ConfigSelfNode> configSelfNodeList = i.getConfigNodeList()
                                     .stream()
                                     .map(m -> new PluginConfigSelf.ConfigSelfNode(
                                                     m.getNodeId(),
@@ -371,14 +376,25 @@ public class ConfigEventSubscriber {
                                                     m.getConfigVersion()
                                             )
                                     )
-                                    .collect(Collectors.toList())
+                                    .collect(Collectors.toList());
 
-                    );
+                            PluginConfigSelf.ConfigSelfData configSelfData = new PluginConfigSelf.ConfigSelfData();
+                            configSelfData.setConfigPath(i.getConfigPath());
+                            configSelfData.setConfigData(i.getConfigData());
+                            configSelfData.setFilename(i.getFilename());
+                            configSelfData.setSha256(i.getSha256());
+                            configSelfData.setConfigSelfNodeList(configSelfNodeList);
 
-                    return configSelfData;
-                })
+
+                            return configSelfData;
+                        }
+                )
                 .collect(Collectors.toList());
 
+        PluginConfigSelf pluginConfigSelf = new PluginConfigSelf();
+        pluginConfigSelf.setClusterId(clusterId);
+        pluginConfigSelf.setServiceName(serviceName);
+        pluginConfigSelf.setConfigSelfComponentMap(configSelfComponentMap);
         pluginConfigSelf.setConfigSelfDataList(configSelfDataList);
 
         return pluginConfigSelf;

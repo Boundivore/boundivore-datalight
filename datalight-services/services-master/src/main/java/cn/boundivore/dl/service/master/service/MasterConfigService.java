@@ -460,30 +460,33 @@ public class MasterConfigService {
                     // 设置配置数据
                     .setConfigData(configNodeDto.getConfigData());
 
+            // 创建一个 ConfigEventNode 实例
+            PluginConfigEvent.ConfigEventNode configEventNode = new PluginConfigEvent.ConfigEventNode(
+                    configNodeDto.getNodeId(),
+                    configNodeDto.getHostname(),
+                    configNodeDto.getIpv4(),
+                    configNodeDto.getConfigVersion()
+            );
+
+
             // 获取 ConfigEventNode 列表，并置于当前 Map 的引用
             List<PluginConfigEvent.ConfigEventNode> configEventNodeList = configEventDataMap.computeIfAbsent(
                     configEventData,
                     k -> new ArrayList<>()
             );
-            // 创建一个 ConfigEventNode 实例，并添加到列表中
-            configEventNodeList.add(
-                    new PluginConfigEvent.ConfigEventNode(
-                            configNodeDto.getNodeId(),
-                            configNodeDto.getHostname(),
-                            configNodeDto.getIpv4(),
-                            configNodeDto.getConfigVersion()
-                    )
-            );
-
+            configEventNodeList.add(configEventNode);
             // 将 ConfigEventNode 列表设置到对应的 ConfigEventData 中
             if (configEventData.getConfigEventNodeList() == null || configEventData.getConfigEventNodeList().isEmpty()) {
                 configEventData.setConfigEventNodeList(configEventNodeList);
             }
 
+
+
             // 设置组件在节点中的分布情况
-            if (!configEventComponentNameMap.containsKey(configNodeDto.getComponentName())) {
-                configEventComponentNameMap.put(configNodeDto.getComponentName(), configEventNodeList);
-            }
+            configEventComponentNameMap.computeIfAbsent(
+                    configNodeDto.getComponentName(),
+                    k -> new ArrayList<>()
+            ).add(configEventNode);
         }
 
         // 将映射中的所有键（ConfigEventData）添加到 PluginConfigEvent 的 ConfigEventDataList 中
@@ -588,7 +591,7 @@ public class MasterConfigService {
         );
 
         // 创建一个映射，将 ConfigGroup 映射到对应的 ConfigNode 列表
-        Map<ConfigListByGroupVo.ConfigGroupVo, List<ConfigListByGroupVo.ConfigNodeVo>> map = new HashMap<>();
+        Map<ConfigListByGroupVo.ConfigGroupVo, List<ConfigListByGroupVo.ConfigNodeVo>> configGroupVoListMap = new HashMap<>();
 
         // 创建一个映射，将 ComponentName 映射到对应的 ConfigNodeVo 列表
         Map<String, List<ConfigListByGroupVo.ConfigNodeVo>> componentDistributedMap = new HashMap<>();
@@ -606,36 +609,36 @@ public class MasterConfigService {
             // 设置配置数据
             configGroup.setConfigData(configNodeDto.getConfigData());
 
+
+            // 创建 ConfigNode 实例
+            ConfigListByGroupVo.ConfigNodeVo configNodeVo = new ConfigListByGroupVo.ConfigNodeVo(
+                    configNodeDto.getNodeId(),
+                    configNodeDto.getHostname(),
+                    configNodeDto.getIpv4(),
+                    configNodeDto.getConfigVersion()
+            );
+
             // 获取 ConfigNode 列表
-            List<ConfigListByGroupVo.ConfigNodeVo> configNodeList = map.computeIfAbsent(
+            List<ConfigListByGroupVo.ConfigNodeVo> configNodeList = configGroupVoListMap.computeIfAbsent(
                     configGroup,
                     k -> new ArrayList<>()
             );
-
-            // 创建一个 ConfigNode 实例，并添加到列表中
-            configNodeList.add(
-                    new ConfigListByGroupVo.ConfigNodeVo(
-                            configNodeDto.getNodeId(),
-                            configNodeDto.getHostname(),
-                            configNodeDto.getIpv4(),
-                            configNodeDto.getConfigVersion()
-                    )
-            );
-
+            configNodeList.add(configNodeVo);
             // 将 ConfigNode 列表设置到对应的 ConfigGroup 中
             if (configGroup.getConfigNodeList() == null || configGroup.getConfigNodeList().isEmpty()) {
                 configGroup.setConfigNodeList(configNodeList);
             }
 
             // 设置组件在节点中的分布情况
-            if (!componentDistributedMap.containsKey(configNodeDto.getComponentName())) {
-                componentDistributedMap.put(configNodeDto.getComponentName(), configNodeList);
-            }
+            componentDistributedMap.computeIfAbsent(
+                    configNodeDto.getComponentName(),
+                    k -> new ArrayList<>()
+            ).add(configNodeVo);
         }
 
 
         // 将映射中的所有键（ConfigGroup）添加到 ConfigListByGroupVo 的 ConfigGroupList 中
-        List<ConfigListByGroupVo.ConfigGroupVo> configGroupList = new ArrayList<>(map.keySet());
+        List<ConfigListByGroupVo.ConfigGroupVo> configGroupList = new ArrayList<>(configGroupVoListMap.keySet());
 
         List<ConfigListByGroupVo.ConfigComponentVo> configComponentList = new ArrayList<>();
         componentDistributedMap.forEach((k, v) -> configComponentList.add(
