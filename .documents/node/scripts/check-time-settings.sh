@@ -23,22 +23,25 @@ ip_address="$1"
 # 检查主机 IP 地址的合法性
 ip_address=$(checkIp "$ip_address")
 
-# 定义时间误差的阈值，单位为毫秒
-threshold=2000
+# 定义时间误差的阈值，单位为秒
+threshold=0.001
 
-# 获取节点的时间
-node_time=$(ssh -o ConnectTimeout=5 -n "$ip_address" "date +%s%3N" 2>/dev/null)
+# 获取节点的时间偏移
+offset=$(ssh -o ConnectTimeout=5 -n "$ip_address" "chronyc tracking | grep 'System time' | awk '{print $4}'" 2>/dev/null)
 
-# 计算本地时间和节点时间的误差
-local_time=$(date +%s%3N)
-time_difference=$((local_time - node_time))
-time_difference=${time_difference#-}
+# 绝对值函数
+abs(){
+  [ $1 -lt 0 ] && echo "$((-$1))" || echo "$1"
+}
 
-if ((time_difference <= threshold)); then
-    echo "OK: Time difference between local and $ip_address is within the threshold: $time_difference milliseconds."
+# 计算时间偏移是否超出阈值
+offset_abs=$(abs $offset)
+
+if (( $(echo "$offset_abs <= $threshold" | bc -l) )); then
+    echo "OK: Time offset between local and $ip_address is within the threshold: $offset_abs seconds."
     exit 0
 else
-    echo "Time difference between local and $ip_address exceeds the threshold: $time_difference milliseconds."
+    echo "Time offset between local and $ip_address exceeds the threshold: $offset_abs seconds."
     exit 1
 fi
 
