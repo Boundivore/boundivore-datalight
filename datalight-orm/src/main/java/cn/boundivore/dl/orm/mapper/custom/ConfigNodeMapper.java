@@ -53,30 +53,6 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
      * @return ComponentNodeDto JOIN 后的详情
      */
     @Select("SELECT\n" +
-            "  t3.hostname,\n" +
-            "  t3.ipv4,\n" +
-            "  t3.ipv6,\n" +
-            "  t3.ssh_port,\n" +
-            "  t3.cpu_arch,\n" +
-            "  t3.cpu_cores,\n" +
-            "  t3.ram,\n" +
-            "  t3.disk,\n" +
-            "  t3.node_state,\n" +
-            "  t3.os_version,\n" +
-            "  t3.config_id,\n" +
-            "  t3.cluster_id,\n" +
-            "  t3.node_id,\n" +
-            "  t3.service_name,\n" +
-            "  t3.component_name,\n" +
-            "  t3.filename,\n" +
-            "  t3.config_content_id,\n" +
-            "  t3.config_path,\n" +
-            "  t3.config_version,\n" +
-            "  t4.sha256,\n" +
-            "  t4.config_data \n" +
-            "FROM\n" +
-            "  (\n" +
-            "  SELECT\n" +
             "    t1.hostname,\n" +
             "    t1.ipv4,\n" +
             "    t1.ipv6,\n" +
@@ -91,19 +67,21 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "    t2.cluster_id AS cluster_id,\n" +
             "    t2.node_id AS node_id,\n" +
             "    t2.service_name,\n" +
-            "    t2.component_name,\n" +
             "    t2.filename,\n" +
             "    t2.config_content_id,\n" +
             "    t2.config_path,\n" +
-            "    t2.config_version \n" +
-            "  FROM\n" +
+            "    t2.config_version,\n" +
+            "    t4.sha256,\n" +
+            "    t4.config_data,\n" +
+            "    t6.component_name\n" +
+            "FROM\n" +
             "    t_dl_node t1\n" +
-            "    JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
-            "  WHERE\n" +
-            "    t2.cluster_id = #{clusterId} \n" +
-            "    AND t2.service_name = #{serviceName} \n" +
-            "  ) t3\n" +
-            "  JOIN t_dl_config_content t4 ON t3.config_id = t4.id;")
+            "JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
+            "JOIN t_dl_config_content t4 ON t2.id = t4.id \n" +
+            "JOIN t_dl_component t6 ON t2.node_id = t6.node_id\n" +
+            "WHERE\n" +
+            "    t2.cluster_id = #{clusterId}\n" +
+            "    AND t2.service_name = #{serviceName};")
     List<ConfigNodeDto> selectConfigNodeDto(
             @Param("clusterId")
             Long clusterId,
@@ -128,30 +106,6 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
      * @return ComponentNodeDto JOIN 后的详情
      */
     @Select("SELECT\n" +
-            "  t3.hostname,\n" +
-            "  t3.ipv4,\n" +
-            "  t3.ipv6,\n" +
-            "  t3.ssh_port,\n" +
-            "  t3.cpu_arch,\n" +
-            "  t3.cpu_cores,\n" +
-            "  t3.ram,\n" +
-            "  t3.disk,\n" +
-            "  t3.node_state,\n" +
-            "  t3.os_version,\n" +
-            "  t3.config_id,\n" +
-            "  t3.cluster_id,\n" +
-            "  t3.node_id,\n" +
-            "  t3.service_name,\n" +
-            "  t3.component_name,\n" +
-            "  t3.filename,\n" +
-            "  t3.config_content_id,\n" +
-            "  t3.config_path,\n" +
-            "  t3.config_version,\n" +
-            "  t4.sha256,\n" +
-            "  t4.config_data \n" +
-            "FROM\n" +
-            "  (\n" +
-            "  SELECT\n" +
             "    t1.hostname,\n" +
             "    t1.ipv4,\n" +
             "    t1.ipv6,\n" +
@@ -166,20 +120,22 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "    t2.cluster_id AS cluster_id,\n" +
             "    t2.node_id AS node_id,\n" +
             "    t2.service_name,\n" +
-            "    t2.component_name,\n" +
             "    t2.filename,\n" +
             "    t2.config_content_id,\n" +
             "    t2.config_path,\n" +
-            "    t2.config_version \n" +
-            "  FROM\n" +
+            "    t2.config_version,\n" +
+            "    t4.sha256,\n" +
+            "    t4.config_data,\n" +
+            "    t6.component_name\n" +
+            "FROM\n" +
             "    t_dl_node t1\n" +
-            "    JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
-            "  WHERE\n" +
-            "    t2.cluster_id = #{clusterId} \n" +
+            "JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
+            "JOIN t_dl_config_content t4 ON t2.id = t4.id \n" +
+            "JOIN t_dl_component t6 ON t2.node_id = t6.node_id\n" +
+            "WHERE\n" +
+            "    t2.cluster_id = #{clusterId}\n" +
             "    AND t2.service_name = #{serviceName} \n" +
-            "    AND t2.config_path = #{configPath}\n" +
-            "  ) t3\n" +
-            "  JOIN t_dl_config_content t4 ON t3.config_id = t4.id;")
+            "    AND t2.config_path = #{configPath};")
     List<ConfigNodeDto> selectConfigNodeDtoByConfigPath(
             @Param("clusterId")
             Long clusterId,

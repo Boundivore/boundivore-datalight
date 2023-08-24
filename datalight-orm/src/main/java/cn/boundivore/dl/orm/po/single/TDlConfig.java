@@ -38,10 +38,6 @@ public class TDlConfig extends TBasePo<TDlConfig> {
     @TableField("service_name")
     private String serviceName;
 
-    @ApiModelProperty("组件名称")
-    @TableField("component_name")
-    private String componentName;
-
     @ApiModelProperty("配置文件 ID")
     @TableField("config_content_id")
     private Long configContentId;

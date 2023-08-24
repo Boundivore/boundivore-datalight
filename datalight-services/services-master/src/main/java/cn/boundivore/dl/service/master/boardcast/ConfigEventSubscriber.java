@@ -233,7 +233,7 @@ public class ConfigEventSubscriber {
                     // 判断如果为有效的配置修改，则发送修改配置请求
                     if (!pluginConfigResult.getConfigMap().isEmpty()) {
                         Assert.isTrue(
-                                this.masterConfigSyncService.configSaveOrUpdateBatch(pluginConfigResult),
+                                this.masterConfigSyncService.saveConfigOrUpdateBatch(pluginConfigResult),
                                 () -> new BException("订阅者修改配置失败")
                         );
                     }

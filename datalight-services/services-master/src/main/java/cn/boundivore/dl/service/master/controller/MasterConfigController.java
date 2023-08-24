@@ -46,36 +46,35 @@ public class MasterConfigController implements IMasterConfigAPI {
     private final MasterConfigSyncService masterConfigSyncService;
 
     @Override
-    public Result<String> configSave(ConfigSaveRequest request) throws Exception {
-        return this.masterConfigSyncService.configSaveOrUpdateBatch(request) ?
+    public Result<String> saveConfig(ConfigSaveRequest request) throws Exception {
+        return this.masterConfigSyncService.saveConfigOrUpdateBatch(request) ?
                 Result.success() :
                 Result.fail();
     }
 
     @Override
-    public Result<ConfigSummaryListVo> configListSummary(Long clusterId, String serviceName) throws Exception {
-        return this.masterConfigService.getConfigListSummary(
+    public Result<String> saveConfigByGroup(ConfigSaveByGroupRequest request) throws Exception {
+        return this.masterConfigSyncService.saveConfigByGroupSync(request);
+    }
+
+    @Override
+    public Result<ConfigSummaryListVo> getConfigSummaryList(Long clusterId, String serviceName) throws Exception {
+        return this.masterConfigService.getConfigSummaryList(
                 clusterId,
                 serviceName
         );
     }
 
     @Override
-    public Result<ConfigListByGroupVo> configListByGroup(Long clusterId,
-                                                         String serviceName,
-                                                         String filename,
-                                                         String configPath) throws Exception {
+    public Result<ConfigListByGroupVo> getConfigListByGroup(Long clusterId,
+                                                            String serviceName,
+                                                            String filename,
+                                                            String configPath) throws Exception {
         return this.masterConfigService.getConfigListByGroup(
                 clusterId,
                 serviceName,
                 configPath
         );
     }
-
-    @Override
-    public Result<String> configSaveByGroup(ConfigSaveByGroupRequest request) throws Exception {
-        return this.masterConfigSyncService.configSaveByGroupSync(request);
-    }
-
 
 }

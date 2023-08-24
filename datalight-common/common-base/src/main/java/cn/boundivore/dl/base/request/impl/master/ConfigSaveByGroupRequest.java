@@ -71,7 +71,6 @@ public class ConfigSaveByGroupRequest implements IRequest {
     @EqualsAndHashCode(
             exclude = {
                     "configNodeList",
-                    "componentName",
                     "filename",
                     "configData"
             }
@@ -81,11 +80,6 @@ public class ConfigSaveByGroupRequest implements IRequest {
             description = "ConfigSaveByGroupRequest.ConfigGroupRequest: 当前配置信息"
     )
     public static class ConfigGroupRequest implements IRequest {
-
-        @ApiModelProperty(name = "ComponentName", value = "组件名称", required = true)
-        @JsonProperty(value = "ComponentName", required = true)
-        @NotNull
-        private String componentName;
 
         @ApiModelProperty(name = "Sha256", value = "配置文件唯一信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)

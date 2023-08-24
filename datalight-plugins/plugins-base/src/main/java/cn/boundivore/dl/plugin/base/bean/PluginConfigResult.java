@@ -64,9 +64,6 @@ public class PluginConfigResult implements Serializable {
         private Long nodeId;
 
         @NotNull
-        private String componentName;
-
-        @NotNull
         private String configPath;
     }
 

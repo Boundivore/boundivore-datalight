@@ -82,11 +82,6 @@ public class ConfigSaveRequest implements IRequest {
         @NotNull
         private Long nodeId;
 
-        @ApiModelProperty(name = "ComponentName", value = "当前组件", required = true)
-        @JsonProperty(value = "ComponentName", required = true)
-        @NotNull
-        private String componentName;
-
         @ApiModelProperty(name = "Filename", value = "配置文件名称", required = true)
         @JsonProperty(value = "Filename", required = true)
         @NotNull

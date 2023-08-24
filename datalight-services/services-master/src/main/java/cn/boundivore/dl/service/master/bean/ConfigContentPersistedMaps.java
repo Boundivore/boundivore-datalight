@@ -37,7 +37,7 @@ import java.util.Map;
 @Accessors(chain = true)
 public class ConfigContentPersistedMaps {
 
-    // <clusterId + filename + sha256, ConfigRequest> 此处会丢弃部分这部分不会使用的 ComponentName与NodeId
+    // <clusterId + filename + sha256, ConfigRequest> 此处会丢弃部分不会被使用的配置
     private Map<String, ConfigSaveRequest.ConfigRequest> groupConfigRequestMap;
 
     // <clusterId + filename + sha256, TDlConfigContent>

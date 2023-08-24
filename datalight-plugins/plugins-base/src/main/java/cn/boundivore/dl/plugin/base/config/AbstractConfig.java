@@ -226,7 +226,6 @@ public abstract class AbstractConfig implements IConfig {
 
         return new PluginConfigResult.ConfigKey(
                 metaComponent.getNodeId(),
-                metaComponent.getComponentName(),
                 String.format(
                         "%s/%s",
                         serviceConfDirStr,

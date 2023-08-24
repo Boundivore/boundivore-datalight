@@ -451,7 +451,7 @@ public class JobService {
      */
     public boolean configSaveOrUpdateBatch(PluginConfigResult pluginConfigResult) {
         // 判断如果为有效的配置修改，则发送修改配置请求
-        return this.masterConfigSyncService.configSaveOrUpdateBatch(pluginConfigResult);
+        return this.masterConfigSyncService.saveConfigOrUpdateBatch(pluginConfigResult);
     }
 
     /**

@@ -120,7 +120,7 @@ public class MasterConfigService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> configSaveOrUpdateBatch(ConfigSaveRequest request,
+    public Result<String> saveConfigOrUpdateBatch(ConfigSaveRequest request,
                                                   Map<String, TDlConfigContent> groupTDlConfigContentMap) {
         // 获取集群 ID 和服务名
         final Long clusterId = request.getClusterId();
@@ -130,21 +130,21 @@ public class MasterConfigService {
         List<TDlConfig> tDlConfigList = request.getConfigList()
                 .stream()
                 .map(i -> {
-                    // 组装 TDlConfig 对象
-                    return this.createOrUpdateTDlConfig(
-                            groupTDlConfigContentMap,
-                            clusterId,
-                            serviceName,
-                            i.getComponentName(),
-                            i.getNodeId(),
-                            i.getConfigPath(),
-                            i.getFilename(),
-                            i.getConfigData(),
-                            i.getSha256()
-                    );
+                            // 组装 TDlConfig 对象
+                            return this.createOrUpdateTDlConfig(
+                                    groupTDlConfigContentMap,
+                                    clusterId,
+                                    serviceName,
+                                    i.getNodeId(),
+                                    i.getConfigPath(),
+                                    i.getFilename(),
+                                    i.getConfigData(),
+                                    i.getSha256()
+                            );
 
-                })
-                .filter(Objects::nonNull)
+                        }
+                )
+                .filter(Objects::nonNull) // 过滤配置未发生变更的条目
                 .collect(Collectors.toList());
 
         // 批量保存或更新 TDlConfig 对象
@@ -226,14 +226,13 @@ public class MasterConfigService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId     集群 ID
-     * @param serviceName   服务名称
-     * @param componentName 组件名称
-     * @param nodeId        节点 ID
-     * @param configPath    配置文件路径
-     * @param filename      文件名
-     * @param configData    配置数据
-     * @param sha256        SHA256 值
+     * @param clusterId   集群 ID
+     * @param serviceName 服务名称
+     * @param nodeId      节点 ID
+     * @param configPath  配置文件路径
+     * @param filename    文件名
+     * @param configData  配置数据
+     * @param sha256      SHA256 值
      * @return TDlConfig 创建或更新后的 TDlConfig 对象
      */
     @Transactional(
@@ -243,7 +242,6 @@ public class MasterConfigService {
     public TDlConfig createOrUpdateTDlConfig(Map<String, TDlConfigContent> tDlConfigContentMap,
                                              Long clusterId,
                                              String serviceName,
-                                             String componentName,
                                              Long nodeId,
                                              String configPath,
                                              String filename,
@@ -254,7 +252,6 @@ public class MasterConfigService {
                 .select()
                 .eq(TDlConfig::getClusterId, clusterId)
                 .eq(TDlConfig::getServiceName, serviceName)
-                .eq(TDlConfig::getComponentName, componentName)
                 .eq(TDlConfig::getNodeId, nodeId)
                 .eq(TDlConfig::getConfigPath, configPath)
                 .one();
@@ -283,7 +280,6 @@ public class MasterConfigService {
         tDlConfig.setClusterId(clusterId);
         tDlConfig.setNodeId(nodeId);
         tDlConfig.setServiceName(serviceName);
-        tDlConfig.setComponentName(componentName);
         tDlConfig.setConfigContentId(tDlConfigContent.getId());
         tDlConfig.setFilename(filename);
         tDlConfig.setConfigPath(configPath);
@@ -439,37 +435,36 @@ public class MasterConfigService {
      */
     private void publishConfigChange(Long clusterId, String serviceName) {
 
-
-        // 获取指定集群下，该服务、组件的所有配置文件
+        // 获取指定集群下，该服务的所有配置文件
         List<ConfigNodeDto> configNodeDtoList = this.configNodeMapper.selectConfigNodeDto(
                 clusterId,
                 serviceName
         );
 
         // 创建一个映射，将 ConfigEventData 映射到对应的 ConfigEventNode 列表
-        Map<PluginConfigEvent.ConfigEventData, List<PluginConfigEvent.ConfigEventNode>> map = new HashMap<>();
+        Map<PluginConfigEvent.ConfigEventData, List<PluginConfigEvent.ConfigEventNode>> configEventDataMap = new HashMap<>();
+
+        // 创建一个映射，将 ComponentName 映射到对应的 ConfigEventNode 列表
+        Map<String, List<PluginConfigEvent.ConfigEventNode>> configEventComponentNameMap = new HashMap<>();
 
         // 遍历配置节点列表
         for (ConfigNodeDto configNodeDto : configNodeDtoList) {
             // 创建一个 ConfigEventData 实例
-            PluginConfigEvent.ConfigEventData configEventData = new PluginConfigEvent.ConfigEventData();
-            // 设置组件名
-            configEventData.setComponentName(configNodeDto.getComponentName());
-            // 设置 SHA256 值
-            configEventData.setSha256(configNodeDto.getSha256());
-            // 设置文件名
-            configEventData.setFilename(configNodeDto.getFilename());
-            // 设置配置路径
-            configEventData.setConfigPath(configNodeDto.getConfigPath());
-            // 设置配置数据
-            configEventData.setConfigData(configNodeDto.getConfigData());
+            PluginConfigEvent.ConfigEventData configEventData = new PluginConfigEvent.ConfigEventData()
+                    // 设置 SHA256 值
+                    .setSha256(configNodeDto.getSha256())
+                    // 设置文件名
+                    .setFilename(configNodeDto.getFilename())
+                    // 设置配置路径
+                    .setConfigPath(configNodeDto.getConfigPath())
+                    // 设置配置数据
+                    .setConfigData(configNodeDto.getConfigData());
 
-            // 获取 ConfigEventNode 列表
-            List<PluginConfigEvent.ConfigEventNode> configEventNodeList = map.computeIfAbsent(
+            // 获取 ConfigEventNode 列表，并置于当前 Map 的引用
+            List<PluginConfigEvent.ConfigEventNode> configEventNodeList = configEventDataMap.computeIfAbsent(
                     configEventData,
                     k -> new ArrayList<>()
             );
-
             // 创建一个 ConfigEventNode 实例，并添加到列表中
             configEventNodeList.add(
                     new PluginConfigEvent.ConfigEventNode(
@@ -479,13 +474,20 @@ public class MasterConfigService {
                             configNodeDto.getConfigVersion()
                     )
             );
+
+            // 将 ConfigEventNode 列表设置到对应的 ConfigEventData 中
+            if (configEventData.getConfigEventNodeList() == null || configEventData.getConfigEventNodeList().isEmpty()) {
+                configEventData.setConfigEventNodeList(configEventNodeList);
+            }
+
+            // 设置组件在节点中的分布情况
+            if (!configEventComponentNameMap.containsKey(configNodeDto.getComponentName())) {
+                configEventComponentNameMap.put(configNodeDto.getComponentName(), configEventNodeList);
+            }
         }
 
-        // 遍历映射，将 ConfigEventNode 列表设置到对应的 ConfigEventData 中
-        map.forEach(PluginConfigEvent.ConfigEventData::setConfigEventNodeList);
-
         // 将映射中的所有键（ConfigEventData）添加到 PluginConfigEvent 的 ConfigEventDataList 中
-        List<PluginConfigEvent.ConfigEventData> configEventDataList = new ArrayList<>(map.keySet());
+        List<PluginConfigEvent.ConfigEventData> configEventDataList = new ArrayList<>(configEventDataMap.keySet());
 
         // 创建一个 PluginConfigEvent 实例
         final PluginConfigEvent pluginConfigEvent = new PluginConfigEvent();
@@ -495,6 +497,8 @@ public class MasterConfigService {
         pluginConfigEvent.setServiceName(serviceName);
         // 设置 ConfigEventDataList
         pluginConfigEvent.setConfigEventDataList(configEventDataList);
+        // 设置
+        pluginConfigEvent.setConfigEventComponentMap(configEventComponentNameMap);
 
         //封装到 ConfigEvent 事件中
         final ConfigEvent configEvent = new ConfigEvent(
@@ -526,7 +530,7 @@ public class MasterConfigService {
      * @param serviceName 服务名称
      * @return Result<ConfigSummaryListVo> 配置信息概览列表
      */
-    public Result<ConfigSummaryListVo> getConfigListSummary(Long clusterId, String serviceName) {
+    public Result<ConfigSummaryListVo> getConfigSummaryList(Long clusterId, String serviceName) {
 
         List<TDlConfig> tDlConfigList = tDlConfigService.lambdaQuery()
                 .select(
@@ -586,12 +590,13 @@ public class MasterConfigService {
         // 创建一个映射，将 ConfigGroup 映射到对应的 ConfigNode 列表
         Map<ConfigListByGroupVo.ConfigGroupVo, List<ConfigListByGroupVo.ConfigNodeVo>> map = new HashMap<>();
 
+        // 创建一个映射，将 ComponentName 映射到对应的 ConfigNodeVo 列表
+        Map<String, List<ConfigListByGroupVo.ConfigNodeVo>> componentDistributedMap = new HashMap<>();
+
         // 遍历配置节点列表
         for (ConfigNodeDto configNodeDto : configNodeDtoList) {
             // 创建一个 ConfigGroup 实例
             ConfigListByGroupVo.ConfigGroupVo configGroup = new ConfigListByGroupVo.ConfigGroupVo();
-            // 设置组件名
-            configGroup.setComponentName(configNodeDto.getComponentName());
             // 设置 SHA256 值
             configGroup.setSha256(configNodeDto.getSha256());
             // 设置文件名
@@ -616,19 +621,36 @@ public class MasterConfigService {
                             configNodeDto.getConfigVersion()
                     )
             );
+
+            // 将 ConfigNode 列表设置到对应的 ConfigGroup 中
+            if (configGroup.getConfigNodeList() == null || configGroup.getConfigNodeList().isEmpty()) {
+                configGroup.setConfigNodeList(configNodeList);
+            }
+
+            // 设置组件在节点中的分布情况
+            if (!componentDistributedMap.containsKey(configNodeDto.getComponentName())) {
+                componentDistributedMap.put(configNodeDto.getComponentName(), configNodeList);
+            }
         }
 
-        // 遍历映射，将 ConfigNode 列表设置到对应的 ConfigGroup 中
-        map.forEach(ConfigListByGroupVo.ConfigGroupVo::setConfigNodeList);
 
         // 将映射中的所有键（ConfigGroup）添加到 ConfigListByGroupVo 的 ConfigGroupList 中
         List<ConfigListByGroupVo.ConfigGroupVo> configGroupList = new ArrayList<>(map.keySet());
+
+        List<ConfigListByGroupVo.ConfigComponentVo> configComponentList = new ArrayList<>();
+        componentDistributedMap.forEach((k, v) -> configComponentList.add(
+                new ConfigListByGroupVo.ConfigComponentVo(
+                        k,
+                        v
+                )
+        ));
 
 
         return Result.success(
                 new ConfigListByGroupVo(
                         clusterId,
                         serviceName,
+                        configComponentList,
                         configGroupList
                 )
         );
@@ -652,7 +674,7 @@ public class MasterConfigService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> configSaveByGroup(ConfigSaveByGroupRequest request) {
+    public Result<String> saveConfigByGroup(ConfigSaveByGroupRequest request) {
 
         final Long clusterId = request.getClusterId();
         final String serviceName = request.getServiceName();
@@ -666,7 +688,6 @@ public class MasterConfigService {
                                         new HashMap<>(),
                                         clusterId,
                                         serviceName,
-                                        configGroupRequest.getComponentName(),
                                         configNodeRequest.getNodeId(),
                                         configGroupRequest.getConfigPath(),
                                         configGroupRequest.getFilename(),

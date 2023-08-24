@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 04/08/2023 14:35:13
+ Date: 24/08/2023 10:12:02
 */
 
 SET NAMES utf8mb4;
@@ -40,7 +40,7 @@ CREATE TABLE `t_dl_cluster`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dl_component`;
 CREATE TABLE `t_dl_component`  (
-  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `id` bigint(20) NOT NULL DEFAULT 0 COMMENT '分布式 ID',
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
@@ -50,6 +50,7 @@ CREATE TABLE `t_dl_component`  (
   `component_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '组件名称',
   `component_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '组件状态',
   `priority` bigint(20) NOT NULL COMMENT '优先级 数字越小，优先级越高',
+  `need_restart` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否需要重启 1：需要，0：不需要',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '组件信息表' ROW_FORMAT = DYNAMIC;
 
@@ -65,7 +66,6 @@ CREATE TABLE `t_dl_config`  (
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `node_id` bigint(20) NOT NULL COMMENT '节点 ID',
   `service_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务名称',
-  `component_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '组件名称',
   `config_content_id` bigint(20) NOT NULL COMMENT '配置文件内容 ID',
   `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置文件名称',
   `config_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置文件路径',
@@ -252,7 +252,7 @@ CREATE TABLE `t_dl_node_job_log`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
-  `node_job_id` bigint(20) NOT NULL COMMENT 'NodeJob ID',
+  `node_job_id` bigint(20) NULL DEFAULT NULL COMMENT 'NodeJob ID',
   `node_task_id` bigint(20) NULL DEFAULT NULL COMMENT 'NodeTask ID',
   `node_step_id` bigint(20) NULL DEFAULT NULL COMMENT 'NodeStep ID',
   `log_stdout` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '标准日志',

@@ -54,9 +54,14 @@ public class ConfigListByGroupVo implements IVo {
     @JsonProperty(value = "ServiceName", required = true)
     private String serviceName;
 
+    @ApiModelProperty(name = "ConfigComponentList", value = "组件分布信息", required = true)
+    @JsonProperty(value = "ConfigComponentList", required = true)
+    private List<ConfigComponentVo> configComponentList;
+
     @ApiModelProperty(name = "ConfigGroupList", value = "配置信息分组列表", required = true)
     @JsonProperty(value = "ConfigGroupList", required = true)
     private List<ConfigGroupVo> configGroupList;
+
 
     @Data
     @AllArgsConstructor
@@ -66,7 +71,6 @@ public class ConfigListByGroupVo implements IVo {
     @EqualsAndHashCode(
             exclude = {
                     "configNodeList",
-                    "componentName",
                     "filename",
                     "configData"
             }
@@ -76,10 +80,6 @@ public class ConfigListByGroupVo implements IVo {
             description = "ConfigListByGroupVo.ConfigGroupVo: 当前配置信息"
     )
     public static class ConfigGroupVo implements IVo {
-
-        @ApiModelProperty(name = "ComponentName", value = "组件名称", required = true)
-        @JsonProperty(value = "ComponentName", required = true)
-        private String componentName;
 
         @ApiModelProperty(name = "Sha256", value = "配置文件唯一信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)
@@ -128,5 +128,25 @@ public class ConfigListByGroupVo implements IVo {
         @ApiModelProperty(name = "ConfigVersion", value = "配置文件当前版本", required = true)
         @JsonProperty(value = "ConfigVersion", required = true)
         private Long configVersion;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Builder
+    @ApiModel(
+            value = "ConfigListByGroupVo.ConfigComponentVo",
+            description = "ConfigListByGroupVo.ConfigComponentVo: 组件分布信息"
+    )
+    public static class ConfigComponentVo implements IVo {
+
+        @ApiModelProperty(name = "ComponentName", value = "组件名称", required = true)
+        @JsonProperty(value = "ComponentName", required = true)
+        private String componentName;
+
+        @ApiModelProperty(name = "ConfigNodeList", value = "组件所在节点", required = true)
+        @JsonProperty(value = "ConfigNodeList", required = true)
+        private List<ConfigNodeVo> configNodeList;
     }
 }

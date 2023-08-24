@@ -21,6 +21,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 所依赖服务配置文件发生变动时，当前服务自己的配置文件信息
@@ -44,6 +45,9 @@ public class PluginConfigSelf implements Serializable {
 
     private String serviceName;
 
+    //<ComponentName, List<ConfigSelfNode>>
+    private Map<String, List<ConfigSelfNode>> configSelfComponentMap;
+
     private List<ConfigSelfData> configSelfDataList;
 
     @Data
@@ -54,15 +58,12 @@ public class PluginConfigSelf implements Serializable {
     @EqualsAndHashCode(
             exclude = {
                     "configSelfNodeList",
-                    "componentName",
                     "filename",
                     "configData"
             }
     )
     public static class ConfigSelfData implements Serializable {
         private static final long serialVersionUID = 1L;
-
-        private String componentName;
 
         private String sha256;
 

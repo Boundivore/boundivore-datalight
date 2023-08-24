@@ -21,6 +21,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 封装插件中的配置文件事件的信息
@@ -45,6 +46,9 @@ public class PluginConfigEvent implements Serializable {
 
     private String serviceName;
 
+    //<ComponentName, List<ConfigEventNode>>
+    private Map<String, List<ConfigEventNode>> configEventComponentMap;
+
     private List<ConfigEventData> configEventDataList;
 
     @Data
@@ -55,7 +59,6 @@ public class PluginConfigEvent implements Serializable {
     @EqualsAndHashCode(
             exclude = {
                     "configEventNodeList",
-                    "componentName",
                     "filename",
                     "configData"
             }
@@ -63,13 +66,11 @@ public class PluginConfigEvent implements Serializable {
     public static class ConfigEventData implements Serializable {
         private static final long serialVersionUID = 1L;
 
-        private String componentName;
-
         private String sha256;
 
-        private String filename;
-
         private String configPath;
+
+        private String filename;
 
         private String configData;
 

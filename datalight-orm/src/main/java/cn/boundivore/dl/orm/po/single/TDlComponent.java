@@ -51,4 +51,8 @@ public class TDlComponent extends TBasePo<TDlComponent> {
     @TableField("priority")
     private Long priority;
 
+    @ApiModelProperty("是否需要重启，如修改配置文件等")
+    @TableField("need_restart")
+    private Boolean need_restart;
+
 }

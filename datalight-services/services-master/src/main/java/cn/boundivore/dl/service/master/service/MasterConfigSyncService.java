@@ -60,7 +60,7 @@ public class MasterConfigSyncService {
      * @param request 配置文件保存请求
      * @return 成功返回 true，失败返回  false
      */
-    public boolean configSaveOrUpdateBatch(ConfigSaveRequest request) {
+    public boolean saveConfigOrUpdateBatch(ConfigSaveRequest request) {
         // 判断如果为有效的配置修改，则发送修改配置请求
         ConfigContentPersistedMaps configContentPersisted = this.masterConfigService.getConfigContentPersisted(
                 request
@@ -68,14 +68,14 @@ public class MasterConfigSyncService {
 
         if (configContentPersisted.isAllPersisted()) {
             log.info("{} 配置已全部就绪，准备关联", request.getServiceName());
-            return this.masterConfigService.configSaveOrUpdateBatch(
+            return this.masterConfigService.saveConfigOrUpdateBatch(
                     request,
                     configContentPersisted.getGroupTDlConfigContentMap()
             ).isSuccess();
         } else {
             synchronized (this){
                 log.info("{} 配置未全部就绪，准备同步初始化", request.getServiceName());
-                return this.masterConfigService.configSaveOrUpdateBatch(
+                return this.masterConfigService.saveConfigOrUpdateBatch(
                         request,
                         configContentPersisted.getGroupTDlConfigContentMap()
                 ).isSuccess();
@@ -95,13 +95,13 @@ public class MasterConfigSyncService {
      *
      * @param pluginConfigResult 插件对配置文件修改后的最终结果
      */
-    public boolean configSaveOrUpdateBatch(PluginConfigResult pluginConfigResult) {
+    public boolean saveConfigOrUpdateBatch(PluginConfigResult pluginConfigResult) {
         // 判断如果为有效的配置修改，则发送修改配置请求
         if (this.masterConfigService.isPluginConfigResultValid(pluginConfigResult)) {
             ConfigSaveRequest request = this.pluginConfigResult2Request(
                     pluginConfigResult
             );
-            return this.configSaveOrUpdateBatch(request);
+            return this.saveConfigOrUpdateBatch(request);
         }
 
         return true;
@@ -119,9 +119,9 @@ public class MasterConfigSyncService {
      *
      * @param request 将要修改的配置文件分组
      */
-    public Result<String> configSaveByGroupSync(ConfigSaveByGroupRequest request) {
+    public Result<String> saveConfigByGroupSync(ConfigSaveByGroupRequest request) {
         synchronized (this){
-            return this.masterConfigService.configSaveByGroup(request);
+            return this.masterConfigService.saveConfigByGroup(request);
         }
     }
 
@@ -163,7 +163,6 @@ public class MasterConfigSyncService {
 
             ConfigSaveRequest.ConfigRequest config = new ConfigSaveRequest.ConfigRequest()
                     .setNodeId(k.getNodeId())
-                    .setComponentName(k.getComponentName())
                     .setFilename(v.getFilename())
                     .setConfigData(v.getConfigData())
                     .setSha256(v.getSha256())

@@ -54,15 +54,23 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterConfigAPI {
     @PostMapping(value = "/config/save")
     @ApiOperation(notes = "保存配置项", value = "保存配置项")
-    Result<String> configSave(
+    Result<String> saveConfig(
             @RequestBody
             @Valid
             ConfigSaveRequest request
     ) throws Exception;
 
+    @PostMapping(value = "/config/saveByGroup")
+    @ApiOperation(notes = "根据分组保存配置项", value = "根据分组保存配置项")
+    Result<String> saveConfigByGroup(
+            @RequestBody
+            @Valid
+            ConfigSaveByGroupRequest request
+    ) throws Exception;
+
     @GetMapping(value = "/config/listSummary")
     @ApiOperation(notes = "获取当前服务的配置信息概览列表", value = "获取当前服务的配置信息概览列表")
-    Result<ConfigSummaryListVo> configListSummary(
+    Result<ConfigSummaryListVo> getConfigSummaryList(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
@@ -74,7 +82,7 @@ public interface IMasterConfigAPI {
 
     @GetMapping(value = "/config/listByGroup")
     @ApiOperation(notes = "获取服务组件的配置", value = "获取服务组件的配置")
-    Result<ConfigListByGroupVo> configListByGroup(
+    Result<ConfigListByGroupVo> getConfigListByGroup(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
@@ -90,13 +98,5 @@ public interface IMasterConfigAPI {
             @ApiParam(name = "ConfigPath", value = "配置文件路径")
             @RequestParam(value = "ConfigPath", required = true)
             String configPath
-    ) throws Exception;
-
-    @PostMapping(value = "/config/saveByGroup")
-    @ApiOperation(notes = "根据分组保存配置项", value = "根据分组保存配置项")
-    Result<String> configSaveByGroup(
-            @RequestBody
-            @Valid
-            ConfigSaveByGroupRequest request
     ) throws Exception;
 }

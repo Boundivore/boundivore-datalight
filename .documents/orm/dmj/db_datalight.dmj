@@ -734,7 +734,7 @@
           "OrderNo": 8,
           "GraphDesc": "Left=256.70\r\nTop=1118.75",
           "MetaFields": {
-            "Count": 10,
+            "Count": 11,
             "items": [
               {
                 "ID": 1,
@@ -832,6 +832,17 @@
                 "DataType": 2,
                 "Not_Nullable": true,
                 "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "need_restart",
+                "Memo": "配置文件变动后，需要重启",
+                "OrderNo": 11,
+                "DisplayName": "是否需要重启",
+                "DataType": 2,
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 1
               }
             ]
           }
@@ -1654,7 +1665,7 @@
           "OrderNo": 15,
           "GraphDesc": "Left=821.83\r\nTop=1119.43",
           "MetaFields": {
-            "Count": 12,
+            "Count": 11,
             "items": [
               {
                 "ID": 1,
@@ -1726,18 +1737,9 @@
                 "DataLength": 255
               },
               {
-                "ID": 5,
-                "Name": "component_name",
-                "OrderNo": 8,
-                "DisplayName": "组件名称",
-                "DataType": 1,
-                "Not_Nullable": true,
-                "DataLength": 255
-              },
-              {
                 "ID": 10,
                 "Name": "config_content_id",
-                "OrderNo": 9,
+                "OrderNo": 8,
                 "DisplayName": "配置文件内容 ID",
                 "DataType": 2,
                 "Not_Nullable": true,
@@ -1746,7 +1748,7 @@
               {
                 "ID": 13,
                 "Name": "filename",
-                "OrderNo": 10,
+                "OrderNo": 9,
                 "DisplayName": "配置文件名称",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -1755,7 +1757,7 @@
               {
                 "ID": 11,
                 "Name": "config_path",
-                "OrderNo": 11,
+                "OrderNo": 10,
                 "DisplayName": "配置文件路径",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -1764,7 +1766,7 @@
               {
                 "ID": 12,
                 "Name": "config_version",
-                "OrderNo": 12,
+                "OrderNo": 11,
                 "DisplayName": "当前版本号",
                 "DataType": 2,
                 "DefaultValue": "1",
