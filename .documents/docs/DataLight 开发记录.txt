@@ -113,7 +113,12 @@ rm -rf /srv/datalight/*
 
 
 
-
+cat >> /etc/hosts << EOF
+192.137.1.10 node001
+192.137.1.11 node002
+192.137.1.12 node003
+EOF
+cat /etc/hosts
 
 
 新建集群：

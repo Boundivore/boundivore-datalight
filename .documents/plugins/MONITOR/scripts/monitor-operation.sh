@@ -31,6 +31,11 @@ fi
 
 # 获取第一个参数（组件名称）
 COMPONENT_NAME="$1"
+# 获取第二个参数（操作类型）
+OPERATION="$2"
+
+# 输出操作提醒
+echo "To ${OPERATION} ${COMPONENT_NAME} ..."
 
 shift
 
