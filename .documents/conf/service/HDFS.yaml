@@ -233,10 +233,10 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: ZKFailoverController
+      - name: ZKFailoverController1
         priority: 4
-        max: 2
-        min: 2
+        max: 1
+        min: 1
         mutexes: [ ]
         actions:
           - type: DEPLOY
@@ -254,7 +254,7 @@ datalight:
                 sleep: 1000
 
               - type: SCRIPT
-                name: '部署后启动 ZKFailoverController'
+                name: '部署后启动 ZKFailoverController1'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'start' ]
                 interactions: [ ]
@@ -265,7 +265,7 @@ datalight:
           - type: START
             steps:
               - type: SCRIPT
-                name: '启动 ZKFailoverController'
+                name: '启动 ZKFailoverController1'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'start' ]
                 interactions: [ ]
@@ -276,7 +276,7 @@ datalight:
           - type: STOP
             steps:
               - type: SCRIPT
-                name: '停止 ZKFailoverController'
+                name: '停止 ZKFailoverController1'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'stop' ]
                 interactions: [ ]
@@ -287,7 +287,60 @@ datalight:
           - type: RESTART
             steps:
               - type: SCRIPT
-                name: '重启 ZKFailoverController'
+                name: '重启 ZKFailoverController1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'ZKFailoverController', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: ZKFailoverController2
+        priority: 5
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 ZKFailoverController2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'ZKFailoverController', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 ZKFailoverController2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'ZKFailoverController', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 ZKFailoverController2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'ZKFailoverController', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 ZKFailoverController2'
                 shell: 'hdfs-operation.sh'
                 args: [ 'ZKFailoverController', 'restart' ]
                 interactions: [ ]
@@ -296,7 +349,7 @@ datalight:
                 sleep: 1000
 
       - name: DataNode
-        priority: 5
+        priority: 6
         max: -1
         min: 1
         mutexes: [ ]
@@ -349,7 +402,7 @@ datalight:
                 sleep: 1000
 
       - name: HttpFS
-        priority: 6
+        priority: 7
         max: 2
         min: 2
         mutexes: [ ]
@@ -402,7 +455,7 @@ datalight:
                 sleep: 1000
 
       - name: HDFSClient
-        priority: 7
+        priority: 8
         max: -1
         min: 0
         mutexes: [ ]
