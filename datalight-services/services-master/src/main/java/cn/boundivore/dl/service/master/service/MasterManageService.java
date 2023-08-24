@@ -256,12 +256,14 @@ public class MasterManageService {
     private void pullWorkerAndPublishMaster(List<TDlNode> allInvalidWorkerTDlNodeList) {
         try {
             if (allInvalidWorkerTDlNodeList.isEmpty()) {
-                if (log.isDebugEnabled()) {
-                    log.debug("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
-                }
-                log.info("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
+//                if (log.isDebugEnabled()) {
+//                    log.debug("无待唤醒 Worker");
+//                }
+                log.info("无待唤醒 Worker");
                 return;
             }
+
+            log.info("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
 
             // 获取 Master 自身节点的 IP
             String internalIPAddress = ReactiveAddressUtil.getInternalIPAddress();
