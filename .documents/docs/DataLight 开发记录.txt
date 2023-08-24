@@ -282,9 +282,7 @@ cat /etc/hosts
         {
             "ComponentName": "MySQLExporter",
             "NodeIdList": [
-                1,
-                2,
-                3
+                1
             ],
             "SCStateEnum": "SELECTED",
             "ServiceName": "MONITOR"
@@ -334,10 +332,17 @@ cat /etc/hosts
             "ServiceName": "HDFS"
         },
         {
-            "ComponentName": "ZKFailoverController",
+            "ComponentName": "ZKFailoverController1",
             "NodeIdList": [
-                1,
-                2
+                1            
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "ZKFailoverController2",
+            "NodeIdList": [
+                2           
             ],
             "SCStateEnum": "SELECTED",
             "ServiceName": "HDFS"

@@ -121,9 +121,10 @@ public class ConfigMonitor extends AbstractConfig {
             case "defaults.ini":
                 return new ConfigLogicDefaultIni(super.pluginConfig).config(file, replacedTemplate);
             case "prometheus.sh":
-            case "grafana.sh":
+            case "alert_manager.sh":
             case "mysql_exporter.sh":
             case "node_exporter.sh":
+            case "grafana.sh":
                 return new ConfigLogicBinSh(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {

@@ -49,15 +49,15 @@ public class ConfigLogicMySQLCnf extends AbstractConfigLogic {
                 )
                 .replace(
                         "{{mysql.port}}",
-                        super.pluginConfig.getMysqlEnv().getDbHost()
+                        super.pluginConfig.getMysqlEnv().getDbPort()
                 )
                 .replace(
                         "{{mysql.user}}",
-                        super.pluginConfig.getMysqlEnv().getDbHost()
+                        super.pluginConfig.getMysqlEnv().getDbUser()
                 )
                 .replace(
                         "{{mysql.password}}",
-                        super.pluginConfig.getMysqlEnv().getDbHost()
+                        super.pluginConfig.getMysqlEnv().getDbPassword()
                 )
                 ;
     }
