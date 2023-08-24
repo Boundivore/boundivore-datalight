@@ -44,22 +44,22 @@ public class DataLightApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        // ./conf/datalight
-//        ResolverYamlDirectory.resolver(SpringContextUtil.CONF_ENV_DIR);
-//
-//        // ./conf/service
-//        ResolverYamlServiceManifest.resolver(SpringContextUtil.CONF_SERVICE_DIR);
-//
-//        // ./conf/service
-//        ResolverYamlServiceDetail.resolver(SpringContextUtil.CONF_SERVICE_DIR);
-//
-//        // ./plugins
-//        ResolverYamlServicePlaceholder.resolver(SpringContextUtil.PLUGINS_DIR);
-//
-//        // ./node/conf
-//        ResolverYamlNode.resolver(SpringContextUtil.NODE_CONF_DIR);
-//
-//        this.masterManageService.updateMasterMeta();
+        // ./conf/datalight
+        ResolverYamlDirectory.resolver(SpringContextUtil.CONF_ENV_DIR);
+
+        // ./conf/service
+        ResolverYamlServiceManifest.resolver(SpringContextUtil.CONF_SERVICE_DIR);
+
+        // ./conf/service
+        ResolverYamlServiceDetail.resolver(SpringContextUtil.CONF_SERVICE_DIR);
+
+        // ./plugins
+        ResolverYamlServicePlaceholder.resolver(SpringContextUtil.PLUGINS_DIR);
+
+        // ./node/conf
+        ResolverYamlNode.resolver(SpringContextUtil.NODE_CONF_DIR);
+
+        this.masterManageService.updateMasterMeta();
     }
 
 }
