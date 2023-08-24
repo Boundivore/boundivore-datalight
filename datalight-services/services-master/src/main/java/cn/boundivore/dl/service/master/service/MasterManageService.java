@@ -257,9 +257,9 @@ public class MasterManageService {
         try {
             if (allInvalidWorkerTDlNodeList.isEmpty()) {
                 if (log.isDebugEnabled()) {
-                    log.debug("所有 Worker 已就绪");
+                    log.debug("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
                 }
-                log.info("所有 Worker 已就绪");
+                log.info("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
                 return;
             }
 
