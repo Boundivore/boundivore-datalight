@@ -82,6 +82,7 @@ public class TaskMeta extends TimeMeta {
 
     private String componentName;
 
+    // 该组件所在服务是否第一次在目标节点部署，如果是，则需要初始化安装环境
     private boolean isFirstDeployInNode;
 
     private ExecStateEnum taskStateEnum;
