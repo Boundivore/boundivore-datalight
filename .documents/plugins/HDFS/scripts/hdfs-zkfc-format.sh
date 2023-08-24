@@ -29,7 +29,7 @@ formatZFKC() {
         set timeout -1
         spawn su -c "${CURRENT_SERVICE_DIR}/bin/hdfs zkfc -formatZK" "${USER_NAME}"
         expect {
-            "Proceed formatting*" { send "Y\r"; exp_continue }
+            "Proceed formatting*" { send "N\r"; exp_continue }
             eof
         }
 EOF

@@ -102,6 +102,11 @@ sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh JournalNode start
 
 java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
+
+sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop \
+sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop \
+sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh NodeExporter stop \
+sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh MySQLExporter stop \
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh HttpFS stop; \
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh DataNode stop; \
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh ZKFailoverController stop; \
@@ -109,6 +114,7 @@ sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh NameNode stop; \
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh JournalNode stop; \
 sh /opt/datalight/plugins/ZOOKEEPER/scripts/zookeeper-operation.sh QuarumPeermain stop; \
 rm -rf /data/datalight/*; \
+rm -rf /data/logs/*; \
 rm -rf /srv/datalight/*
 
 
@@ -234,7 +240,7 @@ cat /etc/hosts
         },
         {
             "ServiceName": "HDFS",
-            "SCStateEnum": "UNSELECTED"
+            "SCStateEnum": "SELECTED"
         },
         {
             "ServiceName": "YARN",
@@ -243,7 +249,7 @@ cat /etc/hosts
     ]
 }
 
-设置组件：不含HDFS
+设置组件-含HDFS
 {
     "ClusterId": 1,
     "ComponentList": [
@@ -264,6 +270,26 @@ cat /etc/hosts
             "ServiceName": "MONITOR"
         },
         {
+            "ComponentName": "NodeExporter",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "MONITOR"
+        },
+        {
+            "ComponentName": "MySQLExporter",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "MONITOR"
+        },
+        {
             "ComponentName": "Grafana",
             "NodeIdList": [
                 1
@@ -271,24 +297,6 @@ cat /etc/hosts
             "SCStateEnum": "SELECTED",
             "ServiceName": "MONITOR"
         },
-        {
-            "ComponentName": "QuarumPeermain",
-            "NodeIdList": [
-                1,
-                2,
-                3
-            ],
-            "SCStateEnum": "SELECTED",
-            "ServiceName": "ZOOKEEPER"
-        }
-    ]
-}
-
-
-设置组件-含HDFS
-{
-    "ClusterId": 1,
-    "ComponentList": [
         {
             "ComponentName": "QuarumPeermain",
             "NodeIdList": [
@@ -326,16 +334,9 @@ cat /etc/hosts
             "ServiceName": "HDFS"
         },
         {
-            "ComponentName": "ZKFailoverController1",
+            "ComponentName": "ZKFailoverController",
             "NodeIdList": [
-                1
-            ],
-            "SCStateEnum": "SELECTED",
-            "ServiceName": "HDFS"
-        },
-        {
-            "ComponentName": "ZKFailoverController2",
-            "NodeIdList": [
+                1,
                 2
             ],
             "SCStateEnum": "SELECTED",
@@ -419,6 +420,7 @@ cat /etc/hosts
     "ClusterId": 1,
     "ServiceNameList": [
         "MONITOR",
-        "ZOOKEEPER"
+        "ZOOKEEPER",
+        "HDFS"
     ]
 }
