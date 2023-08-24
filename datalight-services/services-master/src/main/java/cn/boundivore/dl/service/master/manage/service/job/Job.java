@@ -347,7 +347,7 @@ public class Job extends Thread {
      * @param taskMeta Task 中的元数据信息
      * @return List<StepMeta>
      */
-    private List<StepMeta> initStepMeta(TaskMeta taskMeta) {
+    private List<StepMeta>  initStepMeta(TaskMeta taskMeta) {
 
         YamlServiceDetail.Component component = ResolverYamlServiceDetail.COMPONENT_MAP.get(
                 taskMeta.getComponentName()

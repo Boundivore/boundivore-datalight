@@ -221,6 +221,28 @@ public abstract class AbstractTask implements ITask {
     }
 
     /**
+     * Description: 获取公共脚本的绝对路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param stepMeta 当前步骤的元数据信息
+     * @return 公共脚本的绝对路径
+     */
+    protected String commonAbsoluteCommandPath(StepMeta stepMeta) {
+        return String.format(
+                "%s/%s",
+                //TODO FOR TEST
+                SpringContextUtilTest.SCRIPTS_PATH_DIR_REMOTE,
+                stepMeta.getShell()
+        );
+    }
+
+    /**
      * Description: 获取插件（服务）脚本的绝对路径
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -234,28 +256,6 @@ public abstract class AbstractTask implements ITask {
      * @return 服务插件下脚本的绝对路径
      */
     protected String pluginAbsoluteCommandPath(StepMeta stepMeta) {
-        return String.format(
-                "%s/%s",
-                //TODO FOR TEST
-                SpringContextUtilTest.SCRIPTS_PATH_DIR_REMOTE,
-                stepMeta.getShell()
-        );
-    }
-
-    /**
-     * Description: 获取公共脚本的绝对路径
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param stepMeta 当前步骤的元数据信息
-     * @return 服务插件下脚本的绝对路径
-     */
-    protected String commonAbsoluteCommandPath(StepMeta stepMeta) {
         return String.format(
                 "%s/%s/scripts/%s",
                 //TODO FOR TEST
