@@ -54,8 +54,6 @@ public class RemoteInvokeGrafanaService {
     private static final long CONNECT_TIMEOUT = 2 * 1000L;
     private static final long READ_TIMEOUT = 5 * 1000L;
 
-    public final static String GRAFANA_BASE_ORG_NAME = "datalight";
-
     private final Feign.Builder feignBuilder;
 
     // Grafana IP 地址

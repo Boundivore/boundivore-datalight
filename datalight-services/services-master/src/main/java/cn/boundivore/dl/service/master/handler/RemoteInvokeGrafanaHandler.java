@@ -47,8 +47,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService.GRAFANA_BASE_ORG_NAME;
-
 /**
  * Description: Grafana 综合调用逻辑
  * 1、修改 Grafana 主账号（userId1）密码
@@ -72,6 +70,8 @@ import static cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService
 @Component
 @RequiredArgsConstructor
 public class RemoteInvokeGrafanaHandler {
+
+    public final static String GRAFANA_BASE_ORG_NAME = "datalight";
 
     public static final GrafanaUser ADMIN_USER = GrafanaUser.getGrafanaUser(
             GRAFANA_BASE_ORG_NAME,
@@ -197,9 +197,9 @@ public class RemoteInvokeGrafanaHandler {
      * @param port           Grafana 端口号
      */
     public void configGrafanaBase(Long clusterId,
-                                   Map<GrafanaUserTypeEnum, GrafanaUser> grafanaUserMap,
-                                   String nodeIp,
-                                   String port) {
+                                  Map<GrafanaUserTypeEnum, GrafanaUser> grafanaUserMap,
+                                  String nodeIp,
+                                  String port) {
 
         GrafanaUser grafanaUser1 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN);
 

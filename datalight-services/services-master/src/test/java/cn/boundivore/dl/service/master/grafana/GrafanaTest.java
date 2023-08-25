@@ -16,9 +16,7 @@
  */
 package cn.boundivore.dl.service.master.grafana;
 
-import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.service.master.bean.GrafanaUser;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
 import cn.hutool.core.io.FileUtil;
@@ -29,9 +27,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
-
-import static cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN;
-import static cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService.GRAFANA_BASE_ORG_NAME;
 
 /**
  * Description: 测试 Grafana API
@@ -69,7 +64,7 @@ public class GrafanaTest {
     public void createOrg() {
         Result<String> result = this.remoteInvokeGrafanaService.createOrg(
                 RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN,
-                GRAFANA_BASE_ORG_NAME
+                RemoteInvokeGrafanaHandler.GRAFANA_BASE_ORG_NAME
         );
 
         log.info(result.toString());
@@ -176,8 +171,7 @@ public class GrafanaTest {
         );
         Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
                 RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
-                dashboardJson4)
-                ;
+                dashboardJson4);
         Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
                 RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
                 dashboardJson5
