@@ -1,6 +1,6 @@
 ---
 startDelaySeconds: 0
-# hostPort: 0.0.0.0:{{exporterPort}}
+hostPort: localhost:{{jmxRemotePort}}
 ssl: false
 lowercaseOutputName: false  # 是否将输出的指标名称转为小写，默认为false
 lowercaseOutputLabelNames: false  # 是否将输出的标签名称转为小写，默认为false
