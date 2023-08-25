@@ -54,13 +54,8 @@ public abstract class AbstractConfigEventHandler implements IConfigEventHandler 
 
     @Override
     public PluginConfigResult configByEvent(PluginConfigSelf pluginConfigSelf) {
-        log.info(
-                "{}-{} 插件中发现事件变动: {}-{}",
-                pluginConfigSelf.getClusterId(),
-                pluginConfigSelf.getServiceName(),
-                this.pluginConfigEvent.getClusterId(),
-                this.pluginConfigEvent.getServiceName()
-        );
+        // 输出日志
+        this.log(pluginConfigSelf);
 
         // 此处不做任何修改
         // 子类中的实现需要配合修改配置文件
@@ -69,6 +64,28 @@ public abstract class AbstractConfigEventHandler implements IConfigEventHandler 
                 pluginConfigSelf.getClusterId(),
                 pluginConfigSelf.getServiceName(),
                 new LinkedHashMap<>()
+        );
+    }
+
+    /**
+     * Description: 记录日志
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param pluginConfigSelf pluginConfigSelf 当前服务自己的配置文件信息（只包含 getRelativeConfigPathList 中指定的配置文件）
+     */
+    protected void log(PluginConfigSelf pluginConfigSelf) {
+        log.info(
+                "{}-{} 配置事件中发现变动: {}-{}",
+                pluginConfigSelf.getClusterId(),
+                pluginConfigSelf.getServiceName(),
+                this.pluginConfigEvent.getClusterId(),
+                this.pluginConfigEvent.getServiceName()
         );
     }
 

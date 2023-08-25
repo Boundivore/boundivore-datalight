@@ -56,7 +56,6 @@ public class RemoteInvokeGrafanaService {
 
     public final static String GRAFANA_BASE_ORG_NAME = "datalight";
 
-
     private final Feign.Builder feignBuilder;
 
     // Grafana IP 地址
@@ -332,7 +331,6 @@ public class RemoteInvokeGrafanaService {
                                             String prometheusPort,
                                             String grafanaUser,
                                             String grafanaPassword) {
-        this.checkInit();
         return this.iThirdGrafanaAPI(grafanaUser, grafanaPassword).createDataSources(
                 MapUtil.of(
                         new Object[][]{
@@ -393,7 +391,6 @@ public class RemoteInvokeGrafanaService {
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
     public Result<String> createOrUpdateDashboard(String dashboard, String grafanaUser, String grafanaPassword) {
-        this.checkInit();
         return this.iThirdGrafanaAPI(grafanaUser, grafanaPassword).createOrUpdateDashboard(
                 MapUtil.of(
                         new Object[][]{

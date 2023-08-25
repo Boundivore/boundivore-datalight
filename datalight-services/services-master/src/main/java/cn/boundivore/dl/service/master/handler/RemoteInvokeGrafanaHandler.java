@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.utils.JsonUtil;
+import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
@@ -31,11 +32,16 @@ import cn.boundivore.dl.service.master.service.MasterNodeService;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.core.util.CharsetUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.AbstractMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -140,6 +146,9 @@ public class RemoteInvokeGrafanaHandler {
                                 grafanaServerTDlComponent.getComponentName()
                         )
                 );
+
+                // 加载所有 Dashboard
+                this.initAllDashboard(grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_ORG));
             }
 
         } catch (Exception e) {
@@ -288,5 +297,52 @@ public class RemoteInvokeGrafanaHandler {
             log.info("createDataSources: {}", createDataSourcesResult);
         } catch (Exception ignore) {
         }
+    }
+
+    /**
+     * Description: 初始化所有 Dashboard
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param grafanaUser Grafana 中 datalight 组织下的 Admin 用户
+     */
+    private void initAllDashboard(GrafanaUser grafanaUser) {
+        // dashboard 目录
+        String dashboardDir = String.format(
+                "%s/MONITOR/dashboard",
+                //TODO FOR TEST
+                SpringContextUtilTest.PLUGINS_PATH_DIR_LOCAL
+        );
+
+        File[] files = FileUtil.file(dashboardDir).listFiles();
+        if (files == null || files.length == 0) {
+            return;
+        }
+
+        Arrays.stream(files)
+                .forEach(i -> {
+                            try {
+                                String dashboard = FileUtil.readString(
+                                        i,
+                                        CharsetUtil.CHARSET_UTF_8
+                                );
+                                Result<String> result = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                                        dashboard,
+                                        grafanaUser.getLoginName(),
+                                        grafanaUser.getLoginPassword()
+                                );
+
+                                log.info("加载 Dashboard {} : {}", result.isSuccess(), i.getName());
+                            } catch (IORuntimeException e) {
+                                log.error(ExceptionUtil.stacktraceToString(e));
+                            }
+
+                        }
+                );
     }
 }
