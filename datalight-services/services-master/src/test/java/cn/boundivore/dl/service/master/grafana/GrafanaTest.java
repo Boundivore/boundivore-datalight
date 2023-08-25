@@ -150,7 +150,7 @@ public class GrafanaTest {
                 StandardCharsets.UTF_8
         );
         String dashboardJson7 = FileUtil.readString(
-                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\ZOOKEEPER\\dashboard\\ZOOKEEPER-QuarumPeermain.json",
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\ZOOKEEPER-QuarumPeermain.json",
                 StandardCharsets.UTF_8
         );
 
@@ -161,6 +161,7 @@ public class GrafanaTest {
         Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson4, tempStr, tempStr);
         Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson5, tempStr, tempStr);
         Result<String> result6 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson6, tempStr, tempStr);
+        Result<String> result7 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson7, tempStr, tempStr);
 
         log.info(result1.toString());
         log.info(result2.toString());
@@ -168,6 +169,7 @@ public class GrafanaTest {
         log.info(result4.toString());
         log.info(result5.toString());
         log.info(result6.toString());
+        log.info(result7.toString());
     }
 
     @Test

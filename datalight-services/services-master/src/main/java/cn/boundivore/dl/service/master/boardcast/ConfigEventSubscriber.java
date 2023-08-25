@@ -24,6 +24,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfigEvent;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigSelf;
 import cn.boundivore.dl.plugin.base.config.event.IConfigEventHandler;
+import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
@@ -69,6 +70,8 @@ public class ConfigEventSubscriber {
     private final MasterServiceService masterServiceService;
 
     private final MasterConfigService masterConfigService;
+
+    private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
 
     @Data
     @AllArgsConstructor
@@ -234,6 +237,9 @@ public class ConfigEventSubscriber {
                                 this.masterConfigSyncService.saveConfigOrUpdateBatch(pluginConfigResult),
                                 () -> new BException("订阅者修改配置失败")
                         );
+
+                        // 重载 Prometheus 配置
+                        this.reloadIfPrometheus(relativeClusterId, serviceName);
                     }
 
                 } else {
@@ -398,6 +404,27 @@ public class ConfigEventSubscriber {
         pluginConfigSelf.setConfigSelfDataList(configSelfDataList);
 
         return pluginConfigSelf;
+    }
+
+    /**
+     * Description: 重载 Prometheus 配置
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId   集群 ID
+     * @param serviceName 服务名称
+     */
+    private void reloadIfPrometheus(Long clusterId, String serviceName) {
+        if (serviceName.equals("MONITOR")) {
+            this.remoteInvokePrometheusHandler.invokePrometheusReload(
+                    clusterId
+            );
+        }
     }
 
 }
