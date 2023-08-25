@@ -116,6 +116,14 @@ public class ConfigHDFS extends AbstractConfig {
                 return new ConfigLogicCoreSite(super.pluginConfig).config(file, replacedTemplate);
             case "hdfs-site.xml":
                 return new ConfigLogicHdfsSite(super.pluginConfig).config(file, replacedTemplate);
+            case "hadoop-evn.sh":
+                return new ConfigLogicHadoopEnvSh(super.pluginConfig).config(file, replacedTemplate);
+            case "jmx_config_JournalNode.yaml":
+            case "jmx_config_NameNode.yaml":
+            case "jmx_config_ZKFailoverController.yaml":
+            case "jmx_config_DataNode.yaml":
+            case "jmx_config_HttpFS.yaml":
+                return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if(log.isDebugEnabled()){
                     log.debug("无处理文件: {}", file.getName());

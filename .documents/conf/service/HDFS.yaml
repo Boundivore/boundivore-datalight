@@ -4,6 +4,9 @@ datalight:
     version: 3.2.4
     tgz: dlc-hdfs-3.2.4.tar.gz
     conf-dirs:
+#      - service-conf-dir: '{{service-dir}}/HDFS/exporter/conf'
+#        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/exporter/conf'
+
 #      - service-conf-dir: '{{service-dir}}/HDFS/bin'
 #        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/bin'
 #
@@ -14,6 +17,9 @@ datalight:
 #        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/sbin'
 
 # TODO FOR TEST
+      - service-conf-dir: '{{service-dir}}/HDFS/exporter/conf'
+        templated-dir: 'D:/datalight/plugins/HDFS/templated/exporter/conf'
+
       - service-conf-dir: '{{service-dir}}/HDFS/bin'
         templated-dir: 'D:/datalight/plugins/HDFS/templated/bin'
 

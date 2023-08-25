@@ -24,7 +24,7 @@ import java.io.File;
 import java.util.Map;
 
 /**
- * Description: 配置 zoo.cfg 文件
+ * Description: 配置 hdfs-site.xml 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
