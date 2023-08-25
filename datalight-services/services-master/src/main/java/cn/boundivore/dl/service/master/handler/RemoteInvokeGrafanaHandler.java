@@ -102,17 +102,17 @@ public class RemoteInvokeGrafanaHandler {
                             )
                     ),
                     new AbstractMap.SimpleEntry<>(
-                            GrafanaUserTypeEnum.ADMIN_ORG,
+                            GrafanaUserTypeEnum.ADMIN_DATALIGHT,
                             GrafanaUser.getGrafanaUser(
                                     GRAFANA_BASE_ORG_NAME,
-                                    GrafanaUserTypeEnum.ADMIN_ORG
+                                    GrafanaUserTypeEnum.ADMIN_DATALIGHT
                             )
                     ),
                     new AbstractMap.SimpleEntry<>(
-                            GrafanaUserTypeEnum.EDITOR_ORG,
+                            GrafanaUserTypeEnum.EDITOR_DATALIGHT,
                             GrafanaUser.getGrafanaUser(
                                     GRAFANA_BASE_ORG_NAME,
-                                    GrafanaUserTypeEnum.EDITOR_ORG
+                                    GrafanaUserTypeEnum.EDITOR_DATALIGHT
                             )
                     )
             ).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -148,7 +148,7 @@ public class RemoteInvokeGrafanaHandler {
                 );
 
                 // 加载所有 Dashboard
-                this.initAllDashboard(grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_ORG));
+                this.initAllDashboard(grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_DATALIGHT));
             }
 
         } catch (Exception e) {
@@ -172,7 +172,7 @@ public class RemoteInvokeGrafanaHandler {
      * @param nodeIp         Grafana IP
      * @param port           Grafana 端口号
      */
-    private void configGrafanaBase(Long clusterId,
+    public void configGrafanaBase(Long clusterId,
                                    Map<GrafanaUserTypeEnum, GrafanaUser> grafanaUserMap,
                                    String nodeIp,
                                    String port) {
@@ -205,7 +205,7 @@ public class RemoteInvokeGrafanaHandler {
         String orgId = JsonUtil.getMapObj(getOrgByNameResult.getData()).get("id").toString();
 
         // 3、为当前集群 Org 创建用户（Admin），并获取该用户的 userId2
-        GrafanaUser grafanaUser2 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_ORG);
+        GrafanaUser grafanaUser2 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_DATALIGHT);
         try {
             Result<String> createUser2Result = this.remoteInvokeGrafanaService.createUsers(
                     grafanaUser2.getLoginName(),
@@ -237,7 +237,7 @@ public class RemoteInvokeGrafanaHandler {
         }
 
         // 6、为当前集群 Org 创建用户（Editor），并获取该用户的 userId3
-        GrafanaUser grafanaUser3 = grafanaUserMap.get(GrafanaUserTypeEnum.EDITOR_ORG);
+        GrafanaUser grafanaUser3 = grafanaUserMap.get(GrafanaUserTypeEnum.EDITOR_DATALIGHT);
         try {
             Result<String> createUser3Result = this.remoteInvokeGrafanaService.createUsers(
                     grafanaUser3.getLoginName(),
@@ -311,7 +311,7 @@ public class RemoteInvokeGrafanaHandler {
      *
      * @param grafanaUser Grafana 中 datalight 组织下的 Admin 用户
      */
-    private void initAllDashboard(GrafanaUser grafanaUser) {
+    public void initAllDashboard(GrafanaUser grafanaUser) {
         // dashboard 目录
         String dashboardDir = String.format(
                 "%s/MONITOR/dashboard",

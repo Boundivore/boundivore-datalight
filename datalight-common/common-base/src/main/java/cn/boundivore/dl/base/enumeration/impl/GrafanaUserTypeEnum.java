@@ -32,9 +32,9 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
 public enum GrafanaUserTypeEnum implements IBaseEnum {
 
     ADMIN("0", "唯一主账号"),
-    ADMIN_ORG("1", "对应集群中的主账号(即对应 org 中主账号)"),
-    EDITOR_ORG("2", "对应集群中的编辑者账号"),
-    VIEWER_ORG("3", "对应集群中的浏览账号");
+    ADMIN_DATALIGHT("1", "对应集群中的主账号(即对应 org 中主账号)"),
+    EDITOR_DATALIGHT("2", "对应集群中的编辑者账号"),
+    VIEWER_DATALIGHT("3", "对应集群中的浏览账号");
 
     private final String code;
     private final String message;

@@ -16,7 +16,9 @@
  */
 package cn.boundivore.dl.service.master.grafana;
 
+import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.service.master.bean.GrafanaUser;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
 import cn.hutool.core.io.FileUtil;
@@ -179,5 +181,15 @@ public class GrafanaTest {
         );
 
         this.createOrUpdateDashboard();
+    }
+
+    @Test
+    public void initAllDashboards() {
+        this.remoteInvokeGrafanaHandler.initAllDashboard(
+                GrafanaUser.getGrafanaUser(
+                        GRAFANA_BASE_ORG_NAME,
+                        GrafanaUserTypeEnum.ADMIN_DATALIGHT
+                )
+        );
     }
 }

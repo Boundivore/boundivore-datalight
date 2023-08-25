@@ -62,8 +62,8 @@ public class GrafanaUser {
                 grafanaUser.loginName = "admin";
                 grafanaUser.loginPassword = "admin";
                 break;
-            case ADMIN_ORG:
-                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.ADMIN_ORG;
+            case ADMIN_DATALIGHT:
+                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.ADMIN_DATALIGHT;
                 grafanaUser.loginName = String.format(
                         "admin-%s",
                         orgName
@@ -73,8 +73,8 @@ public class GrafanaUser {
                         orgName
                 );
                 break;
-            case EDITOR_ORG:
-                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.EDITOR_ORG;
+            case EDITOR_DATALIGHT:
+                grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.EDITOR_DATALIGHT;
                 grafanaUser.loginName = String.format(
                         "editor-%s",
                         orgName
@@ -84,7 +84,7 @@ public class GrafanaUser {
                         orgName
                 );
                 break;
-            case VIEWER_ORG:
+            case VIEWER_DATALIGHT:
                 throw new BException(
                         String.format(
                                 "暂未支持的 Grafana 角色: %s",
