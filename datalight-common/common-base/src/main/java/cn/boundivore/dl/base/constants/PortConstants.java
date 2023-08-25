@@ -52,7 +52,7 @@ public class PortConstants {
     // <ServiceName-ComponentName, RemotePort>
     public final static Map<String, String> MONITOR_REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("ZOOKEEPER-QuarumPeermain", "20001");
+//            put("ZOOKEEPER-QuarumPeermain", "20001");
 
             put("HDFS-JournalNode", "20002");
             put("HDFS-NameNode", "20003");

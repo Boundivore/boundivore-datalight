@@ -428,3 +428,12 @@ export HADOOP_PID_DIR=${PID_DIR}/HDFS
 # By default, Hadoop uses jsvc which needs to know to launch a
 # server jvm.
 # export HADOOP_REGISTRYDNS_SECURE_EXTRA_OPTS="-jvm server"
+
+#export HADOOP_JOURNALNODE_OPTS="$HADOOP_JOURNALNODE_OPTS -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=1236 -javaagent:/opt/software/prometheus_export/jmx_prometheus_javaagent-0.9.jar=9522:/opt/software/prometheus_export/journalnode.yaml"
+#
+#export HDFS_NAMENODE_OPTS="$HDFS_NAMENODE_OPTS -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=1234 -javaagent:/opt/software/prometheus_export/jmx_prometheus_javaagent-0.9.jar=9222:/opt/software/prometheus_export/namenode.yaml"
+#
+#export HDFS_ZKFC_OPTS="$HDFS_ZKFC_OPTS -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=1237 -javaagent:/opt/software/prometheus_export/jmx_prometheus_javaagent-0.9.jar=9422:/opt/software/prometheus_export/zkfc.yaml"
+#
+#export HDFS_DATANODE_OPTS="$HDFS_DATANODE_OPTS -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote.port=1235 -javaagent:/opt/software/prometheus_export/jmx_prometheus_javaagent-0.9.jar=9322:/opt/software/prometheus_export/datanode.yaml"
+
