@@ -119,6 +119,20 @@ public class RemoteInvokeGrafanaService {
                 );
     }
 
+    /**
+     * Description: 获取请求的 Basic Token
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param user     用户名
+     * @param password 密码
+     * @return 基于用户名密码的 Basic 的认证 Token，置于请求的 Header
+     */
     public static String basicAuthToken(String user, String password) {
         return String.format(
                 "Basic %s",
