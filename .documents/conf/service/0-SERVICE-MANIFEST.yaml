@@ -5,7 +5,7 @@ datalight:
       - name: MONITOR
         type: BASE
         priority: 1
-        desc: '监控指标采集与告警基础服务'
+        desc: '监控与告警基础服务'
         dependencies: [ ]
         relatives: [ ]
       - name: ZOOKEEPER

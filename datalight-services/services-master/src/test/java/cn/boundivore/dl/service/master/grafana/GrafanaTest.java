@@ -149,6 +149,10 @@ public class GrafanaTest {
                 "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\dashboard\\MONITOR-Prometheus.json",
                 StandardCharsets.UTF_8
         );
+        String dashboardJson7 = FileUtil.readString(
+                "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\ZOOKEEPER\\dashboard\\ZOOKEEPER-QuarumPeermain.json",
+                StandardCharsets.UTF_8
+        );
 
         String tempStr = "admin-datalight";
         Result<String> result1 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson1, tempStr, tempStr);
