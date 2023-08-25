@@ -21,6 +21,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
 
 import java.io.File;
+import java.util.stream.Collectors;
 
 /**
  * Description: 配置 defaults.ini 文件
@@ -43,13 +44,22 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
     public String config(File file, String replacedTemplated) {
         super.printFilename(file);
 
+        // 获取 Grafana Home dashboard 路径
         String grafanaHomeDashboardFilePath = this.grafanaHomeDashboardFilePath();
+
+        // 获取 Grafana 所在节点主机名
+        String grafanaHostname = this.grafanaHostname();
 
         return replacedTemplated
                 .replace(
                         "{{default_home_dashboard_path}}",
                         grafanaHomeDashboardFilePath
                 )
+                .replace(
+                        "{{server.domain}}",
+                        grafanaHostname
+                )
+
                 ;
     }
 
@@ -76,5 +86,33 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
                 "%s/MONITOR/grafana/conf/GrafanaDefaultHome.json",
                 serviceDir
         );
+    }
+
+    /**
+     * Description: 获取 Grafana 所在节点主机名
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Grafana 所在节点主机名
+     */
+    private String grafanaHostname() {
+        PluginConfig.MetaComponent grafanaMetaComponent = super.pluginConfig.getCurrentMetaService()
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("Grafana"))
+                .collect(Collectors.toList())
+                .get(0);
+
+        if(grafanaMetaComponent != null) {
+            return grafanaMetaComponent.getHostname();
+        }
+
+        return "localhost";
     }
 }

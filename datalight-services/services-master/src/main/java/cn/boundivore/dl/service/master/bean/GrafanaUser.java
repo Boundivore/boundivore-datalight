@@ -37,7 +37,9 @@ public class GrafanaUser {
 
     private String loginName;
 
-    private String loginPassword;
+    private String oldLoginPassword;
+
+    private String newLoginPassword;
 
     /**
      * Description: 获取指定类型的 Grafana 用户
@@ -60,7 +62,8 @@ public class GrafanaUser {
             case ADMIN:
                 grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.ADMIN;
                 grafanaUser.loginName = "admin";
-                grafanaUser.loginPassword = "admin";
+                grafanaUser.oldLoginPassword = "admin";
+                grafanaUser.newLoginPassword = "adminadmin";
                 break;
             case ADMIN_DATALIGHT:
                 grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.ADMIN_DATALIGHT;
@@ -68,10 +71,11 @@ public class GrafanaUser {
                         "admin-%s",
                         orgName
                 );
-                grafanaUser.loginPassword = String.format(
+                grafanaUser.oldLoginPassword = String.format(
                         "admin-%s",
                         orgName
                 );
+                grafanaUser.newLoginPassword = grafanaUser.oldLoginPassword;
                 break;
             case EDITOR_DATALIGHT:
                 grafanaUser.grafanaUserTypeEnum = GrafanaUserTypeEnum.EDITOR_DATALIGHT;
@@ -79,10 +83,11 @@ public class GrafanaUser {
                         "editor-%s",
                         orgName
                 );
-                grafanaUser.loginPassword = String.format(
+                grafanaUser.oldLoginPassword = String.format(
                         "editor-%s",
                         orgName
                 );
+                grafanaUser.newLoginPassword = grafanaUser.oldLoginPassword;
                 break;
             case VIEWER_DATALIGHT:
                 throw new BException(

@@ -49,8 +49,8 @@ public class RemoteInvokeGrafanaService {
 
     private static final String ACCEPT = "Accept";
     private static final String CONTENT_TYPE = "Content-Type";
-    private static final String AUTHORIZATION = "Authorization";
     private static final String APPLICATION_JSON = "application/json";
+
     private static final long CONNECT_TIMEOUT = 2 * 1000L;
     private static final long READ_TIMEOUT = 5 * 1000L;
 
@@ -62,22 +62,15 @@ public class RemoteInvokeGrafanaService {
     private String grafanaIp;
     // Grafana 端口号
     private String grafanaPort;
-    // Grafana 用户名
-    private String grafanaUser;
-    // Grafana 密码
-    private String grafanaPassword;
 
     private IThirdGrafanaAPI iThirdGrafanaAPI;
 
+
     public void init(String grafanaIp,
-                     String grafanaPort,
-                     String grafanaUser,
-                     String grafanaPassword) {
+                     String grafanaPort) {
 
         this.grafanaIp = grafanaIp;
         this.grafanaPort = grafanaPort;
-        this.grafanaUser = grafanaUser;
-        this.grafanaPassword = grafanaPassword;
 
         this.iThirdGrafanaAPI = this.iThirdGrafanaAPI();
     }
@@ -106,17 +99,16 @@ public class RemoteInvokeGrafanaService {
      */
     private IThirdGrafanaAPI iThirdGrafanaAPI() {
         return feignBuilder
+                .requestInterceptor(
+                        template -> template
+                                .header(ACCEPT, APPLICATION_JSON)
+                                .header(CONTENT_TYPE, APPLICATION_JSON)
+                )
                 .options(
                         RequestOptionsGenerator.getRequestOptions(
                                 CONNECT_TIMEOUT,
                                 READ_TIMEOUT
                         )
-                )
-                .requestInterceptor(
-                        template -> template
-                                .header(ACCEPT, APPLICATION_JSON)
-                                .header(CONTENT_TYPE, APPLICATION_JSON)
-                                .header(AUTHORIZATION, basicAuthValue(this.grafanaUser, this.grafanaPassword))
                 )
                 .target(
                         IThirdGrafanaAPI.class,
@@ -129,47 +121,7 @@ public class RemoteInvokeGrafanaService {
                 );
     }
 
-    /**
-     * Description: Feign 远程调用指定节点的 IThirdGrafanaAPI 的接口，同时临时指定 BasicAuth 的用户
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/11
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     * add("Accept", "application/json");
-     * add("Content-Type", "application/json");
-     * add("Authorization", basicAuthValue(user, password));
-     *
-     * @return IWorkerExecAPI 可调用 API 实例
-     */
-    private IThirdGrafanaAPI iThirdGrafanaAPI(String grafanaUser, String grafanaPassword) {
-        return feignBuilder
-                .options(
-                        RequestOptionsGenerator.getRequestOptions(
-                                CONNECT_TIMEOUT,
-                                READ_TIMEOUT
-                        )
-                )
-                .requestInterceptor(
-                        template -> template
-                                .header(ACCEPT, APPLICATION_JSON)
-                                .header(CONTENT_TYPE, APPLICATION_JSON)
-                                .header(AUTHORIZATION, basicAuthValue(grafanaUser, grafanaPassword))
-                )
-                .target(
-                        IThirdGrafanaAPI.class,
-                        String.format(
-                                "http://%s:%s%s",
-                                this.grafanaIp,
-                                this.grafanaPort,
-                                IUrlPrefixConstants.NONE_PREFIX
-                        )
-                );
-    }
-
-    private String basicAuthValue(String user, String password) {
+    public static String basicAuthToken(String user, String password) {
         return String.format(
                 "Basic %s",
                 Base64.encode(
@@ -192,12 +144,14 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token   Basic Token
      * @param orgName 组织名称
      * @return @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createOrg(String orgName) {
+    public Result<String> createOrg(String token, String orgName) {
         this.checkInit();
         return this.iThirdGrafanaAPI.createOrg(
+                token,
                 MapUtil.of(
                         new Object[][]{
                                 {"name", orgName}
@@ -216,16 +170,19 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token     Basic Token
      * @param userName  用户名
      * @param loginName 登录名
      * @param password  密码
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createUsers(String userName,
+    public Result<String> createUsers(String token,
+                                      String userName,
                                       String loginName,
                                       String password) {
         this.checkInit();
         return this.iThirdGrafanaAPI.createUsers(
+                token,
                 MapUtil.of(
                         new Object[][]{
                                 {"name", userName},
@@ -246,16 +203,19 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token     Basic Token
      * @param orgId     组织 ID
      * @param loginName 用户登录名
      * @param role      用户在组织中的角色
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> addUserInOrg(String orgId,
+    public Result<String> addUserInOrg(String token,
+                                       String orgId,
                                        String loginName,
                                        String role) {
         this.checkInit();
         return this.iThirdGrafanaAPI.addUserInOrg(
+                token,
                 orgId,
                 MapUtil.of(
                         new Object[][]{
@@ -276,14 +236,17 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token  Basic Token
      * @param orgId  组织 ID
      * @param userId 用户 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteUserFromOrg(String orgId,
+    public Result<String> deleteUserFromOrg(String token,
+                                            String orgId,
                                             String userId) {
         this.checkInit();
         return this.iThirdGrafanaAPI.deleteUserFromOrg(
+                token,
                 orgId,
                 userId
         );
@@ -299,12 +262,15 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
-     * @param name 数据源名称
+     * @param token Basic Token
+     * @param name  数据源名称
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getDatasourceByName(String name) {
+    public Result<String> getDatasourceByName(String token,
+                                              String name) {
         this.checkInit();
         return this.iThirdGrafanaAPI.getDatasourceByName(
+                token,
                 name
         );
     }
@@ -319,19 +285,22 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token          Basic Token
      * @param orgId          组织 ID
      * @param datasourceName datasource 名称
      * @param prometheusHost Prometheus 节点地址
      * @param prometheusPort Prometheus 端口号
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createDataSources(String orgId,
+    public Result<String> createDataSources(String token,
+                                            String orgId,
                                             String datasourceName,
                                             String prometheusHost,
                                             String prometheusPort,
                                             String grafanaUser,
                                             String grafanaPassword) {
-        return this.iThirdGrafanaAPI(grafanaUser, grafanaPassword).createDataSources(
+        return this.iThirdGrafanaAPI.createDataSources(
+                token,
                 MapUtil.of(
                         new Object[][]{
                                 {"id", null},
@@ -369,12 +338,16 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token          Basic Token
      * @param datasourceName DataSource 名称
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteDataSource(String datasourceName) {
+    public Result<String> deleteDataSource(String token, String datasourceName) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.deleteDataSourceByName(datasourceName);
+        return this.iThirdGrafanaAPI.deleteDataSourceByName(
+                token,
+                datasourceName
+        );
     }
 
     /**
@@ -387,11 +360,14 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token     Basic Token
      * @param dashboard dashboard 完整文件
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> createOrUpdateDashboard(String dashboard, String grafanaUser, String grafanaPassword) {
-        return this.iThirdGrafanaAPI(grafanaUser, grafanaPassword).createOrUpdateDashboard(
+    public Result<String> createOrUpdateDashboard(String token,
+                                                  String dashboard) {
+        return this.iThirdGrafanaAPI.createOrUpdateDashboard(
+                token,
                 MapUtil.of(
                         new Object[][]{
                                 {"dashboard", JsonUtil.getMapObj(dashboard)},
@@ -413,18 +389,21 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token     Basic Token
      * @param orgId     组织 ID
      * @param userId    用户 ID
      * @param loginName 登录名
      * @param role      角色
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> updateUserInOrg(String orgId,
+    public Result<String> updateUserInOrg(String token,
+                                          String orgId,
                                           String userId,
                                           String loginName,
                                           String role) {
         this.checkInit();
         return this.iThirdGrafanaAPI.updateUserInOrg(
+                token,
                 orgId,
                 userId,
                 MapUtil.of(
@@ -446,12 +425,15 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token Basic Token
      * @param orgId 组织 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getUserInOrg(String orgId) {
+    public Result<String> getUserInOrg(String token,
+                                       String orgId) {
         this.checkInit();
         return this.iThirdGrafanaAPI.getUserInOrg(
+                token,
                 orgId
         );
     }
@@ -466,12 +448,15 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token   Basic Token
      * @param orgName 组织 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getOrgByName(String orgName) {
+    public Result<String> getOrgByName(String token,
+                                       String orgName) {
         this.checkInit();
         return this.iThirdGrafanaAPI.getOrgByName(
+                token,
                 orgName
         );
     }
@@ -486,12 +471,15 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token        Basic Token
      * @param loginOrEmail 登录名
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getUserByLoginName(String loginOrEmail) {
+    public Result<String> getUserByLoginName(String token,
+                                             String loginOrEmail) {
         this.checkInit();
         return this.iThirdGrafanaAPI.getUserByLoginName(
+                token,
                 loginOrEmail
         );
     }
@@ -506,11 +494,13 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token Basic Token
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> searchAllUsers() {
+    public Result<String> searchAllUsers(String token) {
         this.checkInit();
         return this.iThirdGrafanaAPI.searchAllUsers(
+                token,
                 "1000",
                 "1"
         );
@@ -526,11 +516,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token Basic Token
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> searchAllOrgs() {
+    public Result<String> searchAllOrgs(String token) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.searchAllOrgs();
+        return this.iThirdGrafanaAPI.searchAllOrgs(token);
     }
 
     /**
@@ -543,12 +534,17 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token  Basic Token
      * @param userId 用户 ID
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteUserById(String userId) {
+    public Result<String> deleteUserById(String token,
+                                         String userId) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.deleteUserById(userId);
+        return this.iThirdGrafanaAPI.deleteUserById(
+                token,
+                userId
+        );
     }
 
     /**
@@ -561,11 +557,16 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token Basic Token
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> deleteOrgById(String orgId) {
+    public Result<String> deleteOrgById(String token,
+                                        String orgId) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.deleteOrgById(orgId);
+        return this.iThirdGrafanaAPI.deleteOrgById(
+                token,
+                orgId
+        );
     }
 
 
@@ -579,14 +580,17 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token       Basic Token
      * @param oldPassword 旧密码
      * @param newPassword 新密码
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> changeUserPassword(String oldPassword,
+    public Result<String> changeUserPassword(String token,
+                                             String oldPassword,
                                              String newPassword) {
         this.checkInit();
         return this.iThirdGrafanaAPI.changeUserPassword(
+                token,
                 MapUtil.of(
                         new Object[][]{
                                 {"oldPassword", oldPassword},
@@ -606,11 +610,12 @@ public class RemoteInvokeGrafanaService {
      * Modification time:
      * Throws:
      *
+     * @param token Basic Token
      * @return Result<String> Grafana 响应体存在于 Result data 中
      */
-    public Result<String> getStats() {
+    public Result<String> getStats(String token) {
         this.checkInit();
-        return this.iThirdGrafanaAPI.getStats();
+        return this.iThirdGrafanaAPI.getStats(token);
     }
 
 }

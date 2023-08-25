@@ -16,18 +16,19 @@
  */
 package cn.boundivore.dl.cloud.config.feign;
 
-import feign.Client;
-import feign.Feign;
-import feign.Request;
-import feign.Retryer;
+import feign.*;
 import feign.codec.Decoder;
 import feign.codec.Encoder;
 import feign.okhttp.OkHttpClient;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +53,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @Slf4j
 @ConditionalOnClass(HttpServletRequest.class)
+@RequiredArgsConstructor
 public class FeignConfig {
 
     @Value("${feign.client.config.default.connectTimeout}")
@@ -61,26 +63,9 @@ public class FeignConfig {
     private long readTimeout;
 
     @Bean
-    public Feign.Builder feignBuilder(Encoder encoder, Decoder decoder) {
-        return Feign.builder()
-                .client(feignClient())
-                .contract(new SpringMvcContract())
-                .encoder(encoder)
-                .decoder(decoder)
-                .retryer(Retryer.NEVER_RETRY)
-                .options(new Request.Options(
-                        connectTimeout,
-                        TimeUnit.MILLISECONDS,
-                        readTimeout,
-                        TimeUnit.MILLISECONDS,
-                        true)
-                );
-    }
-
-    @Bean
-    @Primary
-    public Client feignClient() {
-        return new OkHttpClient();
+    public Decoder feignDecoder(ObjectFactory<HttpMessageConverters> messageConverters,
+                                ObjectProvider<HttpMessageConverterCustomizer> customizers) {
+        return new FeignClientResponseDecoder(messageConverters, customizers);
     }
 
     @Bean
@@ -93,4 +78,27 @@ public class FeignConfig {
         return () -> new HttpMessageConverters(new MappingJackson2HttpMessageConverter());
     }
 
+
+    @Bean
+    @Primary
+    public Client feignClient() {
+        return new OkHttpClient();
+    }
+
+    @Bean
+    public Feign.Builder feignBuilder(Encoder feignEncoder, Decoder feignDecoder) {
+        return Feign.builder()
+                .client(feignClient())
+                .contract(new SpringMvcContract())
+                .encoder(feignEncoder)
+                .decoder(feignDecoder)
+                .retryer(Retryer.NEVER_RETRY)
+                .options(new Request.Options(
+                        connectTimeout,
+                        TimeUnit.MILLISECONDS,
+                        readTimeout,
+                        TimeUnit.MILLISECONDS,
+                        true)
+                );
+    }
 }

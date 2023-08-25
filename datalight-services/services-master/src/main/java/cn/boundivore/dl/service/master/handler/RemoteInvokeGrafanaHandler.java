@@ -73,11 +73,35 @@ import static cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService
 @RequiredArgsConstructor
 public class RemoteInvokeGrafanaHandler {
 
+    public static final GrafanaUser ADMIN_USER = GrafanaUser.getGrafanaUser(
+            GRAFANA_BASE_ORG_NAME,
+            GrafanaUserTypeEnum.ADMIN
+    );
+    public static final GrafanaUser ADMIN_DATALIGHT_USER = GrafanaUser.getGrafanaUser(
+            GRAFANA_BASE_ORG_NAME,
+            GrafanaUserTypeEnum.ADMIN_DATALIGHT
+    );
+
+    public static final String ADMIN_NEW_TOKEN = RemoteInvokeGrafanaService.basicAuthToken(
+            ADMIN_USER.getLoginName(),
+            ADMIN_USER.getNewLoginPassword()
+    );
+    public static final String ADMIN_OLD_TOKEN = RemoteInvokeGrafanaService.basicAuthToken(
+            ADMIN_USER.getLoginName(),
+            ADMIN_USER.getNewLoginPassword()
+    );
+    public static final String ADMIN_DATALIGHT_NEW_TOKEN = RemoteInvokeGrafanaService.basicAuthToken(
+            ADMIN_DATALIGHT_USER.getLoginName(),
+            ADMIN_DATALIGHT_USER.getNewLoginPassword()
+    );
+
+
     private final RemoteInvokeGrafanaService remoteInvokeGrafanaService;
 
     private final MasterComponentService masterComponentService;
 
     private final MasterNodeService masterNodeService;
+
 
     /**
      * Description: 准备执行 Grafana 基础配置
@@ -148,7 +172,7 @@ public class RemoteInvokeGrafanaHandler {
                 );
 
                 // 加载所有 Dashboard
-                this.initAllDashboard(grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_DATALIGHT));
+                this.initAllDashboard();
             }
 
         } catch (Exception e) {
@@ -177,30 +201,37 @@ public class RemoteInvokeGrafanaHandler {
                                    String nodeIp,
                                    String port) {
 
+        GrafanaUser grafanaUser1 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN);
+
         // 配置 Grafana API Feign 客户端
         this.remoteInvokeGrafanaService.init(
                 nodeIp,
-                port,
-                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getLoginName(),
-                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getLoginPassword()
+                port
 
         );
 
         // 1、修改 Grafana 主账号（userId1）密码
         Result<String> changeUserPasswordResult = this.remoteInvokeGrafanaService.changeUserPassword(
-                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getLoginPassword(),
-                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getLoginPassword()
+                ADMIN_OLD_TOKEN,
+                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getOldLoginPassword(),
+                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getNewLoginPassword()
         );
         log.info("changeUserPassword: {}", changeUserPasswordResult);
 
         // 2、为当前集群创建 Org，并获取 orgId
         try {
-            Result<String> createOrgResult = this.remoteInvokeGrafanaService.createOrg(GRAFANA_BASE_ORG_NAME);
+            Result<String> createOrgResult = this.remoteInvokeGrafanaService.createOrg(
+                    ADMIN_NEW_TOKEN,
+                    GRAFANA_BASE_ORG_NAME
+            );
             log.info("createOrg: {}", createOrgResult);
         } catch (Exception ignore) {
         }
 
-        Result<String> getOrgByNameResult = this.remoteInvokeGrafanaService.getOrgByName(GRAFANA_BASE_ORG_NAME);
+        Result<String> getOrgByNameResult = this.remoteInvokeGrafanaService.getOrgByName(
+                ADMIN_NEW_TOKEN,
+                GRAFANA_BASE_ORG_NAME
+        );
         log.info("getOrgByName: {}", getOrgByNameResult);
         String orgId = JsonUtil.getMapObj(getOrgByNameResult.getData()).get("id").toString();
 
@@ -208,9 +239,10 @@ public class RemoteInvokeGrafanaHandler {
         GrafanaUser grafanaUser2 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN_DATALIGHT);
         try {
             Result<String> createUser2Result = this.remoteInvokeGrafanaService.createUsers(
+                    ADMIN_NEW_TOKEN,
                     grafanaUser2.getLoginName(),
                     grafanaUser2.getLoginName(),
-                    grafanaUser2.getLoginPassword()
+                    grafanaUser2.getNewLoginPassword()
             );
             log.info("createUser2: {}", createUser2Result);
 
@@ -220,18 +252,29 @@ public class RemoteInvokeGrafanaHandler {
 
         // 4、将 userId2 加入到 orgId 中
         try {
-            Result<String> addUser2InOrgResult = this.remoteInvokeGrafanaService.addUserInOrg(orgId, grafanaUser2.getLoginName(), GrafanaUserRoleEnum.Admin.name());
+            Result<String> addUser2InOrgResult = this.remoteInvokeGrafanaService.addUserInOrg(
+                    ADMIN_NEW_TOKEN,
+                    orgId,
+                    grafanaUser2.getLoginName(),
+                    GrafanaUserRoleEnum.Admin.name()
+            );
             log.info("addUser2InOrg: {}", addUser2InOrgResult);
         } catch (Exception ignore) {
         }
 
 
-        // 5、将 userId2 从主 org 中移除
+        // 5、将 userId2 从主 MainOrg 中移除
         try {
-            Result<String> getUser2ByLoginNameResult = this.remoteInvokeGrafanaService.getUserByLoginName(grafanaUser2.getLoginName());
+            Result<String> getUser2ByLoginNameResult = this.remoteInvokeGrafanaService.getUserByLoginName(
+                    ADMIN_NEW_TOKEN,
+                    grafanaUser2.getLoginName()
+            );
             log.info("getUser2ByLoginName: {}", getUser2ByLoginNameResult);
             String userId2 = JsonUtil.getMapObj(getUser2ByLoginNameResult.getData()).get("id").toString();
-            Result<String> deleteUser2FromOrgResult = this.remoteInvokeGrafanaService.deleteUserFromOrg("1", userId2);
+            Result<String> deleteUser2FromOrgResult = this.remoteInvokeGrafanaService.deleteUserFromOrg(ADMIN_NEW_TOKEN,
+                    "1",
+                    userId2
+            );
             log.info("deleteUser2FromOrg: {}", deleteUser2FromOrgResult);
         } catch (Exception ignore) {
         }
@@ -240,9 +283,10 @@ public class RemoteInvokeGrafanaHandler {
         GrafanaUser grafanaUser3 = grafanaUserMap.get(GrafanaUserTypeEnum.EDITOR_DATALIGHT);
         try {
             Result<String> createUser3Result = this.remoteInvokeGrafanaService.createUsers(
+                    ADMIN_NEW_TOKEN,
                     grafanaUser3.getLoginName(),
                     grafanaUser3.getLoginName(),
-                    grafanaUser3.getLoginPassword()
+                    grafanaUser3.getNewLoginPassword()
             );
             log.info("createUser3: {}", createUser3Result);
 
@@ -251,24 +295,39 @@ public class RemoteInvokeGrafanaHandler {
 
         // 7、将 userId3 加入到 orgId 中
         try {
-            Result<String> addUser3InOrgResult = this.remoteInvokeGrafanaService.addUserInOrg(orgId, grafanaUser3.getLoginName(), GrafanaUserRoleEnum.Editor.name());
+            Result<String> addUser3InOrgResult = this.remoteInvokeGrafanaService.addUserInOrg(
+                    ADMIN_NEW_TOKEN,
+                    orgId,
+                    grafanaUser3.getLoginName(),
+                    GrafanaUserRoleEnum.Editor.name()
+            );
             log.info("addUser3InOrg: {}", addUser3InOrgResult);
         } catch (Exception ignore) {
         }
 
-        // 8、将 userId3 从主 org 中移除
+        // 8、将 userId3 从主 MainOrg 中移除
         try {
-            Result<String> getUser3ByLoginNameResult = this.remoteInvokeGrafanaService.getUserByLoginName(grafanaUser2.getLoginName());
+            Result<String> getUser3ByLoginNameResult = this.remoteInvokeGrafanaService.getUserByLoginName(
+                    ADMIN_NEW_TOKEN,
+                    grafanaUser3.getLoginName()
+            );
             log.info("getUser3ByLoginName: {}", getUser3ByLoginNameResult);
             String userId3 = JsonUtil.getMapObj(getUser3ByLoginNameResult.getData()).get("id").toString();
-            Result<String> deleteUser3FromOrgResult = this.remoteInvokeGrafanaService.deleteUserFromOrg("1", userId3);
+            Result<String> deleteUser3FromOrgResult = this.remoteInvokeGrafanaService.deleteUserFromOrg(
+                    ADMIN_NEW_TOKEN,
+                    "1",
+                    userId3
+            );
             log.info("deleteUser3FromOrg: {}", deleteUser3FromOrgResult);
         } catch (Exception ignore) {
         }
 
         // 9、删除已存在的 MONITOR-Prometheus datasource
         try {
-            Result<String> deleteDataSourceResult = this.remoteInvokeGrafanaService.deleteDataSource("MONITOR-Prometheus");
+            Result<String> deleteDataSourceResult = this.remoteInvokeGrafanaService.deleteDataSource(
+                    ADMIN_NEW_TOKEN,
+                    "MONITOR-Prometheus"
+            );
             log.info("deleteDataSource: {}", deleteDataSourceResult);
         } catch (Exception ignore) {
         }
@@ -287,12 +346,13 @@ public class RemoteInvokeGrafanaHandler {
             TDlNode tDlNode = nodeMap.get(tDlComponent.getNodeId());
 
             Result<String> createDataSourcesResult = this.remoteInvokeGrafanaService.createDataSources(
+                    ADMIN_DATALIGHT_NEW_TOKEN,
                     orgId,
                     "MONITOR-Prometheus",
                     tDlNode.getHostname(),
                     PortConstants.MONITOR_EXPORTER_PORT_MAP.get("MONITOR-Prometheus"),
                     grafanaUser2.getLoginName(),
-                    grafanaUser2.getLoginPassword()
+                    grafanaUser2.getNewLoginPassword()
             );
             log.info("createDataSources: {}", createDataSourcesResult);
         } catch (Exception ignore) {
@@ -308,10 +368,8 @@ public class RemoteInvokeGrafanaHandler {
      * Modified by:
      * Modification time:
      * Throws:
-     *
-     * @param grafanaUser Grafana 中 datalight 组织下的 Admin 用户
      */
-    public void initAllDashboard(GrafanaUser grafanaUser) {
+    public void initAllDashboard() {
         // dashboard 目录
         String dashboardDir = String.format(
                 "%s/MONITOR/dashboard",
@@ -332,9 +390,8 @@ public class RemoteInvokeGrafanaHandler {
                                         CharsetUtil.CHARSET_UTF_8
                                 );
                                 Result<String> result = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
-                                        dashboard,
-                                        grafanaUser.getLoginName(),
-                                        grafanaUser.getLoginPassword()
+                                        ADMIN_DATALIGHT_NEW_TOKEN,
+                                        dashboard
                                 );
 
                                 log.info("加载 Dashboard {} : {}", result.isSuccess(), i.getName());

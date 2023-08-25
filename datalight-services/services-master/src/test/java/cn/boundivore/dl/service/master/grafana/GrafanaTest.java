@@ -30,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 
+import static cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN;
 import static cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService.GRAFANA_BASE_ORG_NAME;
 
 /**
@@ -54,23 +55,20 @@ public class GrafanaTest {
     private RemoteInvokeGrafanaHandler remoteInvokeGrafanaHandler;
     private final static String GRAFANA_HOST = "node01";
     private final static String GRAFANA_PORT = "3000";
-    private final static String GRAFANA_USER_ADMIN = "admin";
-    private final static String GRAFANA_PASSWORD_ADMIN = "admin";
 
 
     @PostConstruct
     public void init() {
         this.remoteInvokeGrafanaService.init(
                 GRAFANA_HOST,
-                GRAFANA_PORT,
-                GRAFANA_USER_ADMIN,
-                GRAFANA_PASSWORD_ADMIN
+                GRAFANA_PORT
         );
     }
 
     @Test
     public void createOrg() {
         Result<String> result = this.remoteInvokeGrafanaService.createOrg(
+                RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN,
                 GRAFANA_BASE_ORG_NAME
         );
 
@@ -81,6 +79,7 @@ public class GrafanaTest {
     @Test
     public void createUsers() {
         Result<String> result = this.remoteInvokeGrafanaService.createUsers(
+                RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN,
                 "datalight",
                 "datalight",
                 "datalight"
@@ -90,37 +89,44 @@ public class GrafanaTest {
 
     @Test
     public void getOrgByName() {
-        Result<String> result = this.remoteInvokeGrafanaService.getOrgByName("datalight");
+        Result<String> result = this.remoteInvokeGrafanaService.getOrgByName(
+                RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN,
+                "datalight"
+        );
         log.info(result.toString());
     }
 
     @Test
     public void getStats() {
-        Result<String> result = this.remoteInvokeGrafanaService.getStats();
+        Result<String> result = this.remoteInvokeGrafanaService.getStats(RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN);
         log.info(result.toString());
     }
 
     @Test
     public void searchAllOrgs() {
-        Result<String> result = this.remoteInvokeGrafanaService.searchAllOrgs();
+        Result<String> result = this.remoteInvokeGrafanaService.searchAllOrgs(RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN);
         log.info(result.toString());
     }
 
     @Test
     public void getDatasourceByName() {
-        Result<String> result = this.remoteInvokeGrafanaService.getDatasourceByName("MONITOR-Prometheus");
+        Result<String> result = this.remoteInvokeGrafanaService.getDatasourceByName(
+                RemoteInvokeGrafanaHandler.ADMIN_NEW_TOKEN,
+                "MONITOR-Prometheus"
+        );
         log.info(result.toString());
     }
 
     @Test
     public void createDataSources() {
         Result<String> result = this.remoteInvokeGrafanaService.createDataSources(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
                 "2",
                 "MONITOR-Prometheus",
                 "node01",
                 "9090",
-                "admin",
-                "admin"
+                "admin-datalight",
+                "admin-datalight"
         );
         log.info(result.toString());
     }
@@ -156,14 +162,34 @@ public class GrafanaTest {
                 StandardCharsets.UTF_8
         );
 
-        String tempStr = "admin-datalight";
-        Result<String> result1 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson1, tempStr, tempStr);
-        Result<String> result2 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson2, tempStr, tempStr);
-        Result<String> result3 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson3, tempStr, tempStr);
-        Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson4, tempStr, tempStr);
-        Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson5, tempStr, tempStr);
-        Result<String> result6 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson6, tempStr, tempStr);
-        Result<String> result7 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(dashboardJson7, tempStr, tempStr);
+        Result<String> result1 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson1
+        );
+        Result<String> result2 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson2
+        );
+        Result<String> result3 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson3
+        );
+        Result<String> result4 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson4)
+                ;
+        Result<String> result5 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson5
+        );
+        Result<String> result6 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson6
+        );
+        Result<String> result7 = this.remoteInvokeGrafanaService.createOrUpdateDashboard(
+                RemoteInvokeGrafanaHandler.ADMIN_DATALIGHT_NEW_TOKEN,
+                dashboardJson7
+        );
 
         log.info(result1.toString());
         log.info(result2.toString());
@@ -185,11 +211,6 @@ public class GrafanaTest {
 
     @Test
     public void initAllDashboards() {
-        this.remoteInvokeGrafanaHandler.initAllDashboard(
-                GrafanaUser.getGrafanaUser(
-                        GRAFANA_BASE_ORG_NAME,
-                        GrafanaUserTypeEnum.ADMIN_DATALIGHT
-                )
-        );
+        this.remoteInvokeGrafanaHandler.initAllDashboard();
     }
 }

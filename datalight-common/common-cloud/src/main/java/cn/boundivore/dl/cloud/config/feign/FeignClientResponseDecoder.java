@@ -29,6 +29,7 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.HttpMessageConverterCustomizer;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -43,7 +44,6 @@ import java.lang.reflect.Type;
  * Modification time:
  * Version: V1.0
  */
-@Configuration
 public class FeignClientResponseDecoder extends SpringDecoder {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
