@@ -16,8 +16,10 @@
  */
 package cn.boundivore.dl.plugin.hdfs.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 
@@ -31,13 +33,16 @@ import java.io.File;
  * Modification time:
  * Version: V1.0
  */
+@Slf4j
 public class ConfigLogicJmxYaml extends AbstractConfigLogic {
 
-//     case "jmx_config_JournalNode.yaml":
-//     case "jmx_config_NameNode.yaml":
-//     case "jmx_config_ZKFailoverController.yaml":
-//     case "jmx_config_DataNode.yaml":
-//     case "jmx_config_HttpFS.yaml":
+    private static final String JMX_CONFIG_FILE_JournalNode = "jmx_config_JournalNode.yaml";
+    private static final String JMX_CONFIG_FILE_NameNode = "jmx_config_NameNode.yaml";
+    private static final String JMX_CONFIG_FILE_ZKFailoverController = "jmx_config_ZKFailoverController.yaml";
+    private static final String JMX_CONFIG_FILE_DataNode = "jmx_config_DataNode.yaml";
+    private static final String JMX_CONFIG_FILE_HttpFS = "jmx_config_HttpFS.yaml";
+    private static final String SERVICE_NAME_HDFS = "HDFS";
+
 
     public ConfigLogicJmxYaml(PluginConfig pluginConfig) {
         super(pluginConfig);
@@ -47,12 +52,50 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
     public String config(File file, String replacedTemplated) {
         super.printFilename(file);
 
+        String jmxRemotePort = "{{jmxRemotePort}}";
+        switch (file.getName()) {
+            case JMX_CONFIG_FILE_JournalNode:
+                jmxRemotePort = PortConstants.getMonitorRemotePort(
+                        SERVICE_NAME_HDFS,
+                        "JournalNode"
+                );
+                break;
+            case JMX_CONFIG_FILE_NameNode:
+                jmxRemotePort = PortConstants.getMonitorRemotePort(
+                        SERVICE_NAME_HDFS,
+                        "NameNode"
+                );
+                break;
+            case JMX_CONFIG_FILE_ZKFailoverController:
+                jmxRemotePort = PortConstants.getMonitorRemotePort(
+                        SERVICE_NAME_HDFS,
+                        "ZKFailoverController"
+                );
+                break;
+            case JMX_CONFIG_FILE_DataNode:
+                jmxRemotePort = PortConstants.getMonitorRemotePort(
+                        SERVICE_NAME_HDFS,
+                        "DataNode"
+                );
+                break;
+            case JMX_CONFIG_FILE_HttpFS:
+                jmxRemotePort = PortConstants.getMonitorRemotePort(
+                        SERVICE_NAME_HDFS,
+                        "HttpFS"
+                );
+                break;
+            default:
+                log.info("");
+                break;
+
+        }
+
+
         return replacedTemplated
                 .replace(
-                        "{{xxxx.port}}",
-                        "xxxx.port"
-                )
-                ;
+                        "{{jmxRemotePort}}",
+                        jmxRemotePort
+                );
     }
 
 }

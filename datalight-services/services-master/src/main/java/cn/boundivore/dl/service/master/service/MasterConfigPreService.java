@@ -159,7 +159,7 @@ public class MasterConfigPreService {
 
 
     /**
-     * Description: Zookeeper 的特殊处理，将 ZOOKEEPER.yaml 读取到内存中的 {{data-dir}} 替换为真实目录
+     * Description: Zookeeper 的特殊处理，将 ZOOKEEPER.yaml 读取到内存中的 {{DATA_DIR}} 替换为真实目录
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/6/20
@@ -170,7 +170,7 @@ public class MasterConfigPreService {
      */
     public void replaceZookeeperMyIdDir2DataDir(Long clusterId) {
         String serviceName = "ZOOKEEPER";
-        String dataDirPlaceholder = "{{data-dir}}";
+        String dataDirPlaceholder = "{{DATA_DIR}}";
 
         TDlConfigPre zookeeper = this.tDlConfigPreService.lambdaQuery()
                 .select()

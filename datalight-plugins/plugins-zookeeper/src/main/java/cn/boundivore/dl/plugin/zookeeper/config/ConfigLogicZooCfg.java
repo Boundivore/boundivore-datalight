@@ -70,11 +70,11 @@ public class ConfigLogicZooCfg extends AbstractConfigLogic {
 
         return replacedTemplated
                 .replace(
-                        "{{ZOOKEEPER-SERVERS}}",
+                        "{{ZOOKEEPER_SERVERS}}",
                         serversSb.toString()
                 )
                 .replace(
-                        "{{data-dir}}",
+                        "{{DATA_DIR}}",
                         String.format(
                                 "/data/datalight/data/%s/zkData",
                                 super.currentMetaService.getServiceName()

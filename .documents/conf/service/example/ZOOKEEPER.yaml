@@ -5,15 +5,15 @@ datalight:
     tgz: zookeeper-3.5.9.tar.gz
     conf-dirs:
         # {{SERVICE-PATH}} 将在程序中替换为 DataLight 部署服务时的安装路径，也可以不使用该变量，填写对决路径
-      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/ZOOKEEPER/bin'
         # 配置文件模板文件，与上述路径按照顺序一一对应
-        templated-dir: '{{datalight-dir}}/plugins/templated/ZOOKEEPER/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/templated/ZOOKEEPER/bin'
 
-      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
-        templated-dir: '{{datalight-dir}}/plugins/templated/ZOOKEEPER/conf'
+      - service-conf-dir: '{{SERVICE_DIR}}/ZOOKEEPER/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/templated/ZOOKEEPER/conf'
 
-      - service-conf-dir: '{{data-dir}}'
-        templated-dir: '{{datalight-dir}}/plugins/templated/ZOOKEEPER/id'
+      - service-conf-dir: '{{DATA_DIR}}'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/templated/ZOOKEEPER/id'
     version: 3.5.9
     # 所依赖的服务发生配置变动时，触发事件处理的具体类
     config-event-handler-jar: 'plugin-zookeeper-1.0.0.jar'

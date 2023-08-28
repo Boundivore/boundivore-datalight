@@ -39,26 +39,32 @@ public class PortConstants {
             put("MONITOR-MySQLExporter", "9104");
             put("MONITOR-NodeExporter", "9100");
 
-            put("ZOOKEEPER-QuarumPeermain", "10001");
+            put("ZOOKEEPER-QuarumPeermain", "7001");
 
-            put("HDFS-JournalNode", "10002");
-            put("HDFS-NameNode", "10003");
-            put("HDFS-ZKFailoverController", "10004");
-            put("HDFS-DataNode", "10005");
-            put("HDFS-HttpFS", "10006");
+            put("HDFS-JournalNode", "7002");
+            put("HDFS-NameNode", "7003");
+            put("HDFS-ZKFailoverController", "7004");
+            put("HDFS-DataNode", "7005");
+            put("HDFS-HttpFS", "7006");
+
+            put("YARN-ResourceManager", "7007");
+            put("YARN-NodeManager", "7008");
         }
     };
 
     // <ServiceName-ComponentName, RemotePort>
     public final static Map<String, String> MONITOR_REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
         {
-//            put("ZOOKEEPER-QuarumPeermain", "20001");
+            put("ZOOKEEPER-QuarumPeermain", "6001");
 
-            put("HDFS-JournalNode", "20002");
-            put("HDFS-NameNode", "20003");
-            put("HDFS-ZKFailoverController", "20004");
-            put("HDFS-DataNode", "20005");
-            put("HDFS-HttpFS", "20006");
+            put("HDFS-JournalNode", "6002");
+            put("HDFS-NameNode", "6003");
+            put("HDFS-ZKFailoverController", "6004");
+            put("HDFS-DataNode", "6005");
+            put("HDFS-HttpFS", "6006");
+
+            put("YARN-ResourceManager", "6007");
+            put("YARN-NodeManager", "6008");
         }
     };
 

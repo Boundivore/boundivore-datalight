@@ -132,17 +132,17 @@ public final class ResolverYamlServiceDetail {
             //目录配置
             YamlDirectory.Directory directory = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
 
-            //将各个服务配置文件中的 {{datalight-dir}}、{{service-dir}} 替换为 0-SERVICE-MANIFEST.yaml 中配置的内容
+            //将各个服务配置文件中的 {{DATALIGHT_DIR}}、{{SERVICE_DIR}} 替换为 0-SERVICE-MANIFEST.yaml 中配置的内容
             service.getConfDirs().forEach(i -> {
                 String serviceConfDir = i.getServiceConfDir()
                         .replace(
-                                "{{service-dir}}",
+                                "{{SERVICE_DIR}}",
                                 directory.getServiceDir()
                         );
 
                 String templatedDir = i.getTemplatedDir().
                         replace(
-                                "{{datalight-dir}}",
+                                "{{DATALIGHT_DIR}}",
                                 directory.getDatalightDir()
                         );
 

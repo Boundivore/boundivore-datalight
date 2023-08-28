@@ -125,7 +125,7 @@ public class ConfigHDFS extends AbstractConfig {
             case "jmx_config_HttpFS.yaml":
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
-                if(log.isDebugEnabled()){
+                if (log.isDebugEnabled()) {
                     log.debug("无处理文件: {}", file.getName());
                 }
                 return replacedTemplate;

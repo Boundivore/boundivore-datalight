@@ -4,58 +4,58 @@ datalight:
     version: 2.46.0
     tgz: dlc-monitor-2.46.0.tar.gz
     conf-dirs:
-#      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/prometheus/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/prometheus/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/prometheus/bin'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/prometheus/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/prometheus'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/prometheus/conf'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/alertmanager/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/alertmanager/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/alertmanager/bin'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/alertmanager/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/alertmanager'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/alertmanager/conf'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/exporter/mysql/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/exporter/mysql/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/exporter/mysql/bin'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/exporter/mysql/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/exporter/mysql'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/exporter/mysql/conf'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/node/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/exporter/node/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/exporter/node/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/exporter/node/bin'
 #
-#      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/grafana/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/grafana/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/grafana/bin'
 #
-  #      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/conf'
-#        templated-dir: '{{datalight-dir}}/plugins/MONITOR/templated/grafana/conf'
+  #      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/grafana/conf'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/grafana/conf'
       # TODO FOR TEST
-      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/prometheus/bin'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/prometheus/bin'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/prometheus'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/prometheus'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/prometheus/conf'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/alertmanager/bin'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/alertmanager/bin'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/alertmanager'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/alertmanager'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/alertmanager/conf'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/exporter/mysql/bin'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/exporter/mysql/bin'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/mysql'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/exporter/mysql'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/exporter/mysql/conf'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/exporter/node/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/exporter/node/bin'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/exporter/node/bin'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/grafana/bin'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/grafana/bin'
 
-      - service-conf-dir: '{{service-dir}}/MONITOR/grafana/conf'
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/grafana/conf'
         templated-dir: 'D:/datalight/plugins/MONITOR/templated/grafana/conf'
 
     config-event-handler-jar: 'plugins-monitor-1.0.0.jar'

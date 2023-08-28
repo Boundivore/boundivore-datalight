@@ -2,7 +2,7 @@ datalight:
   service:
     name: HDFS
     placeholder-infos:
-      - templated-file-path: '{{datalight-dir}}/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml'
         properties:
           - placeholder: '{{dfs.datanode.data.dir}}'
             describe: 'DataNode 中数据的存储目录'

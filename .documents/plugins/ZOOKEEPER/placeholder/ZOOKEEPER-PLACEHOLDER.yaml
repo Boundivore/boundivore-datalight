@@ -2,8 +2,8 @@ datalight:
   service:
     name: ZOOKEEPER
     placeholder-infos:
-      - templated-file-path: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/conf/zoo.cfg'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/ZOOKEEPER/templated/conf/zoo.cfg'
         properties:
-          - placeholder: '{{data-dir}}'
+          - placeholder: '{{DATA_DIR}}'
             describe: '该目录为 Zookeeper 的数据目录以及 myid 文件所在目录'
             default: '/data/datalight/data/ZOOKEEPER/zkData'

@@ -103,8 +103,10 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
      * @param pluginConfigSelf  当前服务的 getRelativeConfigPathList 指定的配置文件
      * @return 修改后的最终结果（如无变更，则 configMap 依然为空）
      */
-    private LinkedHashMap<PluginConfigResult.ConfigKey, PluginConfigResult.ConfigValue> getPrometheusYmlConfigKeyValue(final PluginConfigEvent pluginConfigEvent,
-                                                                                                                       final PluginConfigSelf pluginConfigSelf) {
+    private LinkedHashMap<PluginConfigResult.ConfigKey, PluginConfigResult.ConfigValue> getPrometheusYmlConfigKeyValue(
+            final PluginConfigEvent pluginConfigEvent,
+            final PluginConfigSelf pluginConfigSelf) {
+
         LinkedHashMap<PluginConfigResult.ConfigKey, PluginConfigResult.ConfigValue> configKeyValueMap = new LinkedHashMap<>();
 
         // 获取 Map<ServiceName-ComponentName, List<Hostname:ExporterPort>>，其中 List 按主机名排序
@@ -204,18 +206,21 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                                     k
                             );
 
-                            // List <Hostname:ExporterPort>
-                            List<String> targetList = v.stream()
-                                    .sorted(Comparator.comparing(PluginConfigEvent.ConfigEventNode::getHostname))
-                                    .map(i -> String.format(
-                                                    "%s:%s",
-                                                    i.getHostname(),
-                                                    curComponentExporterPort
-                                            )
-                                    )
-                                    .collect(Collectors.toList());
+                            // 过滤 *Client 这样的组件（无常驻进程）
+                            if (curComponentExporterPort != null && !curComponentExporterPort.isEmpty()) {
+                                // List <Hostname:ExporterPort>
+                                List<String> targetList = v.stream()
+                                        .sorted(Comparator.comparing(PluginConfigEvent.ConfigEventNode::getHostname))
+                                        .map(i -> String.format(
+                                                        "%s:%s",
+                                                        i.getHostname(),
+                                                        curComponentExporterPort
+                                                )
+                                        )
+                                        .collect(Collectors.toList());
 
-                            prometheusComponentTargetsMap.put(k, targetList);
+                                prometheusComponentTargetsMap.put(k, targetList);
+                            }
                         }
                 );
 

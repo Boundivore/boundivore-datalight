@@ -4,22 +4,22 @@ datalight:
     version: 3.8.2
     tgz: dlc-zookeeper-3.8.2.tar.gz
     conf-dirs:
-#      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/ZOOKEEPER/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/ZOOKEEPER/templated/bin'
 #
-#      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
-#        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/ZOOKEEPER/conf'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/ZOOKEEPER/templated/conf'
 #
-#      - service-conf-dir: '{{data-dir}}'
-#        templated-dir: '{{datalight-dir}}/plugins/ZOOKEEPER/templated/id'
+#      - service-conf-dir: '{{DATA_DIR}}'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/ZOOKEEPER/templated/id'
 # TODO FOR TEST
-      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/ZOOKEEPER/bin'
         templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/bin'
 
-      - service-conf-dir: '{{service-dir}}/ZOOKEEPER/conf'
+      - service-conf-dir: '{{SERVICE_DIR}}/ZOOKEEPER/conf'
         templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/conf'
 
-      - service-conf-dir: '{{data-dir}}'
+      - service-conf-dir: '{{DATA_DIR}}'
         templated-dir: 'D:/datalight/plugins/ZOOKEEPER/templated/id'
 
     config-event-handler-jar: 'plugins-zookeeper-1.0.0.jar'

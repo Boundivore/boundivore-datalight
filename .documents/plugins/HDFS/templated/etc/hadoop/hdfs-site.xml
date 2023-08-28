@@ -146,12 +146,12 @@
 
     <!--    <property>-->
     <!--        <name>dfs.hosts</name>-->
-    <!--        <value>{{SERVICE_DIR}}/hdfs/etc/hadoop/dfs.include</value>-->
+    <!--        <value>{{SERVICE_DIR}}/HDFS/etc/hadoop/dfs.include</value>-->
     <!--    </property>-->
 
     <property>
         <name>dfs.hosts.exclude</name>
-        <value>{{SERVICE_DIR}}/hdfs/etc/hadoop/dfs.exclude</value>
+        <value>{{SERVICE_DIR}}/HDFS/etc/hadoop/dfs.exclude</value>
     </property>
 
     <property>

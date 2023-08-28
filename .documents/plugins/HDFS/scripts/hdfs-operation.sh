@@ -46,15 +46,15 @@ case "${COMPONENT_NAME}" in
 "JournalNode")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start journalnode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start journalnode" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop journalnode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop journalnode" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop journalnode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop journalnode" "${USER_NAME}"
     sleep 2
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start journalnode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start journalnode" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -65,15 +65,15 @@ case "${COMPONENT_NAME}" in
 "NameNode")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start namenode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start namenode" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop namenode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop namenode" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop namenode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop namenode" "${USER_NAME}"
     sleep 2
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start namenode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start namenode" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -85,15 +85,15 @@ case "${COMPONENT_NAME}" in
 "ZKFailoverController")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start zkfc" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start zkfc" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop zkfc" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop zkfc" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop zkfc" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop zkfc" "${USER_NAME}"
     sleep 2
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start zkfc" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start zkfc" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -105,15 +105,15 @@ case "${COMPONENT_NAME}" in
 "DataNode")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start datanode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start datanode" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop datanode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop datanode" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh stop datanode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop datanode" "${USER_NAME}"
     sleep 2
-    su -c "${CURRENT_SERVICE_DIR}/sbin/hadoop-daemon.sh start datanode" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start datanode" "${USER_NAME}"
     ;;
   "refresh")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs dfsadmin -refreshNodes" "${USER_NAME}"
@@ -131,15 +131,15 @@ case "${COMPONENT_NAME}" in
 "HttpFS")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/httpfs.sh start" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start httpfs" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/httpfs.sh stop" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop httpfs" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/sbin/httpfs.sh stop" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop httpfs" "${USER_NAME}"
     sleep 2
-    su -c "${CURRENT_SERVICE_DIR}/sbin/httpfs.sh start" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start httpfs" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"

@@ -4,29 +4,29 @@ datalight:
     version: 3.2.4
     tgz: dlc-hdfs-3.2.4.tar.gz
     conf-dirs:
-#      - service-conf-dir: '{{service-dir}}/HDFS/exporter/conf'
-#        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/exporter/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/exporter/conf'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/exporter/conf'
 
-#      - service-conf-dir: '{{service-dir}}/HDFS/bin'
-#        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/bin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/bin'
 #
-#      - service-conf-dir: '{{service-dir}}/HDFS/etc/hadoop'
-#        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/etc/hadoop'
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/etc/hadoop'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/etc/hadoop'
 #
-#      - service-conf-dir: '{{service-dir}}/HDFS/sbin'
-#        templated-dir: '{{datalight-dir}}/plugins/HDFS/templated/sbin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/sbin'
+#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/sbin'
 
 # TODO FOR TEST
-      - service-conf-dir: '{{service-dir}}/HDFS/exporter/conf'
+      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/exporter/conf'
         templated-dir: 'D:/datalight/plugins/HDFS/templated/exporter/conf'
 
-      - service-conf-dir: '{{service-dir}}/HDFS/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/bin'
         templated-dir: 'D:/datalight/plugins/HDFS/templated/bin'
 
-      - service-conf-dir: '{{service-dir}}/HDFS/etc/hadoop'
+      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/etc/hadoop'
         templated-dir: 'D:/datalight/plugins/HDFS/templated/etc/hadoop'
 
-      - service-conf-dir: '{{service-dir}}/HDFS/sbin'
+      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/sbin'
         templated-dir: 'D:/datalight/plugins/HDFS/templated/sbin'
 
     config-event-handler-jar: 'plugins-hdfs-1.0.0.jar'

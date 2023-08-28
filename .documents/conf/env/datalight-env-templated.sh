@@ -10,11 +10,11 @@
 # PID_DIR="/data/datalight/pids"
 # DATA_DIR="/data/datalight/data"
 
-export DATALIGHT_DIR="{{datalight-dir}}"
-export SERVICE_DIR="{{service-dir}}"
-export LOG_DIR="{{log-dir}}"
-export PID_DIR="{{pid-dir}}"
-export DATA_DIR="{{data-dir}}"
+export DATALIGHT_DIR="{{DATALIGHT_DIR}}"
+export SERVICE_DIR="{{SERVICE_DIR}}"
+export LOG_DIR="{{LOG_DIR}}"
+export PID_DIR="{{PID_DIR}}"
+export DATA_DIR="{{DATA_DIR}}"
 
 # 函数：设置所有者和权限
 set_ownership_and_permissions() {

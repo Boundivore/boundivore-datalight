@@ -101,12 +101,12 @@ public final class ResolverYamlServicePlaceholder {
 
                 YamlServicePlaceholder.Service placeholderService = servicePlaceholderYaml.getDataLight().getService();
 
-                //替换各个预配置文件中的 {{datalight-dir}}
+                //替换各个预配置文件中的 {{DATALIGHT_DIR}}
                 List<YamlServicePlaceholder.PlaceholderInfo> placeholderInfos = placeholderService.getPlaceholderInfos();
                 placeholderInfos.forEach(i -> {
                     String templatedFilePath = i.getTemplatedFilePath()
                             .replace(
-                                    "{{datalight-dir}}",
+                                    "{{DATALIGHT_DIR}}",
                                     directory.getDatalightDir()
                             );
                     i.setTemplatedFilePath(templatedFilePath);
@@ -119,7 +119,7 @@ public final class ResolverYamlServicePlaceholder {
             }
         }
 
-        log.info("------------------${SERVICENAME-PLACEHOLDER}.yaml--------------");
+        log.info("------------------${SERVICE_NAME-PLACEHOLDER}.yaml--------------");
         log.info(PLACEHOLDER_MAP.toString());
         log.info("---------------------------------------------------------------");
 

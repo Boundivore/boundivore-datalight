@@ -4,14 +4,14 @@ datalight:
     version: 3.2.4
     tgz: dlc-yarn-3.2.4.tar.gz
     conf-dirs:
-      - service-conf-dir: '{{service-dir}}/YARN/bin'
-        templated-dir: '{{datalight-dir}}/plugins/YARN/templated/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/YARN/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/YARN/templated/bin'
 
-      - service-conf-dir: '{{service-dir}}/YARN/etc/hadoop'
-        templated-dir: '{{datalight-dir}}/plugins/YARN/templated/etc/hadoop'
+      - service-conf-dir: '{{SERVICE_DIR}}/YARN/etc/hadoop'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/YARN/templated/etc/hadoop'
 
-      - service-conf-dir: '{{service-dir}}/YARN/sbin'
-        templated-dir: '{{datalight-dir}}/plugins/YARN/templated/sbin'
+      - service-conf-dir: '{{SERVICE_DIR}}/YARN/sbin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/YARN/templated/sbin'
 
     config-event-handler-jar: 'plugins-yarn-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.yarn.config.event.ConfigEventHandler'

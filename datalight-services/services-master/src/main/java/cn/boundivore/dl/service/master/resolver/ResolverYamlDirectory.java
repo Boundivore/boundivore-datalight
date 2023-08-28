@@ -83,11 +83,11 @@ public final class ResolverYamlDirectory {
                         ),
                         CharsetUtil.CHARSET_UTF_8
                 )
-                .replace("{{datalight-dir}}", datalight.getDatalightDir())
-                .replace("{{service-dir}}", datalight.getServiceDir())
-                .replace("{{log-dir}}", datalight.getLogDir())
-                .replace("{{pid-dir}}", datalight.getPidDir())
-                .replace("{{data-dir}}", datalight.getDataDir());
+                .replace("{{DATALIGHT_DIR}}", datalight.getDatalightDir())
+                .replace("{{SERVICE_DIR}}", datalight.getServiceDir())
+                .replace("{{LOG_DIR}}", datalight.getLogDir())
+                .replace("{{PID_DIR}}", datalight.getPidDir())
+                .replace("{{DATA_DIR}}", datalight.getDataDir());
 
         FileUtil.writeString(
                 datalightEnvStr,
