@@ -34,30 +34,27 @@ set_ownership_and_permissions() {
 # 创建目录并设置权限
 if [[ -n "${DATALIGHT_DIR}" ]]; then
   mkdir -p "${DATALIGHT_DIR}"
-  set_ownership_and_permissions "${DATALIGHT_DIR}"
-
 fi
 
 if [[ -n "${SERVICE_DIR}" ]]; then
   mkdir -p "${SERVICE_DIR}"
-  set_ownership_and_permissions "${SERVICE_DIR}"
-
 fi
 
 if [[ -n "${LOG_DIR}" ]]; then
   mkdir -p "${LOG_DIR}"
-  set_ownership_and_permissions "${LOG_DIR}"
-
 fi
 
 if [[ -n "${PID_DIR}" ]]; then
   mkdir -p "${PID_DIR}"
-  set_ownership_and_permissions "${PID_DIR}"
-
 fi
 
 if [[ -n "${DATA_DIR}" ]]; then
   mkdir -p "${DATA_DIR}"
-  set_ownership_and_permissions "${DATA_DIR}"
-
 fi
+
+
+set_ownership_and_permissions "${DATALIGHT_DIR}"
+set_ownership_and_permissions "${SERVICE_DIR}"
+set_ownership_and_permissions "${LOG_DIR}"
+set_ownership_and_permissions "${PID_DIR}"
+set_ownership_and_permissions "${DATA_DIR}"
