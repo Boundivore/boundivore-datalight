@@ -148,7 +148,7 @@ case "${COMPONENT_NAME}" in
   esac
   ;;
 *)
-  echo "Invalid component name. Supported components: NameNode, DataNode"
+  echo "Invalid component name. Supported components: <JournalNode|NameNode|ZKFailoverController|DataNode|HttpFS>"
   exit 1
   ;;
 esac
