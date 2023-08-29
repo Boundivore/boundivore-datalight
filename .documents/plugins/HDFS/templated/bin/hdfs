@@ -19,6 +19,33 @@
 HADOOP_SHELL_EXECNAME="datalight"
 MYNAME="${BASH_SOURCE-$0}"
 
+function hadoop_opts_jmx
+{
+  COMPONENT_NAME=$1
+
+  case ${COMPONENT_NAME} in
+    "journalnode")
+      export HADOOP_OPTS="${HDFS_JOURNALNODE_OPTS}"
+      ;;
+    "namenode")
+      export HADOOP_OPTS="${HDFS_NAMENODE_OPTS}"
+      ;;
+    "zkfc")
+      export HADOOP_OPTS="${HDFS_ZKFC_OPTS}"
+      ;;
+    "datanode")
+      export HADOOP_OPTS="${HDFS_DATANODE_OPTS}"
+      ;;
+    "httpfs")
+      export HADOOP_OPTS="${HDFS_HTTPFS_OPTS}"
+      ;;
+    *)
+      ;;
+  esac
+
+#  echo "HADOOP_OPTS: ${HADOOP_OPTS}"
+}
+
 ## @description  build up the hdfs command's usage text.
 ## @audience     public
 ## @stability    stable
@@ -94,8 +121,6 @@ function hdfscmd_case
       HADOOP_CLASSNAME=org.apache.hadoop.hdfs.tools.CryptoAdmin
     ;;
     datanode)
-      export HADOOP_OPTS="${HADOOP_OPTS} ${HDFS_DATANODE_OPTS}"
-
       HADOOP_SUBCMD_SUPPORTDAEMONIZATION="true"
       HADOOP_SECURE_CLASSNAME="org.apache.hadoop.hdfs.server.datanode.SecureDataNodeStarter"
       HADOOP_CLASSNAME='org.apache.hadoop.hdfs.server.datanode.DataNode'
@@ -155,8 +180,6 @@ function hdfscmd_case
       HADOOP_CLASSNAME=org.apache.hadoop.hdfs.tools.DFSHAAdmin
     ;;
     journalnode)
-      # export HADOOP_OPTS="${HADOOP_OPTS} ${HDFS_JOURNALNODE_OPTS}"
-
       HADOOP_SUBCMD_SUPPORTDAEMONIZATION="true"
       HADOOP_CLASSNAME='org.apache.hadoop.hdfs.qjournal.server.JournalNode'
     ;;
@@ -171,8 +194,6 @@ function hdfscmd_case
       HADOOP_CLASSNAME=org.apache.hadoop.hdfs.server.mover.Mover
     ;;
     namenode)
-      # export HADOOP_OPTS="${HADOOP_OPTS} ${HDFS_NAMENODE_OPTS}"
-
       HADOOP_SUBCMD_SUPPORTDAEMONIZATION="true"
       HADOOP_CLASSNAME='org.apache.hadoop.hdfs.server.namenode.NameNode'
       hadoop_add_param HADOOP_OPTS hdfs.audit.logger "-Dhdfs.audit.logger=${HDFS_AUDIT_LOGGER}"
@@ -216,18 +237,8 @@ function hdfscmd_case
       HADOOP_CLASSNAME=org.apache.hadoop.util.VersionInfo
     ;;
     zkfc)
-      # export HADOOP_OPTS="${HADOOP_OPTS} ${HDFS_ZKFC_OPTS}"
-
       HADOOP_SUBCMD_SUPPORTDAEMONIZATION="true"
       HADOOP_CLASSNAME='org.apache.hadoop.hdfs.tools.DFSZKFailoverController'
-    ;;
-    httpfs)
-      # export HADOOP_OPTS="${HADOOP_OPTS} ${HDFS_HTTPFS_OPTS}"
-
-      HADOOP_CLASSNAME="${subcmd}"
-      if ! hadoop_validate_classname "${HADOOP_CLASSNAME}"; then
-        hadoop_exit_with_usage 1
-      fi
     ;;
     *)
       HADOOP_CLASSNAME="${subcmd}"
@@ -266,6 +277,8 @@ fi
 HADOOP_SUBCMD=$1
 shift
 
+hadoop_opts_jmx "${HADOOP_SUBCMD}"
+
 if hadoop_need_reexec hdfs "${HADOOP_SUBCMD}"; then
   hadoop_uservar_su hdfs "${HADOOP_SUBCMD}" \
     "${MYNAME}" \
@@ -279,14 +292,8 @@ hadoop_verify_user_perm "${HADOOP_SHELL_EXECNAME}" "${HADOOP_SUBCMD}"
 HADOOP_SUBCMD_ARGS=("$@")
 
 if declare -f hdfs_subcommand_"${HADOOP_SUBCMD}" >/dev/null 2>&1; then
-  if [ "${HADOOP_SUBCMD}" = 'httpfs' ]; then
-    # export HADOOP_OPTS="${HADOOP_OPTS} ${HDFS_HTTPFS_OPTS}"
-    hadoop_debug "Calling dynamically: hdfs_subcommand_${HADOOP_SUBCMD} ${HADOOP_SUBCMD_ARGS[*]}"
-    "hdfs_subcommand_${HADOOP_SUBCMD}" "${HADOOP_SUBCMD_ARGS[@]}"
-  else
-    hadoop_debug "Calling dynamically: hdfs_subcommand_${HADOOP_SUBCMD} ${HADOOP_SUBCMD_ARGS[*]}"
-    "hdfs_subcommand_${HADOOP_SUBCMD}" "${HADOOP_SUBCMD_ARGS[@]}"
-  fi
+  hadoop_debug "Calling dynamically: hdfs_subcommand_${HADOOP_SUBCMD} ${HADOOP_SUBCMD_ARGS[*]}"
+  "hdfs_subcommand_${HADOOP_SUBCMD}" "${HADOOP_SUBCMD_ARGS[@]}"
 else
   hdfscmd_case "${HADOOP_SUBCMD}" "${HADOOP_SUBCMD_ARGS[@]}"
 fi
