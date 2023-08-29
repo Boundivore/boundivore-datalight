@@ -316,14 +316,14 @@ public class Job extends Thread {
                                     .setTaskResult(new TaskMeta.TaskResult(false))
                                     .setStepMetaMap(new LinkedHashMap<>());
 
-                            // 当前服务、当前组件、当前节点，判断是否服务初始化后，必将执行初始化，因此，添加到已初始化列表
+                            // 当前服务、当前组件、当前节点，判断服务是否执行过初始化，如果没有，则必将执行初始化，且将其添加到已初始化记录中
                             haveInitServiceSet.add(i.getNodeId());
 
-                            //同一个 TaskMeta 中，会根据 ActionTypeEnum，封装一组 StepMeta
+                            // 同一个 TaskMeta 中，会根据 ActionTypeEnum，封装一组 StepMeta
                             List<StepMeta> stepMetaList = this.initStepMeta(taskMeta);
                             stepMetaList.forEach(s -> taskMeta.getStepMetaMap().put(s.getId(), s));
 
-                            //更新计划执行进度
+                            // 更新计划执行进度
                             this.plan.planProcess();
 
                             return taskMeta;

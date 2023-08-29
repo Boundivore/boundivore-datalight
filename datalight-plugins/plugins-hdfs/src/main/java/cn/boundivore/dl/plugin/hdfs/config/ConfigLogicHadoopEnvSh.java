@@ -42,7 +42,10 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
 
     @Override
     public String config(File file, String replacedTemplated) {
-        super.printFilename(file);
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
 
         return replacedTemplated
                 // HDFS_DATANODE_SECURE_USER

@@ -40,7 +40,10 @@ public class ConfigLogicMyId extends AbstractConfigLogic {
 
     @Override
     public String config(File file, String replacedTemplated) {
-        super.printFilename(file);
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
         return replacedTemplated.replace(
                 "{{zk-id}}",
                 super.currentMetaComponent.getNodeId().toString()

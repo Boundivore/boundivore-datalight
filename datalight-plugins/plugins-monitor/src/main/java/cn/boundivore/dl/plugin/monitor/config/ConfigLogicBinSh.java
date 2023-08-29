@@ -41,7 +41,10 @@ public class ConfigLogicBinSh extends AbstractConfigLogic {
 
     @Override
     public String config(File file, String replacedTemplated) {
-        super.printFilename(file);
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
 
         // 获取 {{SERVICE_DIR}}
         String serviceDir = this.serviceDir();

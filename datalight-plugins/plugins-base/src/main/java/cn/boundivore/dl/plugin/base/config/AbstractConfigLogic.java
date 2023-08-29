@@ -57,12 +57,14 @@ public abstract class AbstractConfigLogic {
      * Modification time:
      * Throws:
      *
-     * @param file 配置文件
+     * @param file     配置文件
+     * @param hostname 所在节点
      */
-    protected void printFilename(File file) {
+    protected void printFilename(String hostname, File file) {
         log.info(
                 String.format(
-                        "准备处理配置文件: %s",
+                        "准备处理配置文件[%s]: %s",
+                        hostname,
                         file.getName()
                 )
         );

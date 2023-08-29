@@ -47,7 +47,10 @@ public class ConfigLogicAlertManagerYml extends AbstractConfigLogic {
 
     @Override
     public String config(File file, String replacedTemplated) {
-        super.printFilename(file);
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
         try {
             YamlAlertManagerConfig yamlAlertManagerConfig = YamlSerializer.toObject(
                     replacedTemplated,

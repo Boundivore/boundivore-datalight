@@ -42,7 +42,10 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
 
     @Override
     public String config(File file, String replacedTemplated) {
-        super.printFilename(file);
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
 
         // 获取 Grafana Home dashboard 路径
         String grafanaHomeDashboardFilePath = this.grafanaHomeDashboardFilePath();
@@ -109,7 +112,7 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
                 .collect(Collectors.toList())
                 .get(0);
 
-        if(grafanaMetaComponent != null) {
+        if (grafanaMetaComponent != null) {
             return grafanaMetaComponent.getHostname();
         }
 

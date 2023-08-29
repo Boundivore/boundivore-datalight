@@ -117,7 +117,7 @@ public class ConfigZookeeper extends AbstractConfig {
             case "myid":
                 return new ConfigLogicMyId(super.pluginConfig).config(file, replacedTemplate);
             default:
-                if(log.isDebugEnabled()){
+                if (log.isDebugEnabled()) {
                     log.debug("无处理文件: {}", file.getName());
                 }
                 return replacedTemplate;

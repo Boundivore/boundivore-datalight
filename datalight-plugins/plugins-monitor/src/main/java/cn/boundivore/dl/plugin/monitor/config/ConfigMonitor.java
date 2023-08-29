@@ -64,7 +64,7 @@ public class ConfigMonitor extends AbstractConfig {
                         //结合模板，补充用户提前配置信息，并返回修改后的模板
                         String replacedTemplate = super.preConfig(templatedFile);
 
-                        //得到最终配置文件数据(Base64)
+                        //得到最终配置文件数据(未 Base64)
                         String configData = this.configLogic(
                                 templatedFile,
                                 replacedTemplate

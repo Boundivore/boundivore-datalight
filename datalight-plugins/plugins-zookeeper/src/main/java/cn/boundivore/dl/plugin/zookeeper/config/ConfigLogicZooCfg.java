@@ -44,7 +44,10 @@ public class ConfigLogicZooCfg extends AbstractConfigLogic {
 
     @Override
     public String config(File file, String replacedTemplated) {
-        super.printFilename(file);
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
 
         //获取当前服务组件其他节点的元数据信息
         StringBuilder serversSb = new StringBuilder();
