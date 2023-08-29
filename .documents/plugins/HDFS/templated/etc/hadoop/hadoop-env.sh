@@ -452,7 +452,7 @@ if [[ ${HDFS_ZKFC_OPTS} != *"-javaagent"* ]]; then
    -Dcom.sun.management.jmxremote.ssl=false \
    -Dcom.sun.management.jmxremote.local.only=false \
    -Dcom.sun.management.jmxremote.port={{jmxRemotePort_ZKFailoverController}} \
-   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ZKFailoverController}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_JournalNode.yaml"
+   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ZKFailoverController}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ZKFailoverController.yaml"
 fi
 
 if [[ ${HDFS_DATANODE_OPTS} != *"-javaagent"* ]]; then
