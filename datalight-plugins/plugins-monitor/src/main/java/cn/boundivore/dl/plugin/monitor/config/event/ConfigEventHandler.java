@@ -72,18 +72,15 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
         final LinkedHashMap<PluginConfigResult.ConfigKey, PluginConfigResult.ConfigValue> resultMap = pluginConfigResult.getConfigMap();
         pluginConfigSelf.getConfigSelfDataList()
                 .forEach(i -> {
-                            switch (i.getConfigPath()) {
-                                case PROMETHEUS_CONFIG_PATH:
-                                    resultMap.putAll(
-                                            this.getPrometheusYmlConfigKeyValue(
-                                                    super.pluginConfigEvent,
-                                                    pluginConfigSelf
-                                            )
-                                    );
-                                    break;
-                                default:
-                                    log.info("配置文件变动被主动忽略的文件: {}", i.getConfigPath());
-                                    break;
+                            if (i.getConfigPath().contains(PROMETHEUS_CONFIG_PATH)) {
+                                resultMap.putAll(
+                                        this.getPrometheusYmlConfigKeyValue(
+                                                super.pluginConfigEvent,
+                                                pluginConfigSelf
+                                        )
+                                );
+                            } else {
+                                log.info("配置文件变动被主动忽略的文件: {}", i.getConfigPath());
                             }
                         }
                 );
