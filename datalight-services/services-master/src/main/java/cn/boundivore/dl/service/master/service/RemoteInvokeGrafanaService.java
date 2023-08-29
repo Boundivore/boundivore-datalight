@@ -51,8 +51,8 @@ public class RemoteInvokeGrafanaService {
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
 
-    private static final long CONNECT_TIMEOUT = 2 * 1000L;
-    private static final long READ_TIMEOUT = 5 * 1000L;
+    private static final long CONNECT_TIMEOUT = 10 * 1000L;
+    private static final long READ_TIMEOUT = 10 * 1000L;
 
     private final Feign.Builder feignBuilder;
 

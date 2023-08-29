@@ -47,6 +47,12 @@ public class RemoteInvokeWorkerService {
     @Value("${server.datalight.url.worker-port}")
     private String workerPort;
 
+    @Value("${feign.client.config.default.connectTimeout}")
+    private long connectTimeout;
+
+    @Value("${feign.client.config.default.readTimeout}")
+    private long readTimeout;
+
     /**
      * Description: Feign 远程调用指定节点的 IWorkerExecAPI 的接口
      * Created by: Boundivore
@@ -61,15 +67,21 @@ public class RemoteInvokeWorkerService {
      * @return IWorkerExecAPI 可调用 API 实例
      */
     public IWorkerExecAPI iWorkerExecAPI(String ip) {
-        return feignBuilder.target(
-                IWorkerExecAPI.class,
-                String.format(
-                        "http://%s:%s%s",
-                        ip,
-                        workerPort,
-                        IUrlPrefixConstants.WORKER_URL_PREFIX
+        return feignBuilder
+                .options(RequestOptionsGenerator.getRequestOptions(
+                                connectTimeout,
+                                readTimeout
+                        )
                 )
-        );
+                .target(
+                        IWorkerExecAPI.class,
+                        String.format(
+                                "http://%s:%s%s",
+                                ip,
+                                workerPort,
+                                IUrlPrefixConstants.WORKER_URL_PREFIX
+                        )
+                );
     }
 
     /**
@@ -87,6 +99,11 @@ public class RemoteInvokeWorkerService {
      */
     public IWorkerConfigAPI iWorkerConfigAPI(String ip) {
         return feignBuilder
+                .options(RequestOptionsGenerator.getRequestOptions(
+                                connectTimeout,
+                                readTimeout
+                        )
+                )
                 .target(
                         IWorkerConfigAPI.class,
                         String.format(
@@ -114,8 +131,8 @@ public class RemoteInvokeWorkerService {
     public IWorkerManageAPI iWorkerManageAPI(String ip) {
         return feignBuilder
                 .options(RequestOptionsGenerator.getRequestOptions(
-                                2 * 1000L,
-                                5 * 1000L
+                                10 * 1000L,
+                                10 * 1000L
                         )
                 )
                 .target(
