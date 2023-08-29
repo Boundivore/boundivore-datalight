@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import sun.tools.jar.resources.jar;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -115,7 +116,7 @@ public class ConfigEventSubscriber {
         final String serviceName = event.getPluginConfigEvent().getServiceName();
         final PluginConfigEvent pluginConfigEvent = event.getPluginConfigEvent();
 
-        log.info("发现配置文件变动: {}, Thread Id: {}", serviceName, Thread.currentThread().getId());
+        log.info("发现服务 {} 中发生文件变动, Thread Id: {}", serviceName, Thread.currentThread().getId());
 
         // 读取当前服务配置中，依赖当前服务的服务列表，以及该服务可能会影响的服务列表
         List<RelativeService> relativeServiceList = Stream.concat(
@@ -127,11 +128,11 @@ public class ConfigEventSubscriber {
                                 .map(YamlServiceManifest.Service::getName),
 
                         // 读取当前服务会影响的服务
-                        ResolverYamlServiceManifest.MANIFEST_SERVICE_MAP.keySet()
+                        ResolverYamlServiceManifest.MANIFEST_SERVICE_MAP.get(serviceName)
+                                .getRelatives()
                                 .stream()
-                                .map(ResolverYamlServiceManifest.MANIFEST_SERVICE_MAP::get)
-                                .flatMap(i -> i.getRelatives().stream())
                 )
+                .filter(i -> !i.equals(serviceName)) // 提升容错：排除当前服务自己（防止开发者在配置列表中出现不合逻辑的配置）
                 .distinct()
                 .map(ResolverYamlServiceManifest.MANIFEST_SERVICE_MAP::get)
                 .sorted(Comparator.comparing(YamlServiceManifest.Service::getPriority))
@@ -148,8 +149,8 @@ public class ConfigEventSubscriber {
 
                     this.invokeJar(
                             i.getClusterId(),
-                            i.getServiceName(),
                             pluginConfigEvent,
+                            i.getServiceName(),
                             jar,
                             clazzName
                     );
@@ -182,21 +183,21 @@ public class ConfigEventSubscriber {
      * Throws:
      *
      * @param relativeClusterId 被影响服务所在的集群 ID
-     * @param serviceName       被影响的服务
      * @param pluginConfigEvent 配置文件变动的事件
+     * @param serviceName       被影响的服务
      * @param jar               插件的 jar 包名称
      * @param clazzName         插件的入口类全类名
      */
     private void invokeJar(Long relativeClusterId,
-                           String serviceName,
                            PluginConfigEvent pluginConfigEvent,
+                           String serviceName,
                            String jar,
                            String clazzName) {
         try {
             String jarParentPath = String.format(
                     "file:%s/%s/jars/%s",
                     SpringContextUtilTest.PLUGINS_PATH_DIR_LOCAL,
-                    pluginConfigEvent.getServiceName(),
+                    serviceName,
                     jar
             );
             log.info("Loading jar: {}", jarParentPath);
@@ -286,6 +287,7 @@ public class ConfigEventSubscriber {
                 .getClusterTypeEnum();
 
         // 当前集群为 COMPUTE 或 MIXED 集群时，为当前集群自己添加受影响的服务列表
+        // 获取当前集群中指定服务状态
         SCStateEnum serviceStateInCurrentCluster = this.masterServiceService.getServiceState(
                 currentClusterId,
                 relativeServiceName

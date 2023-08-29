@@ -81,7 +81,7 @@ public abstract class AbstractConfigEventHandler implements IConfigEventHandler 
      */
     protected void log(PluginConfigSelf pluginConfigSelf) {
         log.info(
-                "{}-{} 配置事件中发现变动: {}-{}",
+                "{}-{} 中发现配置文件变动, 来自: {}-{}",
                 pluginConfigSelf.getClusterId(),
                 pluginConfigSelf.getServiceName(),
                 this.pluginConfigEvent.getClusterId(),
