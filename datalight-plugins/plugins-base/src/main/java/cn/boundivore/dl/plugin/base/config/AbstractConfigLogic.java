@@ -47,6 +47,18 @@ public abstract class AbstractConfigLogic {
 
     public abstract String config(File file, String replacedTemplated);
 
+    /**
+     * Description: 打印当前处理的配置文件名称
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/8/29
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param file 配置文件
+     */
     protected void printFilename(File file) {
         log.info(
                 String.format(

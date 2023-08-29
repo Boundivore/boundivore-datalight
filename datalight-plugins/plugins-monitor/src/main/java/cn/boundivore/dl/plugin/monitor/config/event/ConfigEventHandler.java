@@ -17,6 +17,7 @@
 package cn.boundivore.dl.plugin.monitor.config.event;
 
 import cn.boundivore.dl.base.constants.PortConstants;
+import cn.boundivore.dl.base.utils.ComponentUtil;
 import cn.boundivore.dl.base.utils.YamlDeserializer;
 import cn.boundivore.dl.base.utils.YamlSerializer;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigEvent;
@@ -195,6 +196,8 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
      */
     private Map<String, List<String>> getPrometheusComponentTargetsMap(final PluginConfigEvent pluginConfigEvent) {
 
+        String serviceName = pluginConfigEvent.getServiceName();
+
         // Map<ServiceName-ComponentName, List < Hostname:ExporterPort>>
         Map<String, List<String>> prometheusComponentTargetsMap = new LinkedHashMap<>();
 
@@ -209,8 +212,7 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                             // 过滤 *Client 这样的组件（无常驻进程）
                             if (curComponentExporterPort != null && !curComponentExporterPort.isEmpty()) {
                                 // List <Hostname:ExporterPort>
-                                List<String> targetList = v.stream()
-                                        .sorted(Comparator.comparing(PluginConfigEvent.ConfigEventNode::getHostname))
+                                List<String> hostnameExporterPortList = v.stream()
                                         .map(i -> String.format(
                                                         "%s:%s",
                                                         i.getHostname(),
@@ -219,7 +221,22 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                                         )
                                         .collect(Collectors.toList());
 
-                                prometheusComponentTargetsMap.put(k, targetList);
+                                String jobName = String.format(
+                                        "%s-%s",
+                                        serviceName,
+                                        ComponentUtil.clipComponentName(k) // 去除 ComponentName 末尾的数字
+                                );
+
+                                List<String> targetList = prometheusComponentTargetsMap.get(jobName);
+                                if (targetList == null) {
+                                    targetList = hostnameExporterPortList;
+                                } else {
+                                    targetList.addAll(hostnameExporterPortList);
+                                }
+
+                                targetList.sort(Comparator.comparing(o -> o.split(":")[0]));
+
+                                prometheusComponentTargetsMap.put(jobName, targetList);
                             }
                         }
                 );
