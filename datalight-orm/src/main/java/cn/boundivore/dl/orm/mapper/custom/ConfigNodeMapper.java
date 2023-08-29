@@ -72,7 +72,7 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "    t2.config_path,\n" +
             "    t2.config_version,\n" +
             "    t4.sha256,\n" +
-            "    t4.config_data,\n" +
+            "    t4.config_data\n" +
             "FROM\n" +
             "    t_dl_node t1\n" +
             "JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
@@ -124,7 +124,7 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "    t2.config_path,\n" +
             "    t2.config_version,\n" +
             "    t4.sha256,\n" +
-            "    t4.config_data,\n" +
+            "    t4.config_data\n" +
             "FROM\n" +
             "    t_dl_node t1\n" +
             "JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
