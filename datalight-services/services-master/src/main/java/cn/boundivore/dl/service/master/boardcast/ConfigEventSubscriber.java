@@ -115,7 +115,7 @@ public class ConfigEventSubscriber {
         final String serviceName = event.getPluginConfigEvent().getServiceName();
         final PluginConfigEvent pluginConfigEvent = event.getPluginConfigEvent();
 
-        log.info("发现配置文件变动: {}, {}", serviceName, Thread.currentThread().getId());
+        log.info("发现配置文件变动: {}, Thread Id: {}", serviceName, Thread.currentThread().getId());
 
         // 读取当前服务配置中，依赖当前服务的服务列表，以及该服务可能会影响的服务列表
         List<RelativeService> relativeServiceList = Stream.concat(
@@ -285,22 +285,20 @@ public class ConfigEventSubscriber {
                 .getData()
                 .getClusterTypeEnum();
 
-        // 当前集群为 COMPUTE 集群
-        if (currentClusterTypeEnum == ClusterTypeEnum.COMPUTE) {
-            SCStateEnum serviceStateInCurrentCluster = this.masterServiceService.getServiceState(
-                    currentClusterId,
-                    relativeServiceName
-            );
+        // 当前集群为 COMPUTE 或 MIXED 集群时，为当前集群自己添加受影响的服务列表
+        SCStateEnum serviceStateInCurrentCluster = this.masterServiceService.getServiceState(
+                currentClusterId,
+                relativeServiceName
+        );
 
-            if (serviceStateInCurrentCluster.isServiceDeployed()) {
-                relativeServiceList.add(
-                        new RelativeService(
-                                currentClusterId,
-                                currentClusterTypeEnum,
-                                relativeServiceName
-                        )
-                );
-            }
+        if (serviceStateInCurrentCluster.isServiceDeployed()) {
+            relativeServiceList.add(
+                    new RelativeService(
+                            currentClusterId,
+                            currentClusterTypeEnum,
+                            relativeServiceName
+                    )
+            );
         }
 
         // 当前集群为 MIXED 集群，则还需要判断被影响的 COMPUTE 集群中的被影响的服务
@@ -326,6 +324,8 @@ public class ConfigEventSubscriber {
 
                             }
                     );
+
+
         }
 
         return relativeServiceList;
