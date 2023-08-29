@@ -46,8 +46,8 @@ public class PluginConfigEvent implements Serializable {
 
     private String serviceName;
 
-    //<ComponentName, List<ConfigEventNode>>
-    private Map<String, List<ConfigEventNode>> configEventComponentMap;
+    //<ComponentName, List<ConfigEventComponentNode>>
+    private Map<String, List<ConfigEventComponentNode>> configEventComponentMap;
 
     private List<ConfigEventData> configEventDataList;
 
@@ -92,5 +92,20 @@ public class PluginConfigEvent implements Serializable {
         private String nodeIp;
 
         private Long configVersion;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Builder
+    public static class ConfigEventComponentNode implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private Long nodeId;
+
+        private String hostname;
+
+        private String nodeIp;
     }
 }

@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
@@ -25,6 +26,7 @@ import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.mapper.custom.ConfigNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ConfigNodeDto;
 import cn.boundivore.dl.orm.po.single.TDlConfig;
@@ -39,6 +41,7 @@ import cn.boundivore.dl.service.master.boardcast.ConfigEvent;
 import cn.boundivore.dl.service.master.boardcast.ConfigEventPublisher;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.lang.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -70,9 +73,9 @@ public class MasterConfigService {
 
     private final MasterNodeService masterNodeService;
 
-    private final MasterServiceService masterServiceService;
-
     private final ConfigNodeMapper configNodeMapper;
+
+    private final ComponentNodeMapper componentNodeMapper;
 
     private final ConfigEventPublisher publisher;
 
@@ -444,9 +447,6 @@ public class MasterConfigService {
         // 创建一个映射，将 ConfigEventData 映射到对应的 ConfigEventNode 列表
         Map<PluginConfigEvent.ConfigEventData, List<PluginConfigEvent.ConfigEventNode>> configEventDataMap = new HashMap<>();
 
-        // 创建一个映射，将 ComponentName 映射到对应的 ConfigEventNode 列表
-        Map<String, List<PluginConfigEvent.ConfigEventNode>> configEventComponentNameMap = new HashMap<>();
-
         // 遍历配置节点列表
         for (ConfigNodeDto configNodeDto : configNodeDtoList) {
             // 创建一个 ConfigEventData 实例
@@ -480,14 +480,32 @@ public class MasterConfigService {
             if (configEventData.getConfigEventNodeList() == null || configEventData.getConfigEventNodeList().isEmpty()) {
                 configEventData.setConfigEventNodeList(configEventNodeList);
             }
-
-
-            // 设置组件在节点中的分布情况
-            configEventComponentNameMap.computeIfAbsent(
-                    configNodeDto.getComponentName(),
-                    k -> new ArrayList<>()
-            ).add(configEventNode);
         }
+
+        // 查询并设置组件在节点中的分布情况
+        // 创建一个映射，将 ComponentName 映射到对应的 ConfigEventNode 列表
+        Map<String, List<PluginConfigEvent.ConfigEventComponentNode>> configEventComponentNameMap =
+                this.componentNodeMapper.selectComponentNodeNotInStatesDto(
+                                clusterId,
+                                serviceName,
+                                CollUtil.newArrayList(
+                                        SCStateEnum.UNSELECTED,
+                                        SCStateEnum.REMOVED
+                                )
+                        )
+                        .stream()
+                        .map(i ->
+                                new Pair<>(
+                                        i.getComponentName(),
+                                        new PluginConfigEvent.ConfigEventComponentNode(
+                                                i.getNodeId(),
+                                                i.getHostname(),
+                                                i.getIpv4()
+                                        )
+                                )
+                        )
+                        .collect(Collectors.groupingBy(Pair::getKey, Collectors.mapping(Pair::getValue, Collectors.toList())));
+
 
         // 将映射中的所有键（ConfigEventData）添加到 PluginConfigEvent 的 ConfigEventDataList 中
         List<PluginConfigEvent.ConfigEventData> configEventDataList = new ArrayList<>(configEventDataMap.keySet());
@@ -593,9 +611,6 @@ public class MasterConfigService {
         // 创建一个映射，将 ConfigGroup 映射到对应的 ConfigNode 列表
         Map<ConfigListByGroupVo.ConfigGroupVo, List<ConfigListByGroupVo.ConfigNodeVo>> configGroupVoListMap = new HashMap<>();
 
-        // 创建一个映射，将 ComponentName 映射到对应的 ConfigNodeVo 列表
-        Map<String, List<ConfigListByGroupVo.ConfigNodeVo>> componentDistributedMap = new HashMap<>();
-
         // 遍历配置节点列表
         for (ConfigNodeDto configNodeDto : configNodeDtoList) {
             // 创建一个 ConfigGroup 实例
@@ -628,13 +643,31 @@ public class MasterConfigService {
             if (configGroup.getConfigNodeList() == null || configGroup.getConfigNodeList().isEmpty()) {
                 configGroup.setConfigNodeList(configNodeList);
             }
-
-            // 设置组件在节点中的分布情况
-            componentDistributedMap.computeIfAbsent(
-                    configNodeDto.getComponentName(),
-                    k -> new ArrayList<>()
-            ).add(configNodeVo);
         }
+
+        // 查询并设置组件在节点中的分布情况
+        // 创建一个映射，将 ComponentName 映射到对应的 ConfigEventNode 列表
+        Map<String, List<ConfigListByGroupVo.ComponentNodeVo>> componentDistributedMap =
+                this.componentNodeMapper.selectComponentNodeNotInStatesDto(
+                                clusterId,
+                                serviceName,
+                                CollUtil.newArrayList(
+                                        SCStateEnum.UNSELECTED,
+                                        SCStateEnum.REMOVED
+                                )
+                        )
+                        .stream()
+                        .map(i ->
+                                new Pair<>(
+                                        i.getComponentName(),
+                                        new ConfigListByGroupVo.ComponentNodeVo(
+                                                i.getNodeId(),
+                                                i.getHostname(),
+                                                i.getIpv4()
+                                        )
+                                )
+                        )
+                        .collect(Collectors.groupingBy(Pair::getKey, Collectors.mapping(Pair::getValue, Collectors.toList())));
 
 
         // 将映射中的所有键（ConfigGroup）添加到 ConfigListByGroupVo 的 ConfigGroupList 中

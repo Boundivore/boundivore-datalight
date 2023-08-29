@@ -130,6 +130,32 @@ public class ConfigListByGroupVo implements IVo {
         private Long configVersion;
     }
 
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Builder
+    @ApiModel(
+            value = "ConfigListByGroupVo.ComponentNodeVo",
+            description = "ConfigListByGroupVo.ComponentNodeVo: 组件所在节点信息"
+    )
+    public static class ComponentNodeVo implements IVo {
+
+        @ApiModelProperty(name = "NodeId", value = "节点 ID", required = true)
+        @JsonProperty(value = "NodeId", required = true)
+        private Long nodeId;
+
+        @ApiModelProperty(name = "Hostname", value = "节点主机名", required = true)
+        @JsonProperty(value = "Hostname", required = true)
+        private String hostname;
+
+        @ApiModelProperty(name = "NodeIp", value = "节点 IP 地址", required = true)
+        @JsonProperty(value = "NodeIp", required = true)
+        private String nodeIp;
+    }
+
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -145,8 +171,8 @@ public class ConfigListByGroupVo implements IVo {
         @JsonProperty(value = "ComponentName", required = true)
         private String componentName;
 
-        @ApiModelProperty(name = "ConfigNodeList", value = "组件所在节点", required = true)
-        @JsonProperty(value = "ConfigNodeList", required = true)
-        private List<ConfigNodeVo> configNodeList;
+        @ApiModelProperty(name = "ComponentNodeList", value = "组件所在节点", required = true)
+        @JsonProperty(value = "ComponentNodeList", required = true)
+        private List<ComponentNodeVo> componentNodeList;
     }
 }

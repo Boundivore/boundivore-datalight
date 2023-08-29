@@ -203,6 +203,11 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                 .forEach((k, v) -> {
                             // 去除 ComponentName 末尾的数字
                             String componentName = ComponentUtil.clipComponentName(k);
+                            String jobName = String.format(
+                                    "%s-%s",
+                                    serviceName,
+                                    componentName
+                            );
 
                             // 获取当前组件的 Exporter 端口号
                             String curComponentExporterPort = PortConstants.getMonitorExporterPort(
@@ -222,12 +227,6 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                                         )
                                         .distinct() // 原集合中为配置文件的分布，一个服务下存在多个配置文件，所以会存在重复主机名，因此此处应去重
                                         .collect(Collectors.toList());
-
-                                String jobName = String.format(
-                                        "%s-%s",
-                                        serviceName,
-                                        componentName
-                                );
 
                                 List<String> targetList = prometheusComponentTargetsMap.get(jobName);
                                 if (targetList == null) {

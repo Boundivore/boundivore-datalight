@@ -96,10 +96,6 @@ public class ConfigNodeDto extends TBasePo<ConfigNodeDto> {
     @TableField("service_name")
     private String serviceName;
 
-    @ApiModelProperty("组件名称")
-    @TableField("component_name")
-    private String componentName;
-
     @ApiModelProperty("配置文件名称")
     @TableField("filename")
     private String filename;
