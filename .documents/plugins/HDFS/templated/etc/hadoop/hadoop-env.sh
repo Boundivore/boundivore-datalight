@@ -315,7 +315,7 @@ export HADOOP_PID_DIR=${PID_DIR}/HDFS
 # defined if SASL is configured for authentication of data transfer protocol
 # using non-privileged ports.
 # This will replace the hadoop.id.str Java property in secure mode.
-export HDFS_DATANODE_SECURE_USER="{{HDFS_DATANODE_SECURE_USER}}"
+# export HDFS_DATANODE_SECURE_USER="{{HDFS_DATANODE_SECURE_USER}}"
 
 # Supplemental options for secure datanodes
 # By default, Hadoop uses jsvc which needs to know to launch a
