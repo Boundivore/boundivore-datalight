@@ -88,7 +88,7 @@ public class RemoteInvokeGrafanaHandler {
     );
     public static final String ADMIN_OLD_TOKEN = RemoteInvokeGrafanaService.basicAuthToken(
             ADMIN_USER.getLoginName(),
-            ADMIN_USER.getNewLoginPassword()
+            ADMIN_USER.getOldLoginPassword()
     );
     public static final String ADMIN_DATALIGHT_NEW_TOKEN = RemoteInvokeGrafanaService.basicAuthToken(
             ADMIN_DATALIGHT_USER.getLoginName(),

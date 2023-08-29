@@ -429,64 +429,64 @@ export HDFS_DATANODE_SECURE_USER="{{HDFS_DATANODE_SECURE_USER}}"
 # export HADOOP_REGISTRYDNS_SECURE_EXTRA_OPTS="-jvm server"
 
 if [[ ${HDFS_JOURNALNODE_OPTS} != *"-javaagent"* ]]; then
-  export HDFS_JOURNALNODE_OPTS="${HDFS_JOURNALNODE_OPTS} \
-  -Dcom.sun.management.jmxremote.authenticate=false \
-  -Dcom.sun.management.jmxremote.ssl=false \
-  -Dcom.sun.management.jmxremote.local.only=false \
-  -Dcom.sun.management.jmxremote.port={{jmxRemotePort_JournalNode}} \
-  -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_JournalNode}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_JournalNode.yaml"
+export HDFS_JOURNALNODE_OPTS="${HDFS_JOURNALNODE_OPTS} \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_JournalNode}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_JournalNode}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_JournalNode.yaml"
 fi
 
 if [[ ${HDFS_NAMENODE_OPTS} != *"-javaagent"* ]]; then
-  export HDFS_NAMENODE_OPTS="${HDFS_NAMENODE_OPTS} \
-   -Dcom.sun.management.jmxremote.authenticate=false \
-   -Dcom.sun.management.jmxremote.ssl=false \
-   -Dcom.sun.management.jmxremote.local.only=false \
-   -Dcom.sun.management.jmxremote.port={{jmxRemotePort_NameNode}} \
-   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NameNode}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_NameNode.yaml"
+export HDFS_NAMENODE_OPTS="${HDFS_NAMENODE_OPTS} \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_NameNode}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NameNode}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_NameNode.yaml"
 fi
 
 if [[ ${HDFS_ZKFC_OPTS} != *"-javaagent"* ]]; then
-  export HDFS_ZKFC_OPTS="${HDFS_ZKFC_OPTS} \
-   -Dcom.sun.management.jmxremote.authenticate=false \
-   -Dcom.sun.management.jmxremote.ssl=false \
-   -Dcom.sun.management.jmxremote.local.only=false \
-   -Dcom.sun.management.jmxremote.port={{jmxRemotePort_ZKFailoverController}} \
-   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ZKFailoverController}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ZKFailoverController.yaml"
+export HDFS_ZKFC_OPTS="${HDFS_ZKFC_OPTS} \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_ZKFailoverController}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ZKFailoverController}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ZKFailoverController.yaml"
 fi
 
 if [[ ${HDFS_DATANODE_OPTS} != *"-javaagent"* ]]; then
-  export HDFS_DATANODE_OPTS="${HDFS_DATANODE_OPTS} \
-   -Dcom.sun.management.jmxremote.authenticate=false \
-   -Dcom.sun.management.jmxremote.ssl=false \
-   -Dcom.sun.management.jmxremote.local.only=false \
-   -Dcom.sun.management.jmxremote.port={{jmxRemotePort_DataNode}} \
-   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_DataNode}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_DataNode.yaml"
+export HDFS_DATANODE_OPTS="${HDFS_DATANODE_OPTS} \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_DataNode}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_DataNode}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_DataNode.yaml"
 fi
 
 if [[ ${HDFS_HTTPFS_OPTS} != *"-javaagent"* ]]; then
-  export HDFS_HTTPFS_OPTS="${HDFS_HTTPFS_OPTS} \
-   -Dcom.sun.management.jmxremote.authenticate=false \
-   -Dcom.sun.management.jmxremote.ssl=false \
-   -Dcom.sun.management.jmxremote.local.only=false \
-   -Dcom.sun.management.jmxremote.port={{jmxRemotePort_HttpFS}} \
-   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HttpFS}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HttpFS.yaml"
+export HDFS_HTTPFS_OPTS="${HDFS_HTTPFS_OPTS} \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HttpFS}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HttpFS}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HttpFS.yaml"
 fi
 
 #if [[ ${YARN_RESOURCEMANAGER_OPTS} != *"-javaagent"* ]]; then
-#  export YARN_RESOURCEMANAGER_OPTS="${YARN_RESOURCEMANAGER_OPTS} \
-#   -Dcom.sun.management.jmxremote.authenticate=false \
-#   -Dcom.sun.management.jmxremote.ssl=false \
-#   -Dcom.sun.management.jmxremote.local.only=false \
-#   -Dcom.sun.management.jmxremote.port={{jmxRemotePort_ResourceManager}} \
-#   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ResourceManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ResourceManager.yaml"
+#export YARN_RESOURCEMANAGER_OPTS="${YARN_RESOURCEMANAGER_OPTS} \
+#-Dcom.sun.management.jmxremote.authenticate=false \
+#-Dcom.sun.management.jmxremote.ssl=false \
+#-Dcom.sun.management.jmxremote.local.only=false \
+#-Dcom.sun.management.jmxremote.port={{jmxRemotePort_ResourceManager}} \
+#-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ResourceManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ResourceManager.yaml"
 #fi
 #
 #if [[ ${YARN_NODEMANAGER_OPTS} != *"-javaagent"* ]]; then
-#  export YARN_NODEMANAGER_OPTS="${YARN_NODEMANAGER_OPTS} \
-#   -Dcom.sun.management.jmxremote.authenticate=false \
-#   -Dcom.sun.management.jmxremote.ssl=false \
-#   -Dcom.sun.management.jmxremote.local.only=false \
-#   -Dcom.sun.management.jmxremote.port={{jmxRemotePort_NodeManager}} \
-#   -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NodeManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_NodeManager.yaml"
+#export YARN_NODEMANAGER_OPTS="${YARN_NODEMANAGER_OPTS} \
+#-Dcom.sun.management.jmxremote.authenticate=false \
+#-Dcom.sun.management.jmxremote.ssl=false \
+#-Dcom.sun.management.jmxremote.local.only=false \
+#-Dcom.sun.management.jmxremote.port={{jmxRemotePort_NodeManager}} \
+#-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NodeManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_NodeManager.yaml"
 #fi
