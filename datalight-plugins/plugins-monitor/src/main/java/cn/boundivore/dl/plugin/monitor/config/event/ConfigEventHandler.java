@@ -135,6 +135,7 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                                             .get(0)
                                             .getTargets()
                                             .stream()
+                                            .distinct()
                                             .sorted(Comparator.comparing(s -> s.split(":")[0]))
                                             .collect(Collectors.toList());
 
@@ -200,10 +201,13 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
 
         pluginConfigEvent.getConfigEventComponentMap()
                 .forEach((k, v) -> {
+                            // 去除 ComponentName 末尾的数字
+                            String componentName = ComponentUtil.clipComponentName(k);
+
                             // 获取当前组件的 Exporter 端口号
                             String curComponentExporterPort = PortConstants.getMonitorExporterPort(
                                     pluginConfigEvent.getServiceName(),
-                                    k
+                                    componentName
                             );
 
                             // 过滤 *Client 这样的组件（无常驻进程）
@@ -216,19 +220,24 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                                                         curComponentExporterPort
                                                 )
                                         )
+                                        .distinct() // 原集合中为配置文件的分布，一个服务下存在多个配置文件，所以会存在重复主机名，因此此处应去重
                                         .collect(Collectors.toList());
 
                                 String jobName = String.format(
                                         "%s-%s",
                                         serviceName,
-                                        ComponentUtil.clipComponentName(k) // 去除 ComponentName 末尾的数字
+                                        componentName
                                 );
 
                                 List<String> targetList = prometheusComponentTargetsMap.get(jobName);
                                 if (targetList == null) {
                                     targetList = hostnameExporterPortList;
                                 } else {
-                                    targetList.addAll(hostnameExporterPortList);
+                                    for (String newHEP : hostnameExporterPortList) {
+                                        if (!targetList.contains(newHEP)) {
+                                            targetList.add(newHEP);
+                                        }
+                                    }
                                 }
 
                                 targetList.sort(Comparator.comparing(o -> o.split(":")[0]));

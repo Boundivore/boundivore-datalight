@@ -25,4 +25,4 @@ FROM t_dl_node t1
          JOIN t_dl_component t6 ON t2.node_id = t6.node_id AND t2.service_name = t6.service_name
 WHERE t2.cluster_id = 1
   AND t2.service_name = 'ZOOKEEPER'
-  AND t2.config_path = '%ZOOKEEPER/conf/zoo.cfg';
+  AND t2.config_path = '/srv/datalight/ZOOKEEPER/conf/zoo.cfg';

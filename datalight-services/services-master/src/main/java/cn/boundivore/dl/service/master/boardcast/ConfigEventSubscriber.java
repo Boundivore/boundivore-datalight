@@ -108,7 +108,7 @@ public class ConfigEventSubscriber {
      */
     @EventListener
     @Async("commonExecutor")
-    public void handleTopicEvent(ConfigEvent event) {
+    public synchronized void handleTopicEvent(ConfigEvent event) {
 
         final Long currentClusterId = event.getPluginConfigEvent().getClusterId();
 
@@ -347,6 +347,7 @@ public class ConfigEventSubscriber {
      * @param configRelativePath 配置文件相对路径
      * @return 受影响的配置文件详细信息
      */
+    //TODO 此处 PluginConfigSelf 放置了过多的配置，或者在 configByEvent 中需要去重
     private PluginConfigSelf assemblePluginConfigEventSelf(Long clusterId,
                                                            String serviceName,
                                                            List<String> configRelativePath) {
