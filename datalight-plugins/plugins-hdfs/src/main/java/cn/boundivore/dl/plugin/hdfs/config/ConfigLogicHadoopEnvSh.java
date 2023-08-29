@@ -128,36 +128,6 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                                 "HttpFS"
                         )
                 )
-                // ResourceManager
-                .replace(
-                        "{{jmxRemotePort_ResourceManager}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "ResourceManager"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_ResourceManager}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "ResourceManager"
-                        )
-                )
-                // NodeManager
-                .replace(
-                        "{{jmxRemotePort_NodeManager}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "NodeManager"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_NodeManager}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "NodeManager"
-                        )
-                )
                 ;
     }
 
