@@ -343,17 +343,17 @@ public class ConfigEventSubscriber {
      * Modification time:
      * Throws:
      *
-     * @param clusterId  当前集群 ID
-     * @param configPath 配置文件路径
+     * @param clusterId          当前集群 ID
+     * @param configRelativePath 配置文件相对路径
      * @return 受影响的配置文件详细信息
      */
     private PluginConfigSelf assemblePluginConfigEventSelf(Long clusterId,
                                                            String serviceName,
-                                                           List<String> configPath) {
+                                                           List<String> configRelativePath) {
         //<ComponentName, List<ConfigSelfNode>>
         final Map<String, List<PluginConfigSelf.ConfigSelfNode>> configSelfComponentMap = new LinkedHashMap<>();
 
-        List<PluginConfigSelf.ConfigSelfData> configSelfDataList = configPath.stream()
+        List<PluginConfigSelf.ConfigSelfData> configSelfDataList = configRelativePath.stream()
                 .map(i -> this.masterConfigService.getConfigListByGroup(clusterId, serviceName, i).getData())
                 .flatMap(i -> {
                             i.getConfigComponentList().forEach(

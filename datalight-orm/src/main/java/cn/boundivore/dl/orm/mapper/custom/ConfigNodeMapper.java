@@ -77,8 +77,8 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "FROM\n" +
             "    t_dl_node t1\n" +
             "JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
-            "JOIN t_dl_config_content t4 ON t2.id = t4.id \n" +
-            "JOIN t_dl_component t6 ON t2.node_id = t6.node_id\n" +
+            "JOIN t_dl_config_content t4 ON t2.config_content_id = t4.id \n" +
+            "JOIN t_dl_component t6 ON t2.node_id = t6.node_id AND t2.service_name = t6.service_name\n" +
             "WHERE\n" +
             "    t2.cluster_id = #{clusterId}\n" +
             "    AND t2.service_name = #{serviceName};")
@@ -130,12 +130,12 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "FROM\n" +
             "    t_dl_node t1\n" +
             "JOIN t_dl_config t2 ON t1.id = t2.node_id \n" +
-            "JOIN t_dl_config_content t4 ON t2.id = t4.id \n" +
-            "JOIN t_dl_component t6 ON t2.node_id = t6.node_id\n" +
+            "JOIN t_dl_config_content t4 ON t2.config_content_id = t4.id \n" +
+            "JOIN t_dl_component t6 ON t2.node_id = t6.node_id AND t2.service_name = t6.service_name\n" +
             "WHERE\n" +
             "    t2.cluster_id = #{clusterId}\n" +
             "    AND t2.service_name = #{serviceName} \n" +
-            "    AND t2.config_path = #{configPath};")
+            "    AND t2.config_path LIKE %#{configPath};")
     List<ConfigNodeDto> selectConfigNodeDtoByConfigPath(
             @Param("clusterId")
             Long clusterId,

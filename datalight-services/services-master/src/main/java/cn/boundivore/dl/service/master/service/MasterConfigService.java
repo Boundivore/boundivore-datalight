@@ -475,11 +475,11 @@ public class MasterConfigService {
                     k -> new ArrayList<>()
             );
             configEventNodeList.add(configEventNode);
+
             // 将 ConfigEventNode 列表设置到对应的 ConfigEventData 中
             if (configEventData.getConfigEventNodeList() == null || configEventData.getConfigEventNodeList().isEmpty()) {
                 configEventData.setConfigEventNodeList(configEventNodeList);
             }
-
 
 
             // 设置组件在节点中的分布情况
