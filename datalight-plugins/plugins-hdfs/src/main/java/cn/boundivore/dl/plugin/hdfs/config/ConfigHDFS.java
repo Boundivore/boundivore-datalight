@@ -116,7 +116,7 @@ public class ConfigHDFS extends AbstractConfig {
                 return new ConfigLogicCoreSite(super.pluginConfig).config(file, replacedTemplate);
             case "hdfs-site.xml":
                 return new ConfigLogicHdfsSite(super.pluginConfig).config(file, replacedTemplate);
-            case "hadoop-evn.sh":
+            case "hadoop-env.sh":
                 return new ConfigLogicHadoopEnvSh(super.pluginConfig).config(file, replacedTemplate);
             case "jmx_config_JournalNode.yaml":
             case "jmx_config_NameNode.yaml":

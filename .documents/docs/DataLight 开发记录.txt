@@ -104,6 +104,7 @@ java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
 
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop \
+sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh AlertManager stop \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh NodeExporter stop \
