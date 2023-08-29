@@ -108,7 +108,7 @@ public class ConfigEventSubscriber {
      */
     @EventListener
     @Async("commonExecutor")
-    public void handleTopicAEvent(ConfigEvent event) {
+    public void handleTopicEvent(ConfigEvent event) {
 
         final Long currentClusterId = event.getPluginConfigEvent().getClusterId();
 
