@@ -135,7 +135,7 @@ public interface ConfigNodeMapper extends BaseMapper<ConfigNodeDto> {
             "WHERE\n" +
             "    t2.cluster_id = #{clusterId}\n" +
             "    AND t2.service_name = #{serviceName} \n" +
-            "    AND t2.config_path LIKE %#{configPath};")
+            "    AND t2.config_path = #{configPath};")
     List<ConfigNodeDto> selectConfigNodeDtoByConfigPath(
             @Param("clusterId")
             Long clusterId,
