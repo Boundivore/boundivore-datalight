@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ConfigEventHandler extends AbstractConfigEventHandler {
 
-    private static final String PROMETHEUS_CONFIG_PATH = "MONITOR/prometheus/prometheus.yaml";
+    private static final String PROMETHEUS_CONFIG_PATH = "MONITOR/prometheus/prometheus.yml";
 
     @Override
     public List<String> getRelativeConfigPathList(List<String> configPathList) {
