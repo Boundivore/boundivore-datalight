@@ -645,48 +645,15 @@ public class MasterConfigService {
             }
         }
 
-        // 查询并设置组件在节点中的分布情况
-        // 创建一个映射，将 ComponentName 映射到对应的 ConfigEventNode 列表
-        Map<String, List<ConfigListByGroupVo.ComponentNodeVo>> componentDistributedMap =
-                this.componentNodeMapper.selectComponentNodeNotInStatesDto(
-                                clusterId,
-                                serviceName,
-                                CollUtil.newArrayList(
-                                        SCStateEnum.UNSELECTED,
-                                        SCStateEnum.REMOVED
-                                )
-                        )
-                        .stream()
-                        .map(i ->
-                                new Pair<>(
-                                        i.getComponentName(),
-                                        new ConfigListByGroupVo.ComponentNodeVo(
-                                                i.getNodeId(),
-                                                i.getHostname(),
-                                                i.getIpv4()
-                                        )
-                                )
-                        )
-                        .collect(Collectors.groupingBy(Pair::getKey, Collectors.mapping(Pair::getValue, Collectors.toList())));
-
 
         // 将映射中的所有键（ConfigGroup）添加到 ConfigListByGroupVo 的 ConfigGroupList 中
         List<ConfigListByGroupVo.ConfigGroupVo> configGroupList = new ArrayList<>(configGroupVoListMap.keySet());
-
-        List<ConfigListByGroupVo.ConfigComponentVo> configComponentList = new ArrayList<>();
-        componentDistributedMap.forEach((k, v) -> configComponentList.add(
-                new ConfigListByGroupVo.ConfigComponentVo(
-                        k,
-                        v
-                )
-        ));
 
 
         return Result.success(
                 new ConfigListByGroupVo(
                         clusterId,
                         serviceName,
-                        configComponentList,
                         configGroupList
                 )
         );

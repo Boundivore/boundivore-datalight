@@ -45,8 +45,8 @@ public class PluginConfigSelf implements Serializable {
 
     private String serviceName;
 
-    //<ComponentName, List<ConfigSelfNode>>
-    private Map<String, List<ConfigSelfNode>> configSelfComponentMap;
+    //<ComponentName, List<ConfigSelfComponentNode>>
+    private Map<String, List<ConfigSelfComponentNode>> configSelfComponentMap;
 
     private List<ConfigSelfData> configSelfDataList;
 
@@ -93,4 +93,18 @@ public class PluginConfigSelf implements Serializable {
         private Long configVersion;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Builder
+    public static class ConfigSelfComponentNode implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private Long nodeId;
+
+        private String hostname;
+
+        private String nodeIp;
+    }
 }

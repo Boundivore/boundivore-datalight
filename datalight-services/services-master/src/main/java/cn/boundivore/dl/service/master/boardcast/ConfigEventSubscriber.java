@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigEvent;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigSelf;
@@ -33,7 +34,9 @@ import cn.boundivore.dl.service.master.service.MasterClusterService;
 import cn.boundivore.dl.service.master.service.MasterConfigService;
 import cn.boundivore.dl.service.master.service.MasterConfigSyncService;
 import cn.boundivore.dl.service.master.service.MasterServiceService;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.lang.Pair;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
@@ -72,6 +75,8 @@ public class ConfigEventSubscriber {
     private final MasterConfigService masterConfigService;
 
     private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
+
+    private final ComponentNodeMapper componentNodeMapper;
 
     @Data
     @AllArgsConstructor
@@ -347,32 +352,20 @@ public class ConfigEventSubscriber {
      * @param configRelativePath 配置文件相对路径
      * @return 受影响的配置文件详细信息
      */
-    //TODO 此处 PluginConfigSelf 放置了过多的配置，或者在 configByEvent 中需要去重
     private PluginConfigSelf assemblePluginConfigEventSelf(Long clusterId,
                                                            String serviceName,
                                                            List<String> configRelativePath) {
-        //<ComponentName, List<ConfigSelfNode>>
-        final Map<String, List<PluginConfigSelf.ConfigSelfNode>> configSelfComponentMap = new LinkedHashMap<>();
 
+        // 组装配置文件分布情况
         List<PluginConfigSelf.ConfigSelfData> configSelfDataList = configRelativePath.stream()
-                .map(i -> this.masterConfigService.getConfigListByGroup(clusterId, serviceName, i).getData())
-                .flatMap(i -> {
-                            i.getConfigComponentList().forEach(
-                                    configComponentVo -> configSelfComponentMap.put(
-                                            configComponentVo.getComponentName(),
-                                            configComponentVo.getConfigNodeList()
-                                                    .stream()
-                                                    .map(q -> new PluginConfigSelf.ConfigSelfNode(
-                                                                    q.getNodeId(),
-                                                                    q.getHostname(),
-                                                                    q.getNodeIp(),
-                                                                    q.getConfigVersion()
-                                                            )
-                                                    ).collect(Collectors.toList())
-                                    )
-                            );
-                            return i.getConfigGroupList().stream();
-                        }
+                .flatMap(i -> this.masterConfigService.getConfigListByGroup(
+                                        clusterId,
+                                        serviceName,
+                                        i
+                                )
+                                .getData()
+                                .getConfigGroupList()
+                                .stream()
                 )
                 .map(i -> {
                             List<PluginConfigSelf.ConfigSelfNode> configSelfNodeList = i.getConfigNodeList()
@@ -399,10 +392,34 @@ public class ConfigEventSubscriber {
                 )
                 .collect(Collectors.toList());
 
+
+        //<ComponentName, List<ConfigSelfNode>>，组装组件分布情况
+        Map<String, List<PluginConfigSelf.ConfigSelfComponentNode>> configSelfComponentNameMap =
+                this.componentNodeMapper.selectComponentNodeNotInStatesDto(
+                                clusterId,
+                                serviceName,
+                                CollUtil.newArrayList(
+                                        SCStateEnum.UNSELECTED,
+                                        SCStateEnum.REMOVED
+                                )
+                        )
+                        .stream()
+                        .map(i ->
+                                new Pair<>(
+                                        i.getComponentName(),
+                                        new PluginConfigSelf.ConfigSelfComponentNode(
+                                                i.getNodeId(),
+                                                i.getHostname(),
+                                                i.getIpv4()
+                                        )
+                                )
+                        )
+                        .collect(Collectors.groupingBy(Pair::getKey, Collectors.mapping(Pair::getValue, Collectors.toList())));
+
         PluginConfigSelf pluginConfigSelf = new PluginConfigSelf();
         pluginConfigSelf.setClusterId(clusterId);
         pluginConfigSelf.setServiceName(serviceName);
-        pluginConfigSelf.setConfigSelfComponentMap(configSelfComponentMap);
+        pluginConfigSelf.setConfigSelfComponentMap(configSelfComponentNameMap);
         pluginConfigSelf.setConfigSelfDataList(configSelfDataList);
 
         return pluginConfigSelf;
