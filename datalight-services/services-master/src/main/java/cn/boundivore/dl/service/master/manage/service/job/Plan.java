@@ -172,7 +172,7 @@ public class Plan {
 
         this.planProcess = (int) (this.planCurrent * 1.0F / this.planTotal * 100);
 
-        log.info("计划总数: {}, 当前: {}, 进度: {}", planTotal, planCurrent, planProcess);
+        log.info("计划总数: {}, 当前: {}, 进度: {}%", planTotal, planCurrent, planProcess);
 
         return this.planProcess;
     }
