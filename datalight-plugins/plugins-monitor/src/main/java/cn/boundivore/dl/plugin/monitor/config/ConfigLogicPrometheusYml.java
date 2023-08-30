@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.base.enumeration.impl.MasterWorkerEnum;
 import cn.boundivore.dl.base.utils.YamlDeserializer;
 import cn.boundivore.dl.base.utils.YamlSerializer;
+import cn.boundivore.dl.plugin.base.bean.MasterWorkerMeta;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.bean.config.YamlPrometheusConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
@@ -29,6 +30,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -171,6 +173,7 @@ public class ConfigLogicPrometheusYml extends AbstractConfigLogic {
                 .getMasterWorkerMetaList()
                 .stream()
                 .filter(meta -> meta.getMasterWorkerEnum() == masterWorkerEnum)
+                .sorted(Comparator.comparing(MasterWorkerMeta::getHostname))
                 .map(meta -> String.format(
                                 "%s:%s",
                                 meta.getHostname(),
@@ -199,6 +202,7 @@ public class ConfigLogicPrometheusYml extends AbstractConfigLogic {
                 .values()
                 .stream()
                 .filter(i -> i.getComponentName().equals(componentName))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
                 .map(i -> String.format(
                         "%s:%s",
                         i.getHostname(),
@@ -221,12 +225,10 @@ public class ConfigLogicPrometheusYml extends AbstractConfigLogic {
 
 
         yamlPrometheusConfig.getScrapeConfigs()
-                .forEach(i -> {
-                            i.getStaticConfigs().get(0)
-                                    .setTargets(
-                                            CollUtil.newArrayList("demo01:8888")
-                                    );
-                        }
+                .forEach(i -> i.getStaticConfigs().get(0)
+                        .setTargets(
+                                CollUtil.newArrayList("demo01:8888")
+                        )
                 );
 
         String string = YamlDeserializer.toString(yamlPrometheusConfig);
