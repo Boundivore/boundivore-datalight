@@ -172,7 +172,7 @@ public class Plan {
 
         this.planProcess = (int) (this.planCurrent * 1.0F / this.planTotal * 100);
 
-        log.info("计划总数: {}, 当前: {}, 进度: {}%", planTotal, planCurrent, planProcess);
+        log.info("计划总数: {}, 当前: {}, 进度: {} %", planTotal, planCurrent, planProcess);
 
         return this.planProcess;
     }
@@ -194,7 +194,7 @@ public class Plan {
                     this.execCurrent.incrementAndGet() * 100 / this.execTotal.get()
             );
 
-            log.info("执行 Step 总数: {}, 当前: {}, 进度: {}", execTotal.get(), execCurrent.get(), execProcess.get());
+            log.info("执行 Step 总数: {}, 当前: {}, 进度: {} %", execTotal.get(), execCurrent.get(), execProcess.get());
 
             return this.execCurrent;
         } finally {
