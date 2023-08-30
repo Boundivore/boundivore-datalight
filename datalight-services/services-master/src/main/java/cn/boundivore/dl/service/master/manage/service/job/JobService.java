@@ -509,7 +509,7 @@ public class JobService {
                         MySQLCache.DB_PORT,
                         MySQLCache.DB_NAME,
                         MySQLCache.DB_USER,
-                        MySQLCache.DB_PORT
+                        MySQLCache.DB_PASSWORD
                 )
         );
 
