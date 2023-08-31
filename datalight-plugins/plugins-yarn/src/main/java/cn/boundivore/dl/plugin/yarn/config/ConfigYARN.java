@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.plugin.hdfs.config;
+package cn.boundivore.dl.plugin.yarn.config;
 
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.AbstractConfig;
@@ -34,7 +34,7 @@ import java.util.LinkedHashMap;
  * Version: V1.0
  */
 @Slf4j
-public class ConfigHDFS extends AbstractConfig {
+public class ConfigYARN extends AbstractConfig {
 
     @Override
     public PluginConfigResult configSelf() {
@@ -113,16 +113,13 @@ public class ConfigHDFS extends AbstractConfig {
     private String configLogic(File file, String replacedTemplate) {
         switch (file.getName()) {
             case "core-site.xml":
-                return new ConfigLogicCoreSite(super.pluginConfig).config(file, replacedTemplate);
-            case "hdfs-site.xml":
-                return new ConfigLogicHdfsSite(super.pluginConfig).config(file, replacedTemplate);
-            case "hadoop-env.sh":
-                return new ConfigLogicHadoopEnvSh(super.pluginConfig).config(file, replacedTemplate);
-            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_JournalNode:
-            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_NameNode:
-            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_ZKFailoverController:
-            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_DataNode:
-            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HttpFS:
+                return "";
+            case "yarn-site.xml":
+                return "";
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_ResourceManager:
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_NodeManager:
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_TimelineServer:
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HistoryServer:
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {

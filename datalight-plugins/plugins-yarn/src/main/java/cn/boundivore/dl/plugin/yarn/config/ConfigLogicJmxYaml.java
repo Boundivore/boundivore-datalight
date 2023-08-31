@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.plugin.hdfs.config;
+package cn.boundivore.dl.plugin.yarn.config;
 
 import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
@@ -36,12 +36,11 @@ import java.io.File;
 @Slf4j
 public class ConfigLogicJmxYaml extends AbstractConfigLogic {
 
-    public static final String JMX_CONFIG_FILE_JournalNode = "jmx_config_JournalNode.yaml";
-    public static final String JMX_CONFIG_FILE_NameNode = "jmx_config_NameNode.yaml";
-    public static final String JMX_CONFIG_FILE_ZKFailoverController = "jmx_config_ZKFailoverController.yaml";
-    public static final String JMX_CONFIG_FILE_DataNode = "jmx_config_DataNode.yaml";
-    public static final String JMX_CONFIG_FILE_HttpFS = "jmx_config_HttpFS.yaml";
-    public static final String SERVICE_NAME_HDFS = "HDFS";
+    public static final String JMX_CONFIG_FILE_ResourceManager = "jmx_config_ResourceManager.yaml";
+    public static final String JMX_CONFIG_FILE_NodeManager = "jmx_config_NodeManager.yaml";
+    public static final String JMX_CONFIG_FILE_TimelineServer = "jmx_config_TimelineServer.yaml";
+    public static final String JMX_CONFIG_FILE_HistoryServer = "jmx_config_HistoryServer.yaml";
+    public static final String SERVICE_NAME_YARN = "YARN";
 
 
     public ConfigLogicJmxYaml(PluginConfig pluginConfig) {
@@ -57,34 +56,28 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
 
         String jmxRemotePort = "{{jmxRemotePort}}";
         switch (file.getName()) {
-            case JMX_CONFIG_FILE_JournalNode:
+            case JMX_CONFIG_FILE_ResourceManager:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                        SERVICE_NAME_YARN,
                         "JournalNode"
                 );
                 break;
-            case JMX_CONFIG_FILE_NameNode:
+            case JMX_CONFIG_FILE_NodeManager:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                        SERVICE_NAME_YARN,
                         "NameNode"
                 );
                 break;
-            case JMX_CONFIG_FILE_ZKFailoverController:
+            case JMX_CONFIG_FILE_TimelineServer:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                        SERVICE_NAME_YARN,
                         "ZKFailoverController"
                 );
                 break;
-            case JMX_CONFIG_FILE_DataNode:
+            case JMX_CONFIG_FILE_HistoryServer:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                        SERVICE_NAME_YARN,
                         "DataNode"
-                );
-                break;
-            case JMX_CONFIG_FILE_HttpFS:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
-                        "HttpFS"
                 );
                 break;
             default:
