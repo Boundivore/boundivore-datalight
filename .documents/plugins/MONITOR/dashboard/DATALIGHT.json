@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "name": "DS_MONITOR-PROMETHEUS",
+      "label": "MONITOR-Prometheus",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -96,7 +96,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -162,7 +162,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(process_uptime_seconds{job=\"$JobName\", instance=~\"$instance\"})",
@@ -183,7 +183,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -251,7 +251,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(jvm_memory_used_bytes{job=\"$JobName\", instance=~\"$instance\", area=\"heap\"})*100/sum(jvm_memory_max_bytes{job=\"$JobName\", instance=~\"$instance\", area=\"heap\"})",
@@ -270,7 +270,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -348,7 +348,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "sum(jvm_memory_used_bytes{job=\"$JobName\", instance=~\"$instance\", area=\"nonheap\"})*100/sum(jvm_memory_max_bytes{job=\"$JobName\", instance=~\"$instance\", area=\"nonheap\"})",
@@ -370,7 +370,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -417,7 +417,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "process_files_open_files{job=\"$JobName\", instance=~\"$instance\"}",
@@ -431,7 +431,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "process_files_max{application=\"$application\", instance=~\"$instance\"}",
           "format": "time_series",
@@ -473,7 +473,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -536,7 +536,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "avg(process_start_time_seconds{job=\"$JobName\", instance=~\"$instance\"})*1000",
@@ -560,7 +560,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -608,7 +608,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "system_cpu_usage{job=\"$JobName\", instance=~\"$instance\"}",
@@ -621,7 +621,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "process_cpu_usage{instance=~\"$instance\", application=\"$application\"}",
           "format": "time_series",
@@ -667,7 +667,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -715,7 +715,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "system_load_average_1m{job=\"$JobName\", instance=~\"$instance\"}",
@@ -728,7 +728,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "system_cpu_count{instance=~\"$instance\", application=\"$application\"}",
           "format": "time_series",
@@ -800,7 +800,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -850,7 +850,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "jvm_memory_used_bytes{job=\"$JobName\", instance=~\"$instance\", id=\"$memory_pool_heap\"}",
@@ -863,7 +863,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_memory_committed_bytes{instance=~\"$instance\", application=\"$application\", id=\"$memory_pool_heap\"}",
           "format": "time_series",
@@ -874,7 +874,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_memory_max_bytes{instance=~\"$instance\", application=\"$application\", id=\"$memory_pool_heap\"}",
           "format": "time_series",
@@ -920,7 +920,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -970,7 +970,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "jvm_memory_used_bytes{job=\"$JobName\", instance=~\"$instance\", id=\"$memory_pool_nonheap\"}",
@@ -984,7 +984,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_memory_committed_bytes{instance=~\"$instance\", application=\"$application\", id=\"$memory_pool_nonheap\"}",
           "format": "time_series",
@@ -995,7 +995,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_memory_max_bytes{instance=~\"$instance\", application=\"$application\", id=\"$memory_pool_nonheap\"}",
           "format": "time_series",
@@ -1041,7 +1041,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "decimals": 0,
       "fieldConfig": {
@@ -1090,7 +1090,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "jvm_classes_loaded_classes{job=\"$JobName\",instance=~\"$instance\"}",
@@ -1141,7 +1141,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1188,7 +1188,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(jvm_classes_unloaded_classes_total{job=\"$JobName\", instance=~\"$instance\"}[5m])",
@@ -1237,7 +1237,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1284,7 +1284,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "jvm_buffer_memory_used_bytes{job=\"$JobName\",instance=~\"$instance\", id=\"direct\"}",
@@ -1297,7 +1297,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_buffer_total_capacity_bytes{instance=~\"$instance\", application=\"$application\", id=\"direct\"}",
           "format": "time_series",
@@ -1343,7 +1343,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1390,7 +1390,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "jvm_buffer_memory_used_bytes{job=\"$JobName\",instance=~\"$instance\", id=\"mapped\"}",
@@ -1403,7 +1403,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_buffer_total_capacity_bytes{instance=~\"$instance\", application=\"$application\", id=\"mapped\"}",
           "format": "time_series",
@@ -1449,7 +1449,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1497,7 +1497,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "jvm_threads_daemon_threads{job=\"$JobName\",instance=~\"$instance\"}",
@@ -1511,7 +1511,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_threads_live{instance=~\"$instance\", application=\"$application\"}",
           "format": "time_series",
@@ -1522,7 +1522,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "jvm_threads_peak{instance=~\"$instance\", application=\"$application\"}",
           "format": "time_series",
@@ -1568,7 +1568,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1615,7 +1615,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(jvm_gc_memory_allocated_bytes_total{job=\"$JobName\", instance=~\"$instance\"}[5m])",
@@ -1628,7 +1628,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "expr": "irate(jvm_gc_memory_promoted_bytes_total{instance=~\"$instance\", application=\"$application\"}[5m])",
           "format": "time_series",
@@ -1700,7 +1700,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1750,7 +1750,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(jvm_gc_pause_seconds_count{job=\"$JobName\", instance=~\"$instance\"}[5m])",
@@ -1798,7 +1798,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1848,7 +1848,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(jvm_gc_pause_seconds_sum{job=\"$JobName\", instance=~\"$instance\"}[5m])",
@@ -1922,7 +1922,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1971,7 +1971,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(http_server_requests_seconds_count{job=\"$JobName\", instance=~\"$instance\"}[5m])",
@@ -2019,7 +2019,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2068,7 +2068,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(http_server_requests_seconds_sum{job=\"$JobName\", instance=~\"$instance\", exception=\"None\"}[5m]) / irate(http_server_requests_seconds_count{job=\"$JobName\", instance=~\"$instance\", exception=\"None\"}[5m])",
@@ -2143,7 +2143,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2192,7 +2192,7 @@
           "alias": "",
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(logback_events_total{job=\"$JobName\", instance=~\"$instance\", level=\"info\"}[5m])",
@@ -2241,7 +2241,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2290,7 +2290,7 @@
           "alias": "",
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(logback_events_total{job=\"$JobName\", instance=~\"$instance\", level=\"error\"}[5m])",
@@ -2339,7 +2339,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2388,7 +2388,7 @@
           "alias": "",
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(logback_events_total{job=\"$JobName\", instance=~\"$instance\", level=\"warn\"}[5m])",
@@ -2437,7 +2437,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2486,7 +2486,7 @@
           "alias": "",
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(logback_events_total{job=\"$JobName\", instance=~\"$instance\", level=\"debug\"}[5m])",
@@ -2535,7 +2535,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
+        "uid": "${DS_MONITOR-PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2584,7 +2584,7 @@
           "alias": "",
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
           "expr": "irate(logback_events_total{job=\"$JobName\", instance=~\"$instance\", level=\"trace\"}[5m])",
@@ -2643,7 +2643,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2667,8 +2667,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2702,7 +2701,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(druid_initial_size{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"})",
@@ -2719,7 +2718,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2734,8 +2733,7 @@
                 "steps": [
                   {
                     "color": "#7EB26D",
-                    "index": 0,
-                    "value": null
+                    "index": 0
                   }
                 ]
               },
@@ -2768,7 +2766,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(druid_min_idle{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"})",
@@ -2784,7 +2782,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2808,8 +2806,7 @@
                 "mode": "percentage",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -2843,7 +2840,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(druid_max_active{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"})",
@@ -2860,7 +2857,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2884,8 +2881,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "#299c46",
-                    "value": null
+                    "color": "#299c46"
                   },
                   {
                     "color": "rgba(237, 129, 40, 0.89)",
@@ -2927,7 +2923,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(druid_pooling_peak{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"})",
@@ -2943,7 +2939,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2967,8 +2963,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "#299c46",
-                    "value": null
+                    "color": "#299c46"
                   },
                   {
                     "color": "rgba(237, 129, 40, 0.89)",
@@ -3010,7 +3005,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(druid_active_peak{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"})",
@@ -3026,7 +3021,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3050,8 +3045,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3089,7 +3083,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "sum(druid_wait_thread_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"})",
@@ -3109,7 +3103,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3153,7 +3147,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "druid_pooling_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}",
@@ -3201,7 +3195,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3245,7 +3239,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "druid_active_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}",
@@ -3293,7 +3287,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3336,7 +3330,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_logic_connect_count{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3384,7 +3378,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3427,7 +3421,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_logic_close_count{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3475,7 +3469,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3518,7 +3512,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_logic_connect_error_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3575,7 +3569,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3618,7 +3612,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_physical_connect_error_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3675,7 +3669,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3718,7 +3712,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_physical_connect_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3766,7 +3760,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3809,7 +3803,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_physical_close_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3857,7 +3851,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3900,7 +3894,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "increase(druid_not_empty_wait_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[1m])",
@@ -3948,7 +3942,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -3993,7 +3987,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "rate(druid_not_empty_wait_millis{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"}[2m]) / rate(druid_not_empty_wait_count{job=\"$JobName\", instance=~\"$instance\", pool=~\"$pool\"}[2m])",
@@ -4042,7 +4036,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -4086,7 +4080,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "irate(druid_execute_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[2m])",
@@ -4134,7 +4128,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -4178,7 +4172,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "rate(druid_error_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[2m])",
@@ -4235,7 +4229,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -4279,7 +4273,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "irate(druid_start_transaction_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[2m])",
@@ -4327,7 +4321,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -4371,7 +4365,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "irate(druid_commit_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[2m])",
@@ -4419,7 +4413,7 @@
           "dashes": false,
           "datasource": {
             "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
+            "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "fill": 1,
           "fillGradient": 0,
@@ -4463,7 +4457,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "MONITOR-Prometheus"
+                "uid": "${DS_MONITOR-PROMETHEUS}"
               },
               "editorMode": "code",
               "expr": "irate(druid_rollback_count{job=\"$JobName\",  instance=~\"$instance\", pool=~\"$pool\"}[2m])",
@@ -4530,14 +4524,16 @@
   "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "HDFS"
+  ],
   "templating": {
     "list": [
       {
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "MONITOR-Prometheus"
+          "uid": "${DS_MONITOR-PROMETHEUS}"
         },
         "definition": "label_values(up{job=~\"DATALIGHT.*\"},job)",
         "hide": 0,
@@ -4565,7 +4561,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "MONITOR-Prometheus"
+          "uid": "${DS_MONITOR-PROMETHEUS}"
         },
         "definition": "label_values(up{job=\"$JobName\"},instance)",
         "hide": 0,
@@ -4592,7 +4588,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "MONITOR-Prometheus"
+          "uid": "${DS_MONITOR-PROMETHEUS}"
         },
         "definition": "label_values(jvm_memory_used_bytes{area=\"heap\"},id)",
         "hide": 0,
@@ -4618,7 +4614,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "MONITOR-Prometheus"
+          "uid": "${DS_MONITOR-PROMETHEUS}"
         },
         "definition": "label_values(jvm_memory_used_bytes{area=\"nonheap\"},id)",
         "hide": 0,
@@ -4644,7 +4640,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "MONITOR-Prometheus"
+          "uid": "${DS_MONITOR-PROMETHEUS}"
         },
         "definition": "label_values(druid_initial_size,pool)",
         "hide": 0,
@@ -4695,7 +4691,7 @@
   },
   "timezone": "",
   "title": "DATALIGHT",
-  "uid": "ce405b6d-00c2-437b-91e9-b773e0760138",
-  "version": 1,
+  "uid": "DATALIGHT",
+  "version": 3,
   "weekStart": ""
 }

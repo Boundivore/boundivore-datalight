@@ -1087,7 +1087,9 @@
   "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "YARN"
+  ],
   "templating": {
     "list": [
       {
@@ -1158,7 +1160,7 @@
   },
   "timezone": "",
   "title": "YARN-ResourceManager",
-  "uid": "AkSGjt3Zk",
-  "version": 3,
+  "uid": "YARN-ResourceManager",
+  "version": 1,
   "weekStart": ""
 }

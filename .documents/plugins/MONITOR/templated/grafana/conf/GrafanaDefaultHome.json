@@ -42,9 +42,9 @@
         "maxItems": 30,
         "query": "",
         "showHeadings": true,
-        "showRecentlyViewed": true,
+        "showRecentlyViewed": false,
         "showSearch": true,
-        "showStarred": true,
+        "showStarred": false,
         "tags": []
       },
       "pluginVersion": "10.0.3",
@@ -101,7 +101,7 @@
     "type": "timepicker"
   },
   "timezone": "browser",
-  "title": "Home",
+  "title": "HOME",
   "uid": "",
   "version": 6,
   "weekStart": ""

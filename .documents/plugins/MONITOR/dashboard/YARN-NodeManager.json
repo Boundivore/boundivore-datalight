@@ -1105,7 +1105,9 @@
   "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "YARN"
+  ],
   "templating": {
     "list": [
       {
@@ -1176,7 +1178,7 @@
   },
   "timezone": "",
   "title": "YARN-NodeManager",
-  "uid": "IN_s5hqZz",
-  "version": 4,
+  "uid": "YARN-NodeManager",
+  "version": 1,
   "weekStart": ""
 }
