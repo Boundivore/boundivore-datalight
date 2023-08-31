@@ -3898,7 +3898,7 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "cps"
         },
         "overrides": []
       },
@@ -3929,7 +3929,7 @@
             "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "Hadoop_NameNode_GcCount",
+          "expr": "rate(Hadoop_NameNode_GcCount[1m])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{instance}}",
@@ -3937,7 +3937,7 @@
           "refId": "A"
         }
       ],
-      "title": "jvm_nn_gc_count",
+      "title": "jvm_nn_gc_count_rate",
       "type": "timeseries"
     },
     {
@@ -4023,14 +4023,14 @@
             "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "Hadoop_NameNode_GcTimeMillis",
+          "expr": "rate(Hadoop_NameNode_GcTimeMillis{instance=\"$instance\"}[1m])",
           "interval": "",
           "legendFormat": "{{instance}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "jvm_nn_gc_time_mills",
+      "title": "jvm_nn_gc_time_millis_rate",
       "type": "timeseries"
     },
     {
@@ -4545,8 +4545,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -4592,7 +4591,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -4667,6 +4666,6 @@
   "timezone": "",
   "title": "HDFS-NameNode",
   "uid": "5NYt34qZz",
-  "version": 1,
+  "version": 94,
   "weekStart": ""
 }
