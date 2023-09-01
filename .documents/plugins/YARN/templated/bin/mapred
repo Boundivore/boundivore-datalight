@@ -31,7 +31,7 @@ function hadoop_opts_jmx
       ;;
   esac
 
-  echo "HADOOP_OPTS: ${HADOOP_OPTS}"
+  # echo "HADOOP_OPTS: ${HADOOP_OPTS}"
 }
 
 ## @description  build up the mapred command's usage text.
