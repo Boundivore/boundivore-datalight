@@ -76,7 +76,7 @@ datalight:
               - type: SCRIPT
                 name: '部署后启动 ResourceManager1'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'start' ]
+                args: [ 'ResourceManager', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -98,7 +98,7 @@ datalight:
               - type: SCRIPT
                 name: '停止 ResourceManager1'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'stop' ]
+                args: [ 'ResourceManager', 'stop' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -109,7 +109,7 @@ datalight:
               - type: SCRIPT
                 name: '重启 ResourceManager1'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'restart' ]
+                args: [ 'ResourceManager', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -129,7 +129,7 @@ datalight:
               - type: SCRIPT
                 name: '部署后启动 ResourceManage2'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'start' ]
+                args: [ 'ResourceManager', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -140,7 +140,7 @@ datalight:
               - type: SCRIPT
                 name: '启动 ResourceManage2'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'start' ]
+                args: [ 'ResourceManager', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -151,7 +151,7 @@ datalight:
               - type: SCRIPT
                 name: '停止 ResourceManage2'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'stop' ]
+                args: [ 'ResourceManager', 'stop' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -162,7 +162,7 @@ datalight:
               - type: SCRIPT
                 name: '重启 ResourceManage2'
                 shell: 'yarn-operation.sh'
-                args: [ 'ResourceManage', 'restart' ]
+                args: [ 'ResourceManager', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
