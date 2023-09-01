@@ -19,6 +19,20 @@
 HADOOP_SHELL_EXECNAME="mapred"
 MYNAME="${BASH_SOURCE-$0}"
 
+function hadoop_opts_jmx
+{
+  COMPONENT_NAME=$1
+
+  case ${COMPONENT_NAME} in
+    "historyserver")
+      export HADOOP_OPTS="${MAPRED_HISTORYSERVER_OPTS}"
+      ;;
+    *)
+      ;;
+  esac
+
+  echo "HADOOP_OPTS: ${HADOOP_OPTS}"
+}
 
 ## @description  build up the mapred command's usage text.
 ## @audience     public
@@ -144,6 +158,8 @@ fi
 
 HADOOP_SUBCMD=$1
 shift
+
+hadoop_opts_jmx "${HADOOP_SUBCMD}"
 
 if hadoop_need_reexec mapred "${HADOOP_SUBCMD}"; then
   hadoop_uservar_su mapred "${HADOOP_SUBCMD}" \

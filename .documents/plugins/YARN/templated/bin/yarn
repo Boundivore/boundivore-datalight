@@ -34,7 +34,7 @@ function hadoop_opts_jmx
       export HADOOP_OPTS="${YARN_TIMELINESERVER_OPTS}"
       ;;
     "historyserver")
-      export HADOOP_OPTS="${YARN_HISTORYSERVER_OPTS}"
+      export HADOOP_OPTS="${MAPRED_HISTORYSERVER_OPTS}"
       ;;
     *)
       ;;

@@ -105,15 +105,15 @@ case "${COMPONENT_NAME}" in
 "HistoryServer")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon start historyserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/mapred --daemon start historyserver" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon stop historyserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/mapred --daemon stop historyserver" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon stop historyserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/mapred --daemon stop historyserver" "${USER_NAME}"
     sleep 2
-    su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon start historyserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/mapred --daemon start historyserver" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
