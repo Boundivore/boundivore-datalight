@@ -16,8 +16,32 @@
 # limitations under the License.
 
 # The name of the script being executed.
-HADOOP_SHELL_EXECNAME="yarn"
+HADOOP_SHELL_EXECNAME="datalight"
 MYNAME="${BASH_SOURCE-$0}"
+
+function hadoop_opts_jmx
+{
+  COMPONENT_NAME=$1
+
+  case ${COMPONENT_NAME} in
+    "resourcemanager")
+      export HADOOP_OPTS="${YARN_RESOURCEMANAGER_OPTS}"
+      ;;
+    "nodemanager")
+      export HADOOP_OPTS="${YARN_NODEMANAGER_OPTS}"
+      ;;
+    "timelineserver")
+      export HADOOP_OPTS="${YARN_TIMELINESERVER_OPTS}"
+      ;;
+    "historyserver")
+      export HADOOP_OPTS="${YARN_HISTORYSERVER_OPTS}"
+      ;;
+    *)
+      ;;
+  esac
+
+  echo "HADOOP_OPTS: ${HADOOP_OPTS}"
+}
 
 ## @description  build up the yarn command's usage text.
 ## @audience     public
@@ -270,6 +294,8 @@ fi
 # get arguments
 HADOOP_SUBCMD=$1
 shift
+
+hadoop_opts_jmx "${HADOOP_SUBCMD}"
 
 if hadoop_need_reexec yarn "${HADOOP_SUBCMD}"; then
   hadoop_uservar_su yarn "${HADOOP_SUBCMD}" \

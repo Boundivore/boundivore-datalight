@@ -19,7 +19,6 @@ package cn.boundivore.dl.service.master.controller;
 import cn.boundivore.dl.api.master.define.IMasterServiceAPI;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
-import cn.boundivore.dl.base.response.impl.master.ConfigPreVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterServiceService;
 import lombok.RequiredArgsConstructor;
@@ -43,12 +42,12 @@ public class MasterServiceController implements IMasterServiceAPI {
 
 
     @Override
-    public Result<AbstractServiceComponentVo.ServiceVo> serviceList(Long clusterId) throws Exception {
-        return this.masterServiceService.serviceList(clusterId);
+    public Result<AbstractServiceComponentVo.ServiceVo> getServiceList(Long clusterId) throws Exception {
+        return this.masterServiceService.getServiceList(clusterId);
     }
 
     @Override
-    public Result<String> serviceSelect(AbstractServiceComponentRequest.ServiceSelectRequest request) throws Exception {
-        return this.masterServiceService.serviceSelect(request);
+    public Result<String> saveServiceSelected(AbstractServiceComponentRequest.ServiceSelectRequest request) throws Exception {
+        return this.masterServiceService.saveServiceSelected(request);
     }
 }

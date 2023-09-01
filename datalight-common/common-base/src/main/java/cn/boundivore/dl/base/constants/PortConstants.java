@@ -49,6 +49,8 @@ public class PortConstants {
 
             put("YARN-ResourceManager", "7007");
             put("YARN-NodeManager", "7008");
+            put("YARN-TimelineServer", "7009");
+            put("YARN-HistoryServer", "7010");
         }
     };
 
@@ -65,6 +67,8 @@ public class PortConstants {
 
             put("YARN-ResourceManager", "6007");
             put("YARN-NodeManager", "6008");
+            put("YARN-TimelineServer", "6009");
+            put("YARN-HistoryServer", "6010");
         }
     };
 

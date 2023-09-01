@@ -19,6 +19,8 @@ package cn.boundivore.dl.plugin.base.config;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 
+import java.io.File;
+
 /**
  * Description: 修改服务组件自身的配置文件或相关的服务组件的配置文件
  * Created by: Boundivore
@@ -58,4 +60,20 @@ public interface IConfig {
      * @return ConfigResult 自身配置文件修改结果
      */
     PluginConfigResult configSelf();
+
+    /**
+     * Description: 根据配置文件执行不同的配置修改逻辑
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/6/14
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param file             当前某个配置文件
+     * @param replacedTemplate 当前配置文件内容
+     * @return String 修改后的最终配置文件内容
+     */
+    String configLogic(File file, String replacedTemplate);
 }

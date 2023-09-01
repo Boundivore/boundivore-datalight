@@ -110,7 +110,7 @@ public class ConfigZookeeper extends AbstractConfig {
      * @param file 当前某个配置文件
      * @return String 修改后的最终配置文件内容
      */
-    private String configLogic(File file, String replacedTemplate) {
+    public String configLogic(File file, String replacedTemplate) {
         switch (file.getName()) {
             case "zoo.cfg":
                 return new ConfigLogicZooCfg(super.pluginConfig).config(file, replacedTemplate);

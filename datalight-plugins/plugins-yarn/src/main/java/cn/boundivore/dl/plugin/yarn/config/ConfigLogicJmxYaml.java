@@ -59,25 +59,25 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
             case JMX_CONFIG_FILE_ResourceManager:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
                         SERVICE_NAME_YARN,
-                        "JournalNode"
+                        "ResourceManager"
                 );
                 break;
             case JMX_CONFIG_FILE_NodeManager:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
                         SERVICE_NAME_YARN,
-                        "NameNode"
+                        "NodeManager"
                 );
                 break;
             case JMX_CONFIG_FILE_TimelineServer:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
                         SERVICE_NAME_YARN,
-                        "ZKFailoverController"
+                        "TimelineServer"
                 );
                 break;
             case JMX_CONFIG_FILE_HistoryServer:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
                         SERVICE_NAME_YARN,
-                        "DataNode"
+                        "HistoryServer"
                 );
                 break;
             default:

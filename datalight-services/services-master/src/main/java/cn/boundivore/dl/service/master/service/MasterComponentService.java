@@ -241,7 +241,7 @@ public class MasterComponentService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> componentSelect(AbstractServiceComponentRequest.ComponentSelectRequest request) {
+    public Result<String> saveComponentSelected(AbstractServiceComponentRequest.ComponentSelectRequest request) {
 
         // 组件公共检查项
         this.checkComponentCommon(request);

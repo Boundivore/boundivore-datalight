@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterServiceAPI {
     @GetMapping(value = "/service/list")
     @ApiOperation(notes = "获取所有服务信息列表并附带其当前状态", value = "获取所有服务信息列表并附带其当前状态")
-    Result<AbstractServiceComponentVo.ServiceVo> serviceList(
+    Result<AbstractServiceComponentVo.ServiceVo> getServiceList(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
@@ -60,7 +60,7 @@ public interface IMasterServiceAPI {
 
     @PostMapping(value = "/service/select")
     @ApiOperation(notes = "选择准备部署的服务", value = "选择准备部署的服务")
-    Result<String> serviceSelect(
+    Result<String> saveServiceSelected(
             @RequestBody
             @Valid
             AbstractServiceComponentRequest.ServiceSelectRequest request

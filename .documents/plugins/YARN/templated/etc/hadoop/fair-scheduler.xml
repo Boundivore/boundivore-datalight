@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<allocations>
+    <queue name="root">
+        <schedulingPolicy>drf</schedulingPolicy>
+        <queue name="default">
+            <schedulingPolicy>drf</schedulingPolicy>
+        </queue>
+        <queue name="users" type="parent">
+            <schedulingPolicy>drf</schedulingPolicy>
+        </queue>
+    </queue>
+    <queuePlacementPolicy>
+        <rule name="specified" create="true"/>
+        <rule name="nestedUserQueue">
+            <rule name="default" queue="users"/>
+        </rule>
+        <rule name="default" create="true"/>
+    </queuePlacementPolicy>
+</allocations>

@@ -175,17 +175,38 @@
 # export YARN_SERVICE_EXAMPLES_DIR = $HADOOP_YARN_HOME/share/hadoop/yarn/yarn-service-examples
 # export YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE=true
 
-#export YARN_RESOURCEMANAGER_OPTS="${YARN_RESOURCEMANAGER_OPTS} \
-# -Dcom.sun.management.jmxremote.authenticate=false \
-# -Dcom.sun.management.jmxremote.ssl=false \
-# -Dcom.sun.management.jmxremote.local.only=false \
-# -Dcom.sun.management.jmxremote.port={{jmxRemotePort_ResourceManager}} \
-# -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ResourceManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ResourceManager.yaml"
+export YARN_RESOURCEMANAGER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_ResourceManager}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ResourceManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_ResourceManager.yaml
+"
 
-#export YARN_NODEMANAGER_OPTS="${YARN_NODEMANAGER_OPTS} \
-# -Dcom.sun.management.jmxremote.authenticate=false \
-# -Dcom.sun.management.jmxremote.ssl=false \
-# -Dcom.sun.management.jmxremote.local.only=false \
-# -Dcom.sun.management.jmxremote.port={{jmxRemotePort_NodeManager}} \
-# -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NodeManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_NodeManager.yaml"
+export YARN_NODEMANAGER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_NodeManager}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NodeManager}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_NodeManager.yaml
+"
 
+export YARN_TIMELINESERVER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_TimelineServer}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_TimelineServer}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_TimelineServer.yaml
+"
+
+export YARN_HISTORYSERVER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HistoryServer}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HistoryServer}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HistoryServer.yaml
+"

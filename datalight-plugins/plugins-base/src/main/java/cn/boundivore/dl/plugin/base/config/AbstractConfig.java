@@ -22,12 +22,10 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.SecureUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +38,7 @@ import java.util.stream.Collectors;
  * Modification time:
  * Version: V1.0
  */
+@Slf4j
 public abstract class AbstractConfig implements IConfig {
 
     protected PluginConfig pluginConfig;
@@ -54,6 +53,67 @@ public abstract class AbstractConfig implements IConfig {
 
         this.currentMetaService = pluginConfig.getCurrentMetaService();
         this.currentMetaComponent = pluginConfig.getCurrentMetaComponent();
+    }
+
+    @Override
+    public PluginConfigResult configSelf() {
+        log.info("{} 初始化自身配置", this.currentMetaService.getServiceName());
+
+        PluginConfigResult pluginConfigResult = new PluginConfigResult(
+                this.currentMetaService.getPluginClusterMeta().getClusterId(),
+                this.currentMetaService.getServiceName(),
+                new LinkedHashMap<>()
+        );
+
+        this.currentMetaService.getConfDirList().forEach(i -> {
+
+            //服务配置文件路径
+            final String serviceConfDirStr = this.trimDir(
+                    i.getServiceConfDir()
+            );
+
+            //模板配置文件路径
+            final String templatedDirStr = this.trimDir(
+                    i.getTemplatedDir()
+            );
+
+            this.templatedFileList(templatedDirStr)
+                    .forEach(templatedFile -> {
+
+                        //结合模板，补充用户提前配置信息，并返回修改后的模板
+                        String replacedTemplate = this.preConfig(templatedFile);
+
+                        //得到最终配置文件数据(未 Base64)
+                        String configData = this.configLogic(
+                                templatedFile,
+                                replacedTemplate
+                        );
+
+                        //组装 ConfigKey
+                        PluginConfigResult.ConfigKey configKey = this.assembleConfigKey(
+                                serviceConfDirStr,
+                                templatedFile,
+                                this.currentMetaComponent
+                        );
+
+                        //组装 ConfigValue
+                        PluginConfigResult.ConfigValue configValue = this.assembleConfigValue(
+                                templatedFile,
+                                configData
+                        );
+
+                        //存放到 Map 集合
+                        this.putConfig(
+                                pluginConfigResult,
+                                configKey,
+                                configValue
+                        );
+
+                    });
+
+        });
+
+        return pluginConfigResult;
     }
 
 

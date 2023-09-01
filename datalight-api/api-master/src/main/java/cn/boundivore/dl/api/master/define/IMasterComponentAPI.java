@@ -61,7 +61,7 @@ public interface IMasterComponentAPI {
 
     @PostMapping(value = "/component/select")
     @ApiOperation(notes = "选择准备部署的组件", value = "选择准备部署的组件")
-    Result<String> componentSelect(
+    Result<String> saveComponentSelected(
             @RequestBody
             @Valid
             AbstractServiceComponentRequest.ComponentSelectRequest request

@@ -77,7 +77,7 @@ public class MasterServiceService {
      * @param clusterId 集群 ID
      * @return Result<AbstractServiceComponentVo.ServiceVo> 当前集群中的所有服务信息
      */
-    public Result<AbstractServiceComponentVo.ServiceVo> serviceList(Long clusterId) {
+    public Result<AbstractServiceComponentVo.ServiceVo> getServiceList(Long clusterId) {
 
         return Result.success(new AbstractServiceComponentVo.ServiceVo(
                         clusterId,
@@ -147,7 +147,7 @@ public class MasterServiceService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> serviceSelect(AbstractServiceComponentRequest.ServiceSelectRequest request) {
+    public Result<String> saveServiceSelected(AbstractServiceComponentRequest.ServiceSelectRequest request) {
 
         // 服务公共检查
         this.checkServiceCommon(request);

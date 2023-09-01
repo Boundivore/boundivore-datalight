@@ -46,7 +46,7 @@ public class MasterComponentController implements IMasterComponentAPI {
     }
 
     @Override
-    public Result<String> componentSelect(AbstractServiceComponentRequest.ComponentSelectRequest request) throws Exception {
-        return masterComponentService.componentSelect(request);
+    public Result<String> saveComponentSelected(AbstractServiceComponentRequest.ComponentSelectRequest request) throws Exception {
+        return masterComponentService.saveComponentSelected(request);
     }
 }

@@ -58,9 +58,11 @@
 #
 # export HTTPFS_SSL_KEYSTORE_PASS=password
 
-#export HDFS_HTTPFS_OPTS="$HDFS_HTTPFS_OPTS \
-# -Dcom.sun.management.jmxremote.authenticate=false \
-# -Dcom.sun.management.jmxremote.ssl=false \
-# -Dcom.sun.management.jmxremote.local.only=false \
-# -Dcom.sun.management.jmxremote.port={{jmxRemotePort_HttpFS}} \
-# -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HttpFS}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HttpFS.yaml"
+#export HDFS_HTTPFS_OPTS="
+#-Djava.net.preferIPv4Stack=true \
+#-Dcom.sun.management.jmxremote.authenticate=false \
+#-Dcom.sun.management.jmxremote.ssl=false \
+#-Dcom.sun.management.jmxremote.local.only=false \
+#-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HttpFS}} \
+#-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HttpFS}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HttpFS.yaml
+#"

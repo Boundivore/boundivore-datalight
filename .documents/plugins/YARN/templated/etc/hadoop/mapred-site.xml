@@ -17,5 +17,94 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
+    <property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+    </property>
+
+    <property>
+        <name>yarn.app.mapreduce.am.staging-dir</name>
+        <value>{{yarn.app.mapreduce.am.staging-dir}}</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>{{history.hostname}}:10020</value>
+    </property>
+
+    <property>
+        <name>mapreduce.job.reduce.slowstart.completedmaps</name>
+        <value>0.95</value>
+    </property>
+
+    <property>
+        <name>mapreduce.map.memory.mb</name>
+        <value>2048</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.memory.mb</name>
+        <value>2048</value>
+    </property>
+
+    <property>
+        <name>mapreduce.task.io.sort.factor</name>
+        <value>100</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.shuffle.parallelcopies</name>
+        <value>50</value>
+    </property>
+
+    <property>
+        <name>mapred.child.java.opts</name>
+        <value>-Xmx1024m</value>
+    </property>
+
+    <property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>{{history.hostname}}:19888</value>
+    </property>
+
+    <property>
+        <name>yarn.app.mapreduce.am.env</name>
+        <value>HADOOP_MAPRED_HOME=/srv/udp/{{udp_version}}/yarn</value>
+    </property>
+
+    <property>
+        <name>mapreduce.map.env</name>
+        <value>HADOOP_MAPRED_HOME=/srv/udp/{{udp_version}}/yarn</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.env</name>
+        <value>HADOOP_MAPRED_HOME=/srv/udp/{{udp_version}}/yarn</value>
+    </property>
+
+    <property>
+        <name>mapreduce.reduce.log.level</name>
+        <value>DEBUG</value>
+    </property>
+
+    <property>
+        <name>mapreduce.map.log.level</name>
+        <value>DEBUG</value>
+    </property>
+
+    <property>
+        <name>yarn.app.mapreduce.am.log.level</name>
+        <value>DEBUG</value>
+    </property>
+
+    <property>
+        <name>mapreduce.job.counters.max</name>
+        <value>2000</value>
+    </property>
+
+    <property>
+        <name>mapreduce.job.counters.groups.max</name>
+        <value>500</value>
+    </property>
 
 </configuration>
