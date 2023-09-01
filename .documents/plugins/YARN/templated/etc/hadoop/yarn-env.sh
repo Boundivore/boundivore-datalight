@@ -201,12 +201,3 @@ export YARN_TIMELINESERVER_OPTS="
 -Dcom.sun.management.jmxremote.port={{jmxRemotePort_TimelineServer}} \
 -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_TimelineServer}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_TimelineServer.yaml
 "
-
-export MAPRED_HISTORYSERVER_OPTS="
--Djava.net.preferIPv4Stack=true \
--Dcom.sun.management.jmxremote.authenticate=false \
--Dcom.sun.management.jmxremote.ssl=false \
--Dcom.sun.management.jmxremote.local.only=false \
--Dcom.sun.management.jmxremote.port={{jmxRemotePort_HistoryServer}} \
--javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HistoryServer}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HistoryServer.yaml
-"
