@@ -21,6 +21,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.Map;
 
 /**
@@ -114,7 +115,8 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
      * @return {{dfs.nameservices}} 真实值
      */
     private String dfsNameservices() {
-        return super.currentMetaService.getPluginClusterMeta().getClusterName();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
+        return hdfsMetaService.getPluginClusterMeta().getClusterName();
     }
 
     /**
@@ -130,11 +132,11 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
      * @return {{nn1.hostname}} 真实值
      */
     private String nn1Hostname() {
-        Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
-                .getCurrentMetaService()
-                .getMetaComponentMap();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
 
-        String nameNode1AndNodeId = currentMetaComponentMap.keySet()
+        Map<String, PluginConfig.MetaComponent> hdfsMetaComponentMap = hdfsMetaService.getMetaComponentMap();
+
+        String nameNode1AndNodeId = hdfsMetaComponentMap.keySet()
                 .stream()
                 .filter(i -> i.contains("NameNode1"))
                 .findFirst()
@@ -145,7 +147,7 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
                 () -> new RuntimeException("设置配置文件时，无法找到 NameNode1 的部署位置")
         );
 
-        return currentMetaComponentMap
+        return hdfsMetaComponentMap
                 .get(nameNode1AndNodeId)
                 .getHostname();
     }
@@ -163,23 +165,23 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
      * @return {{nn2.hostname}} 真实值
      */
     private String nn2Hostname() {
-        Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
-                .getCurrentMetaService()
-                .getMetaComponentMap();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
 
-        String nameNode2AndNodeId = currentMetaComponentMap.keySet()
+        Map<String, PluginConfig.MetaComponent> hdfsMetaComponentMap = hdfsMetaService.getMetaComponentMap();
+
+        String nameNode1AndNodeId = hdfsMetaComponentMap.keySet()
                 .stream()
                 .filter(i -> i.contains("NameNode2"))
                 .findFirst()
                 .orElse(null);
 
         Assert.notNull(
-                nameNode2AndNodeId,
+                nameNode1AndNodeId,
                 () -> new RuntimeException("设置配置文件时，无法找到 NameNode2 的部署位置")
         );
 
-        return currentMetaComponentMap
-                .get(nameNode2AndNodeId)
+        return hdfsMetaComponentMap
+                .get(nameNode1AndNodeId)
                 .getHostname();
     }
 
@@ -196,19 +198,17 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
      * @return {{journal.node.url}} 真实值
      */
     private String journalNodeUrl() {
-        Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
-                .getCurrentMetaService()
-                .getMetaComponentMap();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
 
         StringBuilder sb = new StringBuilder();
-        currentMetaComponentMap
-                .forEach((k, v) -> {
-                            if (k.contains("JournalNode")) {
-                                sb.append(v.getHostname())
-                                        .append(":8485;");
-                            }
-                        }
-                );
+
+        hdfsMetaService.getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("JournalNode"))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .forEach(c ->  sb.append(c.getHostname()).append(":8485,"));
+
         sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();

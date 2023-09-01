@@ -21,6 +21,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
 
 import java.io.File;
+import java.util.Comparator;
 
 /**
  * Description: 配置 core-site.xml 文件
@@ -55,6 +56,9 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
         // 获取 {{ha.zookeeper.quorum}}
         String haZookeeperQuorum = this.haZookeeperQuorum();
 
+        // 获取 {{hadoop.zookeeper.quorum}}
+        String hadoopZookeeperQuorum = haZookeeperQuorum;
+
         // 获取 {{ipc.client.connect.max.retries}}
         String ipcClientConnectMaxRetries = this.ipcClientConnectMaxRetries();
 
@@ -73,6 +77,10 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                 .replace(
                         "{{ha.zookeeper.quorum}}",
                         haZookeeperQuorum
+                )
+                .replace(
+                        "{{hadoop.zookeeper.quorum}}",
+                        hadoopZookeeperQuorum
                 )
                 .replace(
                         "{{ipc.client.connect.max.retries}}",
@@ -144,14 +152,14 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                 .get("ZOOKEEPER");
 
         StringBuilder sb = new StringBuilder();
+
         zookeeperMetaService.getMetaComponentMap()
-                .forEach((k, v) -> {
-                            if (k.contains("QuarumPeermain")) {
-                                sb.append(v.getHostname())
-                                        .append(":2181,");
-                            }
-                        }
-                );
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("QuarumPeermain"))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .forEach(c -> sb.append(c.getHostname()).append(":2181,"));
+
         sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();

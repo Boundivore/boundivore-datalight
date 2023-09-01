@@ -16,11 +16,13 @@
  */
 package cn.boundivore.dl.plugin.yarn.config;
 
+import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
 
 import java.io.File;
+import java.util.Comparator;
 
 /**
  * Description: 配置 core-site.xml 文件
@@ -55,6 +57,9 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
         // 获取 {{ha.zookeeper.quorum}}
         String haZookeeperQuorum = this.haZookeeperQuorum();
 
+        // 获取 {{hadoop.zookeeper.quorum}}
+        String hadoopZookeeperQuorum = haZookeeperQuorum;
+
         // 获取 {{ipc.client.connect.max.retries}}
         String ipcClientConnectMaxRetries = this.ipcClientConnectMaxRetries();
 
@@ -75,6 +80,10 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                         haZookeeperQuorum
                 )
                 .replace(
+                        "{{hadoop.zookeeper.quorum}}",
+                        hadoopZookeeperQuorum
+                )
+                .replace(
                         "{{ipc.client.connect.max.retries}}",
                         ipcClientConnectMaxRetries
                 )
@@ -86,7 +95,7 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
     }
 
     /**
-     * Description: 获取 {{fs.defaultFS}}
+     * Description: 当前 YARN 服务配置中，需获取 HDFS 服务的 {{fs.defaultFS}}
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/28
@@ -98,11 +107,12 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
      * @return {{fs.defaultFS}} 真实值
      */
     private String fsDefaultFS() {
-        return super.currentMetaService.getPluginClusterMeta().getClusterName();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
+        return hdfsMetaService.getPluginClusterMeta().getClusterName();
     }
 
     /**
-     * Description: 获取 {{hadoop.tmp.dir}}
+     * Description: 获取 YARN 的 {{hadoop.tmp.dir}}
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/28
@@ -121,7 +131,7 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                 () -> new RuntimeException("无法读取环境变量 DATA_DIR")
         );
         return String.format(
-                "%s/HDFS/tmp/hadoop",
+                "%s/YARN/tmp/hadoop",
                 dataDir
         );
     }
@@ -144,14 +154,14 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                 .get("ZOOKEEPER");
 
         StringBuilder sb = new StringBuilder();
+
         zookeeperMetaService.getMetaComponentMap()
-                .forEach((k, v) -> {
-                            if (k.contains("QuarumPeermain")) {
-                                sb.append(v.getHostname())
-                                        .append(":2181,");
-                            }
-                        }
-                );
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("QuarumPeermain"))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .forEach(c ->  sb.append(c.getHostname()).append(":2181,"));
+
         sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();

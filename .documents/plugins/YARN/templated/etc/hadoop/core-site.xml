@@ -17,6 +17,7 @@
 <!-- Put site-specific property overrides in this file. -->
 
 <configuration>
+
     <property>
         <name>fs.defaultFS</name>
         <value>hdfs://{{fs.defaultFS}}</value>
@@ -43,6 +44,11 @@
     </property>
 
     <property>
+        <name>hadoop.zk.address</name>
+        <value>{{hadoop.zk.address}}</value>
+    </property>
+
+    <property>
         <name>ipc.client.connect.max.retries</name>
         <value>{{ipc.client.connect.max.retries}}</value>
     </property>
@@ -66,7 +72,6 @@
         <name>ipc.maximum.data.length</name>
         <value>134217728</value>
     </property>
-
 
     <property>
         <name>hadoop.proxyuser.hue.groups</name>

@@ -21,6 +21,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
 
 import java.io.File;
+import java.util.Comparator;
 import java.util.Map;
 
 /**
@@ -201,14 +202,13 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
                 .getMetaComponentMap();
 
         StringBuilder sb = new StringBuilder();
-        currentMetaComponentMap
-                .forEach((k, v) -> {
-                            if (k.contains("JournalNode")) {
-                                sb.append(v.getHostname())
-                                        .append(":8485;");
-                            }
-                        }
-                );
+
+        currentMetaComponentMap.values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("JournalNode"))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .forEach(c -> sb.append(c.getHostname()).append(":8485,"));
+
         sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();

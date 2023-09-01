@@ -14,19 +14,6 @@
 -->
 <configuration>
 
-<!-- Site specific YARN configuration properties -->
-    <!-- YARN任务（containers）随机端口号范围 -->
-    <property>
-        <name>yarn.nodemanager.port-range</name>
-        <value>12000-65535</value>
-    </property>
-
-    <!-- NodeManager随机端口号范围 -->
-    <property>
-        <name>yarn.nodemanager.webapp.https.address.range</name>
-        <value>12000-65535</value>
-    </property>
-
     <property>
         <name>yarn.nodemanager.hostname</name>
         <value>0.0.0.0</value>
@@ -64,7 +51,7 @@
 
     <property>
         <name>yarn.resourcemanager.zk-address</name>
-        <value>{{ha.zookeeper.quorum}}</value>
+        <value>{{yarn.resourcemanager.zk-address}}</value>
     </property>
 
     <property>
@@ -204,7 +191,7 @@
 
     <property>
         <name>yarn.nodemanager.resource.cpu-vcores</name>
-        <value>{{yarn.nodemanager.resource.cpu-vcores}}</value>
+        <value>8</value>
     </property>
 
     <property>
@@ -235,11 +222,6 @@
     <property>
         <name>yarn.admin.acl</name>
         <value>*</value>
-    </property>
-
-    <property>
-        <name>hadoop.zk.address</name>
-        <value>{{hadoop.zk.address}}</value>
     </property>
 
     <property>

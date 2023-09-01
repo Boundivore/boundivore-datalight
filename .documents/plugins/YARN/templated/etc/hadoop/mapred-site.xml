@@ -33,6 +33,11 @@
     </property>
 
     <property>
+        <name>yarn.app.mapreduce.am.job.client.port-range</name>
+        <value>25000-50200</value>
+    </property>
+
+    <property>
         <name>mapreduce.job.reduce.slowstart.completedmaps</name>
         <value>0.95</value>
     </property>
@@ -69,17 +74,17 @@
 
     <property>
         <name>yarn.app.mapreduce.am.env</name>
-        <value>HADOOP_MAPRED_HOME=/srv/udp/{{udp_version}}/yarn</value>
+        <value>HADOOP_MAPRED_HOME={{SERVICE_DIR}}/YARN</value>
     </property>
 
     <property>
         <name>mapreduce.map.env</name>
-        <value>HADOOP_MAPRED_HOME=/srv/udp/{{udp_version}}/yarn</value>
+        <value>HADOOP_MAPRED_HOME={{SERVICE_DIR}}/YARN</value>
     </property>
 
     <property>
         <name>mapreduce.reduce.env</name>
-        <value>HADOOP_MAPRED_HOME=/srv/udp/{{udp_version}}/yarn</value>
+        <value>HADOOP_MAPRED_HOME={{SERVICE_DIR}}/YARN</value>
     </property>
 
     <property>

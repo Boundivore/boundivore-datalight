@@ -21,6 +21,8 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
 
 import java.io.File;
+import java.util.Comparator;
+import java.util.Map;
 
 /**
  * Description: 配置 core-site.xml 文件
@@ -46,146 +48,179 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
                 file
         );
 
-        // 获取 {{fs.defaultFS}}
-        String fsDefaultFS = this.fsDefaultFS();
+        // 获取 {{yarn.resourcemanager.cluster-id}}
+        String rmClusterId = this.rmClusterId();
 
-        // 获取 {{hadoop.tmp.dir}}
-        String hadoopTempDir = this.hadoopTempDir();
+        // 获取 {{rm1.hostname}}
+        String rm1Hostname = this.rm1Hostname();
 
-        // 获取 {{ha.zookeeper.quorum}}
-        String haZookeeperQuorum = this.haZookeeperQuorum();
+        // 获取 {{rm2.hostname}}
+        String rm2Hostname = this.rm2Hostname();
 
-        // 获取 {{ipc.client.connect.max.retries}}
-        String ipcClientConnectMaxRetries = this.ipcClientConnectMaxRetries();
+        // 获取 {{yarn.resourcemanager.zk-address}}
+        String rmZkAddress = this.rmZkAddress();
 
-        // 获取 {{ipc.client.connect.retry.interval}}
-        String ipcClientConnectRetryInterval = this.ipcClientConnectRetryInterval();
+        // 获取 {{yarn.nodemanager.remote-app-log-dir}}
+        String nmRemoteAppLogDir = this.nmRemoteAppLogDir();
+
+        // 获取 {{yarn.log.server.url}}
+        String logServerUrl = this.logServerUrl();
+
+        // 获取 {{yarn.timeline-service.hostname}}
+        String timelineServiceHostname = this.timelineServiceHostname();
+
+        // 获取 {{yarn.timeline-service.address}}
+        String timelineServiceAddress = this.timelineServiceAddress();
+
+        // 获取 {{yarn.timeline-service.webapp.address}}
+        String timelineServiceWebappAddress = this.timelineServiceWebappAddress();
+
+        // 获取 {{yarn.timeline-service.webapp.https.address}}
+        String timelineServiceWebappHttpsAddress = this.timelineServiceWebappHttpsAddress();
+
+        // 获取 {{yarn.nodemanager.local-dirs}}
+        String nmLocalDirs = this.nmLocalDirs();
 
         return replacedTemplated
                 .replace(
-                        "{{fs.defaultFS}}",
-                        fsDefaultFS
+                        "{{yarn.resourcemanager.cluster-id}}",
+                        rmClusterId
                 )
                 .replace(
-                        "{{hadoop.tmp.dir}}",
-                        hadoopTempDir
+                        "{{rm1.hostname}}",
+                        rm1Hostname
                 )
                 .replace(
-                        "{{ha.zookeeper.quorum}}",
-                        haZookeeperQuorum
+                        "{{rm2.hostname}}",
+                        rm2Hostname
                 )
                 .replace(
-                        "{{ipc.client.connect.max.retries}}",
-                        ipcClientConnectMaxRetries
+                        "{{yarn.resourcemanager.zk-address}}",
+                        rmZkAddress
                 )
                 .replace(
-                        "{{ipc.client.connect.retry.interval}}",
-                        ipcClientConnectRetryInterval
+                        "{{yarn.nodemanager.remote-app-log-dir}}",
+                        nmRemoteAppLogDir
+                )
+                .replace(
+                        "{{yarn.log.server.url}}",
+                        logServerUrl
+                )
+                .replace(
+                        "{{yarn.timeline-service.hostname}}",
+                        timelineServiceHostname
+                )
+                .replace(
+                        "{{yarn.timeline-service.address}}",
+                        timelineServiceAddress
+                )
+                .replace(
+                        "{{yarn.timeline-service.webapp.address}}",
+                        timelineServiceWebappAddress
+                )
+                .replace(
+                        "{{yarn.timeline-service.webapp.https.address}}",
+                        timelineServiceWebappHttpsAddress
+                )
+                .replace(
+                        "{{yarn.nodemanager.local-dirs}}",
+                        nmLocalDirs
                 )
                 ;
     }
 
-    /**
-     * Description: 获取 {{fs.defaultFS}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{fs.defaultFS}} 真实值
-     */
-    private String fsDefaultFS() {
+
+
+    private String rmClusterId() {
         return super.currentMetaService.getPluginClusterMeta().getClusterName();
     }
 
-    /**
-     * Description: 获取 {{hadoop.tmp.dir}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{hadoop.tmp.dir}} 真实值
-     */
-    private String hadoopTempDir() {
-        // EXAMPLE: /data/datalight
-        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
+    private String rm1Hostname() {
+        Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
+                .getCurrentMetaService()
+                .getMetaComponentMap();
+
+        String resourceManager1AndNodeId = currentMetaComponentMap.keySet()
+                .stream()
+                .filter(i -> i.contains("ResourceManager1"))
+                .findFirst()
+                .orElse(null);
+
         Assert.notNull(
-                dataDir,
-                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
+                resourceManager1AndNodeId,
+                () -> new RuntimeException("设置配置文件时，无法找到 ResourceManager1 的部署位置")
         );
-        return String.format(
-                "%s/HDFS/tmp/hadoop",
-                dataDir
-        );
+
+        return currentMetaComponentMap
+                .get(resourceManager1AndNodeId)
+                .getHostname();
     }
 
-    /**
-     * Description: 获取 {{ha.zookeeper.quorum}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{ha.zookeeper.quorum}} 真实值
-     */
-    private String haZookeeperQuorum() {
+    private String rm2Hostname() {
+        Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
+                .getCurrentMetaService()
+                .getMetaComponentMap();
+
+        String resourceManager2AndNodeId = currentMetaComponentMap.keySet()
+                .stream()
+                .filter(i -> i.contains("ResourceManager2"))
+                .findFirst()
+                .orElse(null);
+
+        Assert.notNull(
+                resourceManager2AndNodeId,
+                () -> new RuntimeException("设置配置文件时，无法找到 ResourceManager2 的部署位置")
+        );
+
+        return currentMetaComponentMap
+                .get(resourceManager2AndNodeId)
+                .getHostname();
+    }
+
+    private String rmZkAddress() {
         PluginConfig.MetaService zookeeperMetaService = super.pluginConfig
                 .getMetaServiceMap()
                 .get("ZOOKEEPER");
 
         StringBuilder sb = new StringBuilder();
+
         zookeeperMetaService.getMetaComponentMap()
-                .forEach((k, v) -> {
-                            if (k.contains("QuarumPeermain")) {
-                                sb.append(v.getHostname())
-                                        .append(":2181,");
-                            }
-                        }
-                );
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("QuarumPeermain"))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .forEach(c ->  sb.append(c.getHostname()).append(":2181,"));
+
         sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();
     }
 
-    /**
-     * Description: 获取 {{ipc.client.connect.max.retries}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{ipc.client.connect.max.retries}} 真实值
-     */
-    private String ipcClientConnectMaxRetries() {
-        return "100";
+    private String nmRemoteAppLogDir() {
+        return null;
     }
 
-    /**
-     * Description: 获取 {{ipc.client.connect.retry.interval}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{ipc.client.connect.retry.interval}} 真实值
-     */
-    private String ipcClientConnectRetryInterval() {
-        return "5000";
+    private String logServerUrl() {
+        return null;
+    }
+
+    private String timelineServiceHostname() {
+        return null;
+    }
+
+    private String timelineServiceAddress() {
+        return null;
+    }
+
+    private String timelineServiceWebappAddress() {
+        return null;
+    }
+
+    private String timelineServiceWebappHttpsAddress() {
+        return null;
+    }
+
+    private String nmLocalDirs() {
+        return null;
     }
 }
