@@ -1,7 +1,7 @@
 {
   "__inputs": [
     {
-      "name": "DS_MONITOR-PROMETHEUS",
+      "name": "MONITOR-Prometheus",
       "label": "MONITOR-Prometheus",
       "description": "",
       "type": "datasource",
@@ -61,7 +61,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -107,7 +107,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_container_count{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -152,7 +152,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -198,7 +198,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_container_count{cluster=\"${cluster}\", host=~\"${node}\", status=\"Running\"}",
           "interval": "",
@@ -243,7 +243,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -289,7 +289,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_allocated_gb{cluster=\"${cluster}\", host=~\"${node}\"} > 0",
           "interval": "",
@@ -334,7 +334,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -380,7 +380,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_available_gb{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -425,7 +425,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -464,7 +464,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_allocated_vcores{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -509,7 +509,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -548,7 +548,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_available_vcores{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -593,7 +593,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -632,7 +632,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "rate(hadoop_yarn_nodemanager_container_launch_duration_num_ops{cluster=\"${cluster}\", host=~\"${node}\"}[2m])*60",
           "interval": "",
@@ -677,7 +677,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -716,7 +716,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_container_launch_duration_avg_time{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -761,7 +761,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -800,7 +800,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_shuffle_connections{cluster=\"$cluster\", host=~\"${node}\"}",
           "interval": "",
@@ -847,7 +847,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -886,7 +886,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_shuffle_output_bytes{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -934,7 +934,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -973,7 +973,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_shuffle_outputs_failed{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -1021,7 +1021,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1060,7 +1060,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "expr": "hadoop_yarn_nodemanager_shuffle_outputs_ok{cluster=\"${cluster}\", host=~\"${node}\"}",
           "interval": "",
@@ -1114,7 +1114,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MONITOR-PROMETHEUS}"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values({job=\"YARN-NodeManager\"},job)",
         "hide": 0,
@@ -1137,7 +1137,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MONITOR-PROMETHEUS}"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values({job=\"$JobName\"},instance)",
         "hide": 0,

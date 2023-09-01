@@ -1,7 +1,7 @@
 {
   "__inputs": [
     {
-      "name": "DS_MONITOR-PROMETHEUS",
+      "name": "MONITOR-Prometheus",
       "label": "MONITOR-Prometheus",
       "description": "",
       "type": "datasource",
@@ -65,7 +65,7 @@
       "columns": [],
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fontSize": "100%",
       "gridPos": {
@@ -153,7 +153,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "up{job=~\"$JobName\"}",
@@ -170,7 +170,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -247,7 +247,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_Capacity{name=\"FSDatasetState\", instance=\"$instance\"}",
@@ -263,7 +263,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -340,7 +340,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_DfsUsed{name=\"FSDatasetState\", instance=\"$instance\"}",
@@ -356,7 +356,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -433,7 +433,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_Remaining{name=\"FSDatasetState\", instance=\"$instance\"}",
@@ -449,7 +449,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -526,7 +526,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_VolumeFailures{instance=\"$instance\"}",
@@ -542,7 +542,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -642,7 +642,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_NumBlocksCached{name=\"FSDatasetState\", instance=\"$instance\"}",
@@ -660,7 +660,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -736,7 +736,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_BytesWritten{instance=\"$instance\"}[2m])",
@@ -752,7 +752,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -828,7 +828,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_BytesRead{instance=\"$instance\"}[2m])",
@@ -844,7 +844,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -920,7 +920,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_BlocksWritten{instance=\"$instance\"}",
@@ -936,7 +936,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1012,7 +1012,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_BlocksRead{instance=\"$instance\"}",
@@ -1028,7 +1028,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1108,7 +1108,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_ReadBlockOpNumOps{instance=\"$instance\"}[2m])",
@@ -1124,7 +1124,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "Total number of each operations from different client",
       "fieldConfig": {
@@ -1200,7 +1200,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_WriteBlockOpNumOps{instance=\"$instance\"}[2m])",
@@ -1216,7 +1216,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1292,7 +1292,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_ReadBlockOpAvgTime{instance=\"$instance\"}",
@@ -1308,7 +1308,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1384,7 +1384,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_WriteBlockOpAvgTime{instance=\"$instance\"}",
@@ -1400,7 +1400,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1476,7 +1476,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_HeartbeatsAvgTime{instance=\"$instance\"}",
@@ -1492,7 +1492,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1568,7 +1568,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_HeartbeatsTotalAvgTime{instance=\"$instance\"}",
@@ -1584,7 +1584,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1660,7 +1660,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_SendDataPacketBlockedOnNetworkNanosAvgTime{instance=\"$instance\"}",
@@ -1676,7 +1676,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1752,7 +1752,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_SendDataPacketTransferNanosAvgTime{instance=\"$instance\"}",
@@ -1768,7 +1768,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "Total rate of sending packets",
       "fieldConfig": {
@@ -1844,7 +1844,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_SendDataPacketBlockedOnNetworkNanosNumOps{instance=\"$instance\"}[2m])",
@@ -1860,7 +1860,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -1936,7 +1936,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_SendDataPacketTransferNanosNumOps{instance=\"$instance\"}[2m])",
@@ -1952,7 +1952,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -2028,7 +2028,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_GcCount{instance=\"$instance\"}[1m])",
@@ -2044,7 +2044,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -2120,7 +2120,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "rate(Hadoop_DataNode_GcTimeMillis{instance=\"$instance\"}[1m])",
@@ -2136,7 +2136,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -2212,7 +2212,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_MemNonHeapUsedM{instance=\"$instance\"}",
@@ -2228,7 +2228,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "description": "",
       "fieldConfig": {
@@ -2304,7 +2304,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "Hadoop_DataNode_MemHeapUsedM{instance=\"$instance\"}",
@@ -2330,7 +2330,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MONITOR-PROMETHEUS}"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values({job=\"HDFS-DataNode\"},job)",
         "hide": 0,
@@ -2353,7 +2353,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MONITOR-PROMETHEUS}"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values({job=\"$JobName\"},instance)",
         "hide": 0,
