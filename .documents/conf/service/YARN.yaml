@@ -110,15 +110,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-yarn-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 ResourceManage2'
                 shell: 'yarn-operation.sh'
@@ -163,7 +154,7 @@ datalight:
 
       - name: NodeManager
         priority: 3
-        max: 1
+        max: -1
         min: 1
         mutexes: [ ]
         actions:
@@ -172,15 +163,6 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
-              - type: JAR
-                name: '正在配置服务'
-                jar: 'plugins-yarn-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.yarn.config.ConfigYARN'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
-
               - type: SCRIPT
                 name: '部署后启动 NodeManager'
                 shell: 'yarn-operation.sh'
@@ -218,6 +200,111 @@ datalight:
                 name: '重启 NodeManager'
                 shell: 'yarn-operation.sh'
                 args: [ 'NodeManager', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: TimelineServer
+        priority: 4
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+              - type: SCRIPT
+                name: '部署后启动 TimelineServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'TimelineServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 TimelineServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'TimelineServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 TimelineServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'TimelineServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 TimelineServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'TimelineServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: HistoryServer
+        priority: 3
+        max: 1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 HistoryServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'HistoryServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            steps:
+              - type: SCRIPT
+                name: '启动 HistoryServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'HistoryServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            steps:
+              - type: SCRIPT
+                name: '停止 HistoryServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'HistoryServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            steps:
+              - type: SCRIPT
+                name: '重启 HistoryServer'
+                shell: 'yarn-operation.sh'
+                args: [ 'HistoryServer', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
