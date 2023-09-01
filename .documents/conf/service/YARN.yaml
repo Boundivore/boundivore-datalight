@@ -215,14 +215,15 @@ datalight:
             start-state: DEPLOYING
             success-state: STARTED
             fail-state: SELECTED
-              - type: SCRIPT
-                name: '部署后启动 TimelineServer'
-                shell: 'yarn-operation.sh'
-                args: [ 'TimelineServer', 'start' ]
-                interactions: [ ]
-                exits: '0'
-                timeout: 60000
-                sleep: 1000
+            steps:
+            - type: SCRIPT
+              name: '部署后启动 TimelineServer'
+              shell: 'yarn-operation.sh'
+              args: [ 'TimelineServer', 'start' ]
+              interactions: [ ]
+              exits: '0'
+              timeout: 60000
+              sleep: 1000
 
           - type: START
             steps:
