@@ -29,7 +29,7 @@
 
     <property>
         <name>mapreduce.jobhistory.address</name>
-        <value>{{history.hostname}}:10020</value>
+        <value>{{history.server.hostname}}:10020</value>
     </property>
 
     <property>
@@ -69,7 +69,7 @@
 
     <property>
         <name>mapreduce.jobhistory.webapp.address</name>
-        <value>{{history.hostname}}:19888</value>
+        <value>{{history.server.hostname}}:19888</value>
     </property>
 
     <property>

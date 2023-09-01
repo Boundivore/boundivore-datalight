@@ -23,7 +23,7 @@ import cn.hutool.core.lang.Assert;
 import java.io.File;
 
 /**
- * Description: 配置 core-site.xml 文件
+ * Description: 配置 mapred-site.xml 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
@@ -46,50 +46,61 @@ public class ConfigLogicMapredSite extends AbstractConfigLogic {
                 file
         );
 
-        // 获取 {{fs.defaultFS}}
-        String fsDefaultFS = this.fsDefaultFS();
+        // 获取 {{yarn.app.mapreduce.am.staging-dir}}
+        String appMapReduceAmStagingDir = this.appMapReduceAmStagingDir();
 
-        // 获取 {{hadoop.tmp.dir}}
-        String hadoopTempDir = this.hadoopTempDir();
+        // 获取 {{history.server.hostname}}
+        String historyServerHostname = this.historyServerHostname();
 
-        // 获取 {{ha.zookeeper.quorum}}
-        String haZookeeperQuorum = this.haZookeeperQuorum();
+        // 获取 {{SERVICE_DIR}}
+        String serviceDir = this.serviceDir();
 
-        // 获取 {{ipc.client.connect.max.retries}}
-        String ipcClientConnectMaxRetries = this.ipcClientConnectMaxRetries();
-
-        // 获取 {{ipc.client.connect.retry.interval}}
-        String ipcClientConnectRetryInterval = this.ipcClientConnectRetryInterval();
 
         return replacedTemplated
                 .replace(
-                        "{{fs.defaultFS}}",
-                        fsDefaultFS
+                        "{{yarn.app.mapreduce.am.staging-dir}}",
+                        appMapReduceAmStagingDir
                 )
                 .replace(
-                        "{{hadoop.tmp.dir}}",
-                        hadoopTempDir
+                        "{{history.server.hostname}}",
+                        historyServerHostname
                 )
                 .replace(
-                        "{{ha.zookeeper.quorum}}",
-                        haZookeeperQuorum
-                )
-                .replace(
-                        "{{ipc.client.connect.max.retries}}",
-                        ipcClientConnectMaxRetries
-                )
-                .replace(
-                        "{{ipc.client.connect.retry.interval}}",
-                        ipcClientConnectRetryInterval
+                        "{{SERVICE_DIR}}",
+                        serviceDir
                 )
                 ;
     }
 
     /**
-     * Description: 获取 {{fs.defaultFS}}
+     * Description: 获取 {{history.server.hostname}}
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{history.server.hostname}} 真实值
+     */
+    private String historyServerHostname() {
+        PluginConfig.MetaComponent metaComponent = this.currentMetaService
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("HistoryServer"))
+                .findFirst()
+                .orElse(null);
+
+        return metaComponent == null ? "localhost" : metaComponent.getHostname();
+    }
+
+    /**
+     * Description: 当前 YARN 服务配置中，需获取 HDFS 服务的 {{fs.defaultFS}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
      * Modification description:
      * Modified by:
      * Modification time:
@@ -98,36 +109,35 @@ public class ConfigLogicMapredSite extends AbstractConfigLogic {
      * @return {{fs.defaultFS}} 真实值
      */
     private String fsDefaultFS() {
-        return super.currentMetaService.getPluginClusterMeta().getClusterName();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
+        return hdfsMetaService.getPluginClusterMeta().getClusterName();
     }
 
     /**
-     * Description: 获取 {{hadoop.tmp.dir}}
+     * Description: 获取 {{yarn.app.mapreduce.am.staging-dir}}
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
+     * Creation time: 2023/9/1
      * Modification description:
      * Modified by:
      * Modification time:
      * Throws:
      *
-     * @return {{hadoop.tmp.dir}} 真实值
+     * @return {{yarn.app.mapreduce.am.staging-dir}} 真实值
      */
-    private String hadoopTempDir() {
-        // EXAMPLE: /data/datalight
-        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
-        Assert.notNull(
-                dataDir,
-                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
-        );
+    private String appMapReduceAmStagingDir() {
+        String fsDefault = this.fsDefaultFS();
+
         return String.format(
-                "%s/HDFS/tmp/hadoop",
-                dataDir
+                "hdfs://%s/%s/tmp/hadoop-yarn/staging",
+                fsDefault,
+                fsDefault
         );
     }
 
+
     /**
-     * Description: 获取 {{ha.zookeeper.quorum}}
+     * Description: 获取 ${SERVICE_DIR}
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/28
@@ -136,56 +146,17 @@ public class ConfigLogicMapredSite extends AbstractConfigLogic {
      * Modification time:
      * Throws:
      *
-     * @return {{ha.zookeeper.quorum}} 真实值
+     * @return ${SERVICE_DIR} 真实值
      */
-    private String haZookeeperQuorum() {
-        PluginConfig.MetaService zookeeperMetaService = super.pluginConfig
-                .getMetaServiceMap()
-                .get("ZOOKEEPER");
-
-        StringBuilder sb = new StringBuilder();
-        zookeeperMetaService.getMetaComponentMap()
-                .forEach((k, v) -> {
-                            if (k.contains("QuarumPeermain")) {
-                                sb.append(v.getHostname())
-                                        .append(":2181,");
-                            }
-                        }
-                );
-        sb.deleteCharAt(sb.length() - 1);
-
-        return sb.toString();
+    private String serviceDir() {
+        // EXAMPLE: /srv/datalight
+        String serviceDir = super.pluginConfig.getUnixEnv().getSERVICE_DIR();
+        Assert.notNull(
+                serviceDir,
+                () -> new RuntimeException("无法读取环境变量 SERVICE_DIR")
+        );
+        return serviceDir;
     }
 
-    /**
-     * Description: 获取 {{ipc.client.connect.max.retries}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{ipc.client.connect.max.retries}} 真实值
-     */
-    private String ipcClientConnectMaxRetries() {
-        return "100";
-    }
 
-    /**
-     * Description: 获取 {{ipc.client.connect.retry.interval}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{ipc.client.connect.retry.interval}} 真实值
-     */
-    private String ipcClientConnectRetryInterval() {
-        return "5000";
-    }
 }

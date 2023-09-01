@@ -25,7 +25,7 @@ import java.util.Comparator;
 import java.util.Map;
 
 /**
- * Description: 配置 core-site.xml 文件
+ * Description: 配置 yarn-site.xml 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
@@ -130,11 +130,34 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
     }
 
 
-
+    /**
+     * Description: 获取 {{yarn.resourcemanager.cluster-id}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.resourcemanager.cluster-id}} 真实值
+     */
     private String rmClusterId() {
         return super.currentMetaService.getPluginClusterMeta().getClusterName();
     }
 
+    /**
+     * Description: 获取 {{rm1.hostname}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{rm1.hostname}} 真实值
+     */
     private String rm1Hostname() {
         Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
                 .getCurrentMetaService()
@@ -156,6 +179,18 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
                 .getHostname();
     }
 
+    /**
+     * Description: 获取 {{rm2.hostname}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{rm2.hostname}} 真实值
+     */
     private String rm2Hostname() {
         Map<String, PluginConfig.MetaComponent> currentMetaComponentMap = super.pluginConfig
                 .getCurrentMetaService()
@@ -177,6 +212,18 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
                 .getHostname();
     }
 
+    /**
+     * Description: 获取 {{yarn.resourcemanager.zk-address}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.resourcemanager.zk-address}} 真实值
+     */
     private String rmZkAddress() {
         PluginConfig.MetaService zookeeperMetaService = super.pluginConfig
                 .getMetaServiceMap()
@@ -189,38 +236,184 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
                 .stream()
                 .filter(i -> i.getComponentName().equals("QuarumPeermain"))
                 .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
-                .forEach(c ->  sb.append(c.getHostname()).append(":2181,"));
+                .forEach(c -> sb.append(c.getHostname()).append(":2181,"));
 
         sb.deleteCharAt(sb.length() - 1);
 
         return sb.toString();
     }
 
+    /**
+     * Description: 当前 YARN 服务配置中，需获取 HDFS 服务的 {{fs.defaultFS}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{fs.defaultFS}} 真实值
+     */
+    private String fsDefaultFS() {
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
+        return hdfsMetaService.getPluginClusterMeta().getClusterName();
+    }
+
+    /**
+     * Description: 获取 {{yarn.nodemanager.remote-app-log-dir}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.nodemanager.remote-app-log-dir}} 真实值
+     */
     private String nmRemoteAppLogDir() {
-        return null;
+        String fsDefault = this.fsDefaultFS();
+        return String.format(
+                "hdfs://%s/%s/user",
+                fsDefault,
+                fsDefault
+        );
     }
 
+    /**
+     * Description: 获取 {{yarn.log.server.url}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.log.server.url}} 真实值
+     */
     private String logServerUrl() {
-        return null;
+        PluginConfig.MetaComponent metaComponent = this.currentMetaService
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("HistoryServer"))
+                .findFirst()
+                .orElse(null);
+
+        return String.format(
+                "http://%s:19888/jobhistory/logs/",
+                metaComponent == null ? "localhost" : metaComponent.getHostname()
+        );
     }
 
+    /**
+     * Description: 获取 {{yarn.timeline-service.hostname}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.timeline-service.hostname}} 真实值
+     */
     private String timelineServiceHostname() {
-        return null;
+        PluginConfig.MetaComponent metaComponent = this.currentMetaService
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("TimelineServer"))
+                .findFirst()
+                .orElse(null);
+
+        return metaComponent == null ? "localhost" : metaComponent.getHostname();
     }
 
+    /**
+     * Description: 获取 {{yarn.timeline-service.address}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.timeline-service.address}} 真实值
+     */
     private String timelineServiceAddress() {
-        return null;
+        return String.format(
+                "%s:%s",
+                this.timelineServiceHostname(),
+                "10201"
+        );
     }
 
+    /**
+     * Description: 获取 {{yarn.timeline-service.webapp.address}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.timeline-service.webapp.address}} 真实值
+     */
     private String timelineServiceWebappAddress() {
-        return null;
+        return String.format(
+                "%s:%s",
+                this.timelineServiceHostname(),
+                "8188"
+        );
     }
 
+    /**
+     * Description: 获取 {{yarn.timeline-service.webapp.https.address}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.timeline-service.webapp.https.address}} 真实值
+     */
     private String timelineServiceWebappHttpsAddress() {
-        return null;
+        return String.format(
+                "%s:%s",
+                this.timelineServiceHostname(),
+                "2191"
+        );
     }
 
+    /**
+     * Description: 获取 {{yarn.nodemanager.local-dirs}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{yarn.nodemanager.local-dirs}} 真实值
+     */
     private String nmLocalDirs() {
-        return null;
+        // EXAMPLE: /data/datalight
+        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
+        Assert.notNull(
+                dataDir,
+                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
+        );
+        return String.format(
+                "%s/YARN/tmp/nm-local-dir",
+                dataDir
+        );
     }
 }

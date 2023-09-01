@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.plugin.yarn.config;
 
-import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import cn.hutool.core.lang.Assert;
@@ -160,7 +159,7 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                 .stream()
                 .filter(i -> i.getComponentName().equals("QuarumPeermain"))
                 .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
-                .forEach(c ->  sb.append(c.getHostname()).append(":2181,"));
+                .forEach(c -> sb.append(c.getHostname()).append(":2181,"));
 
         sb.deleteCharAt(sb.length() - 1);
 

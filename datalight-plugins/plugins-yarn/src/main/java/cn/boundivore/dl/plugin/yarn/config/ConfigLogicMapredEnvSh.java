@@ -23,7 +23,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import java.io.File;
 
 /**
- * Description: 配置 hadoop-env.sh 文件
+ * Description: 配置 mapred-env.sh 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
@@ -34,7 +34,7 @@ import java.io.File;
  */
 public class ConfigLogicMapredEnvSh extends AbstractConfigLogic {
 
-    private static final String SERVICE_NAME_HDFS = "HDFS";
+    private static final String SERVICE_NAME_YARN = "YARN";
 
     public ConfigLogicMapredEnvSh(PluginConfig pluginConfig) {
         super(pluginConfig);
@@ -48,84 +48,19 @@ public class ConfigLogicMapredEnvSh extends AbstractConfigLogic {
         );
 
         return replacedTemplated
-                // HDFS_DATANODE_SECURE_USER
+                // HistoryServer
                 .replace(
-                        "{{HDFS_DATANODE_SECURE_USER}}",
-                        "datalight"
-                )
-                // JournalNode
-                .replace(
-                        "{{jmxRemotePort_JournalNode}}",
+                        "{{jmxRemotePort_HistoryServer}}",
                         PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "JournalNode"
+                                SERVICE_NAME_YARN,
+                                "HistoryServer"
                         )
                 )
                 .replace(
-                        "{{jmxExporterPort_JournalNode}}",
+                        "{{jmxExporterPort_HistoryServer}}",
                         PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "JournalNode"
-                        )
-                )
-                // NameNode
-                .replace(
-                        "{{jmxRemotePort_NameNode}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "NameNode"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_NameNode}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "NameNode"
-                        )
-                )
-                // ZKFailoverController
-                .replace(
-                        "{{jmxRemotePort_ZKFailoverController}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "ZKFailoverController"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_ZKFailoverController}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "ZKFailoverController"
-                        )
-                )
-                // DataNode
-                .replace(
-                        "{{jmxRemotePort_DataNode}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "DataNode"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_DataNode}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "DataNode"
-                        )
-                )
-                // HttpFS
-                .replace(
-                        "{{jmxRemotePort_HttpFS}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "HttpFS"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_HttpFS}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "HttpFS"
+                                SERVICE_NAME_YARN,
+                                "HistoryServer"
                         )
                 )
                 ;

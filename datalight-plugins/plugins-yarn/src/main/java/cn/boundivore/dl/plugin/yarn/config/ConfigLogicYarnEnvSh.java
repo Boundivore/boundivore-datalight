@@ -23,7 +23,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import java.io.File;
 
 /**
- * Description: 配置 hadoop-env.sh 文件
+ * Description: 配置 yarn-env.sh 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
@@ -34,7 +34,7 @@ import java.io.File;
  */
 public class ConfigLogicYarnEnvSh extends AbstractConfigLogic {
 
-    private static final String SERVICE_NAME_HDFS = "HDFS";
+    private static final String SERVICE_NAME_YARN = "YARN";
 
     public ConfigLogicYarnEnvSh(PluginConfig pluginConfig) {
         super(pluginConfig);
@@ -48,84 +48,49 @@ public class ConfigLogicYarnEnvSh extends AbstractConfigLogic {
         );
 
         return replacedTemplated
-                // HDFS_DATANODE_SECURE_USER
+                // ResourceManager
                 .replace(
-                        "{{HDFS_DATANODE_SECURE_USER}}",
-                        "datalight"
-                )
-                // JournalNode
-                .replace(
-                        "{{jmxRemotePort_JournalNode}}",
+                        "{{jmxRemotePort_ResourceManager}}",
                         PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "JournalNode"
+                                SERVICE_NAME_YARN,
+                                "ResourceManager"
                         )
                 )
                 .replace(
-                        "{{jmxExporterPort_JournalNode}}",
+                        "{{jmxExporterPort_ResourceManager}}",
                         PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "JournalNode"
+                                SERVICE_NAME_YARN,
+                                "ResourceManager"
                         )
                 )
-                // NameNode
+                // NodeManager
                 .replace(
-                        "{{jmxRemotePort_NameNode}}",
+                        "{{jmxRemotePort_NodeManager}}",
                         PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "NameNode"
+                                SERVICE_NAME_YARN,
+                                "NodeManager"
                         )
                 )
                 .replace(
-                        "{{jmxExporterPort_NameNode}}",
+                        "{{jmxExporterPort_NodeManager}}",
                         PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "NameNode"
+                                SERVICE_NAME_YARN,
+                                "NodeManager"
                         )
                 )
-                // ZKFailoverController
+                // TimelineServer
                 .replace(
-                        "{{jmxRemotePort_ZKFailoverController}}",
+                        "{{jmxRemotePort_TimelineServer}}",
                         PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "ZKFailoverController"
+                                SERVICE_NAME_YARN,
+                                "TimelineServer"
                         )
                 )
                 .replace(
-                        "{{jmxExporterPort_ZKFailoverController}}",
+                        "{{jmxExporterPort_TimelineServer}}",
                         PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "ZKFailoverController"
-                        )
-                )
-                // DataNode
-                .replace(
-                        "{{jmxRemotePort_DataNode}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "DataNode"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_DataNode}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "DataNode"
-                        )
-                )
-                // HttpFS
-                .replace(
-                        "{{jmxRemotePort_HttpFS}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
-                                "HttpFS"
-                        )
-                )
-                .replace(
-                        "{{jmxExporterPort_HttpFS}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
-                                "HttpFS"
+                                SERVICE_NAME_YARN,
+                                "TimelineServer"
                         )
                 )
                 ;
