@@ -115,8 +115,7 @@ sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh ZKFailoverController st
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh NameNode stop; \
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh JournalNode stop; \
 sh /opt/datalight/plugins/ZOOKEEPER/scripts/zookeeper-operation.sh QuarumPeermain stop; \
-ps -aux | grep datalight
-
+ps -aux | grep datalight; \
 rm -rf /data/datalight/*; \
 rm -rf /data/logs/*; \
 rm -rf /srv/datalight/*
@@ -252,12 +251,12 @@ curl -X POST http://node01:9090/-/reload
         },
         {
             "ServiceName": "YARN",
-            "SCStateEnum": "UNSELECTED"
+            "SCStateEnum": "SELECTED"
         }
     ]
 }
 
-设置组件-含HDFS
+设置组件-含HDFS YARN
 {
     "ClusterId": 1,
     "ComponentList": [
@@ -383,6 +382,48 @@ curl -X POST http://node01:9090/-/reload
             ],
             "SCStateEnum": "SELECTED",
             "ServiceName": "HDFS"
+        },
+        {
+            "ComponentName": "ResourceManager1",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "YARN"
+        },
+        {
+            "ComponentName": "ResourceManager2",
+            "NodeIdList": [
+                2
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "YARN"
+        },
+        {
+            "ComponentName": "NodeManager",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "YARN"
+        },
+        {
+            "ComponentName": "TimelineServer",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "YARN"
+        },
+        {
+            "ComponentName": "HistoryServer",
+            "NodeIdList": [
+                1
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "YARN"
         }
     ]
 }
@@ -434,6 +475,7 @@ curl -X POST http://node01:9090/-/reload
     "ServiceNameList": [
         "MONITOR",
         "ZOOKEEPER",
-        "HDFS"
+        "HDFS",
+        "YARN"
     ]
 }

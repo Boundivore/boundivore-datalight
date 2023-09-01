@@ -259,7 +259,7 @@ datalight:
                 sleep: 1000
 
       - name: HistoryServer
-        priority: 3
+        priority: 5
         max: 1
         min: 1
         mutexes: [ ]
@@ -312,7 +312,7 @@ datalight:
                 sleep: 1000
 
       - name: YARNClient
-        priority: 4
+        priority: 6
         max: -1
         min: 0
         mutexes: [ ]
