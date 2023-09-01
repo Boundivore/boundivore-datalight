@@ -93,7 +93,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "JournalNode",
+          "alias": "ZKFC",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -124,22 +124,27 @@
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 0,
-          "mappingType": 2,
+          "mappingType": 1,
           "pattern": "Value",
-          "rangeMaps": [
-            {
-              "$$hashKey": "object:562",
-              "from": "0",
-              "text": "Alive",
-              "to": "99999999999999999999999"
-            }
-          ],
+          "rangeMaps": [],
           "thresholds": [
-            "-1",
-            "0"
+            "0",
+            "1"
           ],
           "type": "string",
-          "unit": "none"
+          "unit": "none",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:320",
+              "text": "Dead",
+              "value": "0"
+            },
+            {
+              "$$hashKey": "object:349",
+              "text": "Alive",
+              "value": "1"
+            }
+          ]
         }
       ],
       "targets": [
@@ -149,7 +154,7 @@
             "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "java_lang_ClassLoading_UnloadedClassCount{job=\"$JobName\"}",
+          "expr": "up{job=\"$JobName\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "{{instance}}",

@@ -40,6 +40,12 @@
       "id": "stat",
       "name": "Stat",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table-old",
+      "name": "Table (old)",
+      "version": ""
     }
   ],
   "annotations": {
@@ -94,6 +100,218 @@
       "type": "row"
     },
     {
+      "columns": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_MONITOR-PROMETHEUS}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 1
+      },
+      "id": 124,
+      "links": [],
+      "pluginVersion": "6.7.0",
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:531",
+          "alias": "",
+          "align": "right",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Time",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:938",
+          "alias": "Master",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:993",
+          "alias": "Master State",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "#FA6400",
+            "#FA6400",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value",
+          "thresholds": [
+            "0",
+            "1"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:1054",
+              "text": "Dead",
+              "value": "0"
+            },
+            {
+              "$$hashKey": "object:1096",
+              "text": "Alive",
+              "value": "1"
+            }
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_MONITOR-PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "up{job=~\"DATALIGHT-Master\"}",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "DataLight-Master State",
+      "transform": "timeseries_to_rows",
+      "type": "table-old"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_MONITOR-PROMETHEUS}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 1
+      },
+      "id": 125,
+      "links": [],
+      "pluginVersion": "6.7.0",
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:531",
+          "alias": "",
+          "align": "right",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Time",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:938",
+          "alias": "Worker",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:993",
+          "alias": "Worker State",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "#FA6400",
+            "#FA6400",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value",
+          "thresholds": [
+            "0",
+            "1"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:1054",
+              "text": "Dead",
+              "value": "0"
+            },
+            {
+              "$$hashKey": "object:1096",
+              "text": "Alive",
+              "value": "1"
+            }
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_MONITOR-PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "up{job=~\"DATALIGHT-Worker\"}",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "DataLight-Worker State",
+      "transform": "timeseries_to_rows",
+      "type": "table-old"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_MONITOR-PROMETHEUS}"
@@ -133,7 +351,7 @@
         "h": 3,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 8
       },
       "id": 52,
       "links": [],
@@ -229,7 +447,7 @@
         "h": 6,
         "w": 5,
         "x": 6,
-        "y": 1
+        "y": 8
       },
       "id": 58,
       "links": [],
@@ -326,7 +544,7 @@
         "h": 6,
         "w": 5,
         "x": 11,
-        "y": 1
+        "y": 8
       },
       "id": 60,
       "links": [],
@@ -384,7 +602,7 @@
         "h": 6,
         "w": 8,
         "x": 16,
-        "y": 1
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 66,
@@ -512,7 +730,7 @@
         "h": 3,
         "w": 6,
         "x": 0,
-        "y": 4
+        "y": 11
       },
       "id": 56,
       "links": [],
@@ -574,7 +792,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 7
+        "y": 14
       },
       "hiddenSeries": false,
       "id": 95,
@@ -681,7 +899,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 7
+        "y": 14
       },
       "hiddenSeries": false,
       "id": 96,
@@ -777,7 +995,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 21
       },
       "id": 48,
       "panels": [],
@@ -814,7 +1032,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 15
+        "y": 22
       },
       "hiddenSeries": false,
       "id": 85,
@@ -934,7 +1152,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 23
+        "y": 30
       },
       "hiddenSeries": false,
       "id": 88,
@@ -1056,7 +1274,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 31
+        "y": 38
       },
       "hiddenSeries": false,
       "id": 50,
@@ -1155,7 +1373,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 31
+        "y": 38
       },
       "hiddenSeries": false,
       "id": 80,
@@ -1251,7 +1469,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 39
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 82,
@@ -1357,7 +1575,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 39
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 83,
@@ -1463,7 +1681,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 46
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 68,
@@ -1582,7 +1800,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 53
       },
       "hiddenSeries": false,
       "id": 78,
@@ -1677,7 +1895,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 61
       },
       "id": 72,
       "panels": [],
@@ -1714,7 +1932,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 55
+        "y": 62
       },
       "hiddenSeries": false,
       "id": 74,
@@ -1812,7 +2030,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 55
+        "y": 62
       },
       "hiddenSeries": false,
       "id": 76,
@@ -1899,7 +2117,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 65
+        "y": 72
       },
       "id": 18,
       "panels": [],
@@ -1936,7 +2154,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 66
+        "y": 73
       },
       "hiddenSeries": false,
       "id": 4,
@@ -2033,7 +2251,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 80
       },
       "hiddenSeries": false,
       "id": 2,
@@ -2120,7 +2338,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 87
       },
       "id": 8,
       "panels": [],
@@ -2157,7 +2375,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 81
+        "y": 88
       },
       "hiddenSeries": false,
       "id": 6,
@@ -2255,7 +2473,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 81
+        "y": 88
       },
       "hiddenSeries": false,
       "id": 10,
@@ -2353,7 +2571,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 88
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 14,
@@ -2451,7 +2669,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 88
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 16,
@@ -2549,7 +2767,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 88
+        "y": 95
       },
       "hiddenSeries": false,
       "id": 20,
@@ -2636,7 +2854,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 95
+        "y": 102
       },
       "id": 34,
       "panels": [
@@ -2679,7 +2897,7 @@
             "h": 4,
             "w": 4,
             "x": 0,
-            "y": 96
+            "y": 104
           },
           "id": 44,
           "links": [],
@@ -2745,7 +2963,7 @@
             "h": 4,
             "w": 4,
             "x": 4,
-            "y": 96
+            "y": 104
           },
           "id": 101,
           "links": [],
@@ -2818,7 +3036,7 @@
             "h": 4,
             "w": 4,
             "x": 8,
-            "y": 96
+            "y": 104
           },
           "id": 46,
           "links": [],
@@ -2901,7 +3119,7 @@
             "h": 4,
             "w": 4,
             "x": 12,
-            "y": 96
+            "y": 104
           },
           "id": 102,
           "links": [],
@@ -2983,7 +3201,7 @@
             "h": 4,
             "w": 4,
             "x": 16,
-            "y": 96
+            "y": 104
           },
           "id": 103,
           "links": [],
@@ -3061,7 +3279,7 @@
             "h": 4,
             "w": 4,
             "x": 20,
-            "y": 96
+            "y": 104
           },
           "id": 104,
           "links": [],
@@ -3111,7 +3329,7 @@
             "h": 9,
             "w": 8,
             "x": 0,
-            "y": 100
+            "y": 108
           },
           "hiddenSeries": false,
           "id": 105,
@@ -3203,7 +3421,7 @@
             "h": 9,
             "w": 8,
             "x": 8,
-            "y": 100
+            "y": 108
           },
           "hiddenSeries": false,
           "id": 106,
@@ -3295,7 +3513,7 @@
             "h": 9,
             "w": 8,
             "x": 16,
-            "y": 100
+            "y": 108
           },
           "hiddenSeries": false,
           "id": 107,
@@ -3386,7 +3604,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 109
+            "y": 117
           },
           "hiddenSeries": false,
           "id": 108,
@@ -3477,7 +3695,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 109
+            "y": 117
           },
           "hiddenSeries": false,
           "id": 109,
@@ -3577,7 +3795,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 109
+            "y": 117
           },
           "hiddenSeries": false,
           "id": 112,
@@ -3677,7 +3895,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 117
+            "y": 125
           },
           "hiddenSeries": false,
           "id": 110,
@@ -3768,7 +3986,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 117
+            "y": 125
           },
           "hiddenSeries": false,
           "id": 111,
@@ -3859,7 +4077,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 117
+            "y": 125
           },
           "hiddenSeries": false,
           "id": 113,
@@ -3950,7 +4168,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 125
+            "y": 133
           },
           "hiddenSeries": false,
           "id": 114,
@@ -4044,7 +4262,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 125
+            "y": 133
           },
           "hiddenSeries": false,
           "id": 115,
@@ -4136,7 +4354,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 125
+            "y": 133
           },
           "hiddenSeries": false,
           "id": 116,
@@ -4237,7 +4455,7 @@
             "h": 8,
             "w": 8,
             "x": 0,
-            "y": 133
+            "y": 141
           },
           "hiddenSeries": false,
           "id": 117,
@@ -4329,7 +4547,7 @@
             "h": 8,
             "w": 8,
             "x": 8,
-            "y": 133
+            "y": 141
           },
           "hiddenSeries": false,
           "id": 118,
@@ -4421,7 +4639,7 @@
             "h": 8,
             "w": 8,
             "x": 16,
-            "y": 133
+            "y": 141
           },
           "hiddenSeries": false,
           "id": 119,
@@ -4692,6 +4910,6 @@
   "timezone": "",
   "title": "DATALIGHT",
   "uid": "DATALIGHT",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }

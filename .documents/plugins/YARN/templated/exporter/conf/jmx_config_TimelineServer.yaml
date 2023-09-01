@@ -1,0 +1,30 @@
+---
+startDelaySeconds: 0
+#hostPort: localhost:{{jmxRemotePort}}
+ssl: false
+lowercaseOutputName: false  # 是否将输出的指标名称转为小写，默认为false
+lowercaseOutputLabelNames: false  # 是否将输出的标签名称转为小写，默认为false
+
+rules:
+  - pattern: 'Hadoop<service=NameNode, name=FSNamesystemState><>FSState:.*?Safemode.*?'
+    name: Hadoop_NameNode_FSState
+    value: 0
+
+  - pattern: 'Hadoop<service=NameNode, name=FSNamesystemState><>FSState:.*?Operational.*?'
+    name: Hadoop_NameNode_FSState
+    value: 1
+
+  - pattern: 'Hadoop<service=NameNode, name=FSNamesystem><>tag.HAState:.*?standby.*?'
+    name: Hadoop_NameNode_HAState
+    value: 0
+
+  - pattern: 'Hadoop<service=NameNode, name=FSNamesystem><>tag.HAState:.*?active.*?'
+    name: Hadoop_NameNode_HAState
+    value: 1
+
+  - pattern: '.*'
+    attrNameSnakeCase: false  # 是否将JMX属性名称转为蛇形命名，默认为false
+    attrNameCamelCase: false  # 是否将JMX属性名称转为驼峰命名，默认为false
+    valueFactor: 1.0  # 可选的值缩放因子，默认为1.0
+    cache: false
+    type: UNTYPED

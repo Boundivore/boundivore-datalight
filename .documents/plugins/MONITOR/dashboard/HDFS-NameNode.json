@@ -124,7 +124,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 7,
+        "w": 3,
         "x": 0,
         "y": 1
       },
@@ -169,6 +169,70 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "dtdurations"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 1
+      },
+      "id": 85,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.0.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_MONITOR-PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "(time() - Hadoop_NameNode_NNStartedTimeInMillis{instance=\"$instance\"} / 1000)",
+          "instant": true,
+          "legendFormat": "{{instance}}",
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "title": "Duration",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_MONITOR-PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -184,8 +248,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 10,
-        "x": 7,
+        "w": 11,
+        "x": 6,
         "y": 1
       },
       "id": 27,
@@ -360,7 +424,7 @@
         },
         {
           "$$hashKey": "object:993",
-          "alias": "HA Status",
+          "alias": "NN State",
           "align": "auto",
           "colorMode": "cell",
           "colors": [
@@ -381,13 +445,13 @@
           "valueMaps": [
             {
               "$$hashKey": "object:1054",
-              "text": "Active",
-              "value": "1"
+              "text": "Dead",
+              "value": "0"
             },
             {
               "$$hashKey": "object:1096",
-              "text": "Standby",
-              "value": "0"
+              "text": "Alive",
+              "value": "1"
             }
           ]
         }
@@ -399,80 +463,16 @@
             "uid": "${DS_MONITOR-PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "Hadoop_NameNode_HAState",
+          "expr": "up{job=\"$JobName\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
-      "title": "HAState",
+      "title": "NN State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "dtdurations"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 7,
-        "x": 0,
-        "y": 5
-      },
-      "id": 85,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "10.0.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "(time() - Hadoop_NameNode_NNStartedTimeInMillis{instance=\"$instance\"} / 1000)",
-          "instant": true,
-          "legendFormat": "{{instance}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Duration",
-      "type": "stat"
     },
     {
       "datasource": {
@@ -520,8 +520,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 7,
-        "x": 17,
+        "w": 6,
+        "x": 0,
         "y": 5
       },
       "id": 31,
@@ -559,6 +559,112 @@
       ],
       "title": "FSState",
       "type": "stat"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_MONITOR-PROMETHEUS}"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 4,
+        "w": 7,
+        "x": 17,
+        "y": 5
+      },
+      "id": 87,
+      "links": [],
+      "pluginVersion": "6.7.0",
+      "showHeader": true,
+      "sort": {
+        "col": 1,
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:531",
+          "alias": "",
+          "align": "right",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "Time",
+          "thresholds": [],
+          "type": "hidden",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:938",
+          "alias": "NameNode",
+          "align": "auto",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "Metric",
+          "thresholds": [],
+          "type": "string",
+          "unit": "short"
+        },
+        {
+          "$$hashKey": "object:993",
+          "alias": "HA Status",
+          "align": "auto",
+          "colorMode": "cell",
+          "colors": [
+            "#FA6400",
+            "#FA6400",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 0,
+          "mappingType": 1,
+          "pattern": "Value",
+          "thresholds": [
+            "0",
+            "1"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:1054",
+              "text": "Active",
+              "value": "1"
+            },
+            {
+              "$$hashKey": "object:1096",
+              "text": "Standby",
+              "value": "0"
+            }
+          ]
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_MONITOR-PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "Hadoop_NameNode_HAState",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "{{instance}}",
+          "refId": "A"
+        }
+      ],
+      "title": "HA State",
+      "transform": "timeseries_to_rows",
+      "type": "table-old"
     },
     {
       "datasource": {
