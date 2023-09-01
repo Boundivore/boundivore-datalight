@@ -29,8 +29,8 @@ formatNameNode() {
         set timeout -1
         spawn su -c "${CURRENT_SERVICE_DIR}/bin/hdfs namenode -format" "${USER_NAME}"
         expect {
-            "Re-format filesystem in QJM to*" { send "Y\r"; exp_continue }
-            "Re-format filesystem in Storage Directory*" { send "Y\r"; exp_continue }
+            "Re-format filesystem in QJM to*" { send "N\r"; exp_continue }
+            "Re-format filesystem in Storage Directory*" { send "N\r"; exp_continue }
             eof
         }
 EOF

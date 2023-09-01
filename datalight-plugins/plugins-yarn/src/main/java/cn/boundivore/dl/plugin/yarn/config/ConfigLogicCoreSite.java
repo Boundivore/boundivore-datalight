@@ -56,8 +56,8 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
         // 获取 {{ha.zookeeper.quorum}}
         String haZookeeperQuorum = this.haZookeeperQuorum();
 
-        // 获取 {{hadoop.zk.quorum}}
-        String hadoopZkQuorum = haZookeeperQuorum;
+        // 获取 {{hadoop.zk.address}}
+        String hadoopZkAddress = haZookeeperQuorum;
 
         // 获取 {{ipc.client.connect.max.retries}}
         String ipcClientConnectMaxRetries = this.ipcClientConnectMaxRetries();
@@ -79,8 +79,8 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
                         haZookeeperQuorum
                 )
                 .replace(
-                        "{{hadoop.zk.quorum}}",
-                        hadoopZkQuorum
+                        "{{hadoop.zk.address}}",
+                        hadoopZkAddress
                 )
                 .replace(
                         "{{ipc.client.connect.max.retries}}",
