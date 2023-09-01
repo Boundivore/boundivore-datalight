@@ -80,7 +80,7 @@ public class RemoteInvokePrometheusHandler {
                         .get(0);
 
                 this.remoteInvokePrometheusService.iThirdPrometheusAPI(
-                                tDlNodePrometheus.getIpv4(),
+                                tDlNodePrometheus.getHostname(),
                                 "9090"
                         )
                         .reloadPrometheus();
