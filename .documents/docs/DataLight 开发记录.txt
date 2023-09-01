@@ -424,6 +424,16 @@ curl -X POST http://node01:9090/-/reload
             ],
             "SCStateEnum": "SELECTED",
             "ServiceName": "YARN"
+        },
+        {
+            "ComponentName": "YARNClient",
+            "NodeIdList": [
+                1,
+                2,
+                3
+            ],
+            "SCStateEnum": "SELECTED",
+            "ServiceName": "YARN"
         }
     ]
 }
