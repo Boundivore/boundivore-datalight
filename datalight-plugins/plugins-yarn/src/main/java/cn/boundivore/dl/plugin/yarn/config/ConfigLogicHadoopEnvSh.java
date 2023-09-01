@@ -23,7 +23,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import java.io.File;
 
 /**
- * Description: 配置 yarn-env.sh 文件
+ * Description: 配置 hadoop-env.sh 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
@@ -32,11 +32,11 @@ import java.io.File;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicYarnEnvSh extends AbstractConfigLogic {
+public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
 
     private static final String SERVICE_NAME_YARN = "YARN";
 
-    public ConfigLogicYarnEnvSh(PluginConfig pluginConfig) {
+    public ConfigLogicHadoopEnvSh(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 
@@ -91,6 +91,21 @@ public class ConfigLogicYarnEnvSh extends AbstractConfigLogic {
                         PortConstants.getMonitorExporterPort(
                                 SERVICE_NAME_YARN,
                                 "TimelineServer"
+                        )
+                )
+                // HistoryServer
+                .replace(
+                        "{{jmxRemotePort_HistoryServer}}",
+                        PortConstants.getMonitorRemotePort(
+                                SERVICE_NAME_YARN,
+                                "HistoryServer"
+                        )
+                )
+                .replace(
+                        "{{jmxExporterPort_HistoryServer}}",
+                        PortConstants.getMonitorExporterPort(
+                                SERVICE_NAME_YARN,
+                                "HistoryServer"
                         )
                 )
                 ;

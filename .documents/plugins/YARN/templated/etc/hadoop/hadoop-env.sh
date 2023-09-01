@@ -55,7 +55,7 @@
 
 # Location of Hadoop.  By default, Hadoop will attempt to determine
 # this location based upon its execution path.
-export HADOOP_HOME=${SERVICE_DIR}/HDFS
+export HADOOP_HOME=${SERVICE_DIR}/YARN
 
 # Location of Hadoop's configuration information.  i.e., where this
 # file is living. If this is not defined, Hadoop will attempt to
@@ -184,7 +184,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # Where (primarily) daemon log files are stored.
 # ${HADOOP_HOME}/logs by default.
 # Java property: hadoop.log.dir
-export HADOOP_LOG_DIR=${LOG_DIR}/HDFS
+export HADOOP_LOG_DIR=${LOG_DIR}/YARN
 
 # A string representing this instance of hadoop. $USER by default.
 # This is used in writing log and pid files, so keep that in mind!
@@ -195,7 +195,7 @@ export HADOOP_LOG_DIR=${LOG_DIR}/HDFS
 # export HADOOP_STOP_TIMEOUT=5
 
 # Where pid files are stored.  /tmp by default.
-export HADOOP_PID_DIR=${PID_DIR}/HDFS
+export HADOOP_PID_DIR=${PID_DIR}/YARN
 
 # Default log4j setting for interactive commands
 # Java property: hadoop.root.logger
@@ -474,3 +474,39 @@ export HADOOP_PID_DIR=${PID_DIR}/HDFS
 #-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HttpFS}} \
 #-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HttpFS}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HttpFS.yaml
 #"
+
+export YARN_RESOURCEMANAGER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_ResourceManager}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ResourceManager}}:${SERVICE_DIR}/YARN/exporter/conf/jmx_config_ResourceManager.yaml
+"
+
+export YARN_NODEMANAGER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_NodeManager}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_NodeManager}}:${SERVICE_DIR}/YARN/exporter/conf/jmx_config_NodeManager.yaml
+"
+
+export YARN_TIMELINESERVER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_TimelineServer}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_TimelineServer}}:${SERVICE_DIR}/YARN/exporter/conf/jmx_config_TimelineServer.yaml
+"
+
+export MAPRED_HISTORYSERVER_OPTS="
+-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HistoryServer}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HistoryServer}}:${SERVICE_DIR}/YARN/exporter/conf/jmx_config_HistoryServer.yaml
+"

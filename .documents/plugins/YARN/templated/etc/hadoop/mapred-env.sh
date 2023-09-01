@@ -43,12 +43,3 @@
 # Specify the log4j settings for the JobHistoryServer
 # Java property: hadoop.root.logger
 #export HADOOP_JHS_LOGGER=INFO,RFA
-
-export MAPRED_HISTORYSERVER_OPTS="
--Djava.net.preferIPv4Stack=true \
--Dcom.sun.management.jmxremote.authenticate=false \
--Dcom.sun.management.jmxremote.ssl=false \
--Dcom.sun.management.jmxremote.local.only=false \
--Dcom.sun.management.jmxremote.port={{jmxRemotePort_HistoryServer}} \
--javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HistoryServer}}:${SERVICE_DIR}/HDFS/exporter/conf/jmx_config_HistoryServer.yaml
-"

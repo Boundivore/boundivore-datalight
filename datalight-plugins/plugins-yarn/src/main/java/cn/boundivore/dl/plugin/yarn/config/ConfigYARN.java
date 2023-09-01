@@ -57,12 +57,10 @@ public class ConfigYARN extends AbstractConfig {
                 return new ConfigLogicHdfsSite(super.pluginConfig).config(file, replacedTemplate);
             case "yarn-site.xml":
                 return new ConfigLogicYarnSite(super.pluginConfig).config(file, replacedTemplate);
-            case "yarn-env.sh":
-                return new ConfigLogicYarnEnvSh(super.pluginConfig).config(file, replacedTemplate);
             case "mapred-site.xml":
                 return new ConfigLogicMapredSite(super.pluginConfig).config(file, replacedTemplate);
-            case "mapred-env.sh":
-                return new ConfigLogicMapredEnvSh(super.pluginConfig).config(file, replacedTemplate);
+            case "hadoop-env.sh":
+                return new ConfigLogicHadoopEnvSh(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_ResourceManager:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_NodeManager:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_TimelineServer:
