@@ -16,7 +16,7 @@
 # limitations under the License.
 
 # The name of the script being executed.
-HADOOP_SHELL_EXECNAME="mapred"
+HADOOP_SHELL_EXECNAME="datalight"
 MYNAME="${BASH_SOURCE-$0}"
 
 
