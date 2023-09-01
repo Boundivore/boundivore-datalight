@@ -275,7 +275,7 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
     private String nmRemoteAppLogDir() {
         String fsDefault = this.fsDefaultFS();
         return String.format(
-                "hdfs://%s/%s/tmp/logs",
+                "hdfs://%s/%s/tmp",
                 fsDefault,
                 fsDefault
         );
