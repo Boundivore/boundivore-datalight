@@ -207,7 +207,7 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
                 .stream()
                 .filter(i -> i.getComponentName().equals("JournalNode"))
                 .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
-                .forEach(c -> sb.append(c.getHostname()).append(":8485,"));
+                .forEach(c -> sb.append(c.getHostname()).append(":8485;"));
 
         sb.deleteCharAt(sb.length() - 1);
 
