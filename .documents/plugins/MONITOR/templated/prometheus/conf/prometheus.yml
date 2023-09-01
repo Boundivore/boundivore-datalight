@@ -95,6 +95,22 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'YARN-ResourceManager'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'YARN-NodeManager'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'YARN-TimelineServer'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'YARN-HistoryServer'
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'HBASE-HMaster'
     static_configs:
       - targets: [ ]
