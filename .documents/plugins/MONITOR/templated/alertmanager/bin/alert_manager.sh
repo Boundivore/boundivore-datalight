@@ -2,10 +2,11 @@
 
 ALERTMANAGER_PATH="{{SERVICE_DIR}}/MONITOR/alertmanager/alertmanager"
 ALERTMANAGER_CONFIG="{{SERVICE_DIR}}/MONITOR/alertmanager/alertmanager.yml"
+ALERTMANAGER_STORAGE_PATH="{{DATA_DIR}}/MONITOR/alertmanager"
 LISTEN_ADDRESS="--web.listen-address=0.0.0.0:9093"
 
 start_alertmanager() {
-  nohup "${ALERTMANAGER_PATH}" --config.file="${ALERTMANAGER_CONFIG}" "${LISTEN_ADDRESS}" > /dev/null 2>&1 &
+  nohup "${ALERTMANAGER_PATH}" --config.file="${ALERTMANAGER_CONFIG}" --storage.path="${ALERTMANAGER_STORAGE_PATH}" "${LISTEN_ADDRESS}" > /dev/null 2>&1 &
 }
 
 stop_alertmanager() {
