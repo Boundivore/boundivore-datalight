@@ -53,6 +53,10 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
         // 获取 Grafana 所在节点主机名
         String grafanaHostname = this.grafanaHostname();
 
+        // 获取 {{DATA_DIR}}
+
+        // 获取 {{LOG_DIR}}
+
         return replacedTemplated
                 .replace(
                         "{{default_home_dashboard_path}}",
@@ -62,7 +66,14 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
                         "{{server.domain}}",
                         grafanaHostname
                 )
-
+                .replace(
+                        "{{DATA_DIR}}",
+                        grafanaHostname
+                )
+                .replace(
+                        "{{LOG_DIR}}",
+                        grafanaHostname
+                )
                 ;
     }
 
@@ -118,4 +129,6 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
 
         return "localhost";
     }
+
+
 }

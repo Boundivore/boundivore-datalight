@@ -45,9 +45,10 @@ mkdir -p "${DATA_DIR}/${SERVICE_NAME}" || exit_on_error "Failed to create ${DATA
 tar -zxf "${TARGZ_PATH}" -C "${SERVICE_DIR}" || exit_on_error "Failed to extract ${TARGZ_PATH}"
 
 # 重新授权
+set_ownership_and_permissions "${DATALIGHT_DIR}"
 set_ownership_and_permissions "${SERVICE_DIR}"
-set_ownership_and_permissions "${LOG_DIR}/${SERVICE_NAME}"
-set_ownership_and_permissions "${PID_DIR}/${SERVICE_NAME}"
-set_ownership_and_permissions "${DATA_DIR}/${SERVICE_NAME}"
+set_ownership_and_permissions "${LOG_DIR}"
+set_ownership_and_permissions "${PID_DIR}"
+set_ownership_and_permissions "${DATA_DIR}"
 
 exit 0

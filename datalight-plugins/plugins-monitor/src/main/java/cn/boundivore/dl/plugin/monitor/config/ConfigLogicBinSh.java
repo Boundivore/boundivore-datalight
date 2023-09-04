@@ -47,9 +47,9 @@ public class ConfigLogicBinSh extends AbstractConfigLogic {
         );
 
         // 获取 {{SERVICE_DIR}}
-        String serviceDir = this.serviceDir();
+        String serviceDir = super.serviceDir();
         // 获取 {{DATA_DIR}}
-        String dataDir = this.dataDir();
+        String dataDir = super.dataDir();
 
         return replacedTemplated
                 .replace(
@@ -63,45 +63,4 @@ public class ConfigLogicBinSh extends AbstractConfigLogic {
                 ;
     }
 
-    /**
-     * Description: 获取 {{SERVICE_DIR}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{SERVICE_DIR}} 真实值
-     */
-    private String serviceDir() {
-        String serviceDir = super.pluginConfig.getUnixEnv().getSERVICE_DIR();
-        Assert.notNull(
-                serviceDir,
-                () -> new RuntimeException("无法读取环境变量 SERVICE_DIR")
-        );
-        return serviceDir;
-    }
-
-    /**
-     * Description: 获取 {{DATA_DIR}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{DATA_DIR}} 真实值
-     */
-    private String dataDir() {
-        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
-        Assert.notNull(
-                dataDir,
-                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
-        );
-        return dataDir;
-    }
 }

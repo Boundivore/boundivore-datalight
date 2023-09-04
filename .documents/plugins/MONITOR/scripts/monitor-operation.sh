@@ -44,13 +44,13 @@ case "${COMPONENT_NAME}" in
   case "$1" in
   "start")
     #    su -c "${CURRENT_SERVICE_DIR}/prometheus/bin/prometheus.sh start" "${USER_NAME}"
-    "${CURRENT_SERVICE_DIR}"/prometheus/bin/prometheus.sh start
+    su -c "${CURRENT_SERVICE_DIR}/prometheus/bin/prometheus.sh start" "${USER_NAME}"
     ;;
   "stop")
-    "${CURRENT_SERVICE_DIR}"/prometheus/bin/prometheus.sh stop
+    su -c "${CURRENT_SERVICE_DIR}/prometheus/bin/prometheus.sh stop" "${USER_NAME}"
     ;;
   "restart")
-    "${CURRENT_SERVICE_DIR}"/prometheus/bin/prometheus.sh restart
+    su -c "${CURRENT_SERVICE_DIR}/prometheus/bin/prometheus.sh restart" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -61,13 +61,13 @@ case "${COMPONENT_NAME}" in
 "AlertManager")
   case "$1" in
   "start")
-    "${CURRENT_SERVICE_DIR}"/alertmanager/bin/alert_manager.sh start
+    su -c "${CURRENT_SERVICE_DIR}/alertmanager/bin/alert_manager.sh start" "${USER_NAME}"
     ;;
   "stop")
-    "${CURRENT_SERVICE_DIR}"/alertmanager/bin/alert_manager.sh stop
+    su -c "${CURRENT_SERVICE_DIR}/alertmanager/bin/alert_manager.sh stop" "${USER_NAME}"
     ;;
   "restart")
-    "${CURRENT_SERVICE_DIR}"/alertmanager/bin/alert_manager.sh restart
+    su -c "${CURRENT_SERVICE_DIR}/alertmanager/bin/alert_manager.sh restart" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -78,13 +78,13 @@ case "${COMPONENT_NAME}" in
 "MySQLExporter")
   case "$1" in
   "start")
-    "${CURRENT_SERVICE_DIR}"/exporter/mysql/bin/mysql_exporter.sh start
+    su -c "${CURRENT_SERVICE_DIR}/exporter/mysql/bin/mysql_exporter.sh start" "${USER_NAME}"
     ;;
   "stop")
-    "${CURRENT_SERVICE_DIR}"/exporter/mysql/bin/mysql_exporter.sh stop
+    su -c "${CURRENT_SERVICE_DIR}/exporter/mysql/bin/mysql_exporter.sh stop" "${USER_NAME}"
     ;;
   "restart")
-    "${CURRENT_SERVICE_DIR}"/exporter/mysql/bin/mysql_exporter.sh restart
+    su -c "${CURRENT_SERVICE_DIR}/exporter/mysql/bin/mysql_exporter.sh restart" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -95,13 +95,13 @@ case "${COMPONENT_NAME}" in
 "NodeExporter")
   case "$1" in
   "start")
-    "${CURRENT_SERVICE_DIR}"/exporter/node/bin/node_exporter.sh start
+    su -c "${CURRENT_SERVICE_DIR}/exporter/node/bin/node_exporter.sh start" "${USER_NAME}"
     ;;
   "stop")
-    "${CURRENT_SERVICE_DIR}"/exporter/node/bin/node_exporter.sh stop
+    su -c "${CURRENT_SERVICE_DIR}/exporter/node/bin/node_exporter.sh stop" "${USER_NAME}"
     ;;
   "restart")
-    "${CURRENT_SERVICE_DIR}"/exporter/node/bin/node_exporter.sh restart
+    su -c "${CURRENT_SERVICE_DIR}/exporter/node/bin/node_exporter.sh restart" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -112,13 +112,13 @@ case "${COMPONENT_NAME}" in
 "Grafana")
   case "$1" in
   "start")
-    "${CURRENT_SERVICE_DIR}"/grafana/bin/grafana.sh start
+    su -c "${CURRENT_SERVICE_DIR}/grafana/bin/grafana.sh start" "${USER_NAME}"
     ;;
   "stop")
-    "${CURRENT_SERVICE_DIR}"/grafana/bin/grafana.sh stop
+    su -c "${CURRENT_SERVICE_DIR}/grafana/bin/grafana.sh stop" "${USER_NAME}"
     ;;
   "restart")
-    "${CURRENT_SERVICE_DIR}"/grafana/bin/grafana.sh restart
+    su -c "${CURRENT_SERVICE_DIR}/grafana/bin/grafana.sh restart" "${USER_NAME}"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"

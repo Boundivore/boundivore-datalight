@@ -5,7 +5,7 @@ PROMETHEUS_CONFIG="{{SERVICE_DIR}}/MONITOR/prometheus/prometheus.yml"
 
 EXPORTER_OPTIONS=(
   "--web.listen-address=0.0.0.0:9090"
-  "--storage.tsdb.path={{DATA_DIR}}/data/MONITOR/prometheus"
+  "--storage.tsdb.path={{DATA_DIR}}/MONITOR/prometheus"
   "--storage.tsdb.retention.time=8d"
   "--web.enable-lifecycle"
   "--web.max-connections=1000000"

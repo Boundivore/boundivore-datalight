@@ -406,11 +406,7 @@ public class ConfigLogicYarnSite extends AbstractConfigLogic {
      */
     private String nmLocalDirs() {
         // EXAMPLE: /data/datalight
-        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
-        Assert.notNull(
-                dataDir,
-                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
-        );
+        String dataDir = super.dataDir();
         return String.format(
                 "%s/YARN/tmp/nm-local-dir",
                 dataDir

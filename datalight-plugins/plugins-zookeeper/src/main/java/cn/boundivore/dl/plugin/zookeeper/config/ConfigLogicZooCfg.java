@@ -79,7 +79,8 @@ public class ConfigLogicZooCfg extends AbstractConfigLogic {
                 .replace(
                         "{{DATA_DIR}}",
                         String.format(
-                                "/data/datalight/data/%s/zkData",
+                                "%s/%s/zkData",
+                                super.dataDir(),
                                 super.currentMetaService.getServiceName()
                         )
                 )

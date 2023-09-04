@@ -123,11 +123,7 @@ public class ConfigLogicCoreSite extends AbstractConfigLogic {
      */
     private String hadoopTempDir() {
         // EXAMPLE: /data/datalight
-        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
-        Assert.notNull(
-                dataDir,
-                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
-        );
+        String dataDir = super.dataDir();
         return String.format(
                 "%s/HDFS/tmp/hadoop",
                 dataDir

@@ -53,7 +53,7 @@ public class ConfigLogicMapredSite extends AbstractConfigLogic {
         String historyServerHostname = this.historyServerHostname();
 
         // 获取 {{SERVICE_DIR}}
-        String serviceDir = this.serviceDir();
+        String serviceDir = super.serviceDir();
 
 
         return replacedTemplated
@@ -134,29 +134,5 @@ public class ConfigLogicMapredSite extends AbstractConfigLogic {
                 fsDefault
         );
     }
-
-
-    /**
-     * Description: 获取 ${SERVICE_DIR}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return ${SERVICE_DIR} 真实值
-     */
-    private String serviceDir() {
-        // EXAMPLE: /srv/datalight
-        String serviceDir = super.pluginConfig.getUnixEnv().getSERVICE_DIR();
-        Assert.notNull(
-                serviceDir,
-                () -> new RuntimeException("无法读取环境变量 SERVICE_DIR")
-        );
-        return serviceDir;
-    }
-
 
 }

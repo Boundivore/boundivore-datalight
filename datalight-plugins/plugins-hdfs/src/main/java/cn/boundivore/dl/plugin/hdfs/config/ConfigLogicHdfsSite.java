@@ -64,7 +64,7 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
         String dfsJournalNodeEditsDir = this.dfsJournalNodeEditsDir();
 
         // 获取 {{SERVICE_DIR}}
-        String serviceDir = this.serviceDir();
+        String serviceDir = super.serviceDir();
 
         // 获取 {{dfs.datanode.data.dir}}
         String dfsDataNodeDataDir = this.dfsDataNodeDataDir();
@@ -228,37 +228,13 @@ public class ConfigLogicHdfsSite extends AbstractConfigLogic {
      */
     private String dfsJournalNodeEditsDir() {
         // EXAMPLE: /data/datalight
-        String dataDir = super.pluginConfig.getUnixEnv().getDATA_DIR();
-        Assert.notNull(
-                dataDir,
-                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
-        );
+        String dataDir = super.dataDir();
         return String.format(
                 "%s/HDFS/jnData",
                 dataDir
         );
     }
 
-    /**
-     * Description: 获取 {{SERVICE_DIR}}
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return {{SERVICE_DIR}} 真实值
-     */
-    private String serviceDir() {
-        String serviceDir = super.pluginConfig.getUnixEnv().getSERVICE_DIR();
-        Assert.notNull(
-                serviceDir,
-                () -> new RuntimeException("无法读取环境变量 SERVICE_DIR")
-        );
-        return serviceDir;
-    }
 
     /**
      * Description: 获取 {{dfs.datanode.data.dir}}

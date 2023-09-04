@@ -17,6 +17,7 @@
 package cn.boundivore.dl.plugin.base.config;
 
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
+import cn.hutool.core.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -68,6 +69,111 @@ public abstract class AbstractConfigLogic {
                         file.getName()
                 )
         );
+    }
+
+    /**
+     * Description: 获取 {{DATALIGHT_DIR}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{DATALIGHT_DIR}} 真实值
+     */
+    protected String datalightDir() {
+        String datalightDir = this.pluginConfig.getUnixEnv().getDATALIGHT_DIR();
+        Assert.notNull(
+                datalightDir,
+                () -> new RuntimeException("无法读取环境变量 DATALIGHT_DIR")
+        );
+        return datalightDir;
+    }
+
+    /**
+     * Description: 获取 {{SERVICE_DIR}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{SERVICE_DIR}} 真实值
+     */
+    protected String serviceDir() {
+        String serviceDir = this.pluginConfig.getUnixEnv().getSERVICE_DIR();
+        Assert.notNull(
+                serviceDir,
+                () -> new RuntimeException("无法读取环境变量 SERVICE_DIR")
+        );
+        return serviceDir;
+    }
+
+    /**
+     * Description: 获取 {{LOG_DIR}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{LOG_DIR}} 真实值
+     */
+    protected String logDir() {
+        String logDir = this.pluginConfig.getUnixEnv().getLOG_DIR();
+        Assert.notNull(
+                logDir,
+                () -> new RuntimeException("无法读取环境变量 LOG_DIR")
+        );
+        return logDir;
+    }
+
+    /**
+     * Description: 获取 {{PID_DIR}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{PID_DIR}} 真实值
+     */
+    protected String pidDir() {
+        String pidDir = this.pluginConfig.getUnixEnv().getPID_DIR();
+        Assert.notNull(
+                pidDir,
+                () -> new RuntimeException("无法读取环境变量 PID_DIR")
+        );
+        return pidDir;
+    }
+
+    /**
+     * Description: 获取 {{DATA_DIR}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{DATA_DIR}} 真实值
+     */
+    protected String dataDir() {
+        String dataDir = this.pluginConfig.getUnixEnv().getDATA_DIR();
+        Assert.notNull(
+                dataDir,
+                () -> new RuntimeException("无法读取环境变量 DATA_DIR")
+        );
+        return dataDir;
     }
 
 }
