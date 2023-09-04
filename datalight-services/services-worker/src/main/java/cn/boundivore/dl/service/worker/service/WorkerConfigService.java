@@ -131,7 +131,7 @@ public class WorkerConfigService {
      * @return 本次操作将会创建的多级父目录的最高一级
      */
     private File getNewRelativeRootParentFile(File file) {
-        File rootParentFile = file;
+        File rootParentFile = file.getParentFile();
         while(!FileUtil.getParent(rootParentFile, 1).exists()){
             rootParentFile = FileUtil.getParent(rootParentFile, 1);
         }
