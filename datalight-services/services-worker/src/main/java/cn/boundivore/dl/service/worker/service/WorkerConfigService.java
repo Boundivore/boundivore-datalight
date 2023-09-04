@@ -71,7 +71,7 @@ public class WorkerConfigService {
         File file = FileUtil.file(request.getPath());
 
         //创建文件的父目录
-        File rootParentDir = this.getNewRelativeRootParentFile(file);
+        File rootParentDirFile = this.getNewRelativeRootParentFile(file);
         FileUtil.mkParentDirs(file);
 
         if (FileUtil.exist(file)) {
@@ -112,7 +112,7 @@ public class WorkerConfigService {
         );
 
         // 为目录递归变更所属以及可执行权限
-        this.chown(rootParentDir.getAbsolutePath());
+        this.chown(rootParentDirFile.getAbsolutePath());
 
         return Result.success();
     }
