@@ -35,6 +35,8 @@ exit_on_error() {
 # 清除服务目录
 clear_service_dir() {
   if [ -d "${CURRENT_SERVICE_DIR}" ]; then
+    echo "Removing ${CURRENT_SERVICE_DIR}"
+    echo "Removing ${SERVICE_DATA_DIR}"
     rm -rf "${CURRENT_SERVICE_DIR}" || exit_on_error "Failed to remove ${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR}"
   fi
 }

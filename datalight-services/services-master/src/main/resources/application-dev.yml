@@ -90,7 +90,7 @@ spring:
         stat:
           enabled: true
           db-type: mysql
-          # 开启慢sql监控，超过1.5s 就认为是慢sql，记录到日志中
+          # 开启慢sql监控，超过 2 s 就认为是慢sql，记录到日志中
           log-slow-sql: true
           slow-sql-millis: 2000
         # 日志监控，使用slf4j 进行日志输出

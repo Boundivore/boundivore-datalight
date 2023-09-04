@@ -108,7 +108,7 @@ public class WorkerConfigService {
         String content = Base64.decodeStr(request.getContentBase64());
         Assert.isTrue(
                 this.createAndWriteFile(file, content),
-                () -> new BException("配置文件授权失败")
+                () -> new BException("为配置文件授权可执行权限失败")
         );
 
         // 为目录递归变更所属以及可执行权限
