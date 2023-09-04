@@ -54,8 +54,10 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
         String grafanaHostname = this.grafanaHostname();
 
         // 获取 {{DATA_DIR}}
+        String dataDir = super.dataDir();
 
         // 获取 {{LOG_DIR}}
+        String logDir = super.logDir();
 
         return replacedTemplated
                 .replace(
@@ -68,11 +70,11 @@ public class ConfigLogicDefaultIni extends AbstractConfigLogic {
                 )
                 .replace(
                         "{{DATA_DIR}}",
-                        grafanaHostname
+                        dataDir
                 )
                 .replace(
                         "{{LOG_DIR}}",
-                        grafanaHostname
+                        logDir
                 )
                 ;
     }

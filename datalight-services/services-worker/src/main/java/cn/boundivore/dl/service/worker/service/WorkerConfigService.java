@@ -71,7 +71,8 @@ public class WorkerConfigService {
         File file = FileUtil.file(request.getPath());
 
         //创建文件的父目录
-        File parentDir = FileUtil.mkParentDirs(file);
+        File rootParentDir = this.getNewRelativeRootParentFile(file);
+        FileUtil.mkParentDirs(file);
 
         if (FileUtil.exist(file)) {
 
@@ -111,9 +112,30 @@ public class WorkerConfigService {
         );
 
         // 为目录递归变更所属以及可执行权限
-        this.chown(parentDir.getAbsolutePath());
+        this.chown(rootParentDir.getAbsolutePath());
 
         return Result.success();
+    }
+
+    /**
+     * Description: 查找本次操作将会创建的多级父目录的最高一级
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/9/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param file 当前准备操作的配置文件
+     * @return 本次操作将会创建的多级父目录的最高一级
+     */
+    private File getNewRelativeRootParentFile(File file) {
+        File rootParentFile = file;
+        while(!FileUtil.getParent(rootParentFile, 1).exists()){
+            rootParentFile = FileUtil.getParent(rootParentFile, 1);
+        }
+        return rootParentFile;
     }
 
     /**
@@ -226,5 +248,4 @@ public class WorkerConfigService {
                 )
         );
     }
-
 }
