@@ -124,22 +124,27 @@
           ],
           "dateFormat": "YYYY-MM-DD HH:mm:ss",
           "decimals": 0,
-          "mappingType": 2,
+          "mappingType": 1,
           "pattern": "Value",
-          "rangeMaps": [
-            {
-              "$$hashKey": "object:562",
-              "from": "0",
-              "text": "Alive",
-              "to": "99999999999999999999999"
-            }
-          ],
+          "rangeMaps": [],
           "thresholds": [
-            "-1",
-            "0"
+            "0",
+            "1"
           ],
           "type": "string",
-          "unit": "none"
+          "unit": "none",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:490",
+              "text": "Dead",
+              "value": "0"
+            },
+            {
+              "$$hashKey": "object:510",
+              "text": "Alive",
+              "value": "1"
+            }
+          ]
         }
       ],
       "targets": [
@@ -149,7 +154,7 @@
             "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
-          "expr": "java_lang_ClassLoading_UnloadedClassCount{job=\"$JobName\"}",
+          "expr": "up{job=\"$JobName\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "{{instance}}",
