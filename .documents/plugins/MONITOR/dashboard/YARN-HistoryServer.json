@@ -34,16 +34,21 @@
       "id": "table-old",
       "name": "Table (old)",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
     }
   ],
   "annotations": {
     "list": [
       {
-        "$$hashKey": "object:65",
         "builtIn": 1,
         "datasource": {
-          "type": "datasource",
-          "uid": "grafana"
+          "type": "grafana",
+          "uid": "-- Grafana --"
         },
         "enable": true,
         "hide": true,
@@ -53,6 +58,7 @@
       }
     ]
   },
+  "description": "",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -91,7 +97,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 85,
+      "id": 5,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -138,7 +144,7 @@
         "x": 4,
         "y": 0
       },
-      "id": 83,
+      "id": 6,
       "links": [],
       "pluginVersion": "6.7.0",
       "showHeader": true,
@@ -164,7 +170,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "ZKFC",
+          "alias": "HistoryServer",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -206,12 +212,12 @@
           "unit": "none",
           "valueMaps": [
             {
-              "$$hashKey": "object:320",
+              "$$hashKey": "object:490",
               "text": "Dead",
               "value": "0"
             },
             {
-              "$$hashKey": "object:349",
+              "$$hashKey": "object:510",
               "text": "Alive",
               "value": "1"
             }
@@ -232,7 +238,7 @@
           "refId": "A"
         }
       ],
-      "title": "ZKFC Live State",
+      "title": "HistoryServer Live State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
@@ -267,7 +273,7 @@
         "x": 0,
         "y": 4
       },
-      "id": 87,
+      "id": 3,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -300,13 +306,195 @@
       ],
       "title": "Duration",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "MONITOR-Prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "MONITOR-Prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "rate(Hadoop_JobHistoryServer_GcCount[1m])",
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "rm_gc_count_rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "MONITOR-Prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "MONITOR-Prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "rate(Hadoop_JobHistoryServer_GcTimeMillis[1m])",
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "rm_gc_time_rate",
+      "type": "timeseries"
     }
   ],
   "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "HDFS"
+    "YARN"
   ],
   "templating": {
     "list": [
@@ -316,7 +504,7 @@
           "type": "prometheus",
           "uid": "MONITOR-Prometheus"
         },
-        "definition": "label_values({job='HDFS-ZKFailoverController'},job)",
+        "definition": "label_values({job=\"YARN-HistoryServer\"},job)",
         "hide": 0,
         "includeAll": false,
         "label": "JobName",
@@ -324,7 +512,7 @@
         "name": "JobName",
         "options": [],
         "query": {
-          "query": "label_values({job='HDFS-ZKFailoverController'},job)",
+          "query": "label_values({job=\"YARN-HistoryServer\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -339,7 +527,7 @@
           "type": "prometheus",
           "uid": "MONITOR-Prometheus"
         },
-        "definition": "label_values({job=~\"$JobName\"},instance)",
+        "definition": "label_values({job=\"$JobName\"},instance)",
         "hide": 0,
         "includeAll": false,
         "label": "instance",
@@ -347,7 +535,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values({job=~\"$JobName\"},instance)",
+          "query": "label_values({job=\"$JobName\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -362,23 +550,10 @@
     "from": "now-5m",
     "to": "now"
   },
-  "timepicker": {
-    "refresh_intervals": [
-      "5s",
-      "10s",
-      "30s",
-      "1m",
-      "5m",
-      "15m",
-      "30m",
-      "1h",
-      "2h",
-      "1d"
-    ]
-  },
+  "timepicker": {},
   "timezone": "",
-  "title": "HDFS-ZKFailoverController",
-  "uid": "HDFS-ZKFailoverController",
+  "title": "YARN-HistoryServer",
+  "uid": "YARN-HistoryServer",
   "version": 1,
   "weekStart": ""
 }
