@@ -51,7 +51,7 @@ echo -ne "\r"
 script_count=$(grep -vc '^$' "${settings_file}")
 echo "Prepare to exec scripts count: ${script_count}"
 
-echo -e "\Serial: ${serial} Hostname: ${hostname}" >>"${log_file}"
+echo -e "Serial: ${serial} Hostname: ${hostname}" >>"${log_file}"
 
 # 函数：执行远程脚本
 # 参数：

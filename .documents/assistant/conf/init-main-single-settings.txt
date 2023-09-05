@@ -4,6 +4,7 @@ init-close-swap.sh
 init-optimize-sysctl.sh
 init-systemd-conf.sh
 init-hostname.sh
+init-hosts.sh
 init-user-group.sh
 init-datalight-env.sh
 init-jdk.sh

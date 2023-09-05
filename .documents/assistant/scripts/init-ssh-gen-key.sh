@@ -15,14 +15,14 @@ removeSSHAsk() {
 
 # 生成 SSH 密钥配置
 keygenConfig() {
-  /usr/bin/expect <<-EOF
+/usr/bin/expect <<-EOF
         set timeout -1
         spawn ssh-keygen -t rsa
         expect {
             "Enter file in which to save the key*" { send "\r"; exp_continue }
-            "Overwrite (y/n)? " { send "n\r"; exp_continue }
-            "Enter passphrase (empty for no passphrase): " { send "\r"; exp_continue }
-            "Enter same passphrase again: " { send "\r" }
+            "Overwrite (y/n)?*" { send "n\r"; exp_continue }
+            "Enter passphrase (empty for no passphrase):*" { send "\r"; exp_continue }
+            "Enter same passphrase again:*" { send "\r" }
             eof
         }
 EOF
