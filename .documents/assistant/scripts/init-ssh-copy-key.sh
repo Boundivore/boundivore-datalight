@@ -66,6 +66,7 @@ copyKeyConfig() {
   local ip=$1
   local pwd=$2
 
+  echo "sshDir: ${sshDir}"
   echo "ip: ${ip}"
   echo "pwd: ${pwd}"
 

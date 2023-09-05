@@ -13,7 +13,7 @@ CONFIG_FILE="/etc/chrony.conf"
 CONFIG_CONTENT=$(cat << EOF
 # Use public servers from the pool.ntp.org project.
 # Please consider joining the pool (http://www.pool.ntp.org/join.html).
-server 127.127.1.0 iburst
+server ntp.aliyun.com iburst
 
 # Record the rate at which the system clock gains/losses time.
 driftfile /var/lib/chrony/drift

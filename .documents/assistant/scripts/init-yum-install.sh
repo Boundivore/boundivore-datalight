@@ -11,6 +11,7 @@ yum -y install openssl openssl-devel patch
 yum -y install lrzsz
 yum -y install unzip zip
 yum -y install yum-utils
+yum -y install net-tools
 
 yum -y install gcc gcc-c++
 yum -y install make

@@ -49,6 +49,7 @@ node-[1-3]
 
 bm9kZVswMS0wNV0Kbm9kZS1bMS0zXQ==
 
+chronyc tracking 2 | grep 'System time' | awk '{print $4}'
 
 优化以下脚本，满足以下要求：
 1、加上注释
@@ -83,7 +84,7 @@ df -h --total | tail -n 1 | awk '{print $2 \"\n\" $4}'
 
 
 重置虚拟机目录挂载：
-lvextend -l +100%FREE /dev/mapper/centos-root
+# lvextend -l +100%FREE /dev/mapper/centos-root
 
 # 卸载 /home 分区 (注意: 不要在home目录下执行这个操作)
 umount /home

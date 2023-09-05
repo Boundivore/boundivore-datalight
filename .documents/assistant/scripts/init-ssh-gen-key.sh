@@ -22,7 +22,7 @@ keygenConfig() {
             "Enter file in which to save the key*" { send "\r"; exp_continue }
             "Overwrite (y/n)?*" { send "n\r"; exp_continue }
             "Enter passphrase (empty for no passphrase):*" { send "\r"; exp_continue }
-            "Enter same passphrase again:*" { send "\r" }
+            "Enter same passphrase again: " { send "\r"; exp_continue }
             eof
         }
 EOF

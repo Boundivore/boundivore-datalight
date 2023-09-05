@@ -12,7 +12,7 @@ fi
 BASE_PATH=$(cd "$(dirname "$0")" || exit; pwd)
 echo "Bash Path: ${BASE_PATH}"
 # 参数顺序参考 init-main-single-node.sh
-hostname=$3
+hostname=$1
 
 # 修改主机名
 modifyHostname(){

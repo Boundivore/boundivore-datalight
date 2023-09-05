@@ -73,6 +73,7 @@ while IFS= read -r line; do
   sorted_keys+=("$line")
 done <<< "$(printf '%s\n' "${!data_array[@]}" | sort -t. -k1,1n -k2)"
 
+master_ip="127.0.0.1"
 # 循环遍历一个存储节点配置信息的数组
 for prefix_prop in "${sorted_keys[@]}"; do
   # 从数组中获取当前节点的配置值
@@ -93,6 +94,11 @@ for prefix_prop in "${sorted_keys[@]}"; do
     user_datalight=${data_array["${prefix}.node.user.datalight"]}
     pwd_datalight=${data_array["${prefix}.node.pwd.datalight"]}
 
+    if [ "${serial}" == "1" ]
+    then
+        master_ip="${ip}"
+    fi
+
     # 输出节点信息
     echo "serial: ${serial}"
     echo "ip: ${ip}"
@@ -101,6 +107,7 @@ for prefix_prop in "${sorted_keys[@]}"; do
     echo "pwd_root: ${pwd_root}"
     echo "user_datalight: ${user_datalight}"
     echo "pwd_datalight: ${pwd_datalight}"
+    echo "master_ip: ${master_ip}"
 
     # 去除节点的IP地址中的空格
     trimmed_target_ip=$(echo "$ip" | tr -d '[:space:]')
@@ -116,7 +123,7 @@ for prefix_prop in "${sorted_keys[@]}"; do
 
     # 执行脚本init-main-single-node.sh，并传递节点信息作为参数
     echo "-------------------------------------${hostname}-------------------------------------"
-    sh "${main_script_dir}/init-main-single-node.sh" "${serial}" "${ip}" "${hostname}"
+    sh "${main_script_dir}/init-main-single-node.sh" "${serial}" "${ip}" "${hostname} ${master_ip}"
 
     echo ""
   fi
@@ -125,6 +132,8 @@ done
 # 设置 datalight ssh 无秘钥
 su - datalight <<EOF
 sh "${script_dir}/init-ssh-gen-key.sh"
+chmod 700 /home/datalight/.ssh
+chmod 600 /home/datalight/.ssh/authorized_keys
 sh "${script_dir}/init-ssh-copy-key.sh"
 EOF
 
