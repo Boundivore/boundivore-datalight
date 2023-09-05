@@ -82,7 +82,29 @@ free -m | awk 'NR==2{printf \"%.2f\n\", $2/1024}'
 df -h --total | tail -n 1 | awk '{print $2 \"\n\" $4}'
 
 
+重置虚拟机目录挂载：
+lvextend -l +100%FREE /dev/mapper/centos-root
 
+# 卸载 /home 分区 (注意: 不要在home目录下执行这个操作)
+umount /home
+
+# 将 /home 分区减小600G（根据自己实际情况设定大小）
+lvreduce -L -600G /dev/mapper/centos-home
+
+# 格式化 /home 分区
+mkfs.xfs /dev/mapper/centos-home -f
+
+# 重新挂载 /home 分区
+mount /dev/mapper/centos-home /home/
+
+# 查看剩余空间
+vgdisplay
+
+# 上面空余的 600G 分到 / 分区下
+lvextend -L +600G /dev/mapper/centos-root
+
+# 更新扩容的区间
+xfs_growfs /dev/mapper/centos-root
 
 $(realpath "$(dirname "$0")")
 
