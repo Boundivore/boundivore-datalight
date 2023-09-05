@@ -126,6 +126,11 @@ rm -rf /srv/datalight/*; \
 rm -rf /tmp/hsperfdata_*
 
 
+sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh ResourceManager restart; \
+sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh NodeManager restart; \
+sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh TimelineServer restart; \
+sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh HistoryServer restart
+
 
 cat >> /etc/hosts << EOF
 192.137.1.10 node001
