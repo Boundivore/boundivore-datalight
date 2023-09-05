@@ -86,32 +86,32 @@ if [ -z "${jdk_str}" ]; then
   echo "JDK installed."
   java -version
 
-  echo "Preparing to configure BCPROV..."
-
-  JAVA_SECURITY_DIR="${JAVA_HOME}/jre/lib/security/java.security"
-  JAVA_BCPROV_DIR="${JAVA_HOME}/jre/lib/ext/"
-  JAVA_BCPROV_JAR="${jdk_repo_dir}/bcprov-jdk15on-1.56.jar"
-
-  # 配置 Java 安全提供程序和添加 Bouncy Castle 提供程序
-  JAVA_SECURITY_ARGS_ARR=(
-    "security.provider.1=sun.security.provider.Sun"
-    "security.provider.2=sun.security.rsa.SunRsaSign"
-    "security.provider.3=com.sun.net.ssl.internal.ssl.Provider"
-    "security.provider.4=com.sun.crypto.provider.SunJCE"
-    "security.provider.5=sun.security.jgss.SunProvider"
-    "security.provider.6=com.sun.security.sasl.Provider"
-    "security.provider.7=org.jcp.xml.dsig.internal.dom.XMLDSigRI"
-    "security.provider.8=sun.security.smartcardio.SunPCSC"
-    "security.provider.9=org.bouncycastle.jce.provider.BouncyCastleProvider"
-  )
-
-  # 将安全提供程序参数拼接成一个字符串
-  JAVA_SECURITY_ARGS=$(printf "%s\n" "${JAVA_SECURITY_ARGS_ARR[@]}")
-
-  echo -e "${JAVA_SECURITY_ARGS}" >>"${JAVA_SECURITY_DIR}"
-  cp -a "${JAVA_BCPROV_JAR}" "${JAVA_BCPROV_DIR}"
-
-  echo "BCPROV installed."
+#  echo "Preparing to configure BCPROV..."
+#
+#  JAVA_SECURITY_DIR="${JAVA_HOME}/jre/lib/security/java.security"
+#  JAVA_BCPROV_DIR="${JAVA_HOME}/jre/lib/ext/"
+#  JAVA_BCPROV_JAR="${jdk_repo_dir}/bcprov-jdk15on-1.56.jar"
+#
+#   配置 Java 安全提供程序和添加 Bouncy Castle 提供程序
+#  JAVA_SECURITY_ARGS_ARR=(
+#    "security.provider.1=sun.security.provider.Sun"
+#    "security.provider.2=sun.security.rsa.SunRsaSign"
+#    "security.provider.3=com.sun.net.ssl.internal.ssl.Provider"
+#    "security.provider.4=com.sun.crypto.provider.SunJCE"
+#    "security.provider.5=sun.security.jgss.SunProvider"
+#    "security.provider.6=com.sun.security.sasl.Provider"
+#    "security.provider.7=org.jcp.xml.dsig.internal.dom.XMLDSigRI"
+#    "security.provider.8=sun.security.smartcardio.SunPCSC"
+#    "security.provider.9=org.bouncycastle.jce.provider.BouncyCastleProvider"
+#  )
+#
+#   将安全提供程序参数拼接成一个字符串
+#  JAVA_SECURITY_ARGS=$(printf "%s\n" "${JAVA_SECURITY_ARGS_ARR[@]}")
+#
+#  echo -e "${JAVA_SECURITY_ARGS}" >>"${JAVA_SECURITY_DIR}"
+#  cp -a "${JAVA_BCPROV_JAR}" "${JAVA_BCPROV_DIR}"
+#
+#  echo "BCPROV installed."
 
   echo "If you need to apply the environment variable in the current session, please run: "
   echo -e "\t source ${profile_path}"
