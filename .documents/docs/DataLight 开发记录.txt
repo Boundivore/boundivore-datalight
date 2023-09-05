@@ -123,6 +123,9 @@ sh /opt/datalight/plugins/ZOOKEEPER/scripts/zookeeper-operation.sh QuarumPeermai
 sh /opt/datalight/plugins/HDFS/scripts/hdfs-operation.sh JournalNode start
 
 
+rpm -qa | grep mariadb
+rpm -e --nodeps mariadb-libs-5.5.68-1.el7.x86_64
+
 java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
 
