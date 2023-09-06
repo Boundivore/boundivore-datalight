@@ -59,8 +59,8 @@ spec:
       "dockerhub.kubekey.local":
         username: admin
         password: Harbor12345
-    privateRegistry: ""
-    namespaceOverride: ""
+    privateRegistry: "dockerhub.kubekey.local"
+    namespaceOverride: "kubesphereio"
     registryMirrors: []
     insecureRegistries: []
   addons: []
