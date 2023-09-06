@@ -15,19 +15,22 @@ service_source_file_path=$(realpath "${script_dir}/../../conf/env/datalight-serv
 # 定义要检查的文件
 file_path="/etc/profile"
 
-# 检查文件是否包含 "datalight-service-env.sh"，如果包含，则删除整行并重新添加新的 source 行
+# 检查文件是否包含 "datalight-service-env.sh"，如果包含，删除整行
 if grep -q "datalight-service-env.sh" "$file_path"; then
-    echo "The file '$file_path' contains 'datalight-service-env.sh'. Removing the line and adding again..."
+    echo "The file '$file_path' contains 'datalight-service-env.sh'. Removing the line..."
     if ! sed -i "/datalight-service-env.sh/d" "$file_path"; then
         echo "Failed to modify the file '$file_path'. Exiting..."
         exit 1
     fi
-    if ! echo "source ${service_source_file_path}" >>"$file_path"; then
-        echo "Failed to modify the file '$file_path'. Exiting..."
-        exit 1
-    fi
-    echo "Added the source line to '$file_path'."
 fi
+
+# 不论是否包含 "datalight-service-env.sh"，都添加新的 source 行
+echo "Adding source line to '$file_path'..."
+if ! echo "source ${service_source_file_path}" >>"$file_path"; then
+    echo "Failed to modify the file '$file_path'. Exiting..."
+    exit 1
+fi
+echo "Added the source line to '$file_path'."
 
 # 定义要检查的文件列表
 file_list=(
