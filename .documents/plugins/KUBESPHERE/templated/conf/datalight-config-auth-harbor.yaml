@@ -1,0 +1,270 @@
+
+apiVersion: kubekey.kubesphere.io/v1alpha2
+kind: Cluster
+metadata:
+  name: datalight-cluster-config
+spec:
+  hosts:
+    - {name: node01, address: 192.168.137.10, internalAddress: 192.168.137.10, user: root, password: "123456"}
+    - {name: node02, address: 192.168.137.11, internalAddress: 192.168.137.11, user: root, password: "123456"}
+    - {name: node03, address: 192.168.137.12, internalAddress: 192.168.137.12, user: root, password: "123456"}
+  roleGroups:
+    etcd:
+      - node01
+      - node02
+      - node03
+    control-plane:
+      - node01
+      - node02
+      - node03
+    worker:
+      - node01
+      - node02
+      - node03
+    registry:
+      - node01
+  controlPlaneEndpoint:
+    ## Internal loadbalancer for apiservers
+    internalLoadbalancer: haproxy
+
+    domain: lb.datalight.local
+    address: ""
+    port: 6443
+  kubernetes:
+    version: v1.22.12
+    clusterName: cluster.datalight
+    autoRenewCerts: true
+    containerManager: docker
+  etcd:
+    type: kubekey
+  network:
+    plugin: calico
+    kubePodsCIDR: 10.233.64.0/18
+    kubeServiceCIDR: 10.233.0.0/18
+    ## multus support. https://github.com/k8snetworkplumbingwg/multus-cni
+    multusCNI:
+      enabled: false
+  registry:
+    # 如需使用 kk 部署 harbor, 可将该参数设置为 harbor，不设置该参数且需使用 kk 创建容器镜像仓库，将默认使用docker registry。
+    # type: harbor
+    # 如使用 kk 部署的 harbor 或其他需要登录的仓库，可设置对应仓库的auths，如使用 kk 创建的 docker registry 仓库，则无需配置该参数。
+    # 注意：如使用 kk 部署 harbor，该参数请于 harbor 启动后设置。
+    #auths:
+    #  "dockerhub.kubekey.local":
+    #    username: admin
+    #    password: Harbor12345
+    # 设置集群部署时使用的私有仓库
+    type: harbor
+    auths:
+      "dockerhub.kubekey.local":
+        username: admin
+        password: Harbor12345
+    privateRegistry: ""
+    namespaceOverride: ""
+    registryMirrors: []
+    insecureRegistries: []
+  addons: []
+
+---
+apiVersion: installer.kubesphere.io/v1alpha1
+kind: ClusterConfiguration
+metadata:
+  name: ks-installer
+  namespace: kubesphere-system
+  labels:
+    version: v3.3.2
+spec:
+  persistence:
+    storageClass: ""
+  authentication:
+    jwtSecret: ""
+  zone: ""
+  local_registry: ""
+  namespace_override: ""
+  # dev_tag: ""
+  etcd:
+    monitoring: false
+    endpointIps: localhost
+    port: 2379
+    tlsEnable: true
+  common:
+    core:
+      console:
+        enableMultiLogin: true
+        port: 30880
+        type: NodePort
+    # apiserver:
+    #  resources: {}
+    # controllerManager:
+    #  resources: {}
+    redis:
+      enabled: false
+      enableHA: false
+      volumeSize: 2Gi
+    openldap:
+      enabled: false
+      volumeSize: 2Gi
+    minio:
+      volumeSize: 20Gi
+    monitoring:
+      # type: external
+      endpoint: http://prometheus-operated.kubesphere-monitoring-system.svc:9090
+      GPUMonitoring:
+        enabled: false
+    gpu:
+      kinds:
+        - resourceName: "nvidia.com/gpu"
+          resourceType: "GPU"
+          default: true
+    es:
+      # master:
+      #   volumeSize: 4Gi
+      #   replicas: 1
+      #   resources: {}
+      # data:
+      #   volumeSize: 20Gi
+      #   replicas: 1
+      #   resources: {}
+      logMaxAge: 7
+      elkPrefix: logstash
+      basicAuth:
+        enabled: false
+        username: ""
+        password: ""
+      externalElasticsearchHost: ""
+      externalElasticsearchPort: ""
+    opensearch:
+      # master:
+      #   volumeSize: 4Gi
+      #   replicas: 1
+      #   resources: {}
+      # data:
+      #   volumeSize: 20Gi
+      #   replicas: 1
+      #   resources: {}
+      enabled: true
+      logMaxAge: 7
+      opensearchPrefix: whizard
+      basicAuth:
+        enabled: true
+        username: "admin"
+        password: "admin"
+      externalOpensearchHost: ""
+      externalOpensearchPort: ""
+      dashboard:
+        enabled: false
+  alerting:
+    enabled: false
+    # thanosruler:
+    #   replicas: 1
+    #   resources: {}
+  auditing:
+    enabled: false
+    # operator:
+    #   resources: {}
+    # webhook:
+    #   resources: {}
+  devops:
+    enabled: false
+    jenkinsCpuReq: 0.5
+    jenkinsCpuLim: 1
+    jenkinsMemoryReq: 4Gi
+    jenkinsMemoryLim: 4Gi
+    jenkinsVolumeSize: 16Gi
+  events:
+    enabled: false
+    # operator:
+    #   resources: {}
+    # exporter:
+    #   resources: {}
+    # ruler:
+    #   enabled: true
+    #   replicas: 2
+    #   resources: {}
+  logging:
+    enabled: false
+    logsidecar:
+      enabled: true
+      replicas: 2
+      # resources: {}
+  metrics_server:
+    enabled: false
+  monitoring:
+    storageClass: ""
+    node_exporter:
+      port: 9100
+      # resources: {}
+    # kube_rbac_proxy:
+    #   resources: {}
+    # kube_state_metrics:
+    #   resources: {}
+    # prometheus:
+    #   replicas: 1
+    #   volumeSize: 20Gi
+    #   resources: {}
+    #   operator:
+    #     resources: {}
+    # alertmanager:
+    #   replicas: 1
+    #   resources: {}
+    # notification_manager:
+    #   resources: {}
+    #   operator:
+    #     resources: {}
+    #   proxy:
+    #     resources: {}
+    gpu:
+      nvidia_dcgm_exporter:
+        enabled: false
+        # resources: {}
+  multicluster:
+    clusterRole: none
+  network:
+    networkpolicy:
+      enabled: false
+    ippool:
+      type: none
+    topology:
+      type: none
+  openpitrix:
+    store:
+      enabled: false
+  servicemesh:
+    enabled: false
+    istio:
+      components:
+        ingressGateways:
+          - name: istio-ingressgateway
+            enabled: false
+        cni:
+          enabled: false
+  edgeruntime:
+    enabled: false
+    kubeedge:
+      enabled: false
+      cloudCore:
+        cloudHub:
+          advertiseAddress:
+            - ""
+        service:
+          cloudhubNodePort: "30000"
+          cloudhubQuicNodePort: "30001"
+          cloudhubHttpsNodePort: "30002"
+          cloudstreamNodePort: "30003"
+          tunnelNodePort: "30004"
+        # resources: {}
+        # hostNetWork: false
+      iptables-manager:
+        enabled: true
+        mode: "external"
+        # resources: {}
+      # edgeService:
+      #   resources: {}
+  gatekeeper:
+    enabled: false
+    # controller_manager:
+    #   resources: {}
+    # audit:
+    #   resources: {}
+  terminal:
+    timeout: 600
