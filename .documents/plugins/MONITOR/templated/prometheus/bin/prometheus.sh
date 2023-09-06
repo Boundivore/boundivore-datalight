@@ -3,6 +3,9 @@
 PROMETHEUS_PATH="{{SERVICE_DIR}}/MONITOR/prometheus/prometheus"
 PROMETHEUS_CONFIG="{{SERVICE_DIR}}/MONITOR/prometheus/prometheus.yml"
 
+echo "PROMETHEUS_PATH: ${PROMETHEUS_PATH}"
+echo "PROMETHEUS_CONFIG: ${PROMETHEUS_CONFIG}"
+
 EXPORTER_OPTIONS=(
   "--web.listen-address=0.0.0.0:9090"
   "--storage.tsdb.path={{DATA_DIR}}/MONITOR/prometheus"
