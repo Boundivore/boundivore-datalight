@@ -1,0 +1,56 @@
+datalight:
+  service:
+    name: KUBESPHERE
+    placeholder-infos:
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-no-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.hosts}}'
+            describe: 'K8S 节点列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-no-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.etcd}}'
+            describe: 'K8S etcd列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-no-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.control-plane}}'
+            describe: 'K8S 控制平面列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-no-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.worker}}'
+            describe: 'K8S Worker 列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-no-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.registry}}'
+            describe: 'K8S Harbor 所在节点'
+            default: '-'
+
+
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.hosts}}'
+            describe: 'K8S 节点列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.etcd}}'
+            describe: 'K8S etcd列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.control-plane}}'
+            describe: 'K8S 控制平面列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.worker}}'
+            describe: 'K8S Worker 列表'
+            default: '-'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf/datalight-config-auth-harbor.yaml'
+        properties:
+          - placeholder: '{{spec.roleGroups.registry}}'
+            describe: 'K8S Harbor 所在节点'
+            default: '-'

@@ -5,24 +5,16 @@ metadata:
   name: datalight-cluster-config
 spec:
   hosts:
-    - {name: node01, address: 192.168.137.10, internalAddress: 192.168.137.10, user: root, password: "123456"}
-    - {name: node02, address: 192.168.137.11, internalAddress: 192.168.137.11, user: root, password: "123456"}
-    - {name: node03, address: 192.168.137.12, internalAddress: 192.168.137.12, user: root, password: "123456"}
+    {{spec.hosts}}
   roleGroups:
     etcd:
-      - node01
-      - node02
-      - node03
+      {{spec.roleGroups.etcd}}
     control-plane:
-      - node01
-      - node02
-      - node03
+      {{spec.roleGroups.control-plane}}
     worker:
-      - node01
-      - node02
-      - node03
+      {{spec.roleGroups.worker}}
     registry:
-      - node01
+      {{spec.roleGroups.registry}}
   controlPlaneEndpoint:
     ## Internal loadbalancer for apiservers
     internalLoadbalancer: haproxy
