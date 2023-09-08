@@ -16,18 +16,15 @@ GROUP_NAME="datalight"
 SERVICE_NAME="KUBESPHERE"
 
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
-KUBESPHERE_DLC_DIR="${DATALIGHT}/plugins/${SERVICE_NAME}/dlc"
-
 BIN_DIR="${CURRENT_SERVICE_DIR}/bin"
-CONFIG_DIR="${CURRENT_SERVICE_DIR}/conf"
 
 # 授权可执行权限
 chmod +x -R "${BIN_DIR}"
 
-# 准备部署 Harbor
-echo "Prepare to init registry of harbor"
-EXEC="${BIN_DIR}/kk init registry \
--f ${CONFIG_DIR}/datalight-config-no-auth-harbor.yaml \
+# 准备推送镜像到 Harbor
+echo "Prepare to push image to harbor"
+EXEC="${BIN_DIR}/kk artifact image push \
+-f ${CONFIG_DIR}/datalight-config-auth-harbor.yaml \
 -a ${KUBESPHERE_DLC_DIR}/kubesphere-artifact.tar.gz"
 
 su -c "${EXEC}" "${USER_NAME}"

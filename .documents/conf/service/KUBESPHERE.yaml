@@ -133,9 +133,18 @@ datalight:
                 sleep: 1000
 
               - type: SCRIPT
-                name: '修改 KubeSphere 密码'
-                shell: ''
+                name: '暴露 ks-apiserver'
+                shell: 'init-k8s-ks-apiserver.sh'
                 args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 300000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '修改 KubeSphere 密码'
+                shell: 'init-k8s-change-password.sh'
+                args: [ '2wsx@WSX' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 300000
