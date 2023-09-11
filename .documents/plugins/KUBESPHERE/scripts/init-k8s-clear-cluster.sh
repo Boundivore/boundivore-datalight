@@ -22,12 +22,17 @@ CONFIG_DIR="${CURRENT_SERVICE_DIR}/conf"
 # 授权可执行权限
 chmod +x -R "${BIN_DIR}"
 
+echo "Prepare to clear cluster of kubesphere"
+EXEC="${BIN_DIR}/kk delete cluster \
+-f ${CONFIG_DIR}/datalight-config-auth-harbor.yaml"
+
+
 # 准备清理 K8S 集群
 /usr/bin/expect <<-EOF
     set timeout -1
-    spawn "${BIN_DIR}/kk" delete cluster -f "${CONFIG_DIR}/datalight-config-auth-harbor.yaml"
+    spawn sh -c "${EXEC}"
     expect {
-        "Are you sure to delete this cluster? [yes/no]:*" { send "yes\r"; exp_continue }
+        "Are you sure to delete this cluster*" { send "yes\r"; exp_continue }
         eof
     }
 EOF

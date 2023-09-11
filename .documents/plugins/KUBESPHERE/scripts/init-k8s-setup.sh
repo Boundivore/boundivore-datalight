@@ -31,9 +31,9 @@ EXEC="${BIN_DIR}/kk create cluster \
 
 /usr/bin/expect <<-EOF
     set timeout -1
-    spawn sh "${EXEC}"
+    spawn sh -c "${EXEC}"
     expect {
-        "Continue this installation? [yes/no]:*" { send "yes\r"; exp_continue }
+        "Continue this installation*" { send "yes\r"; exp_continue }
         eof
     }
 EOF
