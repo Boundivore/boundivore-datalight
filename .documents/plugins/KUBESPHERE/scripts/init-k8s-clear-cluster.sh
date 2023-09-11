@@ -37,14 +37,14 @@ EXEC="${BIN_DIR}/kk delete cluster \
     }
 EOF
 
-kubectl delete --all pods --all-namespaces
-kubectl delete --all deployments --all-namespaces
-kubectl delete --all services --all-namespaces
-kubectl delete ns kubesphere-system kubesphere-monitoring-system openpitrix-system
-rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/
-docker stop $(docker ps -aq)
-docker rm -f $(docker ps -aq)
-docker rmi -f $(docker images -q)
-docker network prune -f
-docker volume prune -f
+#kubectl delete --all pods --all-namespaces
+#kubectl delete --all deployments --all-namespaces
+#kubectl delete --all services --all-namespaces
+#kubectl delete ns kubesphere-system kubesphere-monitoring-system openpitrix-system
+#rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/
+#docker stop $(docker ps -aq)
+#docker rm -f $(docker ps -aq)
+#docker rmi -f $(docker images -q)
+#docker network prune -f
+#docker volume prune -f
 
