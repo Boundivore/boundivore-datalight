@@ -9,6 +9,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 new_password=$1
+new_password=${new_password:-'2wsx@WSX'}
 
 cluster_ip=$(kubectl -n kubesphere-system get svc | grep 'ks-apiserver' | awk '{print $3}')
 current_password=$(kubectl logs -n kubesphere-system \
