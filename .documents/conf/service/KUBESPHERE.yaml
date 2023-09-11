@@ -43,7 +43,7 @@ datalight:
         - type: JAR
           name: '初始化服务配置文件'
           jar: 'plugins-kubesphere-1.0.0.jar'
-          clazz: 'cn.boundivore.dl.plugin.kubesphere.config.ConfigKUBESPHERE'
+          clazz: 'cn.boundivore.dl.plugin.kubesphere.config.ConfigKubesphere'
           args: [ ]
           interactions: [ ]
           exits: '0'
