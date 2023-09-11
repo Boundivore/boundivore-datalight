@@ -23,4 +23,5 @@ chmod +x -R "${BIN_DIR}"
 
 EXEC="${BIN_DIR}/create_project_harbor.sh"
 
-su -c "${EXEC}" "${USER_NAME}"
+sh "${EXEC}"
+chown "${USER_NAME}:${GROUP_NAME}" -R /opt/harbor
