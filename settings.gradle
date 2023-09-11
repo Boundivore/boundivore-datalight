@@ -40,4 +40,6 @@ include 'datalight-starter-parent:starter-zookeeper'
 findProject(':datalight-starter-parent:starter-zookeeper')?.name = 'starter-zookeeper'
 include 'datalight-plugins:plugins-yarn'
 findProject(':datalight-plugins:plugins-yarn')?.name = 'plugins-yarn'
+include 'datalight-plugins:plugins-kubesphere'
+findProject(':datalight-plugins:plugins-kubesphere')?.name = 'plugins-kubesphere'
 
