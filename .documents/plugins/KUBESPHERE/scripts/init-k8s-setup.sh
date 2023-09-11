@@ -18,6 +18,7 @@ SERVICE_NAME="KUBESPHERE"
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 KUBESPHERE_DLC_DIR="${DATALIGHT_DIR}/plugins/${SERVICE_NAME}/dlc"
 BIN_DIR="${CURRENT_SERVICE_DIR}/bin"
+CONFIG_DIR="${CURRENT_SERVICE_DIR}/conf"
 
 # 授权可执行权限
 chmod +x -R "${BIN_DIR}"
@@ -28,4 +29,11 @@ EXEC="${BIN_DIR}/kk create cluster \
 -f ${CONFIG_DIR}/datalight-config-auth-harbor.yaml \
 -a ${KUBESPHERE_DLC_DIR}/kubesphere-artifact.tar.gz --with-packages"
 
-su -c "${EXEC}" "${USER_NAME}"
+/usr/bin/expect <<-EOF
+    set timeout -1
+    spawn sh "${EXEC}"
+    expect {
+        "Continue this installation? [yes/no]:*" { send "yes\r"; exp_continue }
+        eof
+    }
+EOF
