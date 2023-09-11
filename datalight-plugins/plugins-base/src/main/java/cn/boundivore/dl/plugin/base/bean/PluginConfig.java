@@ -85,7 +85,6 @@ public class PluginConfig implements Serializable {
         String dbPassword;
     }
 
-
     @Data
     @Accessors(chain = true)
     @AllArgsConstructor

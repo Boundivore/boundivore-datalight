@@ -49,6 +49,13 @@ public class ConfigLogicAuthHarborYaml extends AbstractConfigLogic {
                 file
         );
 
+        // 目前在预配置环节处理
+        // {{spec.hosts}}
+        // {{spec.roleGroups.etcd}}
+        // {{spec.roleGroups.control-plane}}
+        // {{spec.roleGroups.worker}}
+        // {{spec.roleGroups.registry}}
+
         return replacedTemplated;
     }
 

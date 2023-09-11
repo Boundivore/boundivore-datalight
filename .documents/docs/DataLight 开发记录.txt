@@ -130,6 +130,17 @@ java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
 
 sh /opt/datalight/bin/datalight.sh stop worker; \
+/srv/datalight/KUBESPHERE/bin/kk delete cluster -f /srv/datalight/KUBESPHERE/conf/datalight-config-auth-harbor.yaml; \
+kubectl delete --all pods --all-namespaces; \
+kubectl delete --all deployments --all-namespaces; \
+kubectl delete --all services --all-namespaces; \
+kubectl delete ns kubesphere-system kubesphere-monitoring-system openpitrix-system; \
+rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/; \
+docker stop $(docker ps -aq); \
+docker rm -f $(docker ps -aq); \
+docker rmi -f $(docker images -q); \
+docker network prune -f; \
+docker volume prune -f; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh AlertManager stop; \
@@ -168,6 +179,21 @@ cat /etc/hosts
 重载 Prometheus：
 curl -X POST http://node01:9090/-/reload
 
+
+./kk delete cluster -f datalight-config-auth-harbor.yaml
+
+kubectl delete --all pods --all-namespaces
+kubectl delete --all deployments --all-namespaces
+kubectl delete --all services --all-namespaces
+kubectl delete ns kubesphere-system kubesphere-monitoring-system openpitrix-system
+
+rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/
+
+docker stop $(docker ps -aq)
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -q)
+docker network prune -f
+docker volume prune -f
 
 
 新建集群：

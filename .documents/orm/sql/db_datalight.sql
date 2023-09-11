@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 24/08/2023 17:23:52
+ Date: 11/09/2023 15:59:16
 */
 
 SET NAMES utf8mb4;
@@ -101,7 +101,7 @@ CREATE TABLE `t_dl_config_pre`  (
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `service_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '服务名称',
   `placeholder` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置文件占位符 templated 中各类被{{}}包括的占位项',
-  `value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '占位符修改后的值',
+  `value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '占位符修改后的值',
   `default_value` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '占位符的默认值',
   `templated_config_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置模板文件路径 绝对路径',
   PRIMARY KEY (`id`) USING BTREE
