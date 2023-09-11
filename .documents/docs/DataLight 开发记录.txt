@@ -182,10 +182,12 @@ curl -X POST http://node01:9090/-/reload
 
 ./kk delete cluster -f datalight-config-auth-harbor.yaml
 
+
+
 kubectl delete --all pods --all-namespaces
 kubectl delete --all deployments --all-namespaces
 kubectl delete --all services --all-namespaces
-kubectl delete ns kubesphere-system kubesphere-monitoring-system openpitrix-system
+kubectl delete namespaces kubesphere-system kubesphere-public kubesphere-monitoring-system kubesphere-logging-system kubesphere-devops-system kubesphere-alerting-system kubesphere-federated-system
 
 rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/
 

@@ -114,8 +114,9 @@ public final class ResolverYamlServicePlaceholder {
 
 
                 PLACEHOLDER_MAP.put(mainService.getName(), placeholderService);
+                log.info("已加载服务预配置模板: {}", mainService.getName());
             } else {
-                log.info("该服务不存在预配置: {}", mainService.getName());
+                log.info("未发现服务预配置模板: {}", mainService.getName());
             }
         }
 
