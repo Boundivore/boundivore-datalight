@@ -67,7 +67,7 @@ datalight:
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 300000
+                timeout: 1200000
                 sleep: 1000
 
               - type: SCRIPT
@@ -76,7 +76,7 @@ datalight:
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 300000
+                timeout: 1200000
                 sleep: 1000
 
           - type: START
@@ -129,7 +129,7 @@ datalight:
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 300000
+                timeout: 1200000
                 sleep: 1000
 
               - type: SCRIPT
