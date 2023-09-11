@@ -184,7 +184,7 @@ spec:
   monitoring:
     storageClass: ""
     node_exporter:
-      port: 9100
+      port: 9110
       # resources: {}
     # kube_rbac_proxy:
     #   resources: {}
