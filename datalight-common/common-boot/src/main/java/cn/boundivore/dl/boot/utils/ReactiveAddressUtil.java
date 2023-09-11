@@ -188,11 +188,15 @@ public class ReactiveAddressUtil {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             while (interfaces.hasMoreElements()) {
                 NetworkInterface networkInterface = interfaces.nextElement();
-                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
-                while (addresses.hasMoreElements()) {
-                    InetAddress address = addresses.nextElement();
-                    if (!address.isLoopbackAddress() && address.isSiteLocalAddress()) {
-                        return address.getHostAddress();
+
+                // Check if the interface name starts with 'en'
+                if (networkInterface.getName().startsWith("en")) {
+                    Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                    while (addresses.hasMoreElements()) {
+                        InetAddress address = addresses.nextElement();
+                        if (!address.isLoopbackAddress() && address.isSiteLocalAddress()) {
+                            return address.getHostAddress();
+                        }
                     }
                 }
             }
