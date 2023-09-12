@@ -130,17 +130,7 @@ java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
 
 sh /opt/datalight/bin/datalight.sh stop worker; \
-/srv/datalight/KUBESPHERE/bin/kk delete cluster -f /srv/datalight/KUBESPHERE/conf/datalight-config-auth-harbor.yaml; \
-kubectl delete --all pods --all-namespaces; \
-kubectl delete --all deployments --all-namespaces; \
-kubectl delete --all services --all-namespaces; \
-kubectl delete ns kubesphere-system kubesphere-monitoring-system openpitrix-system; \
-rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/; \
-docker stop $(docker ps -aq); \
-docker rm -f $(docker ps -aq); \
-docker rmi -f $(docker images -q); \
-docker network prune -f; \
-docker volume prune -f; \
+sh /opt/datalight/plugins/KUBESPHERE/scripts/init-k8s-clear-cluster.sh; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh AlertManager stop; \
@@ -196,6 +186,24 @@ docker rm -f $(docker ps -aq)
 docker rmi -f $(docker images -q)
 docker network prune -f
 docker volume prune -f
+
+
+./bin/docker-image-tool.sh -r dockerhub.kubekey.local/bigdata -t v3.2.4 build
+./bin/docker-image-tool.sh -r dockerhub.kubekey.local/bigdata -t v3.2.4 push
+image: "dockerhub.kubekey.local/bigdata/spark:v3.2.4"
+docker run -it 129599458a19 /bin/bash
+helm install datalight-spark-operator spark-operator/spark-operator --namespace spark-operator --create-namespace
+
+./bin/spark-submit \
+--master k8s://https://lb.datalight.local:6443 \
+--deploy-mode cluster \
+--name spark-pi \
+--class org.apache.spark.examples.SparkPi \
+--conf spark.executor.instances=5 \
+--conf spark.kubernetes.container.image="dockerhub.kubekey.local/bigdata/spark:v3.2.4" \
+--conf spark.kubernetes.namespace="bigdata" \
+--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark \
+"local:///opt/spark/examples/jars/spark-examples_2.13-3.2.4.jar"
 
 
 新建集群：

@@ -30,4 +30,4 @@ EXEC="${BIN_DIR}/kk init registry \
 -f ${CONFIG_DIR}/datalight-config-no-auth-harbor.yaml \
 -a ${KUBESPHERE_DLC_DIR}/kubesphere-artifact.tar.gz"
 
-sh "${EXEC}"
+sh -c "${EXEC}"

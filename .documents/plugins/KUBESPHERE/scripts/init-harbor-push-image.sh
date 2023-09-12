@@ -27,4 +27,4 @@ EXEC="${BIN_DIR}/kk artifact image push \
 -f ${CONFIG_DIR}/datalight-config-auth-harbor.yaml \
 -a ${KUBESPHERE_DLC_DIR}/kubesphere-artifact.tar.gz"
 
-su -c "${EXEC}" "${USER_NAME}"
+sh -c "${EXEC}"
