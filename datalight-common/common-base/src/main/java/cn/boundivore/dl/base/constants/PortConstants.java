@@ -51,6 +51,10 @@ public class PortConstants {
             put("YARN-NodeManager", "7008");
             put("YARN-TimelineServer", "7009");
             put("YARN-HistoryServer", "7010");
+
+            put("HIVE-MetaStore", "7011");
+            put("HIVE-HiveServer2", "7012");
+
         }
     };
 
@@ -69,6 +73,9 @@ public class PortConstants {
             put("YARN-NodeManager", "6008");
             put("YARN-TimelineServer", "6009");
             put("YARN-HistoryServer", "6010");
+
+            put("HIVE-MetaStore", "6011");
+            put("HIVE-HiveServer2", "6012");
         }
     };
 

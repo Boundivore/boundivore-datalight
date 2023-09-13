@@ -42,4 +42,6 @@ include 'datalight-plugins:plugins-yarn'
 findProject(':datalight-plugins:plugins-yarn')?.name = 'plugins-yarn'
 include 'datalight-plugins:plugins-kubesphere'
 findProject(':datalight-plugins:plugins-kubesphere')?.name = 'plugins-kubesphere'
+include 'datalight-plugins:plugins-hive'
+findProject(':datalight-plugins:plugins-hive')?.name = 'plugins-hive'
 
