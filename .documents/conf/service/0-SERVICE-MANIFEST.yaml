@@ -32,5 +32,10 @@ datalight:
         priority: 5
         dependencies: [ 'ZOOKEEPER', 'HDFS' ]
         relatives: [ 'MONITOR' ]
-
+      - name: HIVE
+        type: COMPUTE
+        desc: 'HQL 任务生成与计算框架'
+        priority: 6
+        dependencies: [ 'HDFS', 'YARN' ]
+        relatives: [ 'MONITOR' ]
 
