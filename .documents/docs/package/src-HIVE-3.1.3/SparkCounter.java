@@ -25,7 +25,6 @@ import java.io.Serializable;
 //import org.apache.spark.AccumulatorParam;
 // DLC-FIX
 import org.apache.spark.util.LongAccumulator;
-import org.apache.spark.AccumulatorParam;
 import org.apache.spark.api.java.JavaSparkContext;
 
 public class SparkCounter implements Serializable {
