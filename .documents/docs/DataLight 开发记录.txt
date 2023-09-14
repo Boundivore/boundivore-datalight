@@ -130,7 +130,7 @@ java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
 
 sh /opt/datalight/bin/datalight.sh stop worker; \
-sh /opt/datalight/plugins/KUBESPHERE/scripts/init-k8s-clear-cluster.sh; \
+/srv/datalight/KUBESPHERE/bin/kk delete cluster -f /srv/datalight/KUBESPHERE/conf/datalight-config-auth-harbor.yaml; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh AlertManager stop; \
@@ -170,7 +170,7 @@ cat /etc/hosts
 curl -X POST http://node01:9090/-/reload
 
 
-./kk delete cluster -f datalight-config-auth-harbor.yaml
+/srv/datalight/KUBESPHERE/bin/kk delete cluster -f /srv/datalight/KUBESPHERE/conf/datalight-config-auth-harbor.yaml
 
 
 
@@ -193,6 +193,10 @@ docker volume prune -f
 image: "dockerhub.kubekey.local/bigdata/spark:v3.2.4"
 docker run -it 129599458a19 /bin/bash
 helm install datalight-spark-operator spark-operator/spark-operator --namespace spark-operator --create-namespace
+
+# 检查依赖冲突
+[root@node01 llap-tez]# mvn dependency:tree -Dincludes=org.apache.tez
+
 
 ./bin/spark-submit \
 --master k8s://https://lb.datalight.local:6443 \
