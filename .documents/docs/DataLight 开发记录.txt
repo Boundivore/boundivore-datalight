@@ -210,6 +210,16 @@ helm install datalight-spark-operator spark-operator/spark-operator --namespace 
 "local:///opt/spark/examples/jars/spark-examples_2.13-3.2.4.jar"
 
 
+部分依赖无法下载，hosts 添加：
+127.0.0.1 repository.jboss.org
+
+升级 git：
+yum -y install curl-devel expat-devel gettext-devel openssl-devel zlib-devel asciidoc
+yum -y install gcc perl-ExtUtils-MakeMaker
+
+Token:
+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
+
 新建集群：
 {
     "ClusterDesc": "第1个集群（MIXED 集群）",
