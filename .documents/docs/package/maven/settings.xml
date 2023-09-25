@@ -180,25 +180,79 @@ under the License.
      | server for that repository.
      |-->
     <mirrors>
+<!--        <mirror>-->
+<!--            <id>aliyunmaven</id>-->
+<!--            <mirrorOf>*</mirrorOf>-->
+<!--            <name>spring-plugin</name>-->
+<!--            <url>https://maven.aliyun.com/repository/spring-plugin</url>-->
+<!--        </mirror>-->
+<!--        &lt;!&ndash; 阿里云镜像 &ndash;&gt;-->
+<!--        <mirror>-->
+<!--            <id>aliyun</id>-->
+<!--            <name>Aliyun Maven</name>-->
+<!--            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>-->
+<!--            <mirrorOf>*</mirrorOf>-->
+<!--        </mirror>-->
+<!--        &lt;!&ndash; 华为云镜像 &ndash;&gt;-->
+<!--        <mirror>-->
+<!--            <id>huaweicloud</id>-->
+<!--            <name>Huawei Cloud Mirror</name>-->
+<!--            <url>https://repo.huaweicloud.com/repository/maven/</url>-->
+<!--            <mirrorOf>*</mirrorOf>-->
+<!--        </mirror>-->
         <mirror>
             <id>aliyunmaven</id>
             <mirrorOf>*</mirrorOf>
             <name>spring-plugin</name>
             <url>https://maven.aliyun.com/repository/spring-plugin</url>
         </mirror>
-        <!-- 阿里云镜像 -->
         <mirror>
-            <id>aliyun</id>
-            <name>Aliyun Maven</name>
-            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-            <mirrorOf>*</mirrorOf>
+            <id>alimaven</id>
+            <mirrorOf>central</mirrorOf>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
         </mirror>
-        <!-- 华为云镜像 -->
         <mirror>
-            <id>huaweicloud</id>
-            <name>Huawei Cloud Mirror</name>
-            <url>https://repo.huaweicloud.com/repository/maven/</url>
-            <mirrorOf>*</mirrorOf>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <url>http://repo1.maven.org/maven2/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>repo2</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Human Readable Name for this Mirror.</name>
+            <url>http://repo2.maven.org/maven2/</url>
+        </mirror>
+        <mirror>
+            <id>ibiblio</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Human Readable Name for this Mirror.</name>
+            <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
+        </mirror>
+        <mirror>
+            <id>jboss-public-repository-group</id>
+            <mirrorOf>central</mirrorOf>
+            <name>JBoss Public Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        </mirror>
+        <mirror>
+            <id>google-maven-central</id>
+            <name>Google Maven Central</name>
+            <url>https://maven-central.storage.googleapis.com/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        <mirror>
+            <id>maven.net.cn</id>
+            <name>oneof the central mirrors in china</name>
+            <url>http://maven.net.cn/content/groups/public/</url>
+            <mirrorOf>central</mirrorOf>
         </mirror>
     </mirrors>
 
