@@ -359,6 +359,8 @@ public class Job extends Thread {
         );
 
         List<YamlServiceDetail.Step> finalSteps = new LinkedList<>(action.getSteps());
+        //TODO 针对所有节点，针对同一个服务，如果是第一个执行配置文件初始化的任务，则阻塞，其他任务则不阻塞，可提升并发速度
+        //TODO 注意：该操作仅仅是为了在这里备注，需要修改代码的位置位于：添加 TaskMeta 的位置
         if (taskMeta.isFirstDeployInNode()) {
             YamlServiceDetail.Initialize initialize = ResolverYamlServiceDetail.SERVICE_MAP
                     .get(taskMeta.getServiceName()).getInitialize();
