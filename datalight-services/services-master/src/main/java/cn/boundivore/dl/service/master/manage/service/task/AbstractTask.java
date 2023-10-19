@@ -298,6 +298,7 @@ public abstract class AbstractTask implements ITask {
 
                 if (IConfig.class.isAssignableFrom(clazz)) {
                     IConfig iConfig = (IConfig) clazz.getDeclaredConstructor().newInstance();
+                    //TODO 反射实例此处可以通过 ThreadLocal 缓存，降低开销
                     iConfig.init(this.jobService.pluginConfig(this.taskMeta));
 
                     //得到配置文件修改后的返回结果，准备入库

@@ -216,6 +216,7 @@ public class ConfigEventSubscriber {
                 if (IConfigEventHandler.class.isAssignableFrom(clazz)) {
                     IConfigEventHandler iConfigEventHandler = (IConfigEventHandler) clazz.getDeclaredConstructor().newInstance();
                     // 传递当前变动的事件
+                    //TODO 反射实例此处可以通过 ThreadLocal 缓存，降低开销
                     iConfigEventHandler.init(pluginConfigEvent);
 
                     // 读取受影响服务本次涉及修改的配置文件列表
