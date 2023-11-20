@@ -66,7 +66,7 @@ public abstract class AbsBaseSwaggerConfig {
                 .globalResponses(HttpMethod.POST, globalResponse())
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-//                .apis(RequestHandlerSelectors.basePackage("com.meishealth.trans.facade.api"))
+//                .apis(RequestHandlerSelectors.basePackage("cn.boundivore.dl"))
                 .paths(PathSelectors.any())
                 .build()
                 .groupName("datalight");
