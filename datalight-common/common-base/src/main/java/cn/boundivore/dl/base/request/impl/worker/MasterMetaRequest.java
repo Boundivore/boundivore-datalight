@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,10 +41,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "MasterMetaRequest", description = "MasterMetaRequest: Master 进程的元数据信息")
+@Schema(name = "MasterMetaRequest", description = "MasterMetaRequest: Master 进程的元数据信息")
 public class MasterMetaRequest implements IRequest {
 
-    @ApiModelProperty(name = "Ip", value = "Master 所在节点的 IP 地址", required = true)
+    @Schema(name = "Ip", title = "Master 所在节点的 IP 地址", required = true)
     @JsonProperty("Ip")
     private String ip;
 

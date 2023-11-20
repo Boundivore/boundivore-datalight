@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,19 +45,19 @@ public abstract class AbstractServiceComponentRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractServiceComponentRequest#ServiceSelectRequest",
+    @Schema(
+            name = "AbstractServiceComponentRequest#ServiceSelectRequest",
             description = "AbstractServiceComponentRequest#ServiceSelectRequest: " +
                     "部署前，选择服务(需传递全部服务名称，以及服务选中或未选中状态) 请求体"
     )
     public static class ServiceSelectRequest implements IRequest {
 
-        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
-        @ApiModelProperty(name = "ServiceList", value = "服务列表", required = true)
+        @Schema(name = "ServiceList", title = "服务列表", required = true)
         @JsonProperty(value = "ServiceList", required = true)
         @NotNull
         private List<ServiceRequest> serviceList;
@@ -67,18 +68,18 @@ public abstract class AbstractServiceComponentRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractServiceComponentRequest#ServiceRequest",
+    @Schema(
+            name = "AbstractServiceComponentRequest#ServiceRequest",
             description = "服务信息 请求体"
     )
     public static class ServiceRequest implements IRequest {
 
-        @ApiModelProperty(name = "ServiceName", value = "服务名称", required = true)
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
         @NotNull
         private String serviceName;
 
-        @ApiModelProperty(name = "SCStateEnum", value = "服务状态", required = true)
+        @Schema(name = "SCStateEnum", title = "服务状态", required = true)
         @JsonProperty(value = "SCStateEnum", required = true)
         @NotNull
         private SCStateEnum scStateEnum;
@@ -89,18 +90,18 @@ public abstract class AbstractServiceComponentRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractServiceComponentRequest#ComponentSelectRequest",
+    @Schema(
+            name = "AbstractServiceComponentRequest#ComponentSelectRequest",
             description = "部署前，选择组件请求体"
     )
     public static class ComponentSelectRequest implements IRequest {
 
-        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
-        @ApiModelProperty(name = "ComponentList", value = "组件分布列表", required = true)
+        @Schema(name = "ComponentList", title = "组件分布列表", required = true)
         @JsonProperty(value = "ComponentList", required = true)
         @NotNull
         private List<ComponentRequest> componentList;
@@ -111,29 +112,29 @@ public abstract class AbstractServiceComponentRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractServiceComponentRequest#ComponentRequest",
+    @Schema(
+            name = "AbstractServiceComponentRequest#ComponentRequest",
             description = "AbstractServiceComponentRequest#ComponentRequest: " +
                     "组件信息 请求体"
     )
     public static class ComponentRequest implements IRequest {
 
-        @ApiModelProperty(name = "ServiceName", value = "服务名称", required = true)
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
         @NotNull
         private String serviceName;
 
-        @ApiModelProperty(name = "ComponentName", value = "组件名称", required = true)
+        @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)
         @NotNull
         private String componentName;
 
-        @ApiModelProperty(name = "SCStateEnum", value = "组件状态", required = true)
+        @Schema(name = "SCStateEnum", title = "组件状态", required = true)
         @JsonProperty(value = "SCStateEnum", required = true)
         @NotNull
         private SCStateEnum scStateEnum;
 
-        @ApiModelProperty(name = "NodeIdList", value = "组件分布在哪些节点", required = true)
+        @Schema(name = "NodeIdList", title = "组件分布在哪些节点", required = true)
         @JsonProperty(value = "NodeIdList", required = true)
         @NotNull
         private List<Long> nodeIdList;

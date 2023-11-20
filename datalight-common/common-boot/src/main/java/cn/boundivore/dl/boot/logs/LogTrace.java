@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.result.ResultEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,57 +40,60 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "LogTrace: Log 埋点日志")
+@Schema(
+        name = "LogTrace",
+        description = "LogTrace: Log 埋点日志"
+)
 public class LogTrace {
-    @ApiModelProperty(name = "LogName", value = "日志名称", required = true)
+    @Schema(name = "LogName", title = "日志名称", required = true)
     @JsonProperty(value = "LogName", required = true)
     private String logName;
 
-    @ApiModelProperty(name = "UserId", value = "用户 ID", required = true)
+    @Schema(name = "UserId", title = "用户 ID", required = true)
     @JsonProperty(value = "UserId", required = true)
     private Long userId;
 
-    @ApiModelProperty(name = "Mobile", value = "手机号", required = true)
+    @Schema(name = "Mobile", title = "手机号", required = true)
     @JsonProperty(value = "Mobile", required = true)
     private String mobile;
 
-    @ApiModelProperty(name = "TimeStamp", value = "请求发生的时间戳(毫秒数)", required = true)
+    @Schema(name = "TimeStamp", title = "请求发生的时间戳(毫秒数)", required = true)
     @JsonProperty(value = "TimeStamp", required = true)
     private Long timeStamp;
 
-    @ApiModelProperty(name = "DateFormat", value = "请求发生的日期(yyyy-MM-dd HH:mm:ss)", required = true)
+    @Schema(name = "DateFormat", title = "请求发生的日期(yyyy-MM-dd HH:mm:ss)", required = true)
     @JsonProperty(value = "DateFormat", required = true)
     private String dateFormat;
 
-    @ApiModelProperty(name = "LogType", value = "日志类型", required = true)
+    @Schema(name = "LogType", title = "日志类型", required = true)
     @JsonProperty(value = "LogType", required = true)
     private LogTypeEnum logType;
 
-    @ApiModelProperty(name = "ClassMethod", value = "请求的 类#方法()", required = true)
+    @Schema(name = "ClassMethod", title = "请求的 类#方法()", required = true)
     @JsonProperty(value = "ClassMethod", required = true)
     private String classMethod;
 
-    @ApiModelProperty(name = "Ip", value = "请求来源的IP", required = true)
+    @Schema(name = "Ip", title = "请求来源的IP", required = true)
     @JsonProperty(value = "Ip", required = true)
     private String ip;
 
-    @ApiModelProperty(name = "Uri", value = "请求来源的 Uri", required = true)
+    @Schema(name = "Uri", title = "请求来源的 Uri", required = true)
     @JsonProperty(value = "Uri", required = true)
     private String uri;
 
-    @ApiModelProperty(name = "ResultCode", value = "请求响应体返回的状态码", required = true)
+    @Schema(name = "ResultCode", title = "请求响应体返回的状态码", required = true)
     @JsonProperty(value = "ResultCode", required = true)
     private String resultCode;
 
-    @ApiModelProperty(name = "ResultEnum", value = "请求响应体返回的状态枚举", required = true)
+    @Schema(name = "ResultEnum", title = "请求响应体返回的状态枚举", required = true)
     @JsonProperty(value = "ResultEnum", required = true)
     private ResultEnum resultEnum;
 
-    @ApiModelProperty(name = "Params", value = "请求入参", required = true)
+    @Schema(name = "Params", title = "请求入参", required = true)
     @JsonProperty(value = "Params", required = true)
     private Object[] params;
 
-    @ApiModelProperty(name = "Result", value = "请求返回的结果", required = true)
+    @Schema(name = "Result", title = "请求返回的结果", required = true)
     @JsonProperty(value = "Result", required = true)
     private Result<?> result;
 

@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,28 +43,28 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "ParseHostnameVo",
+@Schema(
+        name = "ParseHostnameVo",
         description = "ParseHostnameVo: 解析节点主机名 响应体"
 )
 public class ParseHostnameVo implements IVo {
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
     private Long clusterId;
 
-    @ApiModelProperty(name = "SshPort", value = "SSH 端口号", required = true)
+    @Schema(name = "SshPort", title = "SSH 端口号", required = true)
     @JsonProperty(value = "SshPort", required = true)
     @NotNull
     private Long sshPort;
 
-    @ApiModelProperty(name = "ValidHostnameList", value = "合法主机名列表", required = true)
+    @Schema(name = "ValidHostnameList", title = "合法主机名列表", required = true)
     @JsonProperty(value = "ValidHostnameList", required = true)
     @NotNull
     private List<String> validHostnameList;
 
-    @ApiModelProperty(name = "InvalidHostnameList", value = "非法主机名列表", required = true)
+    @Schema(name = "InvalidHostnameList", title = "非法主机名列表", required = true)
     @JsonProperty(value = "InvalidHostnameList", required = true)
     @NotNull
     private List<String> invalidHostnameList;

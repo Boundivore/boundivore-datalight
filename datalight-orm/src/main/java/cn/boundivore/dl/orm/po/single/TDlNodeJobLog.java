@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,36 +23,36 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_node_job_log")
-@ApiModel(value = "TDlNodeJobLog对象", description = "Job 节点工作日志信息表")
+@Schema(name = "TDlNodeJobLog对象", description = "Job 节点工作日志信息表")
 public class TDlNodeJobLog extends TBasePo<TDlNodeJobLog> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("同批任务唯一标识")
+    @Schema(name = "同批任务唯一标识")
     @TableField("tag")
     private String tag;
 
-    @ApiModelProperty("集群 ID")
+    @Schema(name = "集群 ID")
     @TableField("cluster_id")
     private Long clusterId;
 
-    @ApiModelProperty("NodeJob ID")
+    @Schema(name = "NodeJob ID")
     @TableField("node_job_id")
     private Long nodeJobId;
 
-    @ApiModelProperty("NodeTask ID")
+    @Schema(name = "NodeTask ID")
     @TableField("node_task_id")
     private Long nodeTaskId;
 
-    @ApiModelProperty("NodeStep ID")
+    @Schema(name = "NodeStep ID")
     @TableField("node_step_id")
     private Long nodeStepId;
 
-    @ApiModelProperty("标准日志")
+    @Schema(name = "标准日志")
     @TableField("log_stdout")
     private String logStdout;
 
-    @ApiModelProperty("错误日志")
+    @Schema(name = "错误日志")
     @TableField("log_errout")
     private String logErrout;
 

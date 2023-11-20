@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,16 +22,16 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_login_event")
-@ApiModel(value = "TDlLoginEvent对象", description = "")
+@Schema(name = "TDlLoginEvent对象", description = "")
 public class TDlLoginEvent extends TBasePo<TDlLoginEvent> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("用户 ID")
+    @Schema(name = "用户 ID")
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty("最近一次登录时间")
+    @Schema(name = "最近一次登录时间")
     @TableField("last_login")
     private Long lastLogin;
 

@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,18 +34,18 @@ public abstract class AbstractJobVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "JobIdVo",
+    @Schema(
+            name = "JobIdVo",
             description = "JobIdVo: JobId 信息"
     )
     public static class JobIdVo implements IVo {
 
-        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
-        @ApiModelProperty(name = "JobId", value = "异步 Job Id", required = true)
+        @Schema(name = "JobId", title = "异步 Job Id", required = true)
         @JsonProperty(value = "JobId", required = true)
         @NotNull
         private Long jobId;

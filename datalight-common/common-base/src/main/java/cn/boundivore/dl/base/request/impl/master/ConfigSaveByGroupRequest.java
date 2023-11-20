@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -41,24 +42,24 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "ConfigSaveByGroupRequest",
+@Schema(
+        name = "ConfigSaveByGroupRequest",
         description = "ConfigSaveByGroupRequest: 保存服务组件配置 请求体"
 )
 public class ConfigSaveByGroupRequest implements IRequest {
 
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
     private Long clusterId;
 
-    @ApiModelProperty(name = "ServiceName", value = "服务名称", required = true)
+    @Schema(name = "ServiceName", title = "服务名称", required = true)
     @JsonProperty(value = "ServiceName", required = true)
     @NotNull
     private String serviceName;
 
-    @ApiModelProperty(name = "ConfigGroupList", value = "配置信息分组列表", required = true)
+    @Schema(name = "ConfigGroupList", title = "配置信息分组列表", required = true)
     @JsonProperty(value = "ConfigGroupList", required = true)
     @NotEmpty
     private List<ConfigGroupRequest> configGroupList;
@@ -75,33 +76,33 @@ public class ConfigSaveByGroupRequest implements IRequest {
                     "configData"
             }
     )
-    @ApiModel(
-            value = "ConfigSaveByGroupRequest#ConfigGroupRequest",
+    @Schema(
+            name = "ConfigSaveByGroupRequest#ConfigGroupRequest",
             description = "ConfigSaveByGroupRequest#ConfigGroupRequest: 当前配置信息"
     )
     public static class ConfigGroupRequest implements IRequest {
 
-        @ApiModelProperty(name = "Sha256", value = "配置文件唯一信息摘要", required = true)
+        @Schema(name = "Sha256", title = "配置文件唯一信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)
         @NotNull
         private String sha256;
 
-        @ApiModelProperty(name = "Filename", value = "配置文件名称", required = true)
+        @Schema(name = "Filename", title = "配置文件名称", required = true)
         @JsonProperty(value = "Filename", required = true)
         @NotNull
         private String filename;
 
-        @ApiModelProperty(name = "ConfigPath", value = "配置文件绝对路径", required = true)
+        @Schema(name = "ConfigPath", title = "配置文件绝对路径", required = true)
         @JsonProperty(value = "ConfigPath", required = true)
         @NotNull
         private String configPath;
 
-        @ApiModelProperty(name = "ConfigData", value = "配置文件内容(Base64)", required = true)
+        @Schema(name = "ConfigData", title = "配置文件内容(Base64)", required = true)
         @JsonProperty(value = "ConfigData", required = true)
         @NotNull
         private String configData;
 
-        @ApiModelProperty(name = "ConfigNodeList", value = "配置文件所在节点", required = true)
+        @Schema(name = "ConfigNodeList", title = "配置文件所在节点", required = true)
         @JsonProperty(value = "ConfigNodeList", required = true)
         @NotEmpty
         private List<ConfigNodeRequest> configNodeList;
@@ -112,28 +113,28 @@ public class ConfigSaveByGroupRequest implements IRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Builder
-    @ApiModel(
-            value = "ConfigSaveByGroupRequest#ConfigNodeRequest",
+    @Schema(
+            name = "ConfigSaveByGroupRequest#ConfigNodeRequest",
             description = "ConfigSaveByGroupRequest#ConfigNodeRequest: 节点信息"
     )
     public static class ConfigNodeRequest implements IRequest {
 
-        @ApiModelProperty(name = "NodeId", value = "节点 ID", required = true)
+        @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull
         private Long nodeId;
 
-        @ApiModelProperty(name = "Hostname", value = "节点主机名", required = true)
+        @Schema(name = "Hostname", title = "节点主机名", required = true)
         @JsonProperty(value = "Hostname", required = true)
         @NotNull
         private String hostname;
 
-        @ApiModelProperty(name = "NodeIp", value = "节点 IP 地址", required = true)
+        @Schema(name = "NodeIp", title = "节点 IP 地址", required = true)
         @JsonProperty(value = "NodeIp", required = true)
         @NotNull
         private String nodeIp;
 
-        @ApiModelProperty(name = "ConfigVersion", value = "配置文件当前版本", required = true)
+        @Schema(name = "ConfigVersion", title = "配置文件当前版本", required = true)
         @JsonProperty(value = "ConfigVersion", required = true)
         @NotNull
         private Long configVersion;

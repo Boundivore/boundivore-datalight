@@ -21,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -40,34 +41,37 @@ import static cn.boundivore.dl.base.result.ResultEnum.SUCCESS;
  * Version: V1.0
  */
 @Data
-@ApiModel(description = "HTTP 返回结果")
+@Schema(
+        name = "Result",
+        description = "HTTP 返回结果"
+)
 public class Result<T> implements Serializable {
-    @ApiModelProperty(name = "Timestamp", value = "毫秒时间戳", required = true)
+    @Schema(name = "Timestamp", title = "毫秒时间戳", required = true)
     @JsonProperty("Timestamp")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long timestamp;
 
-    @ApiModelProperty(name = "Code", value = "返回码", required = true)
+    @Schema(name = "Code", title = "返回码", required = true)
     @JsonProperty("Code")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String code;
 
-    @ApiModelProperty(name = "Message", value = "返回消息", required = true)
+    @Schema(name = "Message", title = "返回消息", required = true)
     @JsonProperty("Message")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
-    @ApiModelProperty(name = "MessageType", value = "消息类型", required = true)
+    @Schema(name = "MessageType", title = "消息类型", required = true)
     @JsonProperty("MessageType")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String messageType;
 
-    @ApiModelProperty(name = "Page", value = "分页信息", required = true)
+    @Schema(name = "Page", title = "分页信息", required = true)
     @JsonProperty(value = "Page", required = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Page page;
 
-    @ApiModelProperty(name = "Data", value = "返回数据", required = true)
+    @Schema(name = "Data", title = "返回数据", required = true)
     @JsonProperty("Data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;

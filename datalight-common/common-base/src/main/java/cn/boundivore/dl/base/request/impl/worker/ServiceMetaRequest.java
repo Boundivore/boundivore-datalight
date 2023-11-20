@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,25 +45,25 @@ import java.util.List;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "ServiceMetaRequest", description = "MasterMetaRequest: Service 服务元数据信息")
+@Schema(name = "ServiceMetaRequest", description = "MasterMetaRequest: Service 服务元数据信息")
 public class ServiceMetaRequest implements IRequest {
 
-    @ApiModelProperty(name = "NodeId", value = "Worker 当前节点 ID", required = true)
+    @Schema(name = "NodeId", title = "Worker 当前节点 ID", required = true)
     @JsonProperty("NodeId")
     @NotNull
     private Long nodeId;
 
-    @ApiModelProperty(name = "Hostname", value = "Worker 当前节点主机名", required = true)
+    @Schema(name = "Hostname", title = "Worker 当前节点主机名", required = true)
     @JsonProperty("Hostname")
     @NotNull
     private String hostname;
 
-    @ApiModelProperty(name = "Ip", value = "Worker 当前节点 IP", required = true)
+    @Schema(name = "Ip", title = "Worker 当前节点 IP", required = true)
     @JsonProperty("Ip")
     @NotNull
     private String ip;
 
-    @ApiModelProperty(name = "ServiceList", value = "服务元信息列表", required = true)
+    @Schema(name = "ServiceList", title = "服务元信息列表", required = true)
     @JsonProperty("ServiceList")
     @NotNull
     private List<ServiceRequest> serviceList;
@@ -71,28 +72,28 @@ public class ServiceMetaRequest implements IRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "ServiceMetaRequest#ServiceRequest",
+    @Schema(
+            name = "ServiceMetaRequest#ServiceRequest",
             description = "ServiceMetaRequest#ServiceRequest: 服务信息"
     )
     public static class ServiceRequest implements IRequest {
 
-        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty("ClusterId")
         @NotNull
         private Long clusterId;
 
-        @ApiModelProperty(name = "ServiceName", value = "服务名称", required = true)
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty("ServiceName")
         @NotNull
         private String serviceName;
 
-        @ApiModelProperty(name = "SCStateEnum", value = "服务状态", required = true)
+        @Schema(name = "SCStateEnum", title = "服务状态", required = true)
         @JsonProperty("SCStateEnum")
         @NotNull
         private SCStateEnum scStateEnum;
 
-        @ApiModelProperty(name = "ServiceName", value = "服务名称", required = true)
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty("ServiceName")
         @NotNull
         private List<ComponentRequest> componentList;
@@ -103,28 +104,28 @@ public class ServiceMetaRequest implements IRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "ServiceMetaRequest.ComponentRequest",
+    @Schema(
+            name = "ServiceMetaRequest.ComponentRequest",
             description = "ServiceMetaRequest.ComponentRequest: 组件信息"
     )
     public static class ComponentRequest implements IRequest {
 
-        @ApiModelProperty(name = "ComponentName", value = "组件名称", required = true)
+        @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty("ComponentName")
         @NotNull
         private String componentName;
 
-        @ApiModelProperty(name = "SCStateEnum", value = "组件状态", required = true)
+        @Schema(name = "SCStateEnum", title = "组件状态", required = true)
         @JsonProperty("SCStateEnum")
         @NotNull
         private SCStateEnum scStateEnum;
 
-        @ApiModelProperty(name = "StartShell", value = "可执行脚本：组件启动", required = true)
+        @Schema(name = "StartShell", title = "可执行脚本：组件启动", required = true)
         @JsonProperty("StartShell")
         @NotNull
         private String startShell;
 
-        @ApiModelProperty(name = "StopShell", value = "可执行脚本：组件停止", required = true)
+        @Schema(name = "StopShell", title = "可执行脚本：组件停止", required = true)
         @JsonProperty("StopShell")
         @NotNull
         private String stopShell;

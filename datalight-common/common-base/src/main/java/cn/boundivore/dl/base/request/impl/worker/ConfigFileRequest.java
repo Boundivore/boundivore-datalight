@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,26 +41,26 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "ConfigFileRequest", description = "ConfigFileRequest: 修改配置文件请求体")
+@Schema(name = "ConfigFileRequest", description = "ConfigFileRequest: 修改配置文件请求体")
 public class ConfigFileRequest implements IRequest {
 
-    @ApiModelProperty(name = "Path", value = "配置文件路径", required = true)
+    @Schema(name = "Path", title = "配置文件路径", required = true)
     @JsonProperty("Path")
     private String path;
 
-    @ApiModelProperty(name = "ConfigVersion", value = "当前版本号", required = true)
+    @Schema(name = "ConfigVersion", title = "当前版本号", required = true)
     @JsonProperty("ConfigVersion")
     private Long configVersion;
 
-    @ApiModelProperty(name = "Filename", value = "配置文件名称", required = true)
+    @Schema(name = "Filename", title = "配置文件名称", required = true)
     @JsonProperty("Filename")
     private String filename;
 
-    @ApiModelProperty(name = "ContentBase64", value = "配置文件内容（Base64）", required = true)
+    @Schema(name = "ContentBase64", title = "配置文件内容（Base64）", required = true)
     @JsonProperty("ContentBase64")
     private String contentBase64;
 
-    @ApiModelProperty(name = "Sha256", value = "配置文件信息摘要", required = true)
+    @Schema(name = "Sha256", title = "配置文件信息摘要", required = true)
     @JsonProperty("Sha256")
     private String sha256;
 }

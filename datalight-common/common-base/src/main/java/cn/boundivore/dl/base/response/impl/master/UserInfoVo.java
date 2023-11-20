@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,37 +32,37 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(
-        value = "UserInfoVo",
+@Schema(
+        name = "UserInfoVo",
         description = "UserInfoVo: 用户信息"
 )
 public class UserInfoVo implements IVo {
 
-    @ApiModelProperty(name = "UserId", value = "用户 ID", required = true)
+    @Schema(name = "UserId", title = "用户 ID", required = true)
     @JsonProperty(value = "UserId", required = true)
     private Long userId;
 
-    @ApiModelProperty(name = "CreateTime", value = "创建时间", required = true)
+    @Schema(name = "CreateTime", title = "创建时间", required = true)
     @JsonProperty(value = "CreateTime", required = true)
     private Long createTime;
 
-    @ApiModelProperty(name = "UpdateTime", value = "更新时间", required = true)
+    @Schema(name = "UpdateTime", title = "更新时间", required = true)
     @JsonProperty(value = "UpdateTime", required = true)
     private Long updateTime;
 
-    @ApiModelProperty(name = "Nickname", value = "昵称", required = true)
+    @Schema(name = "Nickname", title = "昵称", required = true)
     @JsonProperty(value = "Nickname", required = true)
     private String nickname;
 
-    @ApiModelProperty(name = "Realname", value = "真实姓名", required = true)
+    @Schema(name = "Realname", title = "真实姓名", required = true)
     @JsonProperty(value = "Realname", required = true)
     private String realname;
 
-    @ApiModelProperty(name = "Avatar", value = "头像地址", required = true)
+    @Schema(name = "Avatar", title = "头像地址", required = true)
     @JsonProperty(value = "Avatar", required = true)
     private String avatar;
 
-    @ApiModelProperty(name = "LastLogin", value = "上次登录时间", required = true)
+    @Schema(name = "LastLogin", title = "上次登录时间", required = true)
     @JsonProperty(value = "LastLogin", required = true)
     private Long lastLogin = -1L;
 

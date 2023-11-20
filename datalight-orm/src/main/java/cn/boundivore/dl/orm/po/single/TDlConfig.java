@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,36 +22,36 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_config")
-@ApiModel(value = "TDlConfig对象", description = "配置信息表")
+@Schema(name = "TDlConfig对象", description = "配置信息表")
 public class TDlConfig extends TBasePo<TDlConfig> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
+    @Schema(name = "集群 ID")
     @TableField("cluster_id")
     private Long clusterId;
 
-    @ApiModelProperty("节点 ID")
+    @Schema(name = "节点 ID")
     @TableField("node_id")
     private Long nodeId;
 
-    @ApiModelProperty("服务名称")
+    @Schema(name = "服务名称")
     @TableField("service_name")
     private String serviceName;
 
-    @ApiModelProperty("配置文件 ID")
+    @Schema(name = "配置文件 ID")
     @TableField("config_content_id")
     private Long configContentId;
 
-    @ApiModelProperty("配置文件名称")
+    @Schema(name = "配置文件名称")
     @TableField("filename")
     private String filename;
 
-    @ApiModelProperty("配置文件路径")
+    @Schema(name = "配置文件路径")
     @TableField("config_path")
     private String configPath;
 
-    @ApiModelProperty("当前版本号")
+    @Schema(name = "当前版本号")
     @TableField("config_version")
     private Long configVersion;
 

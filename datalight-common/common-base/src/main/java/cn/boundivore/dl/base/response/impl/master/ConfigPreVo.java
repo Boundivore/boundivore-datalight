@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,17 +44,17 @@ import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(
-        value = "ConfigPreVo",
+@Schema(
+        name = "ConfigPreVo",
         description = "ConfigPreVo: 待部署的服务组件预配置信息"
 )
 public class ConfigPreVo implements IVo {
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     private Long clusterId;
 
-    @ApiModelProperty(name = "ServiceList", value = "多个服务的预配置列表", required = true)
+    @Schema(name = "ServiceList", title = "多个服务的预配置列表", required = true)
     @JsonProperty(value = "ServiceList", required = true)
     private List<ServiceVo> serviceList;
 
@@ -63,17 +64,17 @@ public class ConfigPreVo implements IVo {
     @Accessors(chain = true)
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(
-            value = "ConfigPreVo.ServiceVo",
+    @Schema(
+            name = "ConfigPreVo.ServiceVo",
             description = "ConfigPreVo.ServiceVo: 当前服务"
     )
     public static class ServiceVo implements IVo {
 
-        @ApiModelProperty(name = "ServiceName", value = "当前服务", required = true)
+        @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
         private String serviceName;
 
-        @ApiModelProperty(name = "PlaceholderInfoList", value = "预配置占位信息列表", required = true)
+        @Schema(name = "PlaceholderInfoList", title = "预配置占位信息列表", required = true)
         @JsonProperty(value = "PlaceholderInfoList", required = true)
         private List<PlaceholderInfoVo> placeholderInfoList;
     }
@@ -83,17 +84,17 @@ public class ConfigPreVo implements IVo {
     @Accessors(chain = true)
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(
-            value = "ConfigPreVo.PlaceholderInfoVo",
+    @Schema(
+            name = "ConfigPreVo.PlaceholderInfoVo",
             description = "ConfigPreVo.PlaceholderInfoVo: 预配置信息"
     )
     public static class PlaceholderInfoVo implements IVo {
 
-        @ApiModelProperty(name = "TemplatedFilePath", value = "模板配置文件路径", required = true)
+        @Schema(name = "TemplatedFilePath", title = "模板配置文件路径", required = true)
         @JsonProperty(value = "TemplatedFilePath", required = true)
         private String templatedFilePath;
 
-        @ApiModelProperty(name = "PropertyList", value = "属性列表", required = true)
+        @Schema(name = "PropertyList", title = "属性列表", required = true)
         @JsonProperty(value = "PropertyList", required = true)
         private List<PropertyVo> propertyList;
     }
@@ -103,21 +104,21 @@ public class ConfigPreVo implements IVo {
     @Accessors(chain = true)
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(
-            value = "ConfigPreVo.PropertyVo",
+    @Schema(
+            name = "ConfigPreVo.PropertyVo",
             description = "ConfigPreVo.PropertyVo: 预配置属性信息"
     )
     public static class PropertyVo implements IVo {
 
-        @ApiModelProperty(name = "Placeholder", value = "占位符", required = true)
+        @Schema(name = "Placeholder", title = "占位符", required = true)
         @JsonProperty(value = "Placeholder", required = true)
         private String placeholder;
 
-        @ApiModelProperty(name = "Describe", value = "描述", required = true)
+        @Schema(name = "Describe", title = "描述", required = true)
         @JsonProperty(value = "Describe", required = true)
         private String describe;
 
-        @ApiModelProperty(name = "Default", value = "占位符默认值", required = true)
+        @Schema(name = "Default", title = "占位符默认值", required = true)
         @JsonProperty(value = "Default", required = true)
         private String defaultValue;
     }

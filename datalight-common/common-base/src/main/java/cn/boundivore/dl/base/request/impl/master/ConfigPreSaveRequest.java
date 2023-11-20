@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,18 +44,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "ConfigPreSaveRequest",
+@Schema(
+        name = "ConfigPreSaveRequest",
         description = "ConfigPreListRequest: 预配置项列表 请求体"
 )
 public class ConfigPreSaveRequest implements IRequest {
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
     private Long clusterId;
 
-    @ApiModelProperty(name = "ServiceList", value = "多个服务的预配置列表", required = true)
+    @Schema(name = "ServiceList", title = "多个服务的预配置列表", required = true)
     @JsonProperty(value = "ServiceList", required = true)
     private List<ServiceRequest> serviceList;
 
@@ -63,18 +64,18 @@ public class ConfigPreSaveRequest implements IRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(
-            value = "ConfigPreSaveRequest#ServiceRequest",
+    @Schema(
+            name = "ConfigPreSaveRequest#ServiceRequest",
             description = "ConfigPreListVo#ServiceRequest: 当前服务"
     )
     public static class ServiceRequest implements IRequest {
 
-        @ApiModelProperty(name = "ServiceName", value = "当前服务", required = true)
+        @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
         @NotNull
         private String serviceName;
 
-        @ApiModelProperty(name = "PlaceholderInfoList", value = "预配置占位信息列表", required = true)
+        @Schema(name = "PlaceholderInfoList", title = "预配置占位信息列表", required = true)
         @JsonProperty(value = "PlaceholderInfoList", required = true)
         private List<PlaceholderInfoRequest> placeholderInfoList;
     }
@@ -83,17 +84,17 @@ public class ConfigPreSaveRequest implements IRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(
-            value = "ConfigPreSaveRequest#PlaceholderInfoRequest",
+    @Schema(
+            name = "ConfigPreSaveRequest#PlaceholderInfoRequest",
             description = "ConfigPreSaveRequest#PlaceholderInfoRequest: 预配置信息"
     )
     public static class PlaceholderInfoRequest implements IRequest {
 
-        @ApiModelProperty(name = "TemplatedFilePath", value = "模板配置文件路径", required = true)
+        @Schema(name = "TemplatedFilePath", title = "模板配置文件路径", required = true)
         @JsonProperty(value = "TemplatedFilePath", required = true)
         private String templatedFilePath;
 
-        @ApiModelProperty(name = "PropertyList", value = "属性列表", required = true)
+        @Schema(name = "PropertyList", title = "属性列表", required = true)
         @JsonProperty(value = "PropertyList", required = true)
         private List<PropertyRequest> propertyList;
     }
@@ -102,27 +103,27 @@ public class ConfigPreSaveRequest implements IRequest {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    @ApiModel(
-            value = "ConfigPreSaveRequest#PropertyRequest",
+    @Schema(
+            name = "ConfigPreSaveRequest#PropertyRequest",
             description = "ConfigPreSaveRequest#PropertyRequest: 预配置属性信息"
     )
     public static class PropertyRequest implements IRequest {
 
-        @ApiModelProperty(name = "Placeholder", value = "占位符", required = true)
+        @Schema(name = "Placeholder", title = "占位符", required = true)
         @JsonProperty(value = "Placeholder", required = true)
         @NotNull
         private String placeholder;
 
-        @ApiModelProperty(name = "Value", value = "占位符修改后的值", required = true)
+        @Schema(name = "Value", title = "占位符修改后的值", required = true)
         @JsonProperty(value = "Value", required = true)
         @NotNull
         private String value;
 
-        @ApiModelProperty(name = "Describe", value = "描述", required = true)
+        @Schema(name = "Describe", title = "描述", required = true)
         @JsonProperty(value = "Describe", required = true)
         private String describe;
 
-        @ApiModelProperty(name = "Default", value = "占位符默认值", required = true)
+        @Schema(name = "Default", title = "占位符默认值", required = true)
         @JsonProperty(value = "Default", required = true)
         private String defaultValue;
     }

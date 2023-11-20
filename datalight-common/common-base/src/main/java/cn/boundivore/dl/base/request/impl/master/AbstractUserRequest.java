@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,23 +46,23 @@ public abstract class AbstractUserRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractUserRequest#UserAuthRequest",
+    @Schema(
+            name = "AbstractUserRequest#UserAuthRequest",
             description = "用户登录、认证 请求体"
     )
     public static class UserAuthRequest implements IRequest {
 
-        @ApiModelProperty(name = "IdentityType", value = "认证类型", required = true, example = "枚举：EMAIL, PHONE, USERNAME")
+        @Schema(name = "IdentityType", title = "认证类型", required = true, example = "枚举：EMAIL, PHONE, USERNAME")
         @JsonProperty(value = "IdentityType", required = true)
         @NotNull
         private IdentityTypeEnum identityType;
 
-        @ApiModelProperty(name = "Principal", value = "认证主体", required = true)
+        @Schema(name = "Principal", title = "认证主体", required = true)
         @JsonProperty(value = "Principal", required = true)
         @NotBlank
         private String principal;
 
-        @ApiModelProperty(name = "Credential", value = "登录凭证", required = true)
+        @Schema(name = "Credential", title = "登录凭证", required = true)
         @JsonProperty(value = "Credential", required = true)
         @NotBlank
         private String credential;
@@ -72,21 +73,21 @@ public abstract class AbstractUserRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractUserRequest#UserBaseRequest",
+    @Schema(
+            name = "AbstractUserRequest#UserBaseRequest",
             description = "#UserBaseRequest: 用户基础信息 请求体"
     )
     public static class UserBaseRequest implements IRequest {
 
-        @ApiModelProperty(name = "Nickname", value = "用户昵称", required = true)
+        @Schema(name = "Nickname", title = "用户昵称", required = true)
         @JsonProperty(value = "Nickname", required = true)
         private String nickname;
 
-        @ApiModelProperty(name = "Realname", value = "真实姓名", required = true)
+        @Schema(name = "Realname", title = "真实姓名", required = true)
         @JsonProperty(value = "Realname", required = true)
         private String realname;
 
-        @ApiModelProperty(name = "Avatar", value = "头像地址", required = true)
+        @Schema(name = "Avatar", title = "头像地址", required = true)
         @JsonProperty(value = "Avatar", required = true)
         private String avatar;
     }
@@ -95,18 +96,18 @@ public abstract class AbstractUserRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractUserRequest#UserRegisterRequest",
+    @Schema(
+            name = "AbstractUserRequest#UserRegisterRequest",
             description = "用户注册 请求体"
     )
     public static class UserRegisterRequest implements IRequest {
 
-        @ApiModelProperty(name = "UserAuth", value = "平台用户登录、认证", required = true)
+        @Schema(name = "UserAuth", title = "平台用户登录、认证", required = true)
         @JsonProperty(value = "UserAuth", required = true)
         @Valid
         private UserAuthRequest userAuth;
 
-        @ApiModelProperty(name = "UserBase", value = "平台用户登录、认证", required = true)
+        @Schema(name = "UserBase", title = "平台用户登录、认证", required = true)
         @JsonProperty(value = "UserBase", required = true)
         @Valid
         private UserBaseRequest userBase;

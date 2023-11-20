@@ -59,7 +59,7 @@ public abstract class AbsBaseSwaggerConfig {
     public Docket createApi() {
         SwaggerProperties swaggerProperties = printSwaggerInfo();
 
-        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+        Docket docket = new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo())
 //                .globalRequestParameters(getGlobalRequestParameters())
                 .globalResponses(HttpMethod.GET, globalResponse())

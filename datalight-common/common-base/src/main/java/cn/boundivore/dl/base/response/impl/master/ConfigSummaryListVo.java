@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -40,21 +41,21 @@ import java.util.List;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(
-        value = "ConfigListVo",
+@Schema(
+        name = "ConfigListVo",
         description = "ConfigListVo: 配置文件列表"
 )
 public class ConfigSummaryListVo implements IVo {
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     private Long clusterId;
 
-    @ApiModelProperty(name = "ServiceName", value = "服务名称", required = true)
+    @Schema(name = "ServiceName", title = "服务名称", required = true)
     @JsonProperty(value = "ServiceName", required = true)
     private String serviceName;
 
-    @ApiModelProperty(name = "ConfigSummaryList", value = "当前服务配置信息概览列表", required = true)
+    @Schema(name = "ConfigSummaryList", title = "当前服务配置信息概览列表", required = true)
     @JsonProperty(value = "ConfigSummaryList", required = true)
     private List<ConfigSummaryVo> configSummaryList;
 
@@ -68,17 +69,17 @@ public class ConfigSummaryListVo implements IVo {
             callSuper = false,
             exclude = { "fileName" }
     )
-    @ApiModel(
-            value = "ConfigPreVo.ConfigSummaryVo",
+    @Schema(
+            name = "ConfigPreVo.ConfigSummaryVo",
             description = "ConfigPreVo.ConfigSummaryVo: 当前配置信息概览"
     )
     public static class ConfigSummaryVo implements IVo {
 
-        @ApiModelProperty(name = "FileName", value = "配置文件名称", required = true)
+        @Schema(name = "FileName", title = "配置文件名称", required = true)
         @JsonProperty(value = "FileName", required = true)
         private String fileName;
 
-        @ApiModelProperty(name = "ConfigPath", value = "配置文件路径", required = true)
+        @Schema(name = "ConfigPath", title = "配置文件路径", required = true)
         @JsonProperty(value = "ConfigPath", required = true)
         private String configPath;
 

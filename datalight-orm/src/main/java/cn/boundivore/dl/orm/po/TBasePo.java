@@ -3,6 +3,7 @@ package cn.boundivore.dl.orm.po;
 import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -25,19 +26,19 @@ import java.io.Serializable;
 public class TBasePo<T extends Model<?>> extends Model<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键 ID")
+    @Schema(name = "主键 ID")
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     protected Long id;
 
-    @ApiModelProperty(value = "创建时间")
+    @Schema(name = "创建时间")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
     protected Long createTime;
 
-    @ApiModelProperty(value = "修改时间")
+    @Schema(name = "修改时间")
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
     protected Long updateTime;
 
-    @ApiModelProperty(value = "乐观锁版本")
+    @Schema(name = "乐观锁版本")
     @TableField(value = "version", fill = FieldFill.INSERT_UPDATE)
     @Version
     protected Long version;

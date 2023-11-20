@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,18 +38,18 @@ public abstract class AbstractNodeVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractNodeVo.NodeVo",
+    @Schema(
+            name = "AbstractNodeVo.NodeVo",
             description = "AbstractNodeVo.NodeVo: NodeVo 节点信息"
     )
     public static class NodeVo implements IVo {
 
-        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
-        @ApiModelProperty(name = "NodeDetailList", value = "节点信息详情列表", required = true)
+        @Schema(name = "NodeDetailList", title = "节点信息详情列表", required = true)
         @JsonProperty(value = "NodeDetailList", required = true)
         @NotNull
         private List<NodeDetailVo> nodeDetailList;
@@ -59,53 +60,53 @@ public abstract class AbstractNodeVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractNodeVo.NodeDetailVo",
+    @Schema(
+            name = "AbstractNodeVo.NodeDetailVo",
             description = "AbstractNodeVo.NodeDetailVo: NodeDetailVo 节点信息详情"
     )
     public static class NodeDetailVo implements IVo {
 
-        @ApiModelProperty(name = "NodeId", value = "节点主键 ID", required = true)
+        @Schema(name = "NodeId", title = "节点主键 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull
         private Long nodeId;
 
-        @ApiModelProperty(name = "Hostname", value = "主机名", required = true)
+        @Schema(name = "Hostname", title = "主机名", required = true)
         @JsonProperty(value = "Hostname", required = true)
         @NotNull
         private String hostname;
 
-        @ApiModelProperty(name = "NodeIp", value = "节点 IP 地址", required = true)
+        @Schema(name = "NodeIp", title = "节点 IP 地址", required = true)
         @JsonProperty(value = "NodeIp", required = true)
         @NotNull
         private String nodeIp;
 
-        @ApiModelProperty(name = "SshPort", value = "SSH 端口号", required = true)
+        @Schema(name = "SshPort", title = "SSH 端口号", required = true)
         @JsonProperty(value = "SshPort", required = true)
         @NotNull
         private Long sshPort;
 
-        @ApiModelProperty(name = "CpuArch", value = "CPU 架构", required = true)
+        @Schema(name = "CpuArch", title = "CPU 架构", required = true)
         @JsonProperty(value = "CpuArch", required = true)
         @NotNull
         private String cpuArch;
 
-        @ApiModelProperty(name = "CpuCores", value = "CPU 核数", required = true)
+        @Schema(name = "CpuCores", title = "CPU 核数", required = true)
         @JsonProperty(value = "CpuCores", required = true)
         @NotNull
         private Long cpuCores;
 
-        @ApiModelProperty(name = "Ram", value = "内存总大小（MB）", required = true)
+        @Schema(name = "Ram", title = "内存总大小（MB）", required = true)
         @JsonProperty(value = "Ram", required = true)
         @NotNull
         private Long ram;
 
-        @ApiModelProperty(name = "DiskTotal", value = "磁盘总大小（MB）", required = true)
+        @Schema(name = "DiskTotal", title = "磁盘总大小（MB）", required = true)
         @JsonProperty(value = "DiskTotal", required = true)
         @NotNull
         private Long diskTotal;
 
-        @ApiModelProperty(name = "NodeState", value = "节点状态", required = true)
+        @Schema(name = "NodeState", title = "节点状态", required = true)
         @JsonProperty(value = "NodeState", required = true)
         @NotNull
         private NodeStateEnum nodeState;

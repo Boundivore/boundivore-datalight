@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,10 +38,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(value = "TestRequest: 测试")
+@Schema(name = "TestRequest: 测试")
 public class TestRequest implements IRequest {
 
-    @ApiModelProperty(name = "Name", value = "Task 名称", required = true)
+    @Schema(name = "Name", title = "Task 名称", required = true)
     @JsonProperty("Name")
     private String name;
 

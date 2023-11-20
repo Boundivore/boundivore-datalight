@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,36 +23,36 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_component")
-@ApiModel(value = "TDlComponent对象", description = "组件信息表")
+@Schema(name = "TDlComponent对象", description = "组件信息表")
 public class TDlComponent extends TBasePo<TDlComponent> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
+    @Schema(name = "集群 ID")
     @TableField("cluster_id")
     private Long clusterId;
 
-    @ApiModelProperty("节点 ID")
+    @Schema(name = "节点 ID")
     @TableField("node_id")
     private Long nodeId;
 
-    @ApiModelProperty("服务名称")
+    @Schema(name = "服务名称")
     @TableField("service_name")
     private String serviceName;
 
-    @ApiModelProperty("组件名称")
+    @Schema(name = "组件名称")
     @TableField("component_name")
     private String componentName;
 
-    @ApiModelProperty("组件状态")
+    @Schema(name = "组件状态")
     @TableField("component_state")
     private SCStateEnum componentState;
 
-    @ApiModelProperty("优先级 数字越小，优先级越高")
+    @Schema(name = "优先级 数字越小，优先级越高")
     @TableField("priority")
     private Long priority;
 
-    @ApiModelProperty("是否需要重启，如修改配置文件等")
+    @Schema(name = "是否需要重启，如修改配置文件等")
     @TableField("need_restart")
     private Boolean need_restart;
 

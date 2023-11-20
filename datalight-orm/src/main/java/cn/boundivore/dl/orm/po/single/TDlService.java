@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,24 +23,24 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_service")
-@ApiModel(value = "TDlService对象", description = "服务信息表")
+@Schema(name = "TDlService对象", description = "服务信息表")
 public class TDlService extends TBasePo<TDlService> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
+    @Schema(name = "集群 ID")
     @TableField("cluster_id")
     private Long clusterId;
 
-    @ApiModelProperty("服务名称")
+    @Schema(name = "服务名称")
     @TableField("service_name")
     private String serviceName;
 
-    @ApiModelProperty("服务状态")
+    @Schema(name = "服务状态")
     @TableField("service_state")
     private SCStateEnum serviceState;
 
-    @ApiModelProperty("优先级 数字越小，优先级越高")
+    @Schema(name = "优先级 数字越小，优先级越高")
     @TableField("priority")
     private Long priority;
 

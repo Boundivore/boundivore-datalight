@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,23 +45,23 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "JobRequest",
+@Schema(
+        name = "JobRequest",
         description = "JobRequest: Job 执行请求体"
 )
 public class JobRequest implements IRequest {
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
     private Long clusterId;
 
-    @ApiModelProperty(name = "ActionTypeEnum", value = "执行操作的类型", required = true)
+    @Schema(name = "ActionTypeEnum", title = "执行操作的类型", required = true)
     @JsonProperty(value = "ActionTypeEnum", required = true)
     @NotNull
     private ActionTypeEnum actionTypeEnum;
 
-    @ApiModelProperty(name = "ServiceNameList", value = "待执行操作的服务列表", required = true)
+    @Schema(name = "ServiceNameList", title = "待执行操作的服务列表", required = true)
     @JsonProperty(value = "ServiceNameList", required = true)
     @NotEmpty
     private List<String> serviceNameList;

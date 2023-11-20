@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,21 +38,24 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "master: 统一分页字段")
+@Schema(
+        name = "Page", 
+        description = "master: 统一分页字段"
+)
 public class Page implements IVo {
-    @ApiModelProperty(name = "CurrentPage", value = "当前页码", required = true)
+    @Schema(name = "CurrentPage", title = "当前页码", required = true)
     @JsonProperty(value = "CurrentPage", required = true)
     private Long currentPage;
 
-    @ApiModelProperty(name = "TotalPage", value = "总页码", required = true)
+    @Schema(name = "TotalPage", title = "总页码", required = true)
     @JsonProperty(value = "TotalPage", required = true)
     private Long totalPage;
 
-    @ApiModelProperty(name = "PageSize", value = "单页条数", required = true)
+    @Schema(name = "PageSize", title = "单页条数", required = true)
     @JsonProperty(value = "PageSize", required = true)
     private Long pageSize;
 
-    @ApiModelProperty(name = "TotalSize", value = "总条数", required = true)
+    @Schema(name = "TotalSize", title = "总条数", required = true)
     @JsonProperty(value = "TotalSize", required = true)
     private Long totalSize;
 }

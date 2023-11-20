@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -38,38 +39,38 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value = "ExecRequest", description = "ExecRequest: 执行脚本请求体")
+@Schema(name = "ExecRequest", description = "ExecRequest: 执行脚本请求体")
 @NoArgsConstructor
 public class ExecRequest implements IRequest {
-    @ApiModelProperty(name = "ScriptType", value = "执行操作的类型", required = true)
+    @Schema(name = "ScriptType", title = "执行操作的类型", required = true)
     @JsonProperty(value = "ScriptType", required = true)
     private ExecTypeEnum execTypeEnum;
 
-    @ApiModelProperty(name = "Name", value = "Task 名称", required = true)
+    @Schema(name = "Name", title = "Task 名称", required = true)
     @JsonProperty("Name")
     private String name;
 
-    @ApiModelProperty(name = "Exec", value = "Task 待执行的脚本或语句", required = true)
+    @Schema(name = "Exec", title = "Task 待执行的脚本或语句", required = true)
     @JsonProperty("Exec")
     private String exec;
 
-    @ApiModelProperty(name = "ExpectExitCode", value = "期望的执行成功退出码", required = true)
+    @Schema(name = "ExpectExitCode", title = "期望的执行成功退出码", required = true)
     @JsonProperty("ExpectExitCode")
     private Integer expectExitCode = 0;
 
-    @ApiModelProperty(name = "Timeout", value = "执行脚本的超时时间", required = true)
+    @Schema(name = "Timeout", title = "执行脚本的超时时间", required = true)
     @JsonProperty("Timeout")
     private Long timeout = -1L;
 
-    @ApiModelProperty(name = "Args", value = "执行脚本时的参数", required = true)
+    @Schema(name = "Args", title = "执行脚本时的参数", required = true)
     @JsonProperty("Args")
     private String[] args;
 
-    @ApiModelProperty(name = "InteractArgs", value = "执行时，需要持续交互的参数列表，偶数位代表判断条件，奇数位代表传送参数，最后一位代表关闭输出流的条件", required = true)
+    @Schema(name = "InteractArgs", title = "执行时，需要持续交互的参数列表，偶数位代表判断条件，奇数位代表传送参数，最后一位代表关闭输出流的条件", required = true)
     @JsonProperty("InteractArgs")
     private String[] interactArgs;
 
-    @ApiModelProperty(name = "PrintLog", value = "是否打印该语句执行结果", required = false)
+    @Schema(name = "PrintLog", title = "是否打印该语句执行结果", required = false)
     @JsonProperty("PrintLog")
     private Boolean printLog;
 

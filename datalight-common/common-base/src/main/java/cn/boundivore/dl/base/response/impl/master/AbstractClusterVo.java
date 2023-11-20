@@ -24,6 +24,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,12 +40,12 @@ public abstract class AbstractClusterVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractClusterVo.ClusterListVo",
+    @Schema(
+            name = "AbstractClusterVo.ClusterListVo",
             description = "AbstractClusterVo.ClusterListVo: 集群信息列表"
     )
     public static class ClusterListVo implements IVo {
-        @ApiModelProperty(name = "ClusterList", value = "集群 ID", required = true)
+        @Schema(name = "ClusterList", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterList", required = true)
         @NotNull
         private List<ClusterVo> clusterList;
@@ -55,43 +56,43 @@ public abstract class AbstractClusterVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    @ApiModel(
-            value = "AbstractClusterVo.ClusterVo",
+    @Schema(
+            name = "AbstractClusterVo.ClusterVo",
             description = "AbstractClusterVo.ClusterVo: 集群信息"
     )
     public static class ClusterVo implements IVo {
 
-        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
-        @ApiModelProperty(name = "DlcVersion", value = "DataLight 服务组件包版本", required = true)
+        @Schema(name = "DlcVersion", title = "DataLight 服务组件包版本", required = true)
         @JsonProperty(value = "DlcVersion", required = true)
         @NotNull
         private String dlcVersion;
 
-        @ApiModelProperty(name = "ClusterName", value = "集群名称", required = true)
+        @Schema(name = "ClusterName", title = "集群名称", required = true)
         @JsonProperty(value = "ClusterName", required = true)
         @NotNull
         private String clusterName;
 
-        @ApiModelProperty(name = "ClusterType", value = "集群类型", required = true)
+        @Schema(name = "ClusterType", title = "集群类型", required = true)
         @JsonProperty(value = "ClusterType", required = true)
         @NotNull
         private ClusterTypeEnum clusterTypeEnum;
 
-        @ApiModelProperty(name = "ClusterState", value = "集群状态", required = true)
+        @Schema(name = "ClusterState", title = "集群状态", required = true)
         @JsonProperty(value = "ClusterState", required = true)
         @NotNull
         private ClusterStateEnum clusterStateEnum;
 
-        @ApiModelProperty(name = "ClusterDesc", value = "集群描述", required = true)
+        @Schema(name = "ClusterDesc", title = "集群描述", required = true)
         @JsonProperty(value = "ClusterDesc", required = true)
         @NotNull
         private String clusterDesc;
 
-        @ApiModelProperty(name = "RelativeClusterId", value = "关联集群 ID", required = true)
+        @Schema(name = "RelativeClusterId", title = "关联集群 ID", required = true)
         @JsonProperty(value = "RelativeClusterId", required = true)
         @NotNull
         private Long relativeClusterId;

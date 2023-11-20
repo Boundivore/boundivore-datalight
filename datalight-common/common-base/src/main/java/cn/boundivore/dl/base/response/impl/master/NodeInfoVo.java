@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,18 +42,18 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "NodeInfoVo",
+@Schema(
+        name = "NodeInfoVo",
         description = "NodeInfoVo: 节点信息 响应体"
 )
 public class NodeInfoVo implements IVo {
 
-    @ApiModelProperty(name = "NodeId", value = "节点 ID", required = true)
+    @Schema(name = "NodeId", title = "节点 ID", required = true)
     @JsonProperty(value = "NodeId", required = true)
     @NotNull
     private Long nodeId;
 
-    @ApiModelProperty(name = "Hostname", value = "主机名", required = true)
+    @Schema(name = "Hostname", title = "主机名", required = true)
     @JsonProperty(value = "Hostname", required = true)
     @NotNull
     private String hostname;

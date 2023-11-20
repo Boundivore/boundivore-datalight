@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -43,13 +44,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "HeartBeatRequest",
+@Schema(
+        name = "HeartBeatRequest",
         description = "Worker 发送给 Master 的心跳包 请求体"
 )
 public class HeartBeatRequest implements IRequest {
 
-    @ApiModelProperty(name = "Ip", value = "Worker 所在节点 IP", required = true)
+    @Schema(name = "Ip", title = "Worker 所在节点 IP", required = true)
     @JsonProperty(value = "Ip", required = true)
     @NotNull
     private String ip;

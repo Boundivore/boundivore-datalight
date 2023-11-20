@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -21,20 +22,20 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_user")
-@ApiModel(value = "TDlUser对象", description = "用户基础信息表")
+@Schema(name = "TDlUser对象", description = "用户基础信息表")
 public class TDlUser extends TBasePo {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("用户昵称")
+    @Schema(name = "用户昵称")
     @TableField("nickname")
     private String nickname;
 
-    @ApiModelProperty("真实姓名")
+    @Schema(name = "真实姓名")
     @TableField("realname")
     private String realname;
 
-    @ApiModelProperty("头像")
+    @Schema(name = "头像")
     @TableField("avatar")
     private String avatar;
 

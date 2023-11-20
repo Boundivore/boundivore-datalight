@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,23 +42,23 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@ApiModel(
-        value = "ParseHostnameRequest",
+@Schema(
+        name = "ParseHostnameRequest",
         description = "ParseHostnameRequest: 解析主机名 请求体"
 )
 public class ParseHostnameRequest implements IRequest {
 
-    @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
     private Long clusterId;
 
-    @ApiModelProperty(name = "HostnameBase64", value = "节点名称，换行符分割每一项(Base64)", required = true)
+    @Schema(name = "HostnameBase64", title = "节点名称，换行符分割每一项(Base64)", required = true)
     @JsonProperty(value = "HostnameBase64", required = true)
     @NotNull
     private String hostnameBase64;
 
-    @ApiModelProperty(name = "SshPort", value = "SSH 端口号", required = true)
+    @Schema(name = "SshPort", title = "SSH 端口号", required = true)
     @JsonProperty(value = "SshPort", required = true)
     @NotNull
     private Long sshPort;
