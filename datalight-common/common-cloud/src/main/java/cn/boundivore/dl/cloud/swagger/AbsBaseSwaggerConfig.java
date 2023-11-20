@@ -69,7 +69,8 @@ public abstract class AbsBaseSwaggerConfig {
 //                .apis(RequestHandlerSelectors.basePackage("cn.boundivore.dl"))
                 .paths(PathSelectors.any())
                 .build()
-                .groupName("datalight");
+                .groupName("datalight")
+                .enable(true);
         return docket;
     }
 
