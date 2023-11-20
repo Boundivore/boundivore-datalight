@@ -40,7 +40,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "MasterMetaRequest: Master 进程的元数据信息")
+@ApiModel(value = "MasterMetaRequest", description = "MasterMetaRequest: Master 进程的元数据信息")
 public class MasterMetaRequest implements IRequest {
 
     @ApiModelProperty(name = "Ip", value = "Master 所在节点的 IP 地址", required = true)

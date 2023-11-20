@@ -72,8 +72,8 @@ public class ConfigSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @ApiModel(
-            value = "ConfigSaveRequest.ConfigRequest",
-            description = "ConfigSaveRequest.ConfigRequest: 单个配置 请求体"
+            value = "ConfigSaveRequest#ConfigRequest",
+            description = "ConfigSaveRequest#ConfigRequest: 单个配置 请求体"
     )
     public static class ConfigRequest implements IRequest {
 

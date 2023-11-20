@@ -46,8 +46,8 @@ public abstract class AbstractClusterRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractClusterRequest.ClusterNewRequest",
-            description = "AbstractClusterRequest.ClusterNewRequest: 新建集群 请求体"
+            value = "AbstractClusterRequest#ClusterNewRequest",
+            description = "AbstractClusterRequest#ClusterNewRequest: 新建集群 请求体"
     )
     public static class ClusterNewRequest implements IRequest {
 

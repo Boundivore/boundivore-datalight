@@ -64,8 +64,8 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @ApiModel(
-            value = "ConfigPreSaveRequest.ServiceRequest",
-            description = "ConfigPreListVo.ServiceRequest: 当前服务"
+            value = "ConfigPreSaveRequest#ServiceRequest",
+            description = "ConfigPreListVo#ServiceRequest: 当前服务"
     )
     public static class ServiceRequest implements IRequest {
 
@@ -84,8 +84,8 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @ApiModel(
-            value = "ConfigPreSaveRequest.PlaceholderInfoRequest",
-            description = "ConfigPreSaveRequest.PlaceholderInfoRequest: 预配置信息"
+            value = "ConfigPreSaveRequest#PlaceholderInfoRequest",
+            description = "ConfigPreSaveRequest#PlaceholderInfoRequest: 预配置信息"
     )
     public static class PlaceholderInfoRequest implements IRequest {
 
@@ -103,8 +103,8 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @ApiModel(
-            value = "ConfigPreSaveRequest.PropertyRequest",
-            description = "ConfigPreSaveRequest.PropertyRequest: 预配置属性信息"
+            value = "ConfigPreSaveRequest#PropertyRequest",
+            description = "ConfigPreSaveRequest#PropertyRequest: 预配置属性信息"
     )
     public static class PropertyRequest implements IRequest {
 

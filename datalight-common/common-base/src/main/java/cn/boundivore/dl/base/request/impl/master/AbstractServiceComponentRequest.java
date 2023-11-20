@@ -45,8 +45,8 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractServiceComponentRequest.ServiceSelectRequest",
-            description = "AbstractServiceComponentRequest.ServiceSelectRequest: " +
+            value = "AbstractServiceComponentRequest#ServiceSelectRequest",
+            description = "AbstractServiceComponentRequest#ServiceSelectRequest: " +
                     "部署前，选择服务(需传递全部服务名称，以及服务选中或未选中状态) 请求体"
     )
     public static class ServiceSelectRequest implements IRequest {
@@ -68,8 +68,8 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractServiceComponentRequest.ServiceRequest",
-            description = "AbstractServiceComponentRequest.ServiceRequest: 服务信息 请求体"
+            value = "AbstractServiceComponentRequest#ServiceRequest",
+            description = "服务信息 请求体"
     )
     public static class ServiceRequest implements IRequest {
 
@@ -90,9 +90,8 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractServiceComponentRequest.ComponentSelectRequest",
-            description = "AbstractServiceComponentRequest.ComponentSelectRequest: " +
-                    "部署前，选择组件请求体"
+            value = "AbstractServiceComponentRequest#ComponentSelectRequest",
+            description = "部署前，选择组件请求体"
     )
     public static class ComponentSelectRequest implements IRequest {
 
@@ -113,8 +112,8 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractServiceComponentRequest.ComponentRequest",
-            description = "AbstractServiceComponentRequest.ComponentRequest: " +
+            value = "AbstractServiceComponentRequest#ComponentRequest",
+            description = "AbstractServiceComponentRequest#ComponentRequest: " +
                     "组件信息 请求体"
     )
     public static class ComponentRequest implements IRequest {

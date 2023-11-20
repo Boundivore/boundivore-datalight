@@ -76,8 +76,8 @@ public class ConfigSaveByGroupRequest implements IRequest {
             }
     )
     @ApiModel(
-            value = "ConfigSaveByGroupRequest.ConfigGroupRequest",
-            description = "ConfigSaveByGroupRequest.ConfigGroupRequest: 当前配置信息"
+            value = "ConfigSaveByGroupRequest#ConfigGroupRequest",
+            description = "ConfigSaveByGroupRequest#ConfigGroupRequest: 当前配置信息"
     )
     public static class ConfigGroupRequest implements IRequest {
 
@@ -113,8 +113,8 @@ public class ConfigSaveByGroupRequest implements IRequest {
     @Accessors(chain = true)
     @Builder
     @ApiModel(
-            value = "ConfigSaveByGroupRequest.ConfigNodeRequest",
-            description = "ConfigSaveByGroupRequest.ConfigNodeRequest: 节点信息"
+            value = "ConfigSaveByGroupRequest#ConfigNodeRequest",
+            description = "ConfigSaveByGroupRequest#ConfigNodeRequest: 节点信息"
     )
     public static class ConfigNodeRequest implements IRequest {
 

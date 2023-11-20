@@ -46,8 +46,8 @@ public abstract class AbstractUserRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractUserRequest.UserAuthRequest",
-            description = "AbstractUserRequest.UserAuthRequest: 用户登录、认证 请求体"
+            value = "AbstractUserRequest#UserAuthRequest",
+            description = "用户登录、认证 请求体"
     )
     public static class UserAuthRequest implements IRequest {
 
@@ -73,8 +73,8 @@ public abstract class AbstractUserRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractUserRequest.UserBaseRequest",
-            description = "AbstractUserRequest.UserBaseRequest: 用户基础信息 请求体"
+            value = "AbstractUserRequest#UserBaseRequest",
+            description = "#UserBaseRequest: 用户基础信息 请求体"
     )
     public static class UserBaseRequest implements IRequest {
 
@@ -96,8 +96,8 @@ public abstract class AbstractUserRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractUserRequest.UserRegisterRequest",
-            description = "AbstractUserRequest.UserRegisterRequest: 用户注册 请求体"
+            value = "AbstractUserRequest#UserRegisterRequest",
+            description = "用户注册 请求体"
     )
     public static class UserRegisterRequest implements IRequest {
 

@@ -44,7 +44,7 @@ import java.util.List;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "ServiceMetaRequest: Service 服务元数据信息")
+@ApiModel(value = "ServiceMetaRequest", description = "MasterMetaRequest: Service 服务元数据信息")
 public class ServiceMetaRequest implements IRequest {
 
     @ApiModelProperty(name = "NodeId", value = "Worker 当前节点 ID", required = true)
@@ -72,8 +72,8 @@ public class ServiceMetaRequest implements IRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "ServiceMetaRequest.ServiceRequest",
-            description = "ServiceMetaRequest.ServiceRequest: 服务信息"
+            value = "ServiceMetaRequest#ServiceRequest",
+            description = "ServiceMetaRequest#ServiceRequest: 服务信息"
     )
     public static class ServiceRequest implements IRequest {
 

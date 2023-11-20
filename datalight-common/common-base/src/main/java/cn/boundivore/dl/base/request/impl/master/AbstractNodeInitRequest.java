@@ -44,8 +44,8 @@ public abstract class AbstractNodeInitRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @ApiModel(
-            value = "AbstractNodeInitRequest.NodeInitInfoListRequest",
-            description = "AbstractNodeInitRequest.NodeInitInfoListRequest: 初始化状态下的节点列表 请求体"
+            value = "AbstractNodeInitRequest#NodeInitInfoListRequest",
+            description = "AbstractNodeInitRequest#NodeInitInfoListRequest: 初始化状态下的节点列表 请求体"
     )
     public static class NodeInitInfoListRequest implements IRequest {
 

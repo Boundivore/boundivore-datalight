@@ -38,7 +38,7 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@ApiModel(value = "ExecRequest: 执行脚本请求体")
+@ApiModel(value = "ExecRequest", description = "ExecRequest: 执行脚本请求体")
 @NoArgsConstructor
 public class ExecRequest implements IRequest {
     @ApiModelProperty(name = "ScriptType", value = "执行操作的类型", required = true)

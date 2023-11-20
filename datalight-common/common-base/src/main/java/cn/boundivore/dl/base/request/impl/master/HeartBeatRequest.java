@@ -45,7 +45,7 @@ import java.util.List;
 @Accessors(chain = true)
 @ApiModel(
         value = "HeartBeatRequest",
-        description = "HeartBeatRequest: Worker 发送给 Master 的心跳包 请求体"
+        description = "Worker 发送给 Master 的心跳包 请求体"
 )
 public class HeartBeatRequest implements IRequest {
 

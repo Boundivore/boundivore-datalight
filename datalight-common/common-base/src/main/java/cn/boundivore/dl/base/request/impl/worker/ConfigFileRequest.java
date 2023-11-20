@@ -40,7 +40,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "ConfigFileRequest: 修改配置文件请求体")
+@ApiModel(value = "ConfigFileRequest", description = "ConfigFileRequest: 修改配置文件请求体")
 public class ConfigFileRequest implements IRequest {
 
     @ApiModelProperty(name = "Path", value = "配置文件路径", required = true)
