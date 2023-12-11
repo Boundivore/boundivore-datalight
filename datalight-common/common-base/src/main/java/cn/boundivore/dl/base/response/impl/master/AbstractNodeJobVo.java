@@ -83,8 +83,8 @@ public abstract class AbstractNodeJobVo {
         @NotNull
         private NodeJobPlanProgressVo nodeJobPlanProgressVo;
 
-        @Schema(name = "NodeJobExecProgressVo", title = "NodeJob 执行的进度", required = true)
-        @JsonProperty(value = "NodeJobExecProgressVo", required = true)
+        @Schema(name = "NodeJobExecProgress", title = "NodeJob 执行的进度", required = true)
+        @JsonProperty(value = "NodeJobExecProgress", required = true)
         @NotNull
         private NodeJobExecProgressVo nodeJobExecProgressVo;
 
