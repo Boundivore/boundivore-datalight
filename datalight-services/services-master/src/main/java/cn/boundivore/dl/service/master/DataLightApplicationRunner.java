@@ -44,6 +44,7 @@ public class DataLightApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        // 下方存在变量前后依赖关系，需留意执行顺序，不可随意调整
         // ./conf/datalight
         ResolverYamlDirectory.resolver(SpringContextUtil.CONF_ENV_DIR);
 
