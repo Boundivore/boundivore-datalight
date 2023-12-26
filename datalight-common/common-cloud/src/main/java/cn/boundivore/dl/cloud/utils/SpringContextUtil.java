@@ -71,6 +71,10 @@ public class SpringContextUtil implements ApplicationContextAware {
     public static String SCRIPTS_DIR;
 
 
+    static{
+        init();
+    }
+
     public static void init() {
         APP_HOME = new ApplicationHome(SpringContextUtil.class);
         if (APP_HOME.getSource() == null) {
@@ -105,7 +109,6 @@ public class SpringContextUtil implements ApplicationContextAware {
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) throws BeansException {
         SpringContextUtil.applicationContext = applicationContext;
-        SpringContextUtil.init();
     }
 
     public static ApplicationContext getApplicationContext() {
