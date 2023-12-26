@@ -82,10 +82,13 @@ public class SpringContextUtil implements ApplicationContextAware {
         }
 
         APP_PARENT_DIR = FileUtil.getParent(APP_DIR, 2);
+        log.info("APP_PARENT_DIR :{}", APP_PARENT_DIR);
+
         ASSISTANT_DIR = APP_PARENT_DIR + File.separator + "assistant";
         BIN_DIR = APP_PARENT_DIR + File.separator + "bin";
         CONF_DIR = APP_PARENT_DIR + File.separator + "conf";
         CONF_ENV_DIR = CONF_DIR + File.separator + "env";
+
         CONF_SERVICE_DIR = CONF_DIR + File.separator + "service";
         DOCS_DIR = APP_PARENT_DIR + File.separator + "docs";
         NODE_DIR = APP_PARENT_DIR + File.separator + "node";
@@ -94,8 +97,6 @@ public class SpringContextUtil implements ApplicationContextAware {
         ORM_DIR = APP_PARENT_DIR + File.separator + "orm";
         PLUGINS_DIR = APP_PARENT_DIR + File.separator + "plugins";
         SCRIPTS_DIR = APP_PARENT_DIR + File.separator + "scripts";
-
-        log.info("APP_DIR: {}", APP_DIR);
     }
 
 
