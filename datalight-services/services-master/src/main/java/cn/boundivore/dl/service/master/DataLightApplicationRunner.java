@@ -22,6 +22,7 @@ import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.resolver.*;
 import cn.boundivore.dl.service.master.service.MasterManageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -40,6 +41,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Order(1)
 @RequiredArgsConstructor
+@Slf4j
 public class DataLightApplicationRunner implements ApplicationRunner {
 
     private final MasterManageService masterManageService;
@@ -49,18 +51,23 @@ public class DataLightApplicationRunner implements ApplicationRunner {
 
         // 下方存在变量前后依赖关系，需留意执行顺序，不可随意调整
         // ./conf/datalight
+        log.info("CONF_ENV_DIR: {}" , DataLightEnv.CONF_ENV_DIR);
         ResolverYamlDirectory.resolver(DataLightEnv.CONF_ENV_DIR);
 
         // ./conf/service
+        log.info("CONF_SERVICE_DIR: {}" , DataLightEnv.CONF_SERVICE_DIR);
         ResolverYamlServiceManifest.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./conf/service
+        log.info("CONF_SERVICE_DIR: {}" , DataLightEnv.CONF_SERVICE_DIR);
         ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./plugins
+        log.info("PLUGINS_DIR_LOCAL: {}" , DataLightEnv.PLUGINS_DIR_LOCAL);
         ResolverYamlServicePlaceholder.resolver(DataLightEnv.PLUGINS_DIR_LOCAL);
 
         // ./node/conf
+        log.info("NODE_CONF_DIR: {}" , DataLightEnv.NODE_CONF_DIR);
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
         this.masterManageService.updateMasterMeta();
