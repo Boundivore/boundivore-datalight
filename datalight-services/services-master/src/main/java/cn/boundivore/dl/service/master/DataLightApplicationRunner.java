@@ -17,6 +17,8 @@
 package cn.boundivore.dl.service.master;
 
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
+import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.resolver.*;
 import cn.boundivore.dl.service.master.service.MasterManageService;
 import lombok.RequiredArgsConstructor;
@@ -44,21 +46,22 @@ public class DataLightApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
         // 下方存在变量前后依赖关系，需留意执行顺序，不可随意调整
         // ./conf/datalight
-        ResolverYamlDirectory.resolver(SpringContextUtil.CONF_ENV_DIR);
+        ResolverYamlDirectory.resolver(DataLightEnv.CONF_ENV_DIR);
 
         // ./conf/service
-        ResolverYamlServiceManifest.resolver(SpringContextUtil.CONF_SERVICE_DIR);
+        ResolverYamlServiceManifest.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./conf/service
-        ResolverYamlServiceDetail.resolver(SpringContextUtil.CONF_SERVICE_DIR);
+        ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./plugins
-        ResolverYamlServicePlaceholder.resolver(SpringContextUtil.PLUGINS_DIR);
+        ResolverYamlServicePlaceholder.resolver(DataLightEnv.PLUGINS_DIR_LOCAL);
 
         // ./node/conf
-        ResolverYamlNode.resolver(SpringContextUtil.NODE_CONF_DIR);
+        ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
         this.masterManageService.updateMasterMeta();
     }

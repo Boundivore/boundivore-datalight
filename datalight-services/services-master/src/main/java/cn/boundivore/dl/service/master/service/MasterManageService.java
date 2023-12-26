@@ -21,11 +21,11 @@ import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.service.master.cache.HeartBeatCache;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.job.NodeJobService;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
@@ -144,8 +144,7 @@ public class MasterManageService {
                         boolean isConnected = this.nodeJobService.scan(
                                 i.getIpv4(),
                                 Integer.parseInt(i.getSshPort().toString()),
-                                //TODO FOR TEST
-                                SpringContextUtilTest.PRIVATE_KEY_PATH
+                                DataLightEnv.PRIVATE_KEY_PATH
                         );
 
                         if (isConnected) {
@@ -265,18 +264,14 @@ public class MasterManageService {
 
             log.info("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
 
-            // 获取 Master 自身节点的 IP
-            String internalIPAddress = ReactiveAddressUtil.getInternalIPAddress();
-            //TODO FOR TEST
-            internalIPAddress = SpringContextUtilTest.MASTER_IP_GATEWAY_TEST;
-            final String masterIp = internalIPAddress;
+            final String masterRealIp = DataLightEnv.MASTER_REAL_IP;
 
             final String cmd = String.format(
                     "%s/datalight.sh restart worker %s",
-                    //TODO FOR TEST
-                    SpringContextUtilTest.BIN_PATH_DIR_REMOTE,
+                    DataLightEnv.BIN_PATH_DIR_REMOTE,
                     this.workerPort
             );
+
 
             new ForkJoinPool(4)
                     .submit(() -> {
@@ -294,15 +289,14 @@ public class MasterManageService {
                                         this.nodeJobService.exec(
                                                 i.getIpv4(),
                                                 Integer.parseInt(i.getSshPort().toString()),
-                                                //TODO TEST
-                                                SpringContextUtilTest.PRIVATE_KEY_PATH,
+                                                DataLightEnv.PRIVATE_KEY_PATH,
                                                 cmd,
                                                 30 * 1000L,
                                                 TimeUnit.MILLISECONDS
                                         );
 
                                         // 推送 MasterMeta
-                                        this.publishMasterMeta(masterIp, i.getIpv4());
+                                        this.publishMasterMeta(masterRealIp, i.getIpv4());
 
                                     } catch (Exception e) {
                                         log.error(
@@ -333,16 +327,13 @@ public class MasterManageService {
                 CollUtil.newArrayList(NodeStateEnum.STARTED)
         );
 
-        // 获取 Master 自身节点的 IP
-        String internalIPAddress = ReactiveAddressUtil.getInternalIPAddress();
-        //TODO FOR TEST
-        internalIPAddress = SpringContextUtilTest.MASTER_IP_GATEWAY_TEST;
-        final String masterIp = internalIPAddress;
+
+        final String masterRealIp = DataLightEnv.MASTER_REAL_IP;
 
         // 向节点中逐个推送 Master 信息，如需更高效率，可以考虑多线程
         tDlNodeList.forEach(i -> {
             try {
-                this.publishMasterMeta(masterIp, i.getIpv4());
+                this.publishMasterMeta(masterRealIp, i.getIpv4());
             } catch (Exception e) {
                 log.error(
                         "Master 信息发布失败: {}, {}",

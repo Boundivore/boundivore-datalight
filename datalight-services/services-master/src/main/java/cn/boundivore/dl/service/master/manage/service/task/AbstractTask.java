@@ -25,6 +25,7 @@ import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.IConfig;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.service.bean.*;
 import cn.boundivore.dl.service.master.manage.service.job.JobService;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
@@ -236,8 +237,7 @@ public abstract class AbstractTask implements ITask {
     protected String commonAbsoluteCommandPath(StepMeta stepMeta) {
         return String.format(
                 "%s/%s",
-                //TODO FOR TEST
-                SpringContextUtilTest.SCRIPTS_PATH_DIR_REMOTE,
+                DataLightEnv.SCRIPTS_PATH_DIR_REMOTE,
                 stepMeta.getShell()
         );
     }
@@ -258,8 +258,7 @@ public abstract class AbstractTask implements ITask {
     protected String pluginAbsoluteCommandPath(StepMeta stepMeta) {
         return String.format(
                 "%s/%s/scripts/%s",
-                //TODO FOR TEST
-                SpringContextUtilTest.PLUGINS_PATH_DIR_REMOTE,
+                DataLightEnv.PLUGINS_DIR_REMOTE,
                 this.taskMeta.getServiceName(),
                 stepMeta.getShell()
         );
@@ -282,7 +281,7 @@ public abstract class AbstractTask implements ITask {
         try {
             String jarParentPath = String.format(
                     "file:%s/%s/jars/%s",
-                    SpringContextUtilTest.PLUGINS_PATH_DIR_LOCAL,
+                    DataLightEnv.PLUGINS_DIR_LOCAL,
                     this.taskMeta.getServiceName(),
                     stepMeta.getJar()
             );

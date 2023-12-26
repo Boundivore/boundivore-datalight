@@ -25,6 +25,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfigEvent;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigSelf;
 import cn.boundivore.dl.plugin.base.config.event.IConfigEventHandler;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
@@ -200,7 +201,7 @@ public class ConfigEventSubscriber {
         try {
             String jarParentPath = String.format(
                     "file:%s/%s/jars/%s",
-                    SpringContextUtilTest.PLUGINS_PATH_DIR_LOCAL,
+                    DataLightEnv.PLUGINS_DIR_LOCAL,
                     serviceName,
                     jar
             );

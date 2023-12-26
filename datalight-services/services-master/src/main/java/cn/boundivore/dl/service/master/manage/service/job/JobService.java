@@ -34,6 +34,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginClusterMeta;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.service.master.cache.MySQLCache;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
@@ -719,13 +720,15 @@ public class JobService {
                 )
                 .collect(Collectors.toList());
 
-        //TODO FOR TEST
-        String masterIpTest = SpringContextUtilTest.MASTER_IP_GATEWAY_TEST;
-        masterMeta.setNodeId(-1L);
-        masterMeta.setHostname(masterIpTest);
-        masterMeta.setNodeIp(masterIpTest);
-        masterMeta.setPort(masterPort);
-        masterMeta.setMasterWorkerEnum(MasterWorkerEnum.MASTER);
+        // DEBUG 本地调试环境配置
+        if (DataLightEnv.IS_DEBUG) {
+            String masterIpTest = SpringContextUtilTest.MASTER_IP_GATEWAY_TEST;
+            masterMeta.setHostname(masterIpTest);
+            masterMeta.setNodeIp(masterIpTest);
+            masterMeta.setNodeId(-1L);
+            masterMeta.setPort(masterPort);
+            masterMeta.setMasterWorkerEnum(MasterWorkerEnum.MASTER);
+        }
 
         masterWorkerMetaList.add(0, masterMeta);
 

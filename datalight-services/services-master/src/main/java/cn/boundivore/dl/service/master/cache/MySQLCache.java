@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.service.master.cache;
 
-import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 /**
- * Description: TODO
+ * Description: 数据库信息缓存
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/8/16

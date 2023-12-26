@@ -17,17 +17,13 @@
 package cn.boundivore.dl.service.master.resolver;
 
 import cn.boundivore.dl.base.utils.YamlSerializer;
-import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlDirectory;
-import cn.boundivore.dl.service.master.resolver.yaml.YamlNodeAction;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceManifest;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Assert;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -78,9 +74,6 @@ public final class ResolverYamlServiceDetail {
      */
     public static void resolver(String confPath) throws IOException {
         log.info(confPath);
-
-        //TEST
-        confPath = SpringContextUtilTest.SERVICE_CONF_LOCAL;
 
         // 总配置
         YamlServiceManifest.DataLight dataLight = ResolverYamlServiceManifest.SERVICE_MANIFEST_YAML.getDataLight();
@@ -204,10 +197,10 @@ public final class ResolverYamlServiceDetail {
     }
 
     public static void main(String[] args) throws IOException {
-        ResolverYamlDirectory.resolver("");
+        ResolverYamlDirectory.resolver( SpringContextUtilTest.CONF_ENV_DIR_LOCAL);
 
-        ResolverYamlServiceManifest.resolver("");
+        ResolverYamlServiceManifest.resolver(SpringContextUtilTest.CONF_SERVICE_DIR);
 
-        resolver("");
+        ResolverYamlServiceDetail.resolver(SpringContextUtilTest.CONF_SERVICE_DIR);
     }
 }

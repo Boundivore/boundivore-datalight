@@ -32,6 +32,7 @@ import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.po.single.TDlNodeInit;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeInitServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeTaskMeta;
@@ -228,7 +229,7 @@ public class MasterNodeJobService {
                                         i.getIpv4(),
                                         i.getHostname(),
                                         i.getSshPort().intValue(),
-                                        SpringContextUtilTest.PRIVATE_KEY_PATH,
+                                        DataLightEnv.PRIVATE_KEY_PATH,
                                         false
 
                                 ))
@@ -258,7 +259,7 @@ public class MasterNodeJobService {
                                         i.getIpv4(),
                                         i.getHostname(),
                                         i.getSshPort().intValue(),
-                                        SpringContextUtilTest.PRIVATE_KEY_PATH,
+                                        DataLightEnv.PRIVATE_KEY_PATH,
                                         false
                                 ))
                                 .sorted((o1, o2) -> isAsc ?

@@ -21,6 +21,7 @@ import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeResources;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeTaskMeta;
@@ -216,7 +217,7 @@ public abstract class AbstractNodeTask implements INodeTask {
     protected String absoluteScriptPath(String scriptName) throws Exception {
         return String.format(
                 "%s/%s",
-                SpringContextUtilTest.NODE_SCRIPTS_DIR_REMOTE,
+                DataLightEnv.NODE_SCRIPTS_DIR_REMOTE,
                 scriptName
         );
     }
@@ -302,15 +303,15 @@ public abstract class AbstractNodeTask implements INodeTask {
                 nodeTaskMeta.getHostname(),
                 nodeTaskMeta.getSshPort(),
                 nodeTaskMeta.getPrivateKeyPath(),
-                SpringContextUtilTest.NODE_DIR_REMOTE
+                DataLightEnv.NODE_DIR_REMOTE
         );
         // 推送脚本到目标节点
         this.nodeJobService.push(
                 nodeTaskMeta.getHostname(),
                 nodeTaskMeta.getSshPort(),
                 nodeTaskMeta.getPrivateKeyPath(),
-                SpringContextUtilTest.NODE_DIR_LOCAL,
-                SpringContextUtilTest.NODE_DIR_REMOTE
+                DataLightEnv.NODE_DIR_LOCAL,
+                DataLightEnv.NODE_DIR_REMOTE
         );
 
 
@@ -319,15 +320,15 @@ public abstract class AbstractNodeTask implements INodeTask {
                 nodeTaskMeta.getHostname(),
                 nodeTaskMeta.getSshPort(),
                 nodeTaskMeta.getPrivateKeyPath(),
-                SpringContextUtilTest.CONF_ENV_DIR_REMOTE
+                DataLightEnv.CONF_ENV_DIR_REMOTE
         );
         // 推送相关环境变量到目标节点
         this.nodeJobService.push(
                 nodeTaskMeta.getHostname(),
                 nodeTaskMeta.getSshPort(),
                 nodeTaskMeta.getPrivateKeyPath(),
-                SpringContextUtilTest.CONF_ENV_DIR_LOCAL,
-                SpringContextUtilTest.CONF_ENV_DIR_REMOTE
+                DataLightEnv.CONF_ENV_DIR_LOCAL,
+                DataLightEnv.CONF_ENV_DIR_REMOTE
         );
 
         nodeStepMeta.setShell(
@@ -373,10 +374,6 @@ public abstract class AbstractNodeTask implements INodeTask {
      * @return String 返回脚本执行结果
      */
     protected String checkEnv(NodeStepMeta nodeStepMeta) throws Exception {
-        // 获取 Master 节点 IP
-        String masterIp = ReactiveAddressUtil.getInternalIPAddress();
-        //TODO TEST
-        masterIp = SpringContextUtilTest.MASTER_IP_TEST;
 
         // 输出 hosts 配置到 ./node/conf/auto-hosts.conf
         Long clusterId = this.nodeTaskMeta.getNodeJobMeta().getClusterId();
@@ -384,10 +381,11 @@ public abstract class AbstractNodeTask implements INodeTask {
         //如果是计算集群，则需要考虑包含存储集群的节点，以便后续可以访问
         String hostsStr = this.nodeJobService.getAllNodeWhenCheck(clusterId).toString();
 
+
         File autoHostsConfFile = FileUtil.file(
                 String.format(
                         "%s/%s",
-                        SpringContextUtilTest.NODE_CONF_DIR_LOCAL,
+                        DataLightEnv.NODE_CONF_DIR,
                         "auto-hosts.conf"
                 )
         );
@@ -398,7 +396,7 @@ public abstract class AbstractNodeTask implements INodeTask {
         );
 
         // 拼接当前节点的信息作为参数
-        nodeStepMeta.getArgs().add(masterIp);
+        nodeStepMeta.getArgs().add(DataLightEnv.MASTER_IP);
         nodeStepMeta.getArgs().add(this.nodeTaskMeta.getHostname());
 
         // 执行脚本
@@ -431,9 +429,6 @@ public abstract class AbstractNodeTask implements INodeTask {
      * @return String 返回脚本执行结果
      */
     protected String push(NodeStepMeta nodeStepMeta) throws Exception {
-        //TODO TEST
-        String localPath = SpringContextUtilTest.APP_PARENT_DIR_LOCAL_LOCAL;
-        String remotePath = SpringContextUtilTest.APP_PARENT_DIR_REMOTE_LOCAL;
 
         String hostname = nodeTaskMeta.getHostname();
         Integer sshPort = nodeTaskMeta.getSshPort();
@@ -443,7 +438,7 @@ public abstract class AbstractNodeTask implements INodeTask {
                 hostname,
                 sshPort,
                 privateKeyPath,
-                localPath
+                DataLightEnv.APP_PARENT_ROOT_DIR_LOCAL
         );
         nodeStepMeta.setTransferProgress(transferProgress);
 
@@ -469,8 +464,8 @@ public abstract class AbstractNodeTask implements INodeTask {
                     hostname,
                     sshPort,
                     privateKeyPath,
-                    localPath,
-                    remotePath
+                    DataLightEnv.APP_PARENT_ROOT_DIR_LOCAL,
+                    DataLightEnv.APP_PARENT_ROOT_DIR_REMOTE
             );
         }
 
@@ -491,13 +486,7 @@ public abstract class AbstractNodeTask implements INodeTask {
      * @return 目标节点为当前 Master 节点，返回 true ，反之返回 false
      */
     private boolean isMasterNode(String targetNodeIp) {
-        // 获取 Master 节点 IP
-        String masterIp = ReactiveAddressUtil.getInternalIPAddress();
-
-        //TODO TEST
-        masterIp = SpringContextUtilTest.MASTER_IP_TEST;
-
-        return targetNodeIp.equals(masterIp);
+        return targetNodeIp.equals(DataLightEnv.MASTER_IP);
     }
 
 

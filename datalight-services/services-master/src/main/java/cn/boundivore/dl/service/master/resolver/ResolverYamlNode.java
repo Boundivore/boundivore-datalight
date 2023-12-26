@@ -59,8 +59,6 @@ public final class ResolverYamlNode {
     public static void resolver(String confPath) throws IOException {
         log.info(confPath);
 
-        confPath = SpringContextUtilTest.NODE_CONF_DIR_LOCAL;
-
         //目录配置
         YamlDirectory.Directory directory = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
 
@@ -80,13 +78,13 @@ public final class ResolverYamlNode {
     }
 
     public static void main(String[] args) throws IOException {
-        ResolverYamlDirectory.resolver("");
+        ResolverYamlDirectory.resolver( SpringContextUtilTest.CONF_ENV_DIR_LOCAL);
 
-        ResolverYamlServiceManifest.resolver("");
+        ResolverYamlServiceManifest.resolver(SpringContextUtilTest.CONF_SERVICE_DIR);
 
-        ResolverYamlServiceDetail.resolver("");
+        ResolverYamlServiceDetail.resolver(SpringContextUtilTest.CONF_SERVICE_DIR);
 
-        resolver("");
+        ResolverYamlNode.resolver(SpringContextUtilTest.NODE_CONF_DIR_LOCAL);
     }
 
 }

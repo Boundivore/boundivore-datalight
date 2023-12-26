@@ -53,7 +53,6 @@ public final class ResolverYamlDirectory {
      */
     public static void resolver(String confPath) throws IOException {
         log.info(confPath);
-        confPath = SpringContextUtilTest.CONF_ENV_DIR_LOCAL;
 
         //解析 Yaml
         DIRECTORY_YAML = YamlSerializer.toObject(
@@ -121,6 +120,6 @@ public final class ResolverYamlDirectory {
     }
 
     public static void main(String[] args) throws IOException {
-        resolver("");
+        ResolverYamlDirectory.resolver( SpringContextUtilTest.CONF_ENV_DIR_LOCAL);
     }
 }

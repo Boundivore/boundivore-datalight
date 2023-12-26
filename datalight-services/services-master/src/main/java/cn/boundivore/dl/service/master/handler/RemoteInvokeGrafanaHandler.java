@@ -27,6 +27,7 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.service.master.bean.GrafanaUser;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.service.MasterComponentService;
 import cn.boundivore.dl.service.master.service.MasterNodeService;
 import cn.boundivore.dl.service.master.service.RemoteInvokeGrafanaService;
@@ -373,8 +374,7 @@ public class RemoteInvokeGrafanaHandler {
         // dashboard 目录
         String dashboardDir = String.format(
                 "%s/MONITOR/dashboard",
-                //TODO FOR TEST
-                SpringContextUtilTest.PLUGINS_PATH_DIR_LOCAL
+                DataLightEnv.PLUGINS_DIR_LOCAL
         );
 
         File[] files = FileUtil.file(dashboardDir).listFiles();

@@ -1,5 +1,6 @@
 server:
   datalight:
+    is-debug: false
     url:
       master: /api/v1/master
       master-port: 8001

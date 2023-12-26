@@ -19,8 +19,6 @@ package cn.boundivore.dl.cloud.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-
 @Component
 @Slf4j
 public class SpringContextUtilTest {
@@ -34,11 +32,13 @@ public class SpringContextUtilTest {
      * TEST Link
      */
     private static final String ROOT_PATH = "D:/datalight";
+
+    private static final String APP_PARENT_DIR = "/opt/datalight";
     // TEST private_key
     public static final String PRIVATE_KEY_PATH = ROOT_PATH + "/z.node01/id_rsa";
 
     // TEST conf/env
-    public static final String CONF_ENV_DIR_REMOTE = "/opt/datalight/conf/env";
+    public static final String CONF_ENV_DIR_REMOTE = APP_PARENT_DIR + "/conf/env";
 
     public static final String CONF_ENV_DIR_LOCAL = ROOT_PATH + "/conf/env";
 
@@ -46,30 +46,30 @@ public class SpringContextUtilTest {
     public static final String NODE_CONF_DIR_LOCAL = ROOT_PATH + "/node/conf";
 
     // TEST app parent
-    public static final String APP_PARENT_DIR_REMOTE_LOCAL = "/opt/datalight";
+    public static final String APP_PARENT_DIR_REMOTE_LOCAL = APP_PARENT_DIR;
     public static final String APP_PARENT_DIR_LOCAL_LOCAL = ROOT_PATH;
 
     // TEST ./node
-    public static final String NODE_DIR_REMOTE = "/opt/datalight/node";
+    public static final String NODE_DIR_REMOTE = APP_PARENT_DIR + "/node";
     public static final String NODE_DIR_LOCAL = ROOT_PATH + "/node";
 
 
     // TEST node/scripts
-    public static final String NODE_SCRIPTS_DIR_REMOTE = "/opt/datalight/node/scripts";
+    public static final String NODE_SCRIPTS_DIR_REMOTE = APP_PARENT_DIR + "/node/scripts";
     public static final String NODE_SCRIPTS_DIR_LOCAL = ROOT_PATH + "/node/scripts";
 
     // TEST conf/service
-    public static final String SERVICE_CONF_LOCAL = ROOT_PATH + "/conf/service";
+    public static final String CONF_SERVICE_DIR = ROOT_PATH + "/conf/service";
 
     //TEST plugins
-    public static final String PLUGINS_PATH_DIR_LOCAL = ROOT_PATH + "/plugins";
+    public static final String PLUGINS_DIR_LOCAL = ROOT_PATH + "/plugins";
 
     // ./datalight/plugins
-    public static final String PLUGINS_PATH_DIR_REMOTE = "/opt/datalight/plugins";
+    public static final String PLUGINS_DIR_REMOTE = APP_PARENT_DIR + "/plugins";
 
     // ./datalight/scripts
-    public static final String SCRIPTS_PATH_DIR_REMOTE = "/opt/datalight/scripts";
+    public static final String SCRIPTS_DIR_REMOTE = APP_PARENT_DIR + "/scripts";
 
-    public static final String BIN_PATH_DIR_REMOTE = "/opt/datalight/bin";
+    public static final String BIN_DIR_REMOTE = APP_PARENT_DIR + "/bin";
 
 }

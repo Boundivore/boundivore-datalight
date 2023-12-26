@@ -65,9 +65,6 @@ public final class ResolverYamlServiceManifest {
     public static void resolver(String confPath) throws IOException {
         log.info(confPath);
 
-        //TEST
-        confPath = SpringContextUtilTest.SERVICE_CONF_LOCAL;
-
         //解析 Yaml
         SERVICE_MANIFEST_YAML = YamlSerializer.toObject(
                 FileUtil.file(
