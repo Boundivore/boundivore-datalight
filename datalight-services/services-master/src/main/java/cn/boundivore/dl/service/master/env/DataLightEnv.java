@@ -64,13 +64,13 @@ public class DataLightEnv {
     @Value("${server.datalight.is-debug}")
     private boolean isDebug;
     @Value("${server.datalight.url.master}")
-    private boolean masterRootPath;
+    private String masterRootPath;
     @Value("${server.datalight.url.master-port}")
-    private boolean masterPort;
+    private String masterPort;
     @Value("${server.datalight.url.worker}")
-    private boolean workerRootPath;
+    private String workerRootPath;
     @Value("${server.datalight.url.worker-port}")
-    private boolean workerPort;
+    private String workerPort;
 
     @PostConstruct
     public void init() {
