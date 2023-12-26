@@ -20,6 +20,7 @@ import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,7 @@ import javax.annotation.PostConstruct;
  */
 @Component
 @Data
+@Slf4j
 public class DataLightEnv {
     public static boolean IS_DEBUG;
 
@@ -75,7 +77,10 @@ public class DataLightEnv {
     @PostConstruct
     public void init() {
         DataLightEnv.IS_DEBUG = this.isDebug;
+        DataLightEnv.initEnv();
+    }
 
+    public static void initEnv(){
         if (DataLightEnv.IS_DEBUG) {
             MASTER_IP = SpringContextUtilTest.MASTER_IP_TEST;
             MASTER_REAL_IP = SpringContextUtilTest.MASTER_IP_GATEWAY_TEST;
