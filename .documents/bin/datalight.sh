@@ -33,7 +33,10 @@ start_service() {
   local api_type="$2"
   local port="$3"
 
-  local command="nohup java -Dlogback.configurationFile=${app_conf_dir}/logback-${api_type}.xml -jar "${app_dir}/${jar_name}" > /dev/null 2>&1 & echo ${api_type} starting in \$!..."
+  # 根据api_type选择不同的配置文件
+  local config_file="${app_conf_dir}/application-${api_type}.yml"
+
+  local command="nohup java -Dlogback.configurationFile=${app_conf_dir}/logback-${api_type}.xml -jar ${app_dir}/${jar_name} --spring.config.location=file://${config_file} > /dev/null 2>&1 & echo ${api_type} starting in \$!..."
   # shellcheck disable=SC2155
   local pid=$(pgrep -f "${jar_name}")
 
