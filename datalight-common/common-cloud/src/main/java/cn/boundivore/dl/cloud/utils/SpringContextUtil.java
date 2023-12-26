@@ -74,7 +74,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     public static void init() {
         APP_HOME = new ApplicationHome(SpringContextUtil.class);
         if (APP_HOME.getSource() == null) {
-            APP_DIR = "/opt/datalight/X/Y";
+            APP_DIR = "/opt/datalight/app/X";
             log.error("当前无法定位当前进程家目录，将使用默认目录: {}", APP_DIR);
         } else {
             APP_DIR = APP_HOME.getSource().getAbsolutePath();
