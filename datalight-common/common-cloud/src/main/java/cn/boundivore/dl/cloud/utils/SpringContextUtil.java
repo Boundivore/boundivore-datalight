@@ -39,7 +39,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     public static final String USER_DATALIGHT = "datalight";
     public static final String USER_GROUP = "datalight";
 
-    public static final String PRIVATE_KEY_PATH = "~/.ssh/id_rsa";
+    public static final String PRIVATE_KEY_PATH = "/root/.ssh/id_rsa";
 
     public static ApplicationHome APP_HOME;
     public static String APP_DIR;
