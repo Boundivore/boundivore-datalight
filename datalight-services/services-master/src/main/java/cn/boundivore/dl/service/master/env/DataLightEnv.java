@@ -44,6 +44,7 @@ public class DataLightEnv {
 
     public static String MASTER_IP;
     public static String MASTER_REAL_IP;
+    public static String MASTER_HOSTNAME;
 
     public static String PRIVATE_KEY_PATH;
 
@@ -84,6 +85,7 @@ public class DataLightEnv {
         if (DataLightEnv.IS_DEBUG) {
             MASTER_IP = SpringContextUtilTest.MASTER_IP_TEST;
             MASTER_REAL_IP = SpringContextUtilTest.MASTER_IP_GATEWAY_TEST;
+            MASTER_HOSTNAME = SpringContextUtilTest.MASTER_HOSTNAME_TEST;
 
             PRIVATE_KEY_PATH = SpringContextUtilTest.PRIVATE_KEY_PATH;
 
@@ -105,6 +107,7 @@ public class DataLightEnv {
         } else {
             MASTER_IP = ReactiveAddressUtil.getInternalIPAddress();
             MASTER_REAL_IP = ReactiveAddressUtil.getInternalIPAddress();
+            MASTER_HOSTNAME = ReactiveAddressUtil.getLocalHostName();
 
             PRIVATE_KEY_PATH = SpringContextUtil.PRIVATE_KEY_PATH;
 

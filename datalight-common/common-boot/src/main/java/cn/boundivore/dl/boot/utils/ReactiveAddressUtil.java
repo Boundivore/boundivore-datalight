@@ -172,6 +172,29 @@ public class ReactiveAddressUtil {
     }
 
     /**
+     * Description: 获取本机主机名
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/12/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String 返回本地主机名
+     */
+    public static String getLocalHostName() {
+        try {
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            return inetAddress.getHostName();
+        } catch (UnknownHostException e) {
+            // UnknownHostException是InetAddress.getLocalHost()可能抛出的异常
+            // 在这里可以处理异常，比如返回一个默认值或者自定义的错误信息
+            return "Unknown Host";
+        }
+    }
+
+    /**
      * Description: 获取内网IP地址
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com

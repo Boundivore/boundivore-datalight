@@ -27,6 +27,7 @@ public class SpringContextUtilTest {
      */
     public static final String MASTER_IP_TEST = "192.168.137.10";
     public static final String MASTER_IP_GATEWAY_TEST = "192.168.137.1";
+    public static final String MASTER_HOSTNAME_TEST = "WINDOWS";
 
     /**
      * TEST Link

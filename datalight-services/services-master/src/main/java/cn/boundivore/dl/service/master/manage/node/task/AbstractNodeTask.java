@@ -308,7 +308,7 @@ public abstract class AbstractNodeTask implements INodeTask {
 
 
         // 推送脚本到目标节点，跳过当前节点自己
-        if (!this.isMasterNode(this.nodeTaskMeta.getNodeIp())) {
+        if (!this.isMasterNode(this.nodeTaskMeta.getHostname())) {
             this.nodeJobService.push(
                     nodeTaskMeta.getHostname(),
                     nodeTaskMeta.getSshPort(),
@@ -327,7 +327,7 @@ public abstract class AbstractNodeTask implements INodeTask {
         );
 
         // 推送相关环境变量到目标节点，跳过当前节点自己
-        if (!this.isMasterNode(this.nodeTaskMeta.getNodeIp())) {
+        if (!this.isMasterNode(this.nodeTaskMeta.getHostname())) {
             this.nodeJobService.push(
                     nodeTaskMeta.getHostname(),
                     nodeTaskMeta.getSshPort(),
@@ -450,7 +450,7 @@ public abstract class AbstractNodeTask implements INodeTask {
         nodeStepMeta.setTransferProgress(transferProgress);
 
 
-        if (this.isMasterNode(this.nodeTaskMeta.getNodeIp())) {
+        if (this.isMasterNode(this.nodeTaskMeta.getHostname())) {
 
             //如果要推送的目标地址为当前节点，则跳过推送，并将总进度更新为 100
             transferProgress.setTotalProgress(100);
@@ -489,11 +489,11 @@ public abstract class AbstractNodeTask implements INodeTask {
      * Modification time:
      * Throws:
      *
-     * @param targetNodeIp 目标节点 IP
+     * @param targetHostname 目标节点主机名
      * @return 目标节点为当前 Master 节点，返回 true ，反之返回 false
      */
-    private boolean isMasterNode(String targetNodeIp) {
-        return targetNodeIp.equals(DataLightEnv.MASTER_IP);
+    private boolean isMasterNode(String targetHostname) {
+        return targetHostname.equals(DataLightEnv.MASTER_HOSTNAME);
     }
 
 
