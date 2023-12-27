@@ -6,7 +6,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # 探测节点 IP 地址
-hostname -I
+ip addr show | grep inet | grep 'ens33' | grep -v 127.0.0.1 | grep -v 'inet6' | awk '{print $2}' | cut -f1 -d'/'
 
 # 获取 CPU 架构
 lscpu | grep 'Architecture' | awk '{print $2}'
