@@ -649,8 +649,8 @@ public class MasterNodeJobService {
                                     .setExecState(nodeJob.getNodeJobMeta().getExecStateEnum())
                                     // 字节进度
                                     .setFileBytesProgressVo(new AbstractNodeJobVo.FileBytesProgressVo(
-                                            transferProgress.getTotalProgress(),
                                             transferProgress.getTotalBytes(),
+                                            transferProgress.getTotalProgress(),
                                             transferProgress.getTotalTransferBytes().get()
                                     ))
                                     // 文件个数进度
