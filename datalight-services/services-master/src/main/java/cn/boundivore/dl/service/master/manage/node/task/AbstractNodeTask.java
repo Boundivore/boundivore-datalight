@@ -305,15 +305,18 @@ public abstract class AbstractNodeTask implements INodeTask {
                 nodeTaskMeta.getPrivateKeyPath(),
                 DataLightEnv.NODE_DIR_REMOTE
         );
-        // 推送脚本到目标节点
-        this.nodeJobService.push(
-                nodeTaskMeta.getHostname(),
-                nodeTaskMeta.getSshPort(),
-                nodeTaskMeta.getPrivateKeyPath(),
-                DataLightEnv.NODE_DIR_LOCAL,
-                DataLightEnv.NODE_DIR_REMOTE
-        );
 
+
+        // 推送脚本到目标节点，跳过当前节点自己
+        if (!this.isMasterNode(this.nodeTaskMeta.getNodeIp())) {
+            this.nodeJobService.push(
+                    nodeTaskMeta.getHostname(),
+                    nodeTaskMeta.getSshPort(),
+                    nodeTaskMeta.getPrivateKeyPath(),
+                    DataLightEnv.NODE_DIR_LOCAL,
+                    DataLightEnv.NODE_DIR_REMOTE
+            );
+        }
 
         // 在目标节点创建脚本目录
         this.nodeJobService.mkdirs(
@@ -322,14 +325,18 @@ public abstract class AbstractNodeTask implements INodeTask {
                 nodeTaskMeta.getPrivateKeyPath(),
                 DataLightEnv.CONF_ENV_DIR_REMOTE
         );
-        // 推送相关环境变量到目标节点
-        this.nodeJobService.push(
-                nodeTaskMeta.getHostname(),
-                nodeTaskMeta.getSshPort(),
-                nodeTaskMeta.getPrivateKeyPath(),
-                DataLightEnv.CONF_ENV_DIR_LOCAL,
-                DataLightEnv.CONF_ENV_DIR_REMOTE
-        );
+
+        // 推送相关环境变量到目标节点，跳过当前节点自己
+        if (!this.isMasterNode(this.nodeTaskMeta.getNodeIp())) {
+            this.nodeJobService.push(
+                    nodeTaskMeta.getHostname(),
+                    nodeTaskMeta.getSshPort(),
+                    nodeTaskMeta.getPrivateKeyPath(),
+                    DataLightEnv.CONF_ENV_DIR_LOCAL,
+                    DataLightEnv.CONF_ENV_DIR_REMOTE
+            );
+        }
+
 
         nodeStepMeta.setShell(
                 this.absoluteScriptPath(nodeStepMeta.getShell())
