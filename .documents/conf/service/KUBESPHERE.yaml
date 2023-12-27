@@ -4,18 +4,18 @@ datalight:
     version: 3.3.2
     tgz: dlc-kubesphere-3.3.2.tar.gz
     conf-dirs:
-#      - service-conf-dir: '{{SERVICE_DIR}}/KUBESPHERE/conf'
-#        templated-dir: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf'
-
-#      - service-conf-dir: '{{SERVICE_DIR}}/KUBESPHERE/bin'
-#        templated-dir: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/bin'
-
-# TODO FOR TEST
       - service-conf-dir: '{{SERVICE_DIR}}/KUBESPHERE/conf'
-        templated-dir: 'D:/datalight/plugins/KUBESPHERE/templated/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/conf'
 
       - service-conf-dir: '{{SERVICE_DIR}}/KUBESPHERE/bin'
-        templated-dir: 'D:/datalight/plugins/KUBESPHERE/templated/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/KUBESPHERE/templated/bin'
+
+# TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/KUBESPHERE/conf'
+#        templated-dir: 'D:/datalight/plugins/KUBESPHERE/templated/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/KUBESPHERE/bin'
+#        templated-dir: 'D:/datalight/plugins/KUBESPHERE/templated/bin'
 
     config-event-handler-jar: 'plugins-kubesphere-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.kubesphere.config.event.ConfigEventHandler'

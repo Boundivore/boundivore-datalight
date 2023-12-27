@@ -4,30 +4,30 @@ datalight:
     version: 3.2.4
     tgz: dlc-hdfs-3.2.4.tar.gz
     conf-dirs:
-#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/exporter/conf'
-#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/exporter/conf'
-
-#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/bin'
-#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/bin'
-#
-#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/etc/hadoop'
-#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/etc/hadoop'
-#
-#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/sbin'
-#        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/sbin'
-
-# TODO FOR TEST
       - service-conf-dir: '{{SERVICE_DIR}}/HDFS/exporter/conf'
-        templated-dir: 'D:/datalight/plugins/HDFS/templated/exporter/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/exporter/conf'
 
       - service-conf-dir: '{{SERVICE_DIR}}/HDFS/bin'
-        templated-dir: 'D:/datalight/plugins/HDFS/templated/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/bin'
 
       - service-conf-dir: '{{SERVICE_DIR}}/HDFS/etc/hadoop'
-        templated-dir: 'D:/datalight/plugins/HDFS/templated/etc/hadoop'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/etc/hadoop'
 
       - service-conf-dir: '{{SERVICE_DIR}}/HDFS/sbin'
-        templated-dir: 'D:/datalight/plugins/HDFS/templated/sbin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/sbin'
+
+# TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/exporter/conf'
+#        templated-dir: 'D:/datalight/plugins/HDFS/templated/exporter/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/bin'
+#        templated-dir: 'D:/datalight/plugins/HDFS/templated/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/etc/hadoop'
+#        templated-dir: 'D:/datalight/plugins/HDFS/templated/etc/hadoop'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/HDFS/sbin'
+#        templated-dir: 'D:/datalight/plugins/HDFS/templated/sbin'
 
     config-event-handler-jar: 'plugins-hdfs-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.hdfs.config.event.ConfigEventHandler'
