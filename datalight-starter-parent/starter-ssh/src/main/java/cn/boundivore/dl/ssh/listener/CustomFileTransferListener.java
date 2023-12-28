@@ -147,7 +147,7 @@ public class CustomFileTransferListener implements TransferListener {
 
                     updateTransferProgress(relPath, filename, diffSize, printSpeed);
 
-                    log.debug(
+                    log.info(
                             "=> 文件名: {}, 进度: {}%, 速度: {}, 已传输: {}",
                             filename,
                             progressFormat,

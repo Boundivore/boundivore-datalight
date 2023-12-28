@@ -659,6 +659,7 @@ public class MasterNodeJobService {
                                             transferProgress.getTotalFileCountProgress(),
                                             transferProgress.getTotalTransferFileCount().get()
                                     ))
+                                    // 正在传输的文件信息
                                     .setCurrentFileProgressVo(new AbstractNodeJobVo.CurrentFileProgressVo(
                                             currentFileProgress.getFilename(),
                                             currentFileProgress.getFileBytes(),
