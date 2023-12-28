@@ -17,12 +17,16 @@
 package cn.boundivore.dl.ssh.listener;
 
 import cn.boundivore.dl.ssh.bean.TransferProgress;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.schmizz.sshj.common.StreamCopier;
 import net.schmizz.sshj.sftp.SFTPClient;
 import net.schmizz.sshj.xfer.TransferListener;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -97,7 +101,7 @@ public class CustomFileTransferListener implements TransferListener {
     public StreamCopier.Listener file(String filename, long fileTotalSize) {
         String filePath = this.relPath + filename;
 
-        log.info("=> 开始传输文件: {}, 路径: {}, 字节数: {} bytes", filename, filePath, fileTotalSize);
+        log.info("=> 正在传输文件: {}, 路径: {}, 字节数: {} bytes", filename, filePath, fileTotalSize);
 
         if (fileTotalSize == 0) {
             // 如果文件为 0 字节，则直接更新进度到 100%，只需要远程创建文件句柄，无需传输
@@ -112,11 +116,17 @@ public class CustomFileTransferListener implements TransferListener {
 
             @Override
             public void reportProgress(long transferred) throws IOException {
-                float progress = fileTotalSize == 0 ? 100.0F : (transferred * 100F) / fileTotalSize;
-                String progressFormat = String.format("%.1f", progress);
-                float frequencyPrint = Float.parseFloat(progressFormat) * 10 % 2;
+                double progress = fileTotalSize == 0 ? 100.00 : (transferred * 100.00) / fileTotalSize;
+
+                // 设置小数点后一位，舍入模式为DOWN（即截断 99.967 -> 99.9）
+                BigDecimal bd = new BigDecimal(Double.toString(progress)).setScale(1, RoundingMode.DOWN);
+                String progressFormat = bd.toString();
+
+                double frequencyPrint = Double.parseDouble(progressFormat) * 10 % 10;
 
                 if (frequencyPrint == 0 && !isRepeatSet.contains(progressFormat)) {
+                    isRepeatSet.add(progressFormat);
+
                     long currentTs = System.currentTimeMillis();
                     long diffSize = transferred - previousTransferredSize;
                     long diffTs = currentTs - previousTransferTimestamp;
@@ -124,9 +134,9 @@ public class CustomFileTransferListener implements TransferListener {
 
                     String printSpeed;
                     if (speed / BYTES_IN_KB / BYTES_IN_KB > 0) {
-                        printSpeed = String.format("%.1f", (speed / (float) (BYTES_IN_KB * BYTES_IN_KB))) + " mb/s";
+                        printSpeed = String.format("%.1f", (speed / (double) (BYTES_IN_KB * BYTES_IN_KB))) + " mb/s";
                     } else if (speed / BYTES_IN_KB > 0) {
-                        printSpeed = String.format("%.1f", (speed / (float) BYTES_IN_KB)) + " kb/s";
+                        printSpeed = String.format("%.1f", (speed / (double) BYTES_IN_KB)) + " kb/s";
                     } else {
                         printSpeed = speed + " b/s";
                     }
@@ -136,26 +146,26 @@ public class CustomFileTransferListener implements TransferListener {
 
                     String showTransferredSize;
                     if (transferred / BYTES_IN_KB / BYTES_IN_KB / BYTES_IN_KB > 0) {
-                        showTransferredSize = String.format("%.2f", (transferred / (float) (BYTES_IN_KB * BYTES_IN_KB * BYTES_IN_KB))) + " GB";
+                        showTransferredSize = String.format("%.2f", (transferred / (double) (BYTES_IN_KB * BYTES_IN_KB * BYTES_IN_KB))) + " GB";
                     } else if (transferred / BYTES_IN_KB / BYTES_IN_KB > 0) {
-                        showTransferredSize = String.format("%.2f", (transferred / (float) (BYTES_IN_KB * BYTES_IN_KB))) + " MB";
+                        showTransferredSize = String.format("%.2f", (transferred / (double) (BYTES_IN_KB * BYTES_IN_KB))) + " MB";
                     } else if (transferred / BYTES_IN_KB > 0) {
-                        showTransferredSize = String.format("%.2f", (transferred / (float) BYTES_IN_KB)) + " KB";
+                        showTransferredSize = String.format("%.2f", (transferred / (double) BYTES_IN_KB)) + " KB";
                     } else {
                         showTransferredSize = transferred + " B";
                     }
 
                     updateTransferProgress(relPath, filename, diffSize, printSpeed);
 
-                    log.info(
-                            "=> 文件名: {}, 进度: {}%, 速度: {}, 已传输: {}",
-                            filename,
-                            progressFormat,
-                            printSpeed,
-                            showTransferredSize
-                    );
-
-                    isRepeatSet.add(progressFormat);
+                    if(log.isDebugEnabled()){
+                        log.debug(
+                                "=> 文件名: {}, 进度: {}%, 速度: {}, 已传输: {}",
+                                filename,
+                                progressFormat,
+                                printSpeed,
+                                showTransferredSize
+                        );
+                    }
                 }
 
                 if (progress == 100) {
@@ -217,6 +227,12 @@ public class CustomFileTransferListener implements TransferListener {
      */
     private TransferProgress.FileProgress updateTransferFileCountProgress(String fileDir,
                                                                           String filename) {
+
+        FileUtil.appendString(
+                fileDir + "/" + filename + "\n",
+                FileUtil.file("/var/log/boundivore/transferFileCount.txt"),
+                CharsetUtil.UTF_8
+        );
 
         if (this.transferProgress != null) {
             TransferProgress.FilePath filePath = new TransferProgress.FilePath(fileDir, filename);

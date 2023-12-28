@@ -16,11 +16,14 @@
  */
 package cn.boundivore.dl.ssh.bean;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -40,6 +43,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@Slf4j
 public class TransferProgress {
 
     /**
@@ -205,6 +209,15 @@ public class TransferProgress {
         this.totalBytes = 0;
         this.fileProgressMap.forEach(
                 (filePath, fileProgress) -> this.totalBytes += fileProgress.getFileBytes()
+        );
+
+        this.fileProgressMap.forEach(
+                (filePath, fileProgress) ->
+                        FileUtil.appendString(
+                                filePath.getFileDir() + "/" + filePath.getFilename()  + "\n",
+                                FileUtil.file("/var/log/boundivore/total.txt"),
+                                CharsetUtil.UTF_8
+                        )
         );
         return this;
     }
