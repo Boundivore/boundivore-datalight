@@ -210,15 +210,6 @@ public class TransferProgress {
         this.fileProgressMap.forEach(
                 (filePath, fileProgress) -> this.totalBytes += fileProgress.getFileBytes()
         );
-
-        this.fileProgressMap.forEach(
-                (filePath, fileProgress) ->
-                        FileUtil.appendString(
-                                filePath.getFileDir() + "/" + filePath.getFilename()  + "\n",
-                                FileUtil.file("/var/log/boundivore/total.txt"),
-                                CharsetUtil.UTF_8
-                        )
-        );
         return this;
     }
 

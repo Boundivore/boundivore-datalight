@@ -227,13 +227,6 @@ public class CustomFileTransferListener implements TransferListener {
      */
     private TransferProgress.FileProgress updateTransferFileCountProgress(String fileDir,
                                                                           String filename) {
-
-        FileUtil.appendString(
-                fileDir + "/" + filename + "\n",
-                FileUtil.file("/var/log/boundivore/transferFileCount.txt"),
-                CharsetUtil.UTF_8
-        );
-
         if (this.transferProgress != null) {
             TransferProgress.FilePath filePath = new TransferProgress.FilePath(fileDir, filename);
             TransferProgress.FileProgress fileProgress = this.transferProgress.get(filePath);
