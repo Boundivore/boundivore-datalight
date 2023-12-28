@@ -125,7 +125,7 @@ public class MasterNodeInitService {
                     tDlNodeInit.setSshPort(sshPort);
                     tDlNodeInit.setNodeInitState(NodeStateEnum.RESOLVED);
 
-                    String na = "N/A";
+                    String na = "";
                     Long naLong = 0L;
 
                     tDlNodeInit.setIpv4(na);
