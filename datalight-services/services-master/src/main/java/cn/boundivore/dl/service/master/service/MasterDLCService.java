@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MasterDLCService {
 
-    private final IDLCConverter idlcConverter;
+    private final IDLCConverter iDlcConverter;
 
     /**
      * Description: 返回 DLC 包中服务的相关信息
@@ -65,7 +65,7 @@ public class MasterDLCService {
                         ResolverYamlServiceDetail.SERVICE_MAP
                                 .values()
                                 .stream()
-                                .map(this.idlcConverter::convert2ServiceSummaryVo)
+                                .map(this.iDlcConverter::convert2ServiceSummaryVo)
                                 .collect(Collectors.toList())
                 )
         );
@@ -94,11 +94,11 @@ public class MasterDLCService {
                                 .values()
                                 .stream()
                                 .map(i -> new AbstractDLCVo.ServiceComponentSummaryVo(
-                                                this.idlcConverter.convert2ServiceSummaryVo(i),
+                                                this.iDlcConverter.convert2ServiceSummaryVo(i),
                                                 ResolverYamlServiceDetail.COMPONENT_LIST_MAP
                                                         .get(i.getName())
                                                         .stream()
-                                                        .map(this.idlcConverter::convert2ComponentSummaryVo)
+                                                        .map(this.iDlcConverter::convert2ComponentSummaryVo)
                                                         .collect(Collectors.toList())
                                         )
                                 )

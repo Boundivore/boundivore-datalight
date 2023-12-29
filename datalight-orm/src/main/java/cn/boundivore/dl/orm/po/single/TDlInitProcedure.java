@@ -1,5 +1,6 @@
 package cn.boundivore.dl.orm.po.single;
 
+import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -42,7 +43,7 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
 
     @Schema(name = "进度状态 枚举，具体见代码")
     @TableField("procedure_state")
-    private String procedureState;
+    private ProcedureStateEnum procedureState;
 
 
 }
