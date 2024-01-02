@@ -24,8 +24,6 @@ import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
-import cn.boundivore.dl.cloud.utils.SpringContextUtil;
-import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlNode;
@@ -43,7 +41,6 @@ import cn.boundivore.dl.service.master.manage.node.job.NodePlan;
 import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,6 +91,12 @@ public class MasterNodeJobService {
         // 检查 NodeJob 合法性
         this.checkNodeJobIllegal(request);
 
+        // 切换初始化节点的状态
+        NodeStateEnum nodeStateEnum = this.resolveNodeStateFromAction(request.getNodeActionTypeEnum());
+        if (nodeStateEnum != null) {
+            this.switchNodeInitStateFromAction(request.getNodeInfoList(), nodeStateEnum);
+        }
+
         List<String> hostnameList = request.getNodeInfoList()
                 .stream()
                 .map(NodeInfoRequest::getHostname)
@@ -116,6 +119,57 @@ public class MasterNodeJobService {
         job.start();
 
         return job.getNodeJobMeta().getId();
+    }
+
+    /**
+     * Description: 根据操作行为，返回此时节点应该处于的状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeActionTypeEnum 节点操作类型
+     * @return NodeStateEnum 节点此时应处在的状态
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public NodeStateEnum resolveNodeStateFromAction(NodeActionTypeEnum nodeActionTypeEnum) {
+        switch (nodeActionTypeEnum) {
+            case DETECT:
+                return NodeStateEnum.DETECTING;
+            case CHECK:
+                return NodeStateEnum.CHECKING;
+            case DISPATCH:
+                return NodeStateEnum.PUSHING;
+            default:
+                return null;
+        }
+    }
+
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void switchNodeInitStateFromAction(List<NodeInfoRequest> nodeInfoList, NodeStateEnum nodeStateEnum) {
+        List<TDlNodeInit> tDlNodeInitList = nodeInfoList
+                .stream()
+                .map(i -> {
+                    TDlNodeInit tDlNodeInit = new TDlNodeInit();
+                    tDlNodeInit.setId(i.getNodeId());
+                    tDlNodeInit.setNodeInitState(nodeStateEnum);
+                    return tDlNodeInit;
+                })
+                .collect(Collectors.toList());
+
+        Assert.isTrue(
+                this.tDlNodeInitService.updateBatchById(tDlNodeInitList),
+                () -> new DatabaseException("更新初始化节点状态失败")
+        );
     }
 
     /**
@@ -331,7 +385,7 @@ public class MasterNodeJobService {
             }
         }
 
-        if(masterNodeIntentionIndex != -1){
+        if (masterNodeIntentionIndex != -1) {
             NodeIntention.Node masterNodeIntention = nodeIntentionList.remove(masterNodeIntentionIndex);
             masterNodeIntention.setWait(true);
             nodeIntentionList.add(masterNodeIntention);
