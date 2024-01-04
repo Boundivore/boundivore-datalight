@@ -35,6 +35,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,13 +51,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MasterInitProcedureService {
 
-    private TDlInitProcedureServiceImpl tDlInitProcedureService;
+    private final TDlInitProcedureServiceImpl tDlInitProcedureService;
 
-    private TDlClusterServiceImpl tDlClusterService;
+    private final TDlClusterServiceImpl tDlClusterService;
 
-    private IInitProcedureConverter iInitProcedureConverter;
+    private final IInitProcedureConverter iInitProcedureConverter;
 
 
     /**
