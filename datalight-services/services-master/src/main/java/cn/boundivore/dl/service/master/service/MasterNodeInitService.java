@@ -602,7 +602,6 @@ public class MasterNodeInitService {
                                 .map(NodeInfoRequest::getNodeId)
                                 .collect(Collectors.toList())
                 )
-                .eq(TDlNodeInit::getNodeInitState, NodeStateEnum.PUSH_OK)
                 .list()
                 .stream()
                 .map(i -> {
@@ -610,9 +609,10 @@ public class MasterNodeInitService {
                             i.getNodeInitState() == NodeStateEnum.PUSH_OK,
                             () -> new BException(
                                     String.format(
-                                            "节点 %s 初始化状态为 %s 方可服役到集群",
+                                            "节点 %s 初始化状态为 %s 方可服役到集群, 当前状态: %s",
                                             i.getHostname(),
-                                            NodeStateEnum.PUSH_OK
+                                            NodeStateEnum.PUSH_OK,
+                                            i.getNodeInitState()
                                     )
                             )
                     );

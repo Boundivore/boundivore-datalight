@@ -103,7 +103,7 @@ subprojects {
         xercesVersion = "2.12.2"
         reflectionsVersion = "0.10.2"
 
-        hutoolVersion = '5.8.10'
+        hutoolVersion = '5.8.16'
         pinyin4jVersion = '2.5.1'
         httpClientVersion = '4.5.13'
         zookeeperVersion = '3.4.13'

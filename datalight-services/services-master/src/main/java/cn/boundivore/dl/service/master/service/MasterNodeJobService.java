@@ -26,6 +26,7 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.po.single.TDlNodeInit;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeInitServiceImpl;
@@ -151,19 +152,36 @@ public class MasterNodeJobService {
         }
     }
 
+    /**
+     * Description: 将初始化节点的状态切换到指定值
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeInfoList 节点信息列表
+     * @param nodeStateEnum 将要切换到的状态
+     */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
     public void switchNodeInitStateFromAction(List<NodeInfoRequest> nodeInfoList, NodeStateEnum nodeStateEnum) {
-        List<TDlNodeInit> tDlNodeInitList = nodeInfoList
+
+        List<Long> nodeIdList = nodeInfoList
                 .stream()
-                .map(i -> {
-                    TDlNodeInit tDlNodeInit = new TDlNodeInit();
-                    tDlNodeInit.setId(i.getNodeId());
-                    tDlNodeInit.setNodeInitState(nodeStateEnum);
-                    return tDlNodeInit;
-                })
+                .map(NodeInfoRequest::getNodeId)
+                .collect(Collectors.toList());
+
+        List<TDlNodeInit> tDlNodeInitList = this.tDlNodeInitService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, nodeIdList)
+                .list()
+                .stream()
+                .peek(i -> i.setNodeInitState(nodeStateEnum))
                 .collect(Collectors.toList());
 
         Assert.isTrue(

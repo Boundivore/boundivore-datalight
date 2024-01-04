@@ -29,8 +29,16 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  * Version: V1.0
  */
 public enum ProcedureStateEnum implements IBaseEnum {
-    ADD_NEW_CLUSTER("0", "新增集群"),
-    PARSE_HOSTNAME("1", "解析节点主机名");
+    ADD_NEW_CLUSTER_DONE("0", "新增集群完成"),
+    PARSE_HOSTNAME_DONE("1", "解析节点主机名完成"),
+    DETECT_DONE("2", "异步探测节点连通性完成"),
+    CHECK_DONE("3", "异步检查节点初始化环境完成"),
+    DISPATCH_DONE("4", "异步推送安装包完成"),
+    ADD_DONE("5", "节点服役完成"),
+    SELECT_SERVICE_DONE("6", "选择服务完成"),
+    SELECT_COMPONENT_DONE("7", "选择组件完成"),
+    PRE_CONFIG_DONE("8", "预配置完成"),
+    DEPLOY_DONE("9", "部署完成");
 
 
     private final String code;
@@ -49,5 +57,26 @@ public enum ProcedureStateEnum implements IBaseEnum {
     @Override
     public String getMessage() {
         return this.message;
+    }
+
+    public ProcedureStateEnum getByCode(String code) {
+        for (ProcedureStateEnum state : ProcedureStateEnum.values()) {
+            if (state.getCode().equals(code)) {
+                return state;
+            }
+        }
+        return null;
+    }
+
+    public ProcedureStateEnum pre() {
+        ProcedureStateEnum[] states = ProcedureStateEnum.values();
+        int ordinal = this.ordinal();
+        return ordinal > 0 ? states[ordinal - 1] : null;
+    }
+
+    public ProcedureStateEnum next() {
+        ProcedureStateEnum[] states = ProcedureStateEnum.values();
+        int ordinal = this.ordinal();
+        return ordinal < states.length - 1 ? states[ordinal + 1] : null;
     }
 }
