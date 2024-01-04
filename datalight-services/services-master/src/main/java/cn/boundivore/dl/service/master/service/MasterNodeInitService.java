@@ -74,6 +74,8 @@ public class MasterNodeInitService {
 
     private final MasterNodeJobService masterNodeJobService;
 
+    private final MasterNodeService masterNodeService;
+
     /**
      * Description: 解析主机名正则，返回有效主机名列表与无效主机名列表
      * Created by: Boundivore
@@ -180,6 +182,12 @@ public class MasterNodeInitService {
                 )
         );
 
+        // 检查节点个数是否合理
+        this.checkNodeCountInCluster(
+                request.getClusterId(),
+                (long) request.getNodeInfoList().size()
+        );
+
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
 
         return Result.success(
@@ -213,6 +221,12 @@ public class MasterNodeInitService {
                                 NodeActionTypeEnum.CHECK
                         )
                 )
+        );
+
+        // 检查节点个数是否合理
+        this.checkNodeCountInCluster(
+                request.getClusterId(),
+                (long) request.getNodeInfoList().size()
         );
 
         List<TDlNodeInit> tDlNodeInitList = this.tDlNodeInitService.lambdaQuery()
@@ -335,6 +349,12 @@ public class MasterNodeInitService {
                                 NodeActionTypeEnum.DISPATCH
                         )
                 )
+        );
+
+        // 检查节点个数是否合理
+        this.checkNodeCountInCluster(
+                request.getClusterId(),
+                (long) request.getNodeInfoList().size()
         );
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
@@ -679,6 +699,27 @@ public class MasterNodeInitService {
         );
 
         return Result.success();
+    }
+
+
+    /**
+     * Description: 检查当前集群的节点个数
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     */
+    public void checkNodeCountInCluster(Long clusterId, Long initNodeCount) {
+        long nodeCount = this.masterNodeService.getNodeCount(clusterId);
+        Assert.isTrue(
+                nodeCount + initNodeCount >= 3,
+                () -> new BException("操作完成后的集群可用节点个数需要大于等于 3 个, 请合理规划")
+        );
     }
 
 

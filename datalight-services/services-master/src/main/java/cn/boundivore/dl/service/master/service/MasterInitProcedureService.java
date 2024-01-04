@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.request.impl.master.PersistProcedureRequest;
+import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractInitProcedureVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
@@ -59,7 +60,7 @@ public class MasterInitProcedureService {
 
 
     /**
-     * Description: 记录状态
+     * Description: 记录初始化步骤
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/1/3
@@ -193,7 +194,7 @@ public class MasterInitProcedureService {
     }
 
     /**
-     * Description: 查询是否存在初始化信息
+     * Description: 查询是否存在记录的步骤信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/1/3
@@ -223,13 +224,13 @@ public class MasterInitProcedureService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群 ID
+     * @param request 包含集群 ID 的请求体
      * @return Result<String>
      */
-    public Result<String> removeInitProcedure(Long clusterId) {
+    public Result<String> removeInitProcedure(RemoveProcedureRequest request) {
         TDlInitProcedure tDlInitProcedure = this.tDlInitProcedureService.lambdaQuery()
                 .select()
-                .eq(TDlInitProcedure::getClusterId, clusterId)
+                .eq(TDlInitProcedure::getClusterId, request.getClusterId())
                 .one();
 
         Assert.notNull(
@@ -276,7 +277,6 @@ public class MasterInitProcedureService {
 
         Assert.isTrue(
                 currentInitProcedureStateEnum == procedureStateEnum ||
-                        currentInitProcedureStateEnum.pre() == procedureStateEnum ||
                         currentInitProcedureStateEnum.next() == procedureStateEnum,
                 () -> new BException(
                         String.format(

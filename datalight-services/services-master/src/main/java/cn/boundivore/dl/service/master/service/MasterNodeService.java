@@ -402,4 +402,25 @@ public class MasterNodeService {
         return tDlNodeMap;
     }
 
+    /**
+     * Description: 获取当前集群可用的节点个数
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @return int 可用节点个数
+     */
+    public long getNodeCount(Long clusterId) {
+        return this.tDlNodeService.lambdaQuery()
+                .select()
+                .eq(TDlNode::getClusterId, clusterId)
+                .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
+                .count();
+    }
+
 }
