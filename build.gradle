@@ -72,7 +72,7 @@ subprojects {
         okHttpVersion = '4.9.3'
         retrofit2Version = '2.9.0'
 
-        saTokenVersion = '1.34.0'
+        saTokenVersion = '1.37.0'
 
         springBootVersion = '2.7.0'
         springCloudVersion = "2021.0.3"
