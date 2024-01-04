@@ -77,6 +77,19 @@ public class MasterUserService {
         return Result.success(iUserConverter.convert2UserInfoVo(tUser));
     }
 
+    /**
+     * Description: 用户登录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 登录验证请求体
+     * @return Result<UserInfoVo> 登录后的用户信息
+     */
     public Result<UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
         return Result.success(new UserInfoVo(
                 1L,
@@ -89,11 +102,35 @@ public class MasterUserService {
         ));
     }
 
+    /**
+     * Description: 退出登录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: 
+     * 
+     * @return Result<String> 成功或失败
+     */
     public Result<String> logout() throws Exception {
         return null;
     }
 
-    public Result<String> isLogin() throws Exception {
+    /**
+     * Description: 判断是否已登录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: 
+     * 
+     * @return Result<Boolean> 登录或未登录
+     */
+    public Result<Boolean> isLogin() throws Exception {
         return null;
     }
 }

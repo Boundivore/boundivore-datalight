@@ -71,7 +71,7 @@ public interface IMasterUserAPI {
 
     @GetMapping(value = "/user/isLogin")
     @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
-    Result<String> isLogin() throws Exception;
+    Result<Boolean> isLogin() throws Exception;
 
 
 }

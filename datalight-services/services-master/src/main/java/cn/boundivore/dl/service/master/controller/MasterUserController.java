@@ -57,7 +57,7 @@ public class MasterUserController implements IMasterUserAPI {
     }
 
     @Override
-    public Result<String> isLogin() throws Exception {
+    public Result<Boolean> isLogin() throws Exception {
         return this.masterUserService.isLogin();
     }
 }
