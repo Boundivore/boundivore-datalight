@@ -130,7 +130,7 @@ public class MasterInitProcedureService {
         );
 
         Assert.isTrue(
-                tDlCluster.getClusterState() == ClusterStateEnum.REMOVED,
+                tDlCluster.getClusterState() != ClusterStateEnum.REMOVED,
                 () -> new BException("集群已移除或废弃")
         );
 
