@@ -29,16 +29,17 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  * Version: V1.0
  */
 public enum ProcedureStateEnum implements IBaseEnum {
-    ADD_NEW_CLUSTER_DONE("0", "新增集群完成"),
-    PARSE_HOSTNAME_DONE("1", "解析节点主机名完成"),
-    DETECT_DONE("2", "异步探测节点连通性完成"),
-    CHECK_DONE("3", "异步检查节点初始化环境完成"),
-    DISPATCH_DONE("4", "异步推送安装包完成"),
-    ADD_DONE("5", "节点服役完成"),
-    SELECT_SERVICE_DONE("6", "选择服务完成"),
-    SELECT_COMPONENT_DONE("7", "选择组件完成"),
-    PRE_CONFIG_DONE("8", "预配置完成"),
-    DEPLOY_DONE("9", "部署完成");
+    PROCEDURE_ADD_NEW_CLUSTER("0", "新增集群"),
+    PROCEDURE_PARSE_HOSTNAME("1", "解析节点主机名"),
+    PROCEDURE_DETECT("2", "异步探测节点连通性"),
+    PROCEDURE_CHECK("3", "异步检查节点初始化环境"),
+    PROCEDURE_DISPATCH("4", "异步推送安装包"),
+    PROCEDURE_ADD_DONE("5", "节点服役"),
+    PROCEDURE_SELECT_SERVICE("6", "选择服务"),
+    PROCEDURE_SELECT_COMPONENT("7", "选择组件"),
+    PROCEDURE_PRE_CONFIG("8", "预配置"),
+    PROCEDURE_DEPLOYING("9", "部署中"),
+    PROCEDURE_DEPLOYED("10", "部署完成");
 
 
     private final String code;
