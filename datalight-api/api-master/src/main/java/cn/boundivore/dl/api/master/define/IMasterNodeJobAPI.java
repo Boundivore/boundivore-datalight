@@ -38,7 +38,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterNodeJobAPI", tags = {"Master 接口：节点异步任务管理 相关"})
+@Api(value = "IMasterNodeJobAPI", tags = {"Master 接口：节点异步任务管理相关"})
 @FeignClient(
         name = "IMasterNodeJobAPI",
         contextId = "IMasterNodeJobAPI",
