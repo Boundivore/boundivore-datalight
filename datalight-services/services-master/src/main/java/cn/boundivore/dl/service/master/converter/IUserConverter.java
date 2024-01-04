@@ -40,7 +40,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
-@Component
 public interface IUserConverter {
 
     IUserConverter INSTANCE = Mappers.getMapper(IUserConverter.class);

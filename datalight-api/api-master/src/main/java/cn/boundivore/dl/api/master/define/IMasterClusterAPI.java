@@ -68,13 +68,17 @@ public interface IMasterClusterAPI {
             Long clusterId
     ) throws Exception;
 
-    @GetMapping(value = "/cluster/getByClusterType")
+    @GetMapping(value = "/cluster/getClusterListByClusterType")
     @ApiOperation(notes = "查询指定类型的集群信息列表", value = "查询指定类型的集群信息列表")
-    Result<AbstractClusterVo.ClusterListVo> getByClusterType(
+    Result<AbstractClusterVo.ClusterListVo> getClusterListByClusterType(
             @ApiParam(name = "ClusterType", value = "集群 ID")
             @RequestParam(value = "ClusterType", required = true)
             ClusterTypeEnum clusterTypeEnum
     ) throws Exception;
+
+    @GetMapping(value = "/cluster/getClusterList")
+    @ApiOperation(notes = "查询所有集群信息列表", value = "查询所有集群信息列表")
+    Result<AbstractClusterVo.ClusterListVo> getClusterList() throws Exception;
 
     @GetMapping(value = "/cluster/getComputeClusterListByRelativeClusterId")
     @ApiOperation(notes = "查询依赖了指定集群的计算集群信息列表", value = "查询依赖了指定集群的计算集群信息列表")

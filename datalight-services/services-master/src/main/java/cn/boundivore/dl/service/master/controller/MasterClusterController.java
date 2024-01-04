@@ -53,8 +53,13 @@ public class MasterClusterController implements IMasterClusterAPI {
     }
 
     @Override
-    public Result<AbstractClusterVo.ClusterListVo> getByClusterType(ClusterTypeEnum clusterTypeEnum) throws Exception {
-        return masterClusterServices.getByClusterType(clusterTypeEnum);
+    public Result<AbstractClusterVo.ClusterListVo> getClusterListByClusterType(ClusterTypeEnum clusterTypeEnum) throws Exception {
+        return masterClusterServices.getClusterListByClusterType(clusterTypeEnum);
+    }
+
+    @Override
+    public Result<AbstractClusterVo.ClusterListVo> getClusterList() throws Exception {
+        return masterClusterServices.getClusterList();
     }
 
     @Override

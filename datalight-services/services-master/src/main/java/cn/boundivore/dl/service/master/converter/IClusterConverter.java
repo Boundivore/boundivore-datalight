@@ -39,7 +39,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
-@Component
 public interface IClusterConverter {
 
     IClusterConverter INSTANCE = Mappers.getMapper(IClusterConverter.class);

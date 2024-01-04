@@ -31,6 +31,7 @@ import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -180,12 +181,38 @@ public class MasterClusterService {
      * @param clusterTypeEnum 集群类型
      * @return Result<AbstractClusterVo.ClusterListVo> 集群信息列表
      */
-    public Result<AbstractClusterVo.ClusterListVo> getByClusterType(ClusterTypeEnum clusterTypeEnum) {
+    public Result<AbstractClusterVo.ClusterListVo> getClusterListByClusterType(ClusterTypeEnum clusterTypeEnum) {
         return Result.success(
                 new AbstractClusterVo.ClusterListVo(
                         this.tDlClusterService.lambdaQuery()
                                 .select()
                                 .eq(TDlCluster::getClusterType, clusterTypeEnum)
+                                .ne(TDlCluster::getClusterState, ClusterStateEnum.REMOVED)
+                                .list()
+                                .stream()
+                                .map(iClusterConverter::convert2ClusterVo)
+                                .collect(Collectors.toList())
+                )
+        );
+    }
+
+    /**
+     * Description: 获取所有集群信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractClusterVo.ClusterListVo> 所有集群信息列表
+     */
+    public Result<AbstractClusterVo.ClusterListVo> getClusterList() {
+        return Result.success(
+                new AbstractClusterVo.ClusterListVo(
+                        this.tDlClusterService.lambdaQuery()
+                                .select()
                                 .ne(TDlCluster::getClusterState, ClusterStateEnum.REMOVED)
                                 .list()
                                 .stream()

@@ -38,7 +38,6 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
-@Component
 public interface IDLCConverter {
 
     IDLCConverter INSTANCE = Mappers.getMapper(IDLCConverter.class);
