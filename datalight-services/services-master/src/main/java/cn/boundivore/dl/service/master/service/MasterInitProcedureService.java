@@ -129,6 +129,19 @@ public class MasterInitProcedureService {
                 )
         );
 
+        // 如果 Tag 存在，则必须传递，如果不传递则抛出异常，为明确当前操作的唯一性、正确性
+        if (StrUtil.isBlank(request.getTag())) {
+            boolean exists = this.tDlInitProcedureService.lambdaQuery()
+                    .select()
+                    .eq(TDlInitProcedure::getClusterId, clusterId)
+                    .exists();
+
+            Assert.isFalse(
+                    exists,
+                    () -> new BException("当前集群存在活跃的步骤，更新步骤时必须提供唯一 Tag")
+            );
+        }
+
         Assert.isTrue(
                 tDlCluster.getClusterState() != ClusterStateEnum.REMOVED,
                 () -> new BException("集群已移除或废弃")
