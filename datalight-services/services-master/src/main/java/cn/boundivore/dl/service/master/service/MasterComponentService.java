@@ -81,6 +81,8 @@ public class MasterComponentService {
 
     private final IServiceComponentConverter iServiceComponentConverter;
 
+    private final MasterInitProcedureService masterInitProcedureService;
+
     /**
      * Description: 获取所有组件信息列表，并附带组件在当前集群的状态
      * Created by: Boundivore

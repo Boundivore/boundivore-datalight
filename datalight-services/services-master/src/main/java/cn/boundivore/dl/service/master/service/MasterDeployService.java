@@ -51,6 +51,8 @@ public class MasterDeployService {
 
     private final MasterConfigPreService masterConfigPreService;
 
+    private final MasterInitProcedureService masterInitProcedureService;
+
     /**
      * Description: 开始生成部署计划，并部署服务、组件
      * Created by: Boundivore

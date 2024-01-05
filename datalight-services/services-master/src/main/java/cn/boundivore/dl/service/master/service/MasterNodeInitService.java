@@ -76,6 +76,8 @@ public class MasterNodeInitService {
 
     private final MasterNodeService masterNodeService;
 
+    private final MasterInitProcedureService masterInitProcedureService;
+
     /**
      * Description: 解析主机名正则，返回有效主机名列表与无效主机名列表
      * Created by: Boundivore

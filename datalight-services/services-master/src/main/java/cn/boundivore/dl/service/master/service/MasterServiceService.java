@@ -64,6 +64,8 @@ public class MasterServiceService {
 
     private final IServiceComponentConverter iServiceComponentConverter;
 
+    private final MasterInitProcedureService masterInitProcedureService;
+
     /**
      * Description: 获取所有服务信息列表，并附带服务在当前集群的状态，用于选择部署服务时使用
      * Created by: Boundivore
