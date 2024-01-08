@@ -31,8 +31,10 @@ import cn.boundivore.dl.orm.service.single.impl.TDlLoginEventServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserAuthServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserServiceImpl;
 import cn.boundivore.dl.service.master.converter.IUserConverter;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.crypto.digest.DigestUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -62,6 +64,8 @@ public class MasterUserService {
     protected final IUserConverter iUserConverter;
 
     protected final BCryptPasswordEncoder passwordEncoder;
+
+    protected final DataLightEnv dataLightEnv;
 
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -185,6 +189,12 @@ public class MasterUserService {
                 .eq(TDlLoginEvent::getUserId, tDlUserAuth.getUserId())
                 .one();
 
+        if (tDlLoginEvent == null) {
+            tDlLoginEvent = new TDlLoginEvent();
+            tDlLoginEvent.setUserId(tDlUserAuth.getUserId());
+            tDlLoginEvent.setLastLogin(-1L);
+        }
+
         // 登录
         StpUtil.login(tDlUserAuth.getUserId());
 
@@ -287,10 +297,121 @@ public class MasterUserService {
      * Modification time:
      * Throws:
      *
-     * @param
-     * @return
+     * @param request 修改密码请求体
+     * @return Result<String> 成功或失败
      */
-    public Result<String> changePassword() {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<String> changePassword(AbstractUserRequest.UserChangePasswordRequest request) {
+        // 获取当前已登录的账户信息
+        TDlUserAuth loginTDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getUserId, StpUtil.getLoginId())
+                .one();
+        String loginPrincipal = loginTDlUserAuth.getPrincipal();
+        String changePasswordPrincipal = request.getPrincipal();
+
+        // 判断是否为修改自己的密码，如果不是，则判断是否为管理员代修改普通用户密码，如果也不是，则抛出异常
+        Assert.isTrue(
+                !loginPrincipal.equals(dataLightEnv.getSuperUser()) &&
+                        !loginPrincipal.equals(changePasswordPrincipal),
+                () -> new BException("普通用户只可修改自身密码")
+        );
+
+        TDlUserAuth tDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getPrincipal, request.getPrincipal())
+                .one();
+
+
+        Assert.isTrue(
+                this.passwordEncoder.matches(
+                        request.getOldCredential(),
+                        tDlUserAuth.getCredential()
+                ),
+                () -> new BException("旧密码错误")
+        );
+
+
+        Assert.isTrue(
+                tDlUserAuth.setCredential(
+                        this.passwordEncoder.encode(
+                                request.getNewCredential()
+                        )
+                ).updateById(),
+                () -> new DatabaseException("更新密码失败")
+        );
+
+        StpUtil.logout(tDlUserAuth.getUserId());
+
         return Result.success();
+    }
+
+    /**
+     * Description: 判断超级用户是否变更过初始密码
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/8
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<Boolean> true or false
+     */
+    public Result<Boolean> isNeed2ChangeSuperPassword() {
+        TDlUserAuth tDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getPrincipal, dataLightEnv.getSuperUser())
+                .one();
+
+        boolean isNeed2ChangeSuperPassword = this.passwordEncoder.matches(
+                DigestUtil.md5Hex(dataLightEnv.getSuperUserDefaultPassword()),
+                tDlUserAuth.getCredential()
+        );
+
+        return Result.success(isNeed2ChangeSuperPassword);
+    }
+
+    /**
+     * Description: 检查超级用户数据是否已缓存到数据库，如果没有，则缓存
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/8
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void checkInitSuperUser() throws Exception {
+        boolean exists = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getPrincipal, dataLightEnv.getSuperUser())
+                .exists();
+
+        if (exists) return;
+
+        AbstractUserRequest.UserAuthRequest userAuthRequest = new AbstractUserRequest.UserAuthRequest(
+                IdentityTypeEnum.USERNAME,
+                dataLightEnv.getSuperUser(),
+                DigestUtil.md5Hex(dataLightEnv.getSuperUserDefaultPassword())
+        );
+        AbstractUserRequest.UserBaseRequest userBaseRequest = new AbstractUserRequest.UserBaseRequest(
+                dataLightEnv.getSuperUser(),
+                dataLightEnv.getSuperUser(),
+                ""
+        );
+        AbstractUserRequest.UserRegisterRequest request = new AbstractUserRequest.UserRegisterRequest(
+                userAuthRequest,
+                userBaseRequest
+        );
+
+        this.register(request);
     }
 }

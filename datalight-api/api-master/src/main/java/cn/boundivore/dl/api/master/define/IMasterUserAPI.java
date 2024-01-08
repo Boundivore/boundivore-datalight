@@ -83,5 +83,17 @@ public interface IMasterUserAPI {
             Long userId
     ) throws Exception;
 
+    @PostMapping(value = "/user/changePassword")
+    @ApiOperation(notes = "用户注册", value = "用户注册")
+    Result<String> changePassword(
+            @RequestBody
+            @Valid
+            AbstractUserRequest.UserChangePasswordRequest request
+    ) throws Exception;
+
+
+    @GetMapping(value = "/user/isNeed2ChangeSuperPassword")
+    @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
+    Result<Boolean> isNeed2ChangeSuperPassword() throws Exception;
 
 }

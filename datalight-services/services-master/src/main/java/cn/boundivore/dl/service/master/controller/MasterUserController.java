@@ -66,4 +66,14 @@ public class MasterUserController implements IMasterUserAPI {
     public Result<Boolean> isLogin(Long userId) throws Exception {
         return this.masterUserService.isLogin(userId);
     }
+
+    @Override
+    public Result<String> changePassword(AbstractUserRequest.UserChangePasswordRequest request) throws Exception {
+        return this.masterUserService.changePassword(request);
+    }
+
+    @Override
+    public Result<Boolean> isNeed2ChangeSuperPassword() throws Exception {
+        return this.masterUserService.isNeed2ChangeSuperPassword();
+    }
 }

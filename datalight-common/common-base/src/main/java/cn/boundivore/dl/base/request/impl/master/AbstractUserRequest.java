@@ -115,4 +115,32 @@ public abstract class AbstractUserRequest {
         private UserBaseRequest userBase;
 
     }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractUserRequest.UserChangePasswordRequest",
+            description = "UserChangePasswordRequest 用户修改密码 请求体"
+    )
+    public static class UserChangePasswordRequest implements IRequest {
+
+        @Schema(name = "Principal", title = "认证主体", required = true)
+        @JsonProperty(value = "Principal", required = true)
+        @NotBlank
+        private String principal;
+
+        @Schema(name = "OldCredential", title = "旧登录凭证", required = true)
+        @JsonProperty(value = "OldCredential", required = true)
+        @NotBlank
+        @Pattern(regexp = "^[A-F0-9]{32}$", message = "旧密码格式不正确")
+        private String oldCredential;
+
+        @Schema(name = "NewCredential", title = "新登录凭证", required = true)
+        @JsonProperty(value = "NewCredential", required = true)
+        @NotBlank
+        @Pattern(regexp = "^[A-F0-9]{32}$", message = "新密码格式不正确")
+        private String newCredential;
+    }
 }

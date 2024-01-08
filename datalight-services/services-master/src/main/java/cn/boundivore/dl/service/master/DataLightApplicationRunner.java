@@ -21,6 +21,7 @@ import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.resolver.*;
 import cn.boundivore.dl.service.master.service.MasterManageService;
+import cn.boundivore.dl.service.master.service.MasterUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -45,6 +46,8 @@ import org.springframework.stereotype.Component;
 public class DataLightApplicationRunner implements ApplicationRunner {
 
     private final MasterManageService masterManageService;
+
+    private final MasterUserService masterUserService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -71,6 +74,9 @@ public class DataLightApplicationRunner implements ApplicationRunner {
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
         this.masterManageService.updateMasterMeta();
+
+        // 检查超级用户是否注入到数据库
+        this.masterUserService.checkInitSuperUser();
     }
 
 }
