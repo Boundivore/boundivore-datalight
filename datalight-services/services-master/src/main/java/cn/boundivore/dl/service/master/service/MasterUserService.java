@@ -187,10 +187,7 @@ public class MasterUserService {
                 .one();
 
         // 登录
-        StpUtil.login(
-                tDlUserAuth.getUserId(),
-                SaLoginConfig.setExtra("UserId", tDlUserAuth.getUserId())
-        );
+        StpUtil.login(tDlUserAuth.getUserId());
 
         // 组装返回实体
         UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
