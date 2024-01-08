@@ -72,21 +72,35 @@ public class MasterUserService {
             rollbackFor = DatabaseException.class
     )
     public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request) throws Exception {
-        AbstractUserRequest.UserAuthRequest userAuth = request.getUserAuth();
-        AbstractUserRequest.UserBaseRequest userBase = request.getUserBase();
+        AbstractUserRequest.UserAuthRequest userAuthRequest = request.getUserAuth();
+        AbstractUserRequest.UserBaseRequest userBaseRequest = request.getUserBase();
+
+        // 限制：仅允许超级管理员执行该注册操作，即，帮普通人员注册
+        TDlUserAuth loginTDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getUserId, StpUtil.getLoginId())
+                .one();
+
+        Assert.isTrue(
+                loginTDlUserAuth.getPrincipal().equals(dataLightEnv.getSuperUser()),
+                () -> new BException(String.format(
+                        "仅超级管理员[ %s ]允许注册用户",
+                        dataLightEnv.getSuperUser()
+                ))
+        );
 
         // 检查注册信息是否合法
-        this.checkUserAuthRegisterRequest(userAuth);
+        this.checkUserAuthRegisterRequest(userAuthRequest);
 
         //保存用户基础信息
-        TDlUser tUser = this.iUserConverter.convert2TUsers(userBase);
+        TDlUser tUser = this.iUserConverter.convert2TUsers(userBaseRequest);
         Assert.isTrue(
                 this.tDlUserService.save(tUser),
                 () -> new DatabaseException("用户基础数据保存失败")
         );
 
         //保存用户认证信息
-        String encodePassword = this.passwordEncoder.encode(userAuth.getCredential());
+        String encodePassword = this.passwordEncoder.encode(userAuthRequest.getCredential());
 
         TDlUserAuth tUserAuth = this.iUserConverter.convert2TUsersAuth(request.getUserAuth());
         tUserAuth.setUserId(tUser.getId());
