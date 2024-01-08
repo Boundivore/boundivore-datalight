@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractNodeInitRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeInfoRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
@@ -97,6 +98,12 @@ public class MasterNodeInitService {
     )
     public Result<ParseHostnameVo> parseHostname(ParseHostnameRequest request) {
 
+        // 验证步骤合理性
+        this.masterInitProcedureService.checkOperationIllegal(
+                request.getClusterId(),
+                ProcedureStateEnum.PROCEDURE_PARSE_HOSTNAME
+        );
+
         Long clusterId = request.getClusterId();
         Long sshPort = request.getSshPort();
 
@@ -173,6 +180,12 @@ public class MasterNodeInitService {
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(NodeJobRequest request) throws Exception {
+        // 验证步骤合理性
+        this.masterInitProcedureService.checkOperationIllegal(
+                request.getClusterId(),
+                ProcedureStateEnum.PROCEDURE_DETECT
+        );
+
         Assert.isTrue(
                 request.getNodeActionTypeEnum() == NodeActionTypeEnum.DETECT,
                 () -> new BException(
@@ -214,6 +227,12 @@ public class MasterNodeInitService {
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(NodeJobRequest request) throws Exception {
+        // 验证步骤合理性
+        this.masterInitProcedureService.checkOperationIllegal(
+                request.getClusterId(),
+                ProcedureStateEnum.PROCEDURE_CHECK
+        );
+
         Assert.isTrue(
                 request.getNodeActionTypeEnum() == NodeActionTypeEnum.CHECK,
                 () -> new BException(
@@ -342,6 +361,12 @@ public class MasterNodeInitService {
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(NodeJobRequest request) throws Exception {
+        // 验证步骤合理性
+        this.masterInitProcedureService.checkOperationIllegal(
+                request.getClusterId(),
+                ProcedureStateEnum.PROCEDURE_DISPATCH
+        );
+
         Assert.isTrue(
                 request.getNodeActionTypeEnum() == NodeActionTypeEnum.DISPATCH,
                 () -> new BException(
@@ -614,6 +639,12 @@ public class MasterNodeInitService {
             rollbackFor = DatabaseException.class
     )
     public Result<String> addNode(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+        // 验证步骤合理性
+        this.masterInitProcedureService.checkOperationIllegal(
+                request.getClusterId(),
+                ProcedureStateEnum.PROCEDURE_ADD_DONE
+        );
+
         List<TDlNode> tDlNodeList = this.tDlNodeInitService.lambdaQuery()
                 .select()
                 .eq(TDlNodeInit::getClusterId, request.getClusterId())

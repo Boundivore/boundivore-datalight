@@ -52,4 +52,9 @@ public class RemoveProcedureRequest implements IRequest {
     @NotNull
     private Long clusterId;
 
+    @Schema(name = "Tag", title = "步骤唯一标识", required = true)
+    @JsonProperty(value = "Tag", required = true)
+    @NotNull
+    private String tag;
+
 }

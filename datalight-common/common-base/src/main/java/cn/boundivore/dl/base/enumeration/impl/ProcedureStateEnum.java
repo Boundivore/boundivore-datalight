@@ -29,7 +29,6 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  * Version: V1.0
  */
 public enum ProcedureStateEnum implements IBaseEnum {
-    PROCEDURE_ADD_NEW_CLUSTER("0", "新增集群"),
     PROCEDURE_PARSE_HOSTNAME("1", "解析节点主机名"),
     PROCEDURE_DETECT("2", "异步探测节点连通性"),
     PROCEDURE_CHECK("3", "异步检查节点初始化环境"),
