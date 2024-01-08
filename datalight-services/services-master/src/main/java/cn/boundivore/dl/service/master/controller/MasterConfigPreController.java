@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.request.impl.master.ConfigPreSaveRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigPreVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterConfigPreService;
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+//@SaCheckLogin
 public class MasterConfigPreController implements IMasterConfigPreAPI {
 
     private final MasterConfigPreService masterConfigPreService;

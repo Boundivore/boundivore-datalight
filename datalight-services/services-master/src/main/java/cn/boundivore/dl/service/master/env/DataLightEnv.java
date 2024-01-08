@@ -66,6 +66,12 @@ public class DataLightEnv {
 
     @Value("${server.datalight.is-debug}")
     private boolean isDebug;
+
+    @Value("${server.datalight.super-user}")
+    private String superUser;
+    @Value("${server.datalight.super-user-default-password}")
+    private String superUserDefaultPassword;
+
     @Value("${server.datalight.url.master}")
     private String masterRootPath;
     @Value("${server.datalight.url.master-port}")

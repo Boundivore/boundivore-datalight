@@ -31,7 +31,6 @@ import cn.boundivore.dl.orm.service.single.impl.TDlLoginEventServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserAuthServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserServiceImpl;
 import cn.boundivore.dl.service.master.converter.IUserConverter;
-import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
@@ -276,5 +275,22 @@ public class MasterUserService {
      */
     public Result<Boolean> isLogin(Long userId) throws Exception {
         return Result.success(StpUtil.isLogin(userId));
+    }
+
+    /**
+     * Description: 修改登录密码
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/8
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param
+     * @return
+     */
+    public Result<String> changePassword() {
+        return Result.success();
     }
 }

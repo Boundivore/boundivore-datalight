@@ -1,6 +1,8 @@
 server:
   datalight:
-    is-debug: true
+    is-debug: false
+    super-user: admin
+    super-user-default-password: admin
     url:
       master: /api/v1/master
       master-port: 8001

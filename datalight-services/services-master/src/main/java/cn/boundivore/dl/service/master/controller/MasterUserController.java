@@ -21,6 +21,8 @@ import cn.boundivore.dl.service.master.service.MasterUserService;
 import cn.boundivore.dl.api.master.define.IMasterUserAPI;
 import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+//@SaCheckLogin
 public class MasterUserController implements IMasterUserAPI {
 
     protected final MasterUserService masterUserService;
@@ -46,16 +49,19 @@ public class MasterUserController implements IMasterUserAPI {
         return this.masterUserService.register(request);
     }
 
+    @SaIgnore
     @Override
     public Result<UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
         return this.masterUserService.login(request);
     }
 
+    @SaIgnore
     @Override
     public Result<String> logout(Long userId) throws Exception {
         return this.masterUserService.logout(userId);
     }
 
+    @SaIgnore
     @Override
     public Result<Boolean> isLogin(Long userId) throws Exception {
         return this.masterUserService.isLogin(userId);

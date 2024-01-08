@@ -285,7 +285,7 @@ public class MasterInitProcedureService {
 
         Assert.notNull(
                 tDlInitProcedure,
-                () -> new DatabaseException("无对应记录")
+                () -> new DatabaseException("无对应步骤记录")
         );
 
         ProcedureStateEnum currentInitProcedureStateEnum = tDlInitProcedure.getProcedureState();

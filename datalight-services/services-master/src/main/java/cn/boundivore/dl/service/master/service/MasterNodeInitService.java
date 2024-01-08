@@ -98,12 +98,6 @@ public class MasterNodeInitService {
     )
     public Result<ParseHostnameVo> parseHostname(ParseHostnameRequest request) {
 
-        // 验证步骤合理性
-        this.masterInitProcedureService.checkOperationIllegal(
-                request.getClusterId(),
-                ProcedureStateEnum.PROCEDURE_PARSE_HOSTNAME
-        );
-
         Long clusterId = request.getClusterId();
         Long sshPort = request.getSshPort();
 
