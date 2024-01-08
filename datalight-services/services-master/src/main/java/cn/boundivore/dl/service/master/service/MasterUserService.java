@@ -249,7 +249,7 @@ public class MasterUserService {
      * @return Result<String> 成功或失败
      */
     public Result<String> logout(Long userId) throws Exception {
-        StpUtil.login(userId);
+        StpUtil.logout(userId);
         return Result.success();
     }
 
