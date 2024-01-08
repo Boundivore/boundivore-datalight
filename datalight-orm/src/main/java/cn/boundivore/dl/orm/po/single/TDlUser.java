@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("t_dl_user")
 @Schema(name = "TDlUser对象", description = "用户基础信息表")
-public class TDlUser extends TBasePo {
+public class TDlUser extends TBasePo<TDlUser> {
 
     private static final long serialVersionUID = 1L;
 

@@ -28,6 +28,9 @@ dependencies {
         exclude(module: 'org.apache.logging.log4j:log4j-api')
     }
 
+    implementation group: 'cn.dev33', name: 'sa-token-jwt'
+    implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'
+
     implementation group: 'cn.hutool', name: 'hutool-all'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
@@ -60,7 +63,6 @@ dependencies {
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-    implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'
 
 //    implementation group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-discovery'
 //    implementation group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-config'

@@ -30,6 +30,7 @@ import lombok.experimental.Accessors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * Description: 用户相关 Request 集合
@@ -47,8 +48,8 @@ public abstract class AbstractUserRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractUserRequest#UserAuthRequest",
-            description = "用户登录、认证 请求体"
+            name = "AbstractUserRequest.UserAuthRequest",
+            description = "UserAuthRequest 用户登录、认证 请求体"
     )
     public static class UserAuthRequest implements IRequest {
 
@@ -65,6 +66,7 @@ public abstract class AbstractUserRequest {
         @Schema(name = "Credential", title = "登录凭证", required = true)
         @JsonProperty(value = "Credential", required = true)
         @NotBlank
+        @Pattern(regexp = "^[A-F0-9]{32}$", message = "密码格式不正确")
         private String credential;
 
     }
@@ -74,8 +76,8 @@ public abstract class AbstractUserRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractUserRequest#UserBaseRequest",
-            description = "#UserBaseRequest: 用户基础信息 请求体"
+            name = "AbstractUserRequest.UserBaseRequest",
+            description = "UserBaseRequest 用户基础信息 请求体"
     )
     public static class UserBaseRequest implements IRequest {
 
@@ -97,8 +99,8 @@ public abstract class AbstractUserRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractUserRequest#UserRegisterRequest",
-            description = "用户注册 请求体"
+            name = "AbstractUserRequest.UserRegisterRequest",
+            description = "UserRegisterRequest 用户注册请求体"
     )
     public static class UserRegisterRequest implements IRequest {
 

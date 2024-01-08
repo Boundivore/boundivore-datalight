@@ -21,10 +21,12 @@ import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -67,11 +69,19 @@ public interface IMasterUserAPI {
 
     @GetMapping(value = "/user/logout")
     @ApiOperation(notes = "用户登出", value = "用户登出")
-    Result<String> logout() throws Exception;
+    Result<String> logout(
+            @ApiParam(name = "UserId", value = "UserId")
+            @RequestParam(value = "UserId", required = true)
+            Long userId
+    ) throws Exception;
 
     @GetMapping(value = "/user/isLogin")
     @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
-    Result<Boolean> isLogin() throws Exception;
+    Result<Boolean> isLogin(
+            @ApiParam(name = "UserId", value = "UserId")
+            @RequestParam(value = "UserId", required = true)
+            Long userId
+    ) throws Exception;
 
 
 }

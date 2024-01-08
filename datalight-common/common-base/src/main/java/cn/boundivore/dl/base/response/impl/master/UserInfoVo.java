@@ -66,4 +66,12 @@ public class UserInfoVo implements IVo {
     @JsonProperty(value = "LastLogin", required = true)
     private Long lastLogin = -1L;
 
+    @Schema(name = "Token", title = "Token", required = true)
+    @JsonProperty(value = "Token", required = true)
+    private String token;
+
+    @Schema(name = "TokenTimeout", title = "获取指定 token 剩余有效时间(单位: 秒。-1: 永久有效，-2: 没有这个值)", required = true)
+    @JsonProperty(value = "TokenTimeout", required = true)
+    private Long tokenTimeout;
+
 }
