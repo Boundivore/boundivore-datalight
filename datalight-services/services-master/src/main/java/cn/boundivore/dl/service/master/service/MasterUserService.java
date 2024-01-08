@@ -342,6 +342,7 @@ public class MasterUserService {
                 () -> new BException("新旧密码不能相同")
         );
 
+        // 更新数据库
         Assert.isTrue(
                 tDlUserAuth.setCredential(
                         this.passwordEncoder.encode(
@@ -351,6 +352,7 @@ public class MasterUserService {
                 () -> new DatabaseException("更新密码失败")
         );
 
+        // 密码更新成功后，退出被修改密码用户的登录
         StpUtil.logout(tDlUserAuth.getUserId());
 
         return Result.success();
