@@ -76,24 +76,33 @@ public class MasterUserService {
         this.checkUserAuthRegisterRequest(userAuth);
 
         //保存用户基础信息
-        TDlUser tUser = iUserConverter.convert2TUsers(userBase);
+        TDlUser tUser = this.iUserConverter.convert2TUsers(userBase);
         Assert.isTrue(
-                tDlUserService.save(tUser),
+                this.tDlUserService.save(tUser),
                 () -> new DatabaseException("用户基础数据保存失败")
         );
 
         //保存用户认证信息
         String encodePassword = this.passwordEncoder.encode(userAuth.getCredential());
 
-        TDlUserAuth tUserAuth = iUserConverter.convert2TUsersAuth(request.getUserAuth());
+        TDlUserAuth tUserAuth = this.iUserConverter.convert2TUsersAuth(request.getUserAuth());
         tUserAuth.setUserId(tUser.getId());
         tUserAuth.setCredential(encodePassword);
 
-        Assert.isTrue(tDlUserAuthService.save(
-                        tUserAuth),
+        Assert.isTrue(
+                this.tDlUserAuthService.save(tUserAuth),
                 () -> new DatabaseException("用户凭证数据保存失败")
         );
 
+        // 保存用户登录信息
+        TDlLoginEvent tDlLoginEvent = new TDlLoginEvent();
+        tDlLoginEvent.setUserId(tUserAuth.getUserId());
+        tDlLoginEvent.setLastLogin(-1L);
+
+        Assert.isTrue(
+                this.tDlLoginEventService.save(tDlLoginEvent),
+                () -> new DatabaseException("保存初始化登录信息失败")
+        );
 
         return Result.success(iUserConverter.convert2UserInfoVo(tUser));
     }
