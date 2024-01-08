@@ -11,11 +11,26 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 11/09/2023 15:59:16
+ Date: 08/01/2024 12:08:17
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for t_dl_audit_log
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_audit_log`;
+CREATE TABLE `t_dl_audit_log`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '审计日志 ID',
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '执行操作的用户 ID',
+  `operation` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '执行的操作',
+  `target_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '操作目标类型（如表名，对象类型等）',
+  `target_id` bigint(20) NULL DEFAULT NULL COMMENT '操作目标 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '操作时间',
+  `details` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '操作详情',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '审计日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_cluster
@@ -307,6 +322,42 @@ CREATE TABLE `t_dl_node_task`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Task 节点任务信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for t_dl_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission`;
+CREATE TABLE `t_dl_permission`  (
+  `id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限名称',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '权限描述',
+  `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限类型（如页面访问，功能操作等）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_dl_role
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role`;
+CREATE TABLE `t_dl_role`  (
+  `id` bigint(20) NOT NULL COMMENT '角色 ID',
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '角色描述',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_dl_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role_permission`;
+CREATE TABLE `t_dl_role_permission`  (
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  PRIMARY KEY (`role_id`, `permission_id`) USING BTREE,
+  INDEX `fk_permission_id`(`permission_id`) USING BTREE,
+  CONSTRAINT `fk_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `t_dl_permission` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `t_dl_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色和权限关联表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
 -- Table structure for t_dl_service
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dl_service`;
@@ -423,5 +474,18 @@ CREATE TABLE `t_dl_user_auth`  (
   `credential` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '认证凭证 认证凭证，密码 或 Token',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户认证信息表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_dl_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_user_role`;
+CREATE TABLE `t_dl_user_role`  (
+  `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  PRIMARY KEY (`user_id`, `role_id`) USING BTREE,
+  INDEX `fk_user_role_role_id`(`role_id`) USING BTREE,
+  CONSTRAINT `fk_user_role_role_id` FOREIGN KEY (`role_id`) REFERENCES `t_dl_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_role_user_id` FOREIGN KEY (`user_id`) REFERENCES `t_dl_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户和角色关联表' ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
