@@ -325,15 +325,22 @@ public class MasterUserService {
                 .eq(TDlUserAuth::getPrincipal, request.getPrincipal())
                 .one();
 
+        // 如果为超级用户，则跳过旧密码验证
+        if (!loginPrincipal.equals(dataLightEnv.getSuperUser())) {
+            Assert.isTrue(
+                    this.passwordEncoder.matches(
+                            request.getOldCredential(),
+                            tDlUserAuth.getCredential()
+                    ),
+                    () -> new BException("旧密码错误")
+            );
+        }
 
-        Assert.isTrue(
-                this.passwordEncoder.matches(
-                        request.getOldCredential(),
-                        tDlUserAuth.getCredential()
-                ),
-                () -> new BException("旧密码错误")
+        // 新旧密码不能相同
+        Assert.isFalse(
+                request.getOldCredential().equals(request.getNewCredential()),
+                () -> new BException("新旧密码不能相同")
         );
-
 
         Assert.isTrue(
                 tDlUserAuth.setCredential(
