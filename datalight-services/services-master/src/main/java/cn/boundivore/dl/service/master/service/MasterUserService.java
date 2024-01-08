@@ -181,7 +181,10 @@ public class MasterUserService {
         // 读取用户基本数据
         TDlUser tDlUser = this.tDlUserService.getById(tDlUserAuth.getUserId());
         // 读取用户登录数据
-        TDlLoginEvent tDlLoginEvent = this.tDlLoginEventService.getById(tDlUserAuth.getUserId());
+        TDlLoginEvent tDlLoginEvent = this.tDlLoginEventService.lambdaQuery()
+                .select()
+                .eq(TDlLoginEvent::getUserId, tDlUserAuth.getUserId())
+                .one();
 
         // 登录
         StpUtil.login(
