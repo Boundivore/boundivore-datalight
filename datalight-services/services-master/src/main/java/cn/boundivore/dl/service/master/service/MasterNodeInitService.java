@@ -144,6 +144,20 @@ public class MasterNodeInitService {
                 () -> new DatabaseException("保存节点初始信息失败")
         );
 
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
+                new PersistProcedureRequest(
+                        request.getClusterId(),
+                        ProcedureStateEnum.PROCEDURE_PARSE_HOSTNAME,
+                        null
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存步骤信息失败")
+        );
+
         return Result.success(
                 new ParseHostnameVo(
                         clusterId,

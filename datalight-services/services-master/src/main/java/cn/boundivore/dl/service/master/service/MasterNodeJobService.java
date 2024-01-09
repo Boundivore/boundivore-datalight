@@ -45,6 +45,7 @@ import cn.boundivore.dl.service.master.manage.node.job.NodePlan;
 import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -220,46 +221,66 @@ public class MasterNodeJobService {
                 .in(TDlNodeInit::getId, nodeIdList)
                 .list();
 
-        NodeActionTypeEnum nodeActionTypeEnum = request.getNodeActionTypeEnum();
+        Assert.isTrue(
+                tDlNodeInitList.size() == nodeIdList.size(),
+                () -> new BException("部分节点不存在")
+        );
 
-        List<NodeStateEnum> nodeStateEnumList = new ArrayList<>();
+        // 检查节点状态是否合法
+        NodeStateEnum finalBoundaryNodeStateEnum = this.getBoundaryInitNodeStateEnum(request.getNodeActionTypeEnum());
+        if (finalBoundaryNodeStateEnum != null) {
+            List<String> filterHostnameList = tDlNodeInitList.stream()
+                    .filter(tDlNodeInit -> tDlNodeInit
+                            .getNodeInitState()
+                            .isLessThan(finalBoundaryNodeStateEnum)
+                    )
+                    .map(TDlNodeInit::getHostname)
+                    .collect(Collectors.toList());
+
+            Assert.isTrue(
+                    filterHostnameList.isEmpty(),
+                    () -> new BException(
+                            String.format(
+                                    "当前操作的主机名中，存在不符合状态的节点: %s",
+                                    filterHostnameList
+                            )
+                    )
+            );
+
+        }
+    }
+
+    /**
+     * Description: 返回节点的边界状态，即：当前操作应该满足大于等于边界状态（过滤小于边界状态的节点，并抛出异常）
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: 
+     * 
+     * @param nodeActionTypeEnum 当前节点的即将采取的行为（枚举）
+     * @return 节点的边界状态，即：当前操作应该满足大于等于边界状态（过滤小于边界状态的节点，并抛出异常）
+     */
+    @Nullable
+    private NodeStateEnum getBoundaryInitNodeStateEnum(NodeActionTypeEnum nodeActionTypeEnum) {
+
+        NodeStateEnum boundaryNodeStateEnum = null;
         switch (nodeActionTypeEnum) {
             case DETECT:
-                nodeStateEnumList.add(NodeStateEnum.RESOLVED);
-                nodeStateEnumList.add(NodeStateEnum.DETECTING);
-                nodeStateEnumList.add(NodeStateEnum.ACTIVE);
-                nodeStateEnumList.add(NodeStateEnum.INACTIVE);
+                boundaryNodeStateEnum = NodeStateEnum.RESOLVED;
                 break;
             case CHECK:
-                nodeStateEnumList.add(NodeStateEnum.ACTIVE);
-                nodeStateEnumList.add(NodeStateEnum.CHECKING);
-                nodeStateEnumList.add(NodeStateEnum.CHECK_OK);
-                nodeStateEnumList.add(NodeStateEnum.CHECK_ERROR);
+                boundaryNodeStateEnum = NodeStateEnum.ACTIVE;
                 break;
             case DISPATCH:
-                nodeStateEnumList.add(NodeStateEnum.CHECK_OK);
-                nodeStateEnumList.add(NodeStateEnum.PUSHING);
-                nodeStateEnumList.add(NodeStateEnum.PUSH_OK);
-                nodeStateEnumList.add(NodeStateEnum.PUSH_ERROR);
+                boundaryNodeStateEnum = NodeStateEnum.CHECK_OK;
                 break;
         }
 
-        //如果传递的主机名中不包含对应状态，则抛出异常
-        List<String> filterHostnameList = tDlNodeInitList.stream()
-                .filter(tDlNodeInit -> !nodeStateEnumList.contains(tDlNodeInit.getNodeInitState()))
-                .map(TDlNodeInit::getHostname)
-                .collect(Collectors.toList());
-
-        Assert.isTrue(
-                filterHostnameList.isEmpty(),
-                () -> new BException(
-                        String.format(
-                                "当前操作的主机名中，存在不符合状态的节点: %s",
-                                filterHostnameList
-                        )
-                )
-        );
-
+        //如果传递的主机名中不满足对应状态，则抛出异常
+        return boundaryNodeStateEnum;
     }
 
     /**

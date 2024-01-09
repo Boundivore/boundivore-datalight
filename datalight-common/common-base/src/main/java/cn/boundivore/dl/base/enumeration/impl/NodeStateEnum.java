@@ -31,33 +31,32 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  */
 public enum NodeStateEnum implements IBaseEnum {
 
+    UNKNOWN("-1", "未知状态"),
     RESOLVED("0", "主机名已解析"),
 
     DETECTING("1", "探测中"),
-    ACTIVE("2", "活跃的节点"),
-    INACTIVE("3", "不活跃的节点"),
+    INACTIVE("2", "不活跃的节点"),
+    ACTIVE("3", "活跃的节点"),
 
-    UNSELECTED("4", "未选择"),
-    SELECTED("5", "已选择"),
+    CHECKING("4", "节点正在检查"),
+    CHECK_ERROR("5", "节点检查失败"),
+    CHECK_OK("6", "节点检查成功"),
 
-    CHECKING("6", "节点正在检查"),
-    CHECK_OK("7", "节点检查成功"),
-    CHECK_ERROR("8", "节点检查失败"),
+    PUSHING("7", "节点正在推送"),
+    PUSH_ERROR("8", "节点推送失败"),
+    PUSH_OK("9", "节点推送成功"),
 
-    PUSHING("9", "节点正在推送"),
-    PUSH_OK("10", "节点推送成功"),
-    PUSH_ERROR("11", "节点推送失败"),
 
-    MAINTENANCE("12", "维护中"),
-    MAINTENANCE_ADD("13", "维护-新增"),
-    MAINTENANCE_ALTER("14", "维护-变更"),
+    MAINTENANCE("10", "维护中"),
+    MAINTENANCE_ADD("11", "维护-新增"),
+    MAINTENANCE_ALTER("12", "维护-变更"),
 
-    STOPPING("15", "正在关机"),
-    STARTED("16", "运行中"),
-    STARTING("17", "正在开机"),
-    STOPPED("18", "已关机"),
-    RESTARTING("19", "正在重启"),
-    REMOVED("20", "已移除");
+    STOPPING("13", "正在关机"),
+    STARTED("14", "运行中"),
+    STARTING("15", "正在开机"),
+    STOPPED("16", "已关机"),
+    RESTARTING("17", "正在重启"),
+    REMOVED("18", "已移除");
 
     private final String code;
     private final String message;
@@ -75,5 +74,42 @@ public enum NodeStateEnum implements IBaseEnum {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    public NodeStateEnum getByCode(String code) {
+        for (NodeStateEnum state : NodeStateEnum.values()) {
+            if (state.getCode().equals(code)) {
+                return state;
+            }
+        }
+        return null;
+    }
+
+    public NodeStateEnum pre() {
+        NodeStateEnum[] states = NodeStateEnum.values();
+        int ordinal = this.ordinal();
+        return ordinal > 0 ? states[ordinal - 1] : null;
+    }
+
+    public NodeStateEnum next() {
+        NodeStateEnum[] states = NodeStateEnum.values();
+        int ordinal = this.ordinal();
+        return ordinal < states.length - 1 ? states[ordinal + 1] : null;
+    }
+
+    public boolean isLessThanOrEqualTo(NodeStateEnum otherState) {
+        return this.ordinal() <= otherState.ordinal();
+    }
+
+    public boolean isLessThan(NodeStateEnum otherState) {
+        return this.ordinal() < otherState.ordinal();
+    }
+
+    public boolean isGreaterThanOrEqualTo(NodeStateEnum otherState) {
+        return this.ordinal() >= otherState.ordinal();
+    }
+
+    public boolean isGreaterThan(NodeStateEnum otherState) {
+        return this.ordinal() > otherState.ordinal();
     }
 }

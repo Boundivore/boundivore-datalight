@@ -79,4 +79,12 @@ public enum ProcedureStateEnum implements IBaseEnum {
         int ordinal = this.ordinal();
         return ordinal < states.length - 1 ? states[ordinal + 1] : null;
     }
+
+    public boolean isLessThanOrEqualTo(ProcedureStateEnum otherState) {
+        return this.ordinal() <= otherState.ordinal();
+    }
+
+    public boolean isGreaterThanOrEqualTo(ProcedureStateEnum otherState) {
+        return this.ordinal() >= otherState.ordinal();
+    }
 }
