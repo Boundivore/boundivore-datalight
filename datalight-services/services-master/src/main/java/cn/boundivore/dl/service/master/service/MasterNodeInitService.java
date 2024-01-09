@@ -39,6 +39,7 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -106,13 +107,12 @@ public class MasterNodeInitService {
         List<String> invalidHostnameList = hostnames.getInvalidHostnames();
 
         //清除可能存在的过期数据
-        List<TDlNodeInit> oldTdlNodeInitList = tDlNodeInitService.lambdaQuery()
+        List<TDlNodeInit> oldTdlNodeInitList = this.tDlNodeInitService.lambdaQuery()
                 .select()
                 .eq(TDlNodeInit::getClusterId, clusterId)
-                .in(TDlNodeInit::getHostname, validHostnameList)
                 .list();
 
-        tDlNodeInitService.removeBatchByIds(oldTdlNodeInitList);
+        this.tDlNodeInitService.removeBatchByIds(oldTdlNodeInitList);
 
         //保存本批次的节点数据
         List<TDlNodeInit> tDlNodeInitList = validHostnameList.stream()
@@ -526,18 +526,11 @@ public class MasterNodeInitService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群ID
+     * @param request 集群节点信息
      * @return 包含节点初始化信息的 Result对象
      */
-    public Result<AbstractNodeInitVo.NodeInitVo> initDetectList(Long clusterId) {
-        return this.initList(
-                clusterId,
-                CollUtil.newArrayList(
-                        NodeStateEnum.DETECTING,
-                        NodeStateEnum.ACTIVE,
-                        NodeStateEnum.INACTIVE
-                )
-        );
+    public Result<AbstractNodeInitVo.NodeInitVo> initDetectList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+        return this.initList(request);
     }
 
     /**
@@ -550,7 +543,24 @@ public class MasterNodeInitService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群ID
+     * @param request 集群节点信息
+     * @return 包含节点初始化信息的 Result对象
+     */
+    public Result<AbstractNodeInitVo.NodeInitVo> initCheckList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+        return this.initList(request);
+    }
+
+    /**
+     * Description: 用于获取节点初始化任务 Check 之后的节点初始化列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/5
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
      * @return 包含节点初始化信息的 Result对象
      */
     public Result<AbstractNodeInitVo.NodeInitVo> initCheckList(Long clusterId) {
@@ -558,8 +568,7 @@ public class MasterNodeInitService {
                 clusterId,
                 CollUtil.newArrayList(
                         NodeStateEnum.CHECKING,
-                        NodeStateEnum.CHECK_OK,
-                        NodeStateEnum.CHECK_ERROR
+                        NodeStateEnum.CHECK_OK
                 )
         );
     }
@@ -574,19 +583,13 @@ public class MasterNodeInitService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群ID
+     * @param request 集群节点信息
      * @return 包含节点初始化信息的 Result对象
      */
-    public Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(Long clusterId) {
-        return this.initList(
-                clusterId,
-                CollUtil.newArrayList(
-                        NodeStateEnum.PUSHING,
-                        NodeStateEnum.PUSH_OK,
-                        NodeStateEnum.PUSH_ERROR
-                )
-        );
+    public Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+        return this.initList(request);
     }
+
 
     /**
      * Description: 获取节点初始化列表
@@ -598,13 +601,56 @@ public class MasterNodeInitService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId         集群ID
+     * @param request 集群节点信息
+     * @return 初始化结果
+     */
+    private Result<AbstractNodeInitVo.NodeInitVo> initList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+        Long clusterId = request.getClusterId();
+
+        // 读取初始化节点列表信息
+        List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList = tDlNodeInitService.lambdaQuery()
+                .select()
+                .eq(TDlNodeInit::getClusterId, clusterId)
+                .in(TBasePo::getId, request.getNodeInfoList()
+                        .stream()
+                        .map(NodeInfoRequest::getNodeId).collect(Collectors.toList())
+                )
+                .orderByAsc(TDlNodeInit::getHostname)
+                .list()
+                .stream()
+                .map(i -> new AbstractNodeInitVo.NodeInitDetailVo()
+                        .setNodeId(i.getId())
+                        .setHostname(i.getHostname())
+                        .setNodeIp(i.getIpv4())
+                        .setSshPort(i.getSshPort())
+                        .setCpuArch(i.getCpuArch())
+                        .setCpuCores(i.getCpuCores())
+                        .setRam(i.getRam())
+                        .setDiskTotal(i.getDisk())
+                        .setNodeState(i.getNodeInitState())
+                )
+                .collect(Collectors.toList());
+
+        return this.getNodeInitVoResult(clusterId, nodeInitDetailList);
+    }
+
+
+    /**
+     * Description: 获取节点初始化列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/6
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId         集群 ID
      * @param nodeStateEnumList 节点状态列表
      * @return 初始化结果
      */
-    private Result<AbstractNodeInitVo.NodeInitVo> initList(Long clusterId,
-                                                           List<NodeStateEnum> nodeStateEnumList) {
-
+    public Result<AbstractNodeInitVo.NodeInitVo> initList(Long clusterId,
+                                                          List<NodeStateEnum> nodeStateEnumList) {
         // 读取初始化节点列表信息
         List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList = tDlNodeInitService.lambdaQuery()
                 .select()
@@ -626,13 +672,34 @@ public class MasterNodeInitService {
                 )
                 .collect(Collectors.toList());
 
+        return this.getNodeInitVoResult(clusterId, nodeInitDetailList);
+    }
+
+    /**
+     * Description: 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId          集群 ID
+     * @param nodeInitDetailList 节点信息
+     * @return Result<AbstractNodeInitVo.NodeInitVo> 节点信息列表
+     */
+    @NotNull
+    private Result<AbstractNodeInitVo.NodeInitVo> getNodeInitVoResult(Long clusterId,
+                                                                      List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList) {
+
         // 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
         ExecStateEnum execStateEnum = ExecStateEnum.NOT_EXIST;
         if (this.masterInitProcedureService.isExistInitProcedure(clusterId).getData()) {
             Long nodeJobId = this.masterInitProcedureService.getInitProcedure(clusterId)
                     .getData()
                     .getNodeJobId();
-            if(nodeJobId != null){
+            if (nodeJobId != null) {
                 execStateEnum = this.masterNodeJobService.getNodeJobState(nodeJobId).getData();
             }
         }

@@ -95,30 +95,30 @@ public interface IMasterNodeInitAPI {
             Long clusterId
     ) throws Exception;
 
-    @GetMapping(value = "/node/init/detect/list")
+    @PostMapping(value = "/node/init/detect/list")
     @ApiOperation(notes = "获取节点初始化列表， Detect 执行之后", value = "获取节点初始化列表， Detect 执行之后")
     Result<AbstractNodeInitVo.NodeInitVo> initDetectList(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
-            @RequestParam(value = "ClusterId", required = true)
-            Long clusterId
+            @RequestBody
+            @Valid
+            AbstractNodeInitRequest.NodeInitInfoListRequest request
     ) throws Exception;
 
 
 
-    @GetMapping(value = "/node/init/check/list")
+    @PostMapping(value = "/node/init/check/list")
     @ApiOperation(notes = "获取节点初始化列表， Check 执行之后", value = "获取节点初始化列表， Check 执行之后")
     Result<AbstractNodeInitVo.NodeInitVo> initCheckList(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
-            @RequestParam(value = "ClusterId", required = true)
-            Long clusterId
+            @RequestBody
+            @Valid
+            AbstractNodeInitRequest.NodeInitInfoListRequest request
     ) throws Exception;
 
-    @GetMapping(value = "/node/init/dispatch/list")
+    @PostMapping(value = "/node/init/dispatch/list")
     @ApiOperation(notes = "获取节点初始化列表， Dispatch 执行之后", value = "获取节点初始化列表， Dispatch 执行之后")
     Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
-            @RequestParam(value = "ClusterId", required = true)
-            Long clusterId
+            @RequestBody
+            @Valid
+            AbstractNodeInitRequest.NodeInitInfoListRequest request
     ) throws Exception;
 
     @PostMapping(value = "/node/init/add")

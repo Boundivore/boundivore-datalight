@@ -465,7 +465,7 @@ public class NodeJobService {
      * Modification time:
      * Throws:
      *
-     * @param host       目标节点 IP 或主机名
+     * @param host           目标节点 IP 或主机名
      * @param sshPort        SSH 端口号
      * @param privateKeyPath 私钥文件地址
      * @return true 可连通, false 不可连通
@@ -707,12 +707,12 @@ public class NodeJobService {
         // 获取集群初始化检查节点列表的节点信息
         List<NodeHosts.NodeHost> nodeHostList = Stream.concat(
                         // 获取新增节点的节点信息
-                        masterNodeInitService.initCheckList(clusterId)
+                        this.masterNodeInitService.initCheckList(clusterId)
                                 .getData()
                                 .getNodeInitDetailList()
                                 .stream(),
                         // 获取已服役的节点信息
-                        masterNodeService.getNodeList(clusterId)
+                        this.masterNodeService.getNodeList(clusterId)
                                 .getData()
                                 .getNodeDetailList()
                                 .stream()

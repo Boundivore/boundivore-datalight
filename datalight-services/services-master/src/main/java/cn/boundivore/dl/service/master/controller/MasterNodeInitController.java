@@ -72,18 +72,18 @@ public class MasterNodeInitController implements IMasterNodeInitAPI {
     }
 
     @Override
-    public Result<AbstractNodeInitVo.NodeInitVo> initDetectList(Long clusterId) throws Exception {
-        return masterNodeInitService.initDetectList(clusterId);
+    public Result<AbstractNodeInitVo.NodeInitVo> initDetectList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
+        return masterNodeInitService.initDetectList(request);
     }
 
     @Override
-    public Result<AbstractNodeInitVo.NodeInitVo> initCheckList(Long clusterId) throws Exception {
-        return masterNodeInitService.initCheckList(clusterId);
+    public Result<AbstractNodeInitVo.NodeInitVo> initCheckList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
+        return masterNodeInitService.initCheckList(request);
     }
 
     @Override
-    public Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(Long clusterId) throws Exception {
-        return masterNodeInitService.initDispatchList(clusterId);
+    public Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
+        return masterNodeInitService.initDispatchList(request);
     }
 
     @Override

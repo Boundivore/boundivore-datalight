@@ -382,7 +382,6 @@ public abstract class AbstractNodeTask implements INodeTask {
      */
     protected String checkEnv(NodeStepMeta nodeStepMeta) throws Exception {
 
-        // 输出 hosts 配置到 ./node/conf/auto-hosts.conf
         Long clusterId = this.nodeTaskMeta.getNodeJobMeta().getClusterId();
 
         //如果是计算集群，则需要考虑包含存储集群的节点，以便后续可以访问
@@ -396,6 +395,8 @@ public abstract class AbstractNodeTask implements INodeTask {
                         "auto-hosts.conf"
                 )
         );
+
+        // 输出 hosts 配置到 ./node/conf/auto-hosts.conf
         FileUtil.writeString(hostsStr, autoHostsConfFile, CharsetUtil.UTF_8);
 
         nodeStepMeta.setShell(
