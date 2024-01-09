@@ -113,7 +113,6 @@ public class NodeJob extends Thread {
      */
     private void initJobMeta() throws InterruptedException {
         long nodeJobMetaId = IdWorker.getId();
-        IdWorker.getId();
 
         Assert.isTrue(
                 NodeJobCache.getInstance().setActiveJobId(nodeJobMetaId),
