@@ -39,6 +39,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -118,7 +119,7 @@ public class Job extends Thread {
      * Throws:
      */
     private JobMeta initJobMeta() throws InterruptedException {
-        long jobMetaId = IdUtil.getSnowflakeNextId();
+        long jobMetaId = IdWorker.getId();
 
         Assert.isTrue(
                 JobCache.getInstance().setActiveJobId(jobMetaId),
@@ -177,7 +178,7 @@ public class Job extends Thread {
         //初始化 StageMeta
         final StageMeta stageMeta = new StageMeta()
                 .setJobMeta(jobMeta)
-                .setId(IdUtil.getSnowflakeNextId())
+                .setId(IdWorker.getId())
                 .setName(
                         String.format(
                                 "%s:%s",
@@ -290,7 +291,7 @@ public class Job extends Thread {
                             TaskMeta taskMeta = new TaskMeta()
                                     .setStageMeta(stageMeta)
                                     .setWait(false)//TODO 如需滚动重启等需求，可控制该参数
-                                    .setId(IdUtil.getSnowflakeNextId())
+                                    .setId(IdWorker.getId())
                                     .setName(String.format(
                                                     "%s:%s[%s]",
                                                     stageMeta.getName(),
@@ -373,7 +374,7 @@ public class Job extends Thread {
                 //转换器转换部分属性值，其余属性值通过 set 方法设定
                 .map(i -> iStepConverter.convert2StepMeta(i)
                         .setTaskMeta(taskMeta)
-                        .setId(IdUtil.getSnowflakeNextId())
+                        .setId(IdWorker.getId())
                         .setName(String.format(
                                         "%s:%s",
                                         taskMeta.getName(),

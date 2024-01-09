@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.request.impl.master.NodeInfoRequest;
@@ -29,7 +30,9 @@ import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.po.single.TDlNodeInit;
+import cn.boundivore.dl.orm.po.single.TDlNodeJob;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeInitServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
@@ -68,6 +71,8 @@ public class MasterNodeJobService {
     private final TDlNodeInitServiceImpl tDlNodeInitService;
 
     private final TDlNodeServiceImpl tDlNodeService;
+
+    private final TDlNodeJobServiceImpl tDlNodeJobService;
 
     /**
      * Description: 执行节点异步操作
@@ -162,7 +167,7 @@ public class MasterNodeJobService {
      * Modification time:
      * Throws:
      *
-     * @param nodeInfoList 节点信息列表
+     * @param nodeInfoList  节点信息列表
      * @param nodeStateEnum 将要切换到的状态
      */
     @Transactional(
@@ -462,9 +467,9 @@ public class MasterNodeJobService {
 
         Assert.notNull(nodeJob, () -> new BException("NodeJobId 错误或缓存信息已失效"));
 
-        // 获取节点 Job 的元数据信息
+        // 获取节点 NodeJob 的元数据信息
         NodeJobMeta nodeJobMeta = nodeJob.getNodeJobMeta();
-        // 获取节点 Job 的计划信息
+        // 获取节点 NodeJob 的计划信息
         NodePlan nodePlan = nodeJob.getNodePlan();
 
         // 获取集群 ID
@@ -499,6 +504,39 @@ public class MasterNodeJobService {
         return Result.success(nodeJobProgressVo);
     }
 
+    /**
+     * Description: 从数据库获取节点作业的进度信息，优先从内存读取，若无，则从数据库读取
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeJobId 节点作业ID
+     * @return 节点作业进度信息的结果对象
+     */
+    public Result<ExecStateEnum> getNodeJobState(Long nodeJobId) {
+        NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
+
+        if (nodeJob != null) {
+            return Result.success(
+                    NodeJobCache.getInstance()
+                            .get(nodeJobId)
+                            .getNodeJobMeta()
+                            .getExecStateEnum()
+            );
+        }
+
+        TDlNodeJob tDlNodeJob = this.tDlNodeJobService.getById(nodeJobId);
+        Assert.notNull(
+                tDlNodeJob,
+                () -> new BException("NodeJobId 不存在")
+        );
+        return Result.success(tDlNodeJob.getNodeJobState());
+    }
+
 
     /**
      * Description: 创建 NodeJobPlanProgressVo 对象
@@ -516,7 +554,10 @@ public class MasterNodeJobService {
      * @param nodePlan    节点作业计划信息
      * @return 创建的 NodeJobPlanProgressVo 对象
      */
-    private AbstractNodeJobVo.NodeJobPlanProgressVo createNodeJobPlanProgressVo(Long clusterId, Long nodeJobId, NodeJobMeta nodeJobMeta, NodePlan nodePlan) {
+    private AbstractNodeJobVo.NodeJobPlanProgressVo createNodeJobPlanProgressVo(Long clusterId,
+                                                                                Long nodeJobId,
+                                                                                NodeJobMeta nodeJobMeta,
+                                                                                NodePlan nodePlan) {
         int planTotal = nodePlan.getPlanTotal();
         int planCurrent = nodePlan.getPlanCurrent();
         int planProgress = nodePlan.getPlanProgress();
@@ -547,13 +588,15 @@ public class MasterNodeJobService {
      * @param nodePlan  节点作业计划信息
      * @return 创建的 NodeJobExecProgressVo 对象
      */
-    private AbstractNodeJobVo.NodeJobExecProgressVo createNodeJobExecProgressVo(Long nodeJobId, Long clusterId, NodePlan nodePlan) {
+    private AbstractNodeJobVo.NodeJobExecProgressVo createNodeJobExecProgressVo(Long nodeJobId,
+                                                                                Long clusterId,
+                                                                                NodePlan nodePlan) {
         int execTotal = nodePlan.getExecTotal().get();
         int execCurrent = nodePlan.getExecCurrent().get();
         int execProgress = nodePlan.getExecProgress().get();
 
         return new AbstractNodeJobVo.NodeJobExecProgressVo()
-                .setIsDone(NodeJobCache.getInstance().getActiveJobId().get() != nodeJobId)
+                .setJobExecStateEnum(NodeJobCache.getInstance().get(nodeJobId).getNodeJobMeta().getExecStateEnum())
                 .setNodeJobId(nodeJobId)
                 .setClusterId(clusterId)
                 .setExecTotal(execTotal)

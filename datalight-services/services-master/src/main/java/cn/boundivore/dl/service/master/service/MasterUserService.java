@@ -71,23 +71,26 @@ public class MasterUserService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request) throws Exception {
+    public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request, boolean isInit) throws Exception {
         AbstractUserRequest.UserAuthRequest userAuthRequest = request.getUserAuth();
         AbstractUserRequest.UserBaseRequest userBaseRequest = request.getUserBase();
 
-        // 限制：仅允许超级管理员执行该注册操作，即，帮普通人员注册
-        TDlUserAuth loginTDlUserAuth = this.tDlUserAuthService.lambdaQuery()
-                .select()
-                .eq(TDlUserAuth::getUserId, StpUtil.getLoginId())
-                .one();
+        // 判断来源：1、启动程序时，初始化超级用户 isInit = true; 2、前端接口调用：isInit = false;
+        if (!isInit) {
+            // 限制：仅允许超级管理员执行该注册操作，即，帮普通人员注册
+            TDlUserAuth loginTDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                    .select()
+                    .eq(TDlUserAuth::getPrincipal, this.dataLightEnv.getSuperUser())
+                    .one();
 
-        Assert.isTrue(
-                loginTDlUserAuth.getPrincipal().equals(dataLightEnv.getSuperUser()),
-                () -> new BException(String.format(
-                        "仅超级管理员[ %s ]允许注册用户",
-                        dataLightEnv.getSuperUser()
-                ))
-        );
+            Assert.isTrue(
+                    loginTDlUserAuth.getPrincipal().equals(dataLightEnv.getSuperUser()),
+                    () -> new BException(String.format(
+                            "仅超级管理员[ %s ]允许注册用户",
+                            dataLightEnv.getSuperUser()
+                    ))
+            );
+        }
 
         // 检查注册信息是否合法
         this.checkUserAuthRegisterRequest(userAuthRequest);
@@ -435,6 +438,6 @@ public class MasterUserService {
                 userBaseRequest
         );
 
-        this.register(request);
+        this.register(request, true);
     }
 }

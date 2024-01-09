@@ -55,13 +55,13 @@ public class PersistProcedureRequest implements IRequest {
     @NotNull
     private Long clusterId;
 
-    @Schema(name = "Tag", title = "当前进度唯一标识", required = true)
-    @JsonProperty(value = "Tag", required = true)
-    private String tag;
-
     @Schema(name = "ProcedureStateEnum", title = "当前已成功完成的状态", required = true)
     @JsonProperty(value = "ProcedureStateEnum", required = true)
     @NotNull
     private ProcedureStateEnum procedureStateEnum;
+
+    @Schema(name = "NodeJobId", title = "节点 Job Id", required = true)
+    @JsonProperty(value = "NodeJobId", required = true)
+    private Long nodeJobId;
 
 }

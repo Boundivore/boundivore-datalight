@@ -18,7 +18,6 @@ package cn.boundivore.dl.service.master.manage.service.job;
 
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.service.master.manage.node.job.NodeJob;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.CacheObj;
@@ -55,12 +54,12 @@ public class JobCache {
     private final ReentrantLock activeJobLock;
 
     @Getter
-    private final AtomicLong activeJobId = new AtomicLong();
+    private final AtomicLong activeJobId = new AtomicLong(0);
 
     private JobCache() {
         this.activeJobLock = new ReentrantLock();
 
-        //内存中最多缓存 2个 Job，一个为当前活跃的 Job，另一个为上一个历史 Jon，便于查询
+        // 内存中缓存若干 Job
         this.cache = CacheUtil.newFIFOCache(2);
         this.cache.setListener((key, job) ->
                 log.info("Job 缓存清除: {}({})",
@@ -92,7 +91,7 @@ public class JobCache {
      * Throws:
      *
      * @param job 执行操作的异步 Job
-     * @return boolean 如果符合缓存逻辑，则缓存并返回 true ，否则返回 false
+     * @return boolean 如果符合缓存逻辑，则缓存并返回 true，否则返回 false
      */
     public boolean cache(Job job) {
         if (!cache.isFull()) {
@@ -128,7 +127,7 @@ public class JobCache {
         Job job = cache.get(jobId);
         Assert.notNull(
                 job,
-                () -> new BException("查询任务已过期，请通过历史查询接口查询")
+                () -> new BException("NodeJobId 错误或缓存信息已失效")
         );
         return cache.get(jobId);
     }

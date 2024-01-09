@@ -49,11 +49,6 @@ public abstract class AbstractInitProcedureVo {
         @NotNull
         private Long clusterId;
 
-        @Schema(name = "Tag", title = "初始化步骤唯一标识", required = true)
-        @JsonProperty(value = "Tag", required = true)
-        @NotNull
-        private String tag;
-
         @Schema(name = "ProcedureName", title = "初始化步骤名称", required = true)
         @JsonProperty(value = "ProcedureName", required = true)
         @NotNull
@@ -63,6 +58,11 @@ public abstract class AbstractInitProcedureVo {
         @JsonProperty(value = "ProcedureState", required = true)
         @NotNull
         private ProcedureStateEnum procedureState;
+
+        @Schema(name = "NodeJobId", title = "节点 Job Id", required = true)
+        @JsonProperty(value = "NodeJobId", required = true)
+        @NotNull
+        private Long nodeJobId;
 
     }
 }

@@ -46,7 +46,7 @@ public class MasterUserController implements IMasterUserAPI {
 
     @Override
     public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request) throws Exception {
-        return this.masterUserService.register(request);
+        return this.masterUserService.register(request, false);
     }
 
     @SaIgnore

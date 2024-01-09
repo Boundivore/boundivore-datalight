@@ -66,7 +66,7 @@ public abstract class AbstractUserRequest {
         @Schema(name = "Credential", title = "登录凭证", required = true)
         @JsonProperty(value = "Credential", required = true)
         @NotBlank
-        @Pattern(regexp = "^[A-F0-9]{32}$", message = "密码格式不正确")
+        @Pattern(regexp = "^[a-f0-9]{32}$", message = "密码格式不正确")
         private String credential;
 
     }
@@ -134,13 +134,13 @@ public abstract class AbstractUserRequest {
         @Schema(name = "OldCredential", title = "旧登录凭证", required = true)
         @JsonProperty(value = "OldCredential", required = true)
         @NotBlank
-        @Pattern(regexp = "^[A-F0-9]{32}$", message = "旧密码格式不正确")
+        @Pattern(regexp = "^[a-f0-9]{32}$", message = "旧密码格式不正确")
         private String oldCredential;
 
         @Schema(name = "NewCredential", title = "新登录凭证", required = true)
         @JsonProperty(value = "NewCredential", required = true)
         @NotBlank
-        @Pattern(regexp = "^[A-F0-9]{32}$", message = "新密码格式不正确")
+        @Pattern(regexp = "^[a-f0-9]{32}$", message = "新密码格式不正确")
         private String newCredential;
     }
 }

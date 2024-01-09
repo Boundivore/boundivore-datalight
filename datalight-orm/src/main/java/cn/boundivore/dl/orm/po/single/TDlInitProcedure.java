@@ -33,10 +33,6 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
     @TableField("cluster_id")
     private Long clusterId;
 
-    @Schema(name = "本次进度唯一编码")
-    @TableField("tag")
-    private String tag;
-
     @Schema(name = "进度名称")
     @TableField("procedure_name")
     private String procedureName;
@@ -44,6 +40,10 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
     @Schema(name = "进度状态 枚举，具体见代码")
     @TableField("procedure_state")
     private ProcedureStateEnum procedureState;
+
+    @Schema(name = "节点 Job Id")
+    @TableField("node_job_id")
+    private Long nodeJobId;
 
 
 }

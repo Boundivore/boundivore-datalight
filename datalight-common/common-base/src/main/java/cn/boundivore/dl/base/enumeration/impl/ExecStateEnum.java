@@ -31,6 +31,7 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  */
 public enum ExecStateEnum implements IBaseEnum {
 
+    NOT_EXIST("-1", "不存在"),
     OK("0", "成功"),
     ERROR("1", "错误"),
     RUNNING("2", "运行中"),

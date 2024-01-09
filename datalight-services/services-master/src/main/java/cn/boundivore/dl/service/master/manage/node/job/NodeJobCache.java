@@ -54,15 +54,15 @@ public class NodeJobCache {
     private final ReentrantLock activeJobLock;
 
     @Getter
-    private final AtomicLong activeJobId = new AtomicLong();
+    private final AtomicLong activeJobId = new AtomicLong(0);
 
     private NodeJobCache() {
         this.activeJobLock = new ReentrantLock();
 
-        //内存中最多缓存 2个 Job，一个为当前活跃的 Job，另一个为上一个历史 Jon，便于查询
-        this.cache = CacheUtil.newFIFOCache(2);
+        // 内存中缓存若干 NodeJob
+        this.cache = CacheUtil.newFIFOCache(5);
         this.cache.setListener((key, nodeJob) ->
-                log.info("Job 缓存清除: {}({})",
+                log.info("NodeJob 缓存清除: {}({})",
                         nodeJob.getNodeJobMeta().getName(),
                         nodeJob.getNodeJobMeta().getId()
                 )
@@ -120,7 +120,7 @@ public class NodeJobCache {
      * Modification time:
      * Throws:
      *
-     * @param nodeJobId 全局唯一的nodeJobId
+     * @param nodeJobId 全局唯一的 nodeJobId
      * @return Job
      */
     public NodeJob get(Long nodeJobId) {
@@ -150,7 +150,8 @@ public class NodeJobCache {
         Iterator<CacheObj<Long, NodeJob>> iterator = cache.cacheObjIterator();
         while (iterator.hasNext()) {
             CacheObj<Long, NodeJob> next = iterator.next();
-            if (next.getValue().getNodeJobMeta().getExecStateEnum() != ExecStateEnum.RUNNING) {
+            ExecStateEnum execStateEnum = next.getValue().getNodeJobMeta().getExecStateEnum();
+            if (execStateEnum != ExecStateEnum.RUNNING && execStateEnum != ExecStateEnum.SUSPEND) {
                 onRemoveJobIdList.add(next.getKey());
             }
         }

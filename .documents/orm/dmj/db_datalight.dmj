@@ -1571,9 +1571,9 @@
           "Caption": "初始化步骤缓存信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 14,
-          "GraphDesc": "Left=792.24\r\nTop=160.37",
+          "GraphDesc": "Left=788.24\r\nTop=166.87",
           "MetaFields": {
-            "Count": 8,
+            "Count": 9,
             "items": [
               {
                 "ID": 1,
@@ -1653,6 +1653,14 @@
                 "DataType": 1,
                 "Not_Nullable": true,
                 "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "node_job_id",
+                "OrderNo": 9,
+                "DisplayName": "节点 Job Id",
+                "DataType": 2,
+                "DataLength": 20
               }
             ]
           }
@@ -2040,7 +2048,7 @@
           "Caption": "Task 节点任务信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 18,
-          "GraphDesc": "Left=797.92\r\nTop=568.81",
+          "GraphDesc": "Left=795.92\r\nTop=568.81",
           "MetaFields": {
             "Count": 16,
             "items": [
@@ -2206,7 +2214,7 @@
           "Caption": "Job 节点工作信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 19,
-          "GraphDesc": "Left=520.42\r\nTop=568.81",
+          "GraphDesc": "Left=515.70\r\nTop=569.99",
           "MetaFields": {
             "Count": 11,
             "items": [

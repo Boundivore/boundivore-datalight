@@ -32,8 +32,6 @@ import cn.boundivore.dl.orm.service.single.impl.TDlClusterServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlInitProcedureServiceImpl;
 import cn.boundivore.dl.service.master.converter.IInitProcedureConverter;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -129,51 +127,25 @@ public class MasterInitProcedureService {
                 )
         );
 
-        // 如果 Tag 存在，则必须传递，如果不传递则抛出异常，为明确当前操作的唯一性、正确性
-        if (StrUtil.isBlank(request.getTag())) {
-            boolean exists = this.tDlInitProcedureService.lambdaQuery()
-                    .select()
-                    .eq(TDlInitProcedure::getClusterId, clusterId)
-                    .exists();
-
-            Assert.isFalse(
-                    exists,
-                    () -> new BException("当前集群存在活跃的步骤，更新步骤时必须提供唯一 Tag")
-            );
-        }
-
         Assert.isTrue(
                 tDlCluster.getClusterState() != ClusterStateEnum.REMOVED,
                 () -> new BException("集群已移除或废弃")
         );
 
-        // 检查 Tag 是否存在
-        String tag;
-        TDlInitProcedure tDlInitProcedure;
-        if (StrUtil.isNotBlank(request.getTag())) {
-            tag = request.getTag();
-            tDlInitProcedure = this.tDlInitProcedureService.lambdaQuery()
-                    .select()
-                    .eq(TDlInitProcedure::getTag, tag)
-                    .one();
+        // 获取当前集群已记录的步骤信息
+        TDlInitProcedure tDlInitProcedure = this.tDlInitProcedureService.lambdaQuery()
+                .select()
+                .eq(TDlInitProcedure::getClusterId, request.getClusterId())
+                .one();
 
-            Assert.notNull(
-                    tDlInitProcedure,
-                    () -> new BException(String.format(
-                            "不存在的步骤 Tag : %s",
-                            tag
-                    ))
-            );
-
-        } else {
-            tag = IdUtil.objectId();
+        if (tDlInitProcedure == null) {
             tDlInitProcedure = new TDlInitProcedure();
-            tDlInitProcedure.setTag(tag);
-            tDlInitProcedure.setClusterId(request.getClusterId());
         }
 
+        tDlInitProcedure.setClusterId(request.getClusterId());
         tDlInitProcedure.setProcedureName(request.getProcedureStateEnum().getMessage());
         tDlInitProcedure.setProcedureState(request.getProcedureStateEnum());
+        tDlInitProcedure.setNodeJobId(request.getNodeJobId());
 
         return tDlInitProcedure;
     }

@@ -17,6 +17,7 @@
 package cn.boundivore.dl.base.response.impl.master;
 
 
+import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,6 +49,10 @@ public abstract class AbstractNodeInitVo {
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
+
+        @Schema(name = "ExecStateEnum", title = "NodeJob 执行状态", description = "OK: 成功, ERROR: 失败, RUNNING: 运行中, SUSPEND: 未运行", required = true)
+        @JsonProperty(value = "ExecStateEnum", required = true)
+        private ExecStateEnum execStateEnum;
 
         @Schema(name = "NodeInitDetailList", title = "节点初始化信息详情列表", required = true)
         @JsonProperty(value = "NodeInitDetailList", required = true)

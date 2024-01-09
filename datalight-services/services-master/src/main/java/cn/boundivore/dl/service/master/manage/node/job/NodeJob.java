@@ -32,6 +32,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,7 +112,8 @@ public class NodeJob extends Thread {
      * Throws:
      */
     private void initJobMeta() throws InterruptedException {
-        long nodeJobMetaId = IdUtil.getSnowflakeNextId();
+        long nodeJobMetaId = IdWorker.getId();
+        IdWorker.getId();
 
         Assert.isTrue(
                 NodeJobCache.getInstance().setActiveJobId(nodeJobMetaId),
@@ -183,7 +185,7 @@ public class NodeJob extends Thread {
 
         NodeTaskMeta nodeTaskMeta = new NodeTaskMeta()
                 .setNodeJobMeta(nodeJobMeta)
-                .setId(IdUtil.getSnowflakeNextId())
+                .setId(IdWorker.getId())
                 .setName(
                         String.format(
                                 "%s:%s",
@@ -192,7 +194,7 @@ public class NodeJob extends Thread {
                         )
                 )
                 .setWait(node.isWait())
-                .setId(IdUtil.getSnowflakeNextId())
+                .setId(IdWorker.getId())
 
                 .setHostname(node.getHostname())
                 .setSshPort(node.getSshPort())
@@ -249,7 +251,7 @@ public class NodeJob extends Thread {
                 .map(i -> this.iNodeStepConverter.convert2NodeStepMeta(i)
                         .setNodeTaskMeta(nodeTaskMeta)
 
-                        .setId(IdUtil.getSnowflakeNextId())
+                        .setId(IdWorker.getId())
                         .setName(String.format(
                                         "%s:%s",
                                         nodeTaskMeta.getName(),

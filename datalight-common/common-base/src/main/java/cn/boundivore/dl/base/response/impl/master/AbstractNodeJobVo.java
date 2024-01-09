@@ -147,10 +147,10 @@ public abstract class AbstractNodeJobVo {
     )
     public static class NodeJobExecProgressVo implements IVo {
 
-        @Schema(name = "IsDone", title = "无论异常与否，当前 Job 是否已经结束", required = true)
-        @JsonProperty(value = "IsDone", required = true)
+        @Schema(name = "JobExecStateEnum", title = "当前 Job 执行状态", required = true)
+        @JsonProperty(value = "JobExecStateEnum", required = true)
         @NotNull
-        private Boolean isDone;
+        private ExecStateEnum jobExecStateEnum;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)

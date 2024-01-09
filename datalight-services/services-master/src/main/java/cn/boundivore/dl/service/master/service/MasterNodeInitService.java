@@ -17,14 +17,8 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
-import cn.boundivore.dl.base.request.impl.master.AbstractNodeInitRequest;
-import cn.boundivore.dl.base.request.impl.master.NodeInfoRequest;
-import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
-import cn.boundivore.dl.base.request.impl.master.ParseHostnameRequest;
+import cn.boundivore.dl.base.enumeration.impl.*;
+import cn.boundivore.dl.base.request.impl.master.*;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeInitVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
@@ -174,11 +168,6 @@ public class MasterNodeInitService {
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(NodeJobRequest request) throws Exception {
-        // 验证步骤合理性
-        this.masterInitProcedureService.checkOperationIllegal(
-                request.getClusterId(),
-                ProcedureStateEnum.PROCEDURE_DETECT
-        );
 
         Assert.isTrue(
                 request.getNodeActionTypeEnum() == NodeActionTypeEnum.DETECT,
@@ -198,6 +187,20 @@ public class MasterNodeInitService {
         );
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
+
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
+                new PersistProcedureRequest(
+                        request.getClusterId(),
+                        ProcedureStateEnum.PROCEDURE_DETECT,
+                        nodeJobId
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存步骤信息失败")
+        );
 
         return Result.success(
                 new AbstractNodeJobVo.NodeJobIdVo(
@@ -221,11 +224,6 @@ public class MasterNodeInitService {
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(NodeJobRequest request) throws Exception {
-        // 验证步骤合理性
-        this.masterInitProcedureService.checkOperationIllegal(
-                request.getClusterId(),
-                ProcedureStateEnum.PROCEDURE_CHECK
-        );
 
         Assert.isTrue(
                 request.getNodeActionTypeEnum() == NodeActionTypeEnum.CHECK,
@@ -281,6 +279,22 @@ public class MasterNodeInitService {
         );
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
+
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
+                new PersistProcedureRequest(
+                        request.getClusterId(),
+                        ProcedureStateEnum.PROCEDURE_CHECK,
+                        nodeJobId
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存步骤信息失败")
+        );
+
+
         return Result.success(
                 new AbstractNodeJobVo.NodeJobIdVo(
                         request.getClusterId(),
@@ -355,11 +369,6 @@ public class MasterNodeInitService {
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(NodeJobRequest request) throws Exception {
-        // 验证步骤合理性
-        this.masterInitProcedureService.checkOperationIllegal(
-                request.getClusterId(),
-                ProcedureStateEnum.PROCEDURE_DISPATCH
-        );
 
         Assert.isTrue(
                 request.getNodeActionTypeEnum() == NodeActionTypeEnum.DISPATCH,
@@ -379,6 +388,22 @@ public class MasterNodeInitService {
         );
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
+
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
+                new PersistProcedureRequest(
+                        request.getClusterId(),
+                        ProcedureStateEnum.PROCEDURE_DISPATCH,
+                        nodeJobId
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存步骤信息失败")
+        );
+
+
         return Result.success(
                 new AbstractNodeJobVo.NodeJobIdVo(
                         request.getClusterId(),
@@ -565,6 +590,8 @@ public class MasterNodeInitService {
      */
     private Result<AbstractNodeInitVo.NodeInitVo> initList(Long clusterId,
                                                            List<NodeStateEnum> nodeStateEnumList) {
+
+        // 读取初始化节点列表信息
         List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList = tDlNodeInitService.lambdaQuery()
                 .select()
                 .eq(TDlNodeInit::getClusterId, clusterId)
@@ -585,9 +612,21 @@ public class MasterNodeInitService {
                 )
                 .collect(Collectors.toList());
 
+        // 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
+        ExecStateEnum execStateEnum = ExecStateEnum.NOT_EXIST;
+        if (this.masterInitProcedureService.isExistInitProcedure(clusterId).getData()) {
+            Long nodeJobId = this.masterInitProcedureService.getInitProcedure(clusterId)
+                    .getData()
+                    .getNodeJobId();
+            if(nodeJobId != null){
+                execStateEnum = this.masterNodeJobService.getNodeJobState(nodeJobId).getData();
+            }
+        }
+
         return Result.success(
                 new AbstractNodeInitVo.NodeInitVo(
                         clusterId,
+                        execStateEnum,
                         nodeInitDetailList
                 )
         );
@@ -633,11 +672,6 @@ public class MasterNodeInitService {
             rollbackFor = DatabaseException.class
     )
     public Result<String> addNode(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
-        // 验证步骤合理性
-        this.masterInitProcedureService.checkOperationIllegal(
-                request.getClusterId(),
-                ProcedureStateEnum.PROCEDURE_ADD_DONE
-        );
 
         List<TDlNode> tDlNodeList = this.tDlNodeInitService.lambdaQuery()
                 .select()
@@ -723,6 +757,20 @@ public class MasterNodeInitService {
                                 .collect(Collectors.toList())
                 ),
                 () -> new DatabaseException("删除节点初始化信息失败")
+        );
+
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
+                new PersistProcedureRequest(
+                        request.getClusterId(),
+                        ProcedureStateEnum.PROCEDURE_ADD_NODE_DONE,
+                        null
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存步骤信息失败")
         );
 
         return Result.success();
