@@ -17,12 +17,9 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
-import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
-import cn.boundivore.dl.base.request.impl.master.PersistProcedureRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractProcedureRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractInitProcedureVo;
-import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
-import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,7 +58,7 @@ public interface IMasterInitProcedureAPI {
     Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(
             @RequestBody
             @Valid
-            PersistProcedureRequest request
+            AbstractProcedureRequest.PersistProcedureRequest request
     ) throws Exception;
 
     @GetMapping(value = "/init/procedure/get")

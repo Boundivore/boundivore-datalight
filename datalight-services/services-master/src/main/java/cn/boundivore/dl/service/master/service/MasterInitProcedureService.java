@@ -19,7 +19,7 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
-import cn.boundivore.dl.base.request.impl.master.PersistProcedureRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractProcedureRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractInitProcedureVo;
 import cn.boundivore.dl.base.result.Result;
@@ -31,11 +31,20 @@ import cn.boundivore.dl.orm.po.single.TDlInitProcedure;
 import cn.boundivore.dl.orm.service.single.impl.TDlClusterServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlInitProcedureServiceImpl;
 import cn.boundivore.dl.service.master.converter.IInitProcedureConverter;
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Description: 集群节点初始化、服务安装等步骤记录接口服务类，需要考虑多人、多端同时操作的容错性和程序健壮
@@ -58,6 +67,8 @@ public class MasterInitProcedureService {
 
     private final IInitProcedureConverter iInitProcedureConverter;
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
 
     /**
      * Description: 记录初始化步骤
@@ -76,7 +87,7 @@ public class MasterInitProcedureService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(PersistProcedureRequest request) {
+    public Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(AbstractProcedureRequest.PersistProcedureRequest request) {
 
         // 检查进度保存合法性
         TDlInitProcedure tDlInitProcedure = this.checkProcedureIllegal(request);
@@ -86,10 +97,19 @@ public class MasterInitProcedureService {
                 () -> new DatabaseException("保存或更新状态失败")
         );
 
-        return Result.success(
-                iInitProcedureConverter.convert2InitProcedureVo(tDlInitProcedure)
+        AbstractInitProcedureVo.InitProcedureVo initProcedureVo = iInitProcedureConverter.convert2InitProcedureVo(
+                tDlInitProcedure
         );
+        initProcedureVo.setNodeInfoList(
+                this.base642NodeInfoList(
+                        tDlInitProcedure.getNodeInfoListBase64()
+                )
+        );
+
+
+        return Result.success(initProcedureVo);
     }
+
 
     /**
      * Description: 检查即将记录的状态的合法性
@@ -108,7 +128,7 @@ public class MasterInitProcedureService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public TDlInitProcedure checkProcedureIllegal(PersistProcedureRequest request) {
+    public TDlInitProcedure checkProcedureIllegal(AbstractProcedureRequest.PersistProcedureRequest request) {
 
         // 检查集群合法性
         Long clusterId = request.getClusterId();
@@ -146,8 +166,73 @@ public class MasterInitProcedureService {
         tDlInitProcedure.setProcedureName(request.getProcedureStateEnum().getMessage());
         tDlInitProcedure.setProcedureState(request.getProcedureStateEnum());
         tDlInitProcedure.setNodeJobId(request.getNodeJobId());
+        tDlInitProcedure.setNodeInfoListBase64(this.nodeInfoList2Base64(request.getNodeInfoList()));
 
         return tDlInitProcedure;
+    }
+
+    /**
+     * Description: 将节点信息转换为 Base64 存储在 MySQL
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeInfoList 节点信息列表
+     * @return base64 字符串
+     */
+    public String nodeInfoList2Base64(List<AbstractProcedureRequest.NodeInfoListRequest> nodeInfoList) {
+        if (CollUtil.isNotEmpty(nodeInfoList)) {
+            try {
+                // 将节点信息列表转换为JSON字符串
+                String json = objectMapper.writeValueAsString(nodeInfoList);
+                // 使用 Base64 编码 JSON 字符串
+                return Base64.encode(json);
+            } catch (JsonProcessingException e) {
+                log.error(ExceptionUtil.stacktraceToString(e));
+                Assert.isTrue(
+                        true,
+                        () -> new BException("节点信息列表序列化失败")
+                );
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Description: 将 MySQL 中的节点信息转换为 List<AbstractProcedureRequest.NodeInfoListRequest>
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param base64 节点信息列表 Base64
+     * @return base64 字符串
+     */
+    public List<AbstractInitProcedureVo.NodeInfoListVo> base642NodeInfoList(String base64) {
+        if (StrUtil.isNotBlank(base64)) {
+            try {
+                return objectMapper.readerFor(new TypeReference<List<AbstractInitProcedureVo.NodeInfoListVo>>() {
+                        })
+                        .readValue(Base64.decode(base64));
+            } catch (Exception e) {
+                log.error(ExceptionUtil.stacktraceToString(e));
+                Assert.isTrue(
+                        true,
+                        () -> new BException("节点信息列表反序列化失败")
+                );
+            }
+        }
+
+        return CollUtil.newArrayList();
     }
 
     /**
@@ -175,8 +260,17 @@ public class MasterInitProcedureService {
                 () -> new DatabaseException("无对应记录")
         );
 
+        AbstractInitProcedureVo.InitProcedureVo initProcedureVo = iInitProcedureConverter.convert2InitProcedureVo(
+                tDlInitProcedure
+        );
+        initProcedureVo.setNodeInfoList(
+                this.base642NodeInfoList(
+                        tDlInitProcedure.getNodeInfoListBase64()
+                )
+        );
+
         return Result.success(
-                this.iInitProcedureConverter.convert2InitProcedureVo(tDlInitProcedure)
+                initProcedureVo
         );
     }
 

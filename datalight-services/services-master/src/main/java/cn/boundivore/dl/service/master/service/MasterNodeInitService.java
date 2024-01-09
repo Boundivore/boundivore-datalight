@@ -147,9 +147,10 @@ public class MasterNodeInitService {
 
         // 记录步骤信息
         boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new PersistProcedureRequest(
+                new AbstractProcedureRequest.PersistProcedureRequest(
                         request.getClusterId(),
                         ProcedureStateEnum.PROCEDURE_PARSE_HOSTNAME,
+                        null,
                         null
                 )
         ).isSuccess();
@@ -205,10 +206,18 @@ public class MasterNodeInitService {
 
         // 记录步骤信息
         boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new PersistProcedureRequest(
+                new AbstractProcedureRequest.PersistProcedureRequest(
                         request.getClusterId(),
                         ProcedureStateEnum.PROCEDURE_DETECT,
-                        nodeJobId
+                        nodeJobId,
+                        request.getNodeInfoList()
+                                .stream()
+                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
+                                                i.getNodeId(),
+                                                i.getHostname()
+                                        )
+                                )
+                                .collect(Collectors.toList())
                 )
         ).isSuccess();
 
@@ -297,10 +306,18 @@ public class MasterNodeInitService {
 
         // 记录步骤信息
         boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new PersistProcedureRequest(
+                new AbstractProcedureRequest.PersistProcedureRequest(
                         request.getClusterId(),
                         ProcedureStateEnum.PROCEDURE_CHECK,
-                        nodeJobId
+                        nodeJobId,
+                        request.getNodeInfoList()
+                                .stream()
+                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
+                                                i.getNodeId(),
+                                                i.getHostname()
+                                        )
+                                )
+                                .collect(Collectors.toList())
                 )
         ).isSuccess();
 
@@ -406,10 +423,18 @@ public class MasterNodeInitService {
 
         // 记录步骤信息
         boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new PersistProcedureRequest(
+                new AbstractProcedureRequest.PersistProcedureRequest(
                         request.getClusterId(),
                         ProcedureStateEnum.PROCEDURE_DISPATCH,
-                        nodeJobId
+                        nodeJobId,
+                        request.getNodeInfoList()
+                                .stream()
+                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
+                                                i.getNodeId(),
+                                                i.getHostname()
+                                        )
+                                )
+                                .collect(Collectors.toList())
                 )
         ).isSuccess();
 
@@ -511,7 +536,16 @@ public class MasterNodeInitService {
         return this.initList(
                 clusterId,
                 CollUtil.newArrayList(
-                        NodeStateEnum.RESOLVED
+//                        NodeStateEnum.RESOLVED,
+//                        NodeStateEnum.DETECTING,
+//                        NodeStateEnum.INACTIVE,
+//                        NodeStateEnum.ACTIVE,
+//                        NodeStateEnum.CHECKING,
+//                        NodeStateEnum.CHECK_ERROR,
+//                        NodeStateEnum.CHECK_OK,
+//                        NodeStateEnum.PUSHING,
+//                        NodeStateEnum.PUSH_ERROR,
+//                        NodeStateEnum.PUSH_OK
                 )
         );
     }
@@ -607,6 +641,11 @@ public class MasterNodeInitService {
      */
     private Result<AbstractNodeInitVo.NodeInitVo> initList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
         Long clusterId = request.getClusterId();
+
+        Assert.notEmpty(
+                request.getNodeInfoList(),
+                () -> new BException("节点信息列表不能为空")
+        );
 
         return this.getNodeInitVoResult(clusterId, tDlNodeInitService.lambdaQuery()
                 .select()
@@ -832,10 +871,18 @@ public class MasterNodeInitService {
 
         // 记录步骤信息
         boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new PersistProcedureRequest(
+                new AbstractProcedureRequest.PersistProcedureRequest(
                         request.getClusterId(),
                         ProcedureStateEnum.PROCEDURE_ADD_NODE_DONE,
-                        null
+                        null,
+                        request.getNodeInfoList()
+                                .stream()
+                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
+                                                i.getNodeId(),
+                                                i.getHostname()
+                                        )
+                                )
+                                .collect(Collectors.toList())
                 )
         ).isSuccess();
 

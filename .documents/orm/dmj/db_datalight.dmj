@@ -1571,7 +1571,7 @@
           "Caption": "初始化步骤缓存信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 14,
-          "GraphDesc": "Left=788.24\r\nTop=166.87",
+          "GraphDesc": "Left=768.24\r\nTop=165.37",
           "MetaFields": {
             "Count": 9,
             "items": [
@@ -1627,18 +1627,9 @@
                 "DataLength": 20
               },
               {
-                "ID": 9,
-                "Name": "tag",
-                "OrderNo": 6,
-                "DisplayName": "本次进度唯一编码",
-                "DataType": 1,
-                "Not_Nullable": true,
-                "DataLength": 255
-              },
-              {
                 "ID": 6,
                 "Name": "procedure_name",
-                "OrderNo": 7,
+                "OrderNo": 6,
                 "DisplayName": "进度名称",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -1648,7 +1639,7 @@
                 "ID": 7,
                 "Name": "procedure_state",
                 "Memo": "枚举，具体见代码",
-                "OrderNo": 8,
+                "OrderNo": 7,
                 "DisplayName": "进度状态",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -1657,10 +1648,18 @@
               {
                 "ID": 9,
                 "Name": "node_job_id",
-                "OrderNo": 9,
+                "OrderNo": 8,
                 "DisplayName": "节点 Job Id",
                 "DataType": 2,
                 "DataLength": 20
+              },
+              {
+                "ID": 9,
+                "Name": "node_info_list_base64",
+                "OrderNo": 9,
+                "DisplayName": "节点信息列表",
+                "DataType": 1,
+                "DataLength": 255
               }
             ]
           }

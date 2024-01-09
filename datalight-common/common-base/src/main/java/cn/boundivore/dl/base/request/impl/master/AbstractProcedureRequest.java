@@ -14,11 +14,10 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.base.response.impl.master;
-
+package cn.boundivore.dl.base.request.impl.master;
 
 import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
-import cn.boundivore.dl.base.response.IVo;
+import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -29,46 +28,46 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public abstract class AbstractInitProcedureVo {
+/**
+ * Description: 步骤信息相关请求体
+ * Created by: Boundivore
+ * E-mail: boundivore@foxmail.com
+ * Creation time: 2024/1/9
+ * Modification description:
+ * Modified by:
+ * Modification time:
+ * Version: V1.0
+ */
+public abstract class AbstractProcedureRequest {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "InitProcedureVo",
-            description = "InitProcedureVo: 初始化步骤信息"
+            name = "PersistProcedureRequest",
+            description = "PersistProcedureRequest: 持久化初始化进度状态请求体"
     )
-    public static class InitProcedureVo implements IVo {
-
-        @Schema(name = "ProcedureId", title = "步骤 ID", required = true)
-        @JsonProperty(value = "ProcedureId", required = true)
-        @NotNull
-        private Long procedureId;
+    public static class PersistProcedureRequest implements IRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
-        @Schema(name = "ProcedureName", title = "初始化步骤名称", required = true)
-        @JsonProperty(value = "ProcedureName", required = true)
+        @Schema(name = "ProcedureStateEnum", title = "当前已成功完成的状态", required = true)
+        @JsonProperty(value = "ProcedureStateEnum", required = true)
         @NotNull
-        private String procedureName;
-
-        @Schema(name = "ProcedureState", title = "初始化步骤状态", required = true)
-        @JsonProperty(value = "ProcedureState", required = true)
-        @NotNull
-        private ProcedureStateEnum procedureState;
+        private ProcedureStateEnum procedureStateEnum;
 
         @Schema(name = "NodeJobId", title = "NodeJob Id", required = true)
         @JsonProperty(value = "NodeJobId", required = true)
-        @NotNull
         private Long nodeJobId;
 
         @Schema(name = "NodeInfoList", title = "节点信息列表", required = true)
         @JsonProperty(value = "NodeInfoList", required = true)
         @NotNull
-        private List<NodeInfoListVo> nodeInfoList;
+        private List<NodeInfoListRequest> nodeInfoList;
+
 
     }
 
@@ -77,10 +76,10 @@ public abstract class AbstractInitProcedureVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "NodeInfoListVo",
-            description = "NodeInfoListVo: 节点信息列表响应体"
+            name = "NodeInfoListRequest",
+            description = "NodeInfoListRequest: 操作的节点信息列表请求体"
     )
-    public static class NodeInfoListVo implements IVo {
+    public static class NodeInfoListRequest implements IRequest {
         @Schema(name = "NodeId", title = "节点 Id", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull

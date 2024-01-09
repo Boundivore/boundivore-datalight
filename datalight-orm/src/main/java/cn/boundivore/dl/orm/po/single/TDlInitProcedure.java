@@ -45,5 +45,9 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
     @TableField("node_job_id")
     private Long nodeJobId;
 
+    @Schema(name = "当前操作的节点信息列表")
+    @TableField("node_info_list_base64")
+    private String nodeInfoListBase64;
+
 
 }
