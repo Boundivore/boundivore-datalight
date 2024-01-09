@@ -37,6 +37,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -607,8 +608,7 @@ public class MasterNodeInitService {
     private Result<AbstractNodeInitVo.NodeInitVo> initList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
         Long clusterId = request.getClusterId();
 
-        // 读取初始化节点列表信息
-        List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList = tDlNodeInitService.lambdaQuery()
+        return this.getNodeInitVoResult(clusterId, tDlNodeInitService.lambdaQuery()
                 .select()
                 .eq(TDlNodeInit::getClusterId, clusterId)
                 .in(TBasePo::getId, request.getNodeInfoList()
@@ -616,22 +616,7 @@ public class MasterNodeInitService {
                         .map(NodeInfoRequest::getNodeId).collect(Collectors.toList())
                 )
                 .orderByAsc(TDlNodeInit::getHostname)
-                .list()
-                .stream()
-                .map(i -> new AbstractNodeInitVo.NodeInitDetailVo()
-                        .setNodeId(i.getId())
-                        .setHostname(i.getHostname())
-                        .setNodeIp(i.getIpv4())
-                        .setSshPort(i.getSshPort())
-                        .setCpuArch(i.getCpuArch())
-                        .setCpuCores(i.getCpuCores())
-                        .setRam(i.getRam())
-                        .setDiskTotal(i.getDisk())
-                        .setNodeState(i.getNodeInitState())
-                )
-                .collect(Collectors.toList());
-
-        return this.getNodeInitVoResult(clusterId, nodeInitDetailList);
+                .list());
     }
 
 
@@ -651,13 +636,39 @@ public class MasterNodeInitService {
      */
     public Result<AbstractNodeInitVo.NodeInitVo> initList(Long clusterId,
                                                           List<NodeStateEnum> nodeStateEnumList) {
+
         // 读取初始化节点列表信息
-        List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList = tDlNodeInitService.lambdaQuery()
+        LambdaQueryChainWrapper<TDlNodeInit> wrapper = this.tDlNodeInitService.lambdaQuery()
                 .select()
-                .eq(TDlNodeInit::getClusterId, clusterId)
-                .in(TDlNodeInit::getNodeInitState, nodeStateEnumList)
                 .orderByAsc(TDlNodeInit::getHostname)
-                .list()
+                .eq(TDlNodeInit::getClusterId, clusterId);
+
+        if (CollUtil.isEmpty(nodeStateEnumList)) {
+            return this.getNodeInitVoResult(clusterId, wrapper.list());
+        } else {
+            return this.getNodeInitVoResult(clusterId, wrapper.in(TDlNodeInit::getNodeInitState, nodeStateEnumList).list());
+        }
+    }
+
+    /**
+     * Description: 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId       集群 ID
+     * @param tDlNodeInitList 数据库中的节点信息列表
+     * @return Result<AbstractNodeInitVo.NodeInitVo> 节点信息列表
+     */
+    @NotNull
+    private Result<AbstractNodeInitVo.NodeInitVo> getNodeInitVoResult(Long clusterId,
+                                                                      List<TDlNodeInit> tDlNodeInitList) {
+
+        List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList = tDlNodeInitList
                 .stream()
                 .map(i -> new AbstractNodeInitVo.NodeInitDetailVo()
                         .setNodeId(i.getId())
@@ -671,27 +682,6 @@ public class MasterNodeInitService {
                         .setNodeState(i.getNodeInitState())
                 )
                 .collect(Collectors.toList());
-
-        return this.getNodeInitVoResult(clusterId, nodeInitDetailList);
-    }
-
-    /**
-     * Description: 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/1/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param clusterId          集群 ID
-     * @param nodeInitDetailList 节点信息
-     * @return Result<AbstractNodeInitVo.NodeInitVo> 节点信息列表
-     */
-    @NotNull
-    private Result<AbstractNodeInitVo.NodeInitVo> getNodeInitVoResult(Long clusterId,
-                                                                      List<AbstractNodeInitVo.NodeInitDetailVo> nodeInitDetailList) {
 
         // 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
         ExecStateEnum execStateEnum = ExecStateEnum.NOT_EXIST;
