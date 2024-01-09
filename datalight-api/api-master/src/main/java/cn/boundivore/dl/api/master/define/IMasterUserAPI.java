@@ -84,7 +84,7 @@ public interface IMasterUserAPI {
     ) throws Exception;
 
     @PostMapping(value = "/user/changePassword")
-    @ApiOperation(notes = "用户注册", value = "用户注册")
+    @ApiOperation(notes = "修改密码", value = "修改密码")
     Result<String> changePassword(
             @RequestBody
             @Valid
@@ -93,7 +93,7 @@ public interface IMasterUserAPI {
 
 
     @GetMapping(value = "/user/isNeed2ChangeSuperPassword")
-    @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
+    @ApiOperation(notes = "判断当前是否需要修改超级用户密码", value = "判断当前是否需要修改超级用户密码")
     Result<Boolean> isNeed2ChangeSuperPassword() throws Exception;
 
 }
