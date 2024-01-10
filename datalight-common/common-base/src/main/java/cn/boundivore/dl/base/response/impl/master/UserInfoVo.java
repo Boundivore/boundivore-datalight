@@ -74,4 +74,8 @@ public class UserInfoVo implements IVo {
     @JsonProperty(value = "TokenTimeout", required = true)
     private Long tokenTimeout;
 
+    @Schema(name = "IsNeedChangePassword", title = "是否建议修改密码)", required = true)
+    @JsonProperty(value = "IsNeedChangePassword", required = true)
+    private Boolean isNeedChangePassword;
+
 }

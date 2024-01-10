@@ -98,7 +98,7 @@ public class MasterUserService {
         //保存用户基础信息
         TDlUser tUser = this.iUserConverter.convert2TUsers(userBaseRequest);
         // 如果是初始化超级用户，则用户 ID  设置为 1
-        if(isInit){
+        if (isInit) {
             tUser.setId(1L);
         }
         Assert.isTrue(
@@ -224,12 +224,24 @@ public class MasterUserService {
         userInfoVo.setLastLogin(tDlLoginEvent.getLastLogin());
         userInfoVo.setToken(StpUtil.getTokenValue());
         userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
+        // 如果当前登录的用户不是超级用户，则不需要建议修改密码
+        userInfoVo.setIsNeedChangePassword(false);
 
         // 更新登录时间
         Assert.isTrue(
                 tDlLoginEvent.setLastLogin(System.currentTimeMillis()).updateById(),
                 () -> new DatabaseException("更新登录时间失败")
         );
+
+
+        if (tDlUserAuth.getPrincipal().equals(this.dataLightEnv.getSuperUser())) {
+            // 如果是超级用户，则验证当前密码是否为初始密码
+            boolean isNeed2ChangeSuperPassword = this.passwordEncoder.matches(
+                    DigestUtil.md5Hex(dataLightEnv.getSuperUserDefaultPassword()),
+                    tDlUserAuth.getCredential()
+            );
+            userInfoVo.setIsNeedChangePassword(isNeed2ChangeSuperPassword);
+        }
 
         return Result.success(userInfoVo);
     }
@@ -377,44 +389,6 @@ public class MasterUserService {
         StpUtil.logout(tDlUserAuth.getUserId());
 
         return Result.success();
-    }
-
-    /**
-     * Description: 判断超级用户是否变更过初始密码
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/1/8
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return Result<Boolean> true or false
-     */
-    public Result<Boolean> isNeed2ChangeSuperPassword(Long userId) {
-        // 根据当前登录的用户 ID 查询用户信息
-        TDlUserAuth tDlUserAuth = this.tDlUserAuthService.lambdaQuery()
-                .select()
-                .eq(TDlUserAuth::getUserId, userId)
-                .one();
-
-        Assert.notNull(
-                tDlUserAuth,
-                () -> new BException("用户不存在")
-        );
-
-        // 如果当前登录的用户不是超级用户，则不需要修改密码
-        if(!tDlUserAuth.getPrincipal().equals(this.dataLightEnv.getSuperUser())) {
-            return Result.success(false);
-        }
-
-        // 如果是超级用户，则验证当前密码是否为初始密码
-        boolean isNeed2ChangeSuperPassword = this.passwordEncoder.matches(
-                DigestUtil.md5Hex(dataLightEnv.getSuperUserDefaultPassword()),
-                tDlUserAuth.getCredential()
-        );
-
-        return Result.success(isNeed2ChangeSuperPassword);
     }
 
     /**

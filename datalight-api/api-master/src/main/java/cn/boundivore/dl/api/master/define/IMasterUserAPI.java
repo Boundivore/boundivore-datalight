@@ -91,13 +91,4 @@ public interface IMasterUserAPI {
             AbstractUserRequest.UserChangePasswordRequest request
     ) throws Exception;
 
-
-    @GetMapping(value = "/user/isNeed2ChangeSuperPassword")
-    @ApiOperation(notes = "判断当前是否需要修改超级用户密码", value = "判断当前是否需要修改超级用户密码")
-    Result<Boolean> isNeed2ChangeSuperPassword(
-            @ApiParam(name = "UserId", value = "用户 ID")
-            @RequestParam(value = "UserId", required = true)
-            Long userId
-    ) throws Exception;
-
 }
