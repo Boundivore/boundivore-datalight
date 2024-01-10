@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-//@SaCheckLogin
+@SaCheckLogin
 public class MasterNodeInitController implements IMasterNodeInitAPI {
 
     private final MasterNodeInitService masterNodeInitService;

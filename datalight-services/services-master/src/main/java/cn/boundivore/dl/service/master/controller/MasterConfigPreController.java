@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-//@SaCheckLogin
+@SaCheckLogin
 public class MasterConfigPreController implements IMasterConfigPreAPI {
 
     private final MasterConfigPreService masterConfigPreService;

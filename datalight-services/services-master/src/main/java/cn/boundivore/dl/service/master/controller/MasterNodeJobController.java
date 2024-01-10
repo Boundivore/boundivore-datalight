@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-//@SaCheckLogin
+@SaCheckLogin
 public class MasterNodeJobController implements IMasterNodeJobAPI {
 
     private final MasterNodeJobService masterNodeJobService;
