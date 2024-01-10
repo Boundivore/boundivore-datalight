@@ -48,6 +48,7 @@ import java.util.stream.Collectors;
 
 /**
  * Description: 为当前服务组装一个 Job
+ * Stage 包含了该服务下的所有组件，Task 包含 "某一个组件在某一个节点" 上的一系列执行(一系列 Step)
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/30
@@ -97,7 +98,10 @@ public class Job extends Thread {
      * @return Job
      */
     public Job init() throws InterruptedException {
+        // 初始化 JobMeta，并组装 Stage、Task
         this.initJobMeta();
+
+        // 根据初始化的元数据信息，初始化计划信息，并组装、填充待执行异步线程
         this.plan(this.jobMeta);
 
         this.jobService.updateJobDatabase(this.jobMeta);
@@ -325,7 +329,7 @@ public class Job extends Thread {
                             stepMetaList.forEach(s -> taskMeta.getStepMetaMap().put(s.getId(), s));
 
                             // 更新计划执行进度
-                            this.plan.planProcess();
+                            this.plan.planProgress();
 
                             return taskMeta;
                         }
@@ -424,7 +428,7 @@ public class Job extends Thread {
                                                 iStage.offerTask(iTask);
 
                                                 //更新计划执行进度
-                                                this.plan.planProcess();
+                                                this.plan.planProgress();
                                             }
                                     );
                             this.plan.offerStage(iStage);

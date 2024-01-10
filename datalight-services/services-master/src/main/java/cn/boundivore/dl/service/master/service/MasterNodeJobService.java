@@ -258,8 +258,8 @@ public class MasterNodeJobService {
      * Modification description:
      * Modified by:
      * Modification time:
-     * Throws: 
-     * 
+     * Throws:
+     *
      * @param nodeActionTypeEnum 当前节点的即将采取的行为（枚举）
      * @return 节点的边界状态，即：当前操作应该满足大于等于边界状态（过滤小于边界状态的节点，并抛出异常）
      */
@@ -736,9 +736,9 @@ public class MasterNodeJobService {
             switch (nodeStepMeta.getExecStateEnum()) {
                 case SUSPEND:
                 case RUNNING:
+                case ERROR:
                     break;
                 case OK:
-                case ERROR:
                     execCurrent++;
                     break;
             }

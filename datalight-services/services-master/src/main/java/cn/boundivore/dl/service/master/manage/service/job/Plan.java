@@ -50,7 +50,10 @@ public class Plan {
     @Getter
     private int planCurrent = 0;
     @Getter
-    private int planProcess = 0;
+    private int planProgress = 0;
+
+    @Getter
+    private String planName;
 
     /**
      * 执行进度
@@ -60,9 +63,10 @@ public class Plan {
     @Getter
     private final AtomicInteger execTotal = new AtomicInteger(0);
     //当前计划已经执行的 Task 任务数
+    @Getter
     private final AtomicInteger execCurrent = new AtomicInteger(0);
     @Getter
-    private final AtomicInteger execProcess = new AtomicInteger(0);
+    private final AtomicInteger execProgress = new AtomicInteger(0);
 
     @Getter
     private final LinkedBlockingQueue<IStage> stages = new LinkedBlockingQueue<>();
@@ -167,14 +171,14 @@ public class Plan {
      * Modification time:
      * Throws:
      */
-    public int planProcess() {
+    public int planProgress() {
         this.planCurrent++;
 
-        this.planProcess = (int) (this.planCurrent * 1.0F / this.planTotal * 100);
+        this.planProgress = (int) (this.planCurrent * 1.0F / this.planTotal * 100);
 
-        log.info("计划总数: {}, 当前: {}, 进度: {}%", planTotal, planCurrent, planProcess);
+        log.info("计划总数: {}, 当前: {}, 进度: {}%", planTotal, planCurrent, planProgress);
 
-        return this.planProcess;
+        return this.planProgress;
     }
 
     /**
@@ -187,14 +191,15 @@ public class Plan {
      * Modification time:
      * Throws:
      */
-    public AtomicInteger execProcess() {
+    public AtomicInteger execProcess(String planName) {
         lock.lock();
         try {
-            this.execProcess.set(
+            this.planName = planName;
+            this.execProgress.set(
                     this.execCurrent.incrementAndGet() * 100 / this.execTotal.get()
             );
 
-            log.info("执行 Step 总数: {}, 当前: {}, 进度: {}%", execTotal.get(), execCurrent.get(), execProcess.get());
+            log.info("执行 Step 总数: {}, 当前: {}, 进度: {}%", execTotal.get(), execCurrent.get(), execProgress.get());
 
             return this.execCurrent;
         } finally {

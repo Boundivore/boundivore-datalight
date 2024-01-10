@@ -209,16 +209,6 @@ public abstract class AbstractJobVo {
         @NotNull
         private String nodeIp;
 
-        @Schema(name = "TaskId", title = "Task ID", required = true)
-        @JsonProperty(value = "TaskId", required = true)
-        @NotNull
-        private Long taskId;
-
-        @Schema(name = "TaskName", title = "Task 名称", required = true)
-        @JsonProperty(value = "TaskName", required = true)
-        @NotNull
-        private String taskName;
-
         @Schema(name = "ExecTotal", title = "当前节点执行总数", required = true)
         @JsonProperty(value = "ExecTotal", required = true)
         @NotNull

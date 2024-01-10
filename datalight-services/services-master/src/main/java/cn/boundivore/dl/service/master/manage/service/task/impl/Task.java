@@ -103,7 +103,7 @@ public class Task extends AbstractTask {
                 JobCache.getInstance()
                         .get(jobId)
                         .getPlan()
-                        .execProcess();
+                        .execProcess(stepMeta.getName());
 
                 ExecStateEnum execStateEnum = stepMeta.getStepResult().isSuccess() ?
                         ExecStateEnum.OK :
