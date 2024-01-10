@@ -167,13 +167,13 @@ public abstract class AbstractNodeJobVo {
         @NotNull
         private Integer execTotal;
 
-        @Schema(name = "execCurrent", title = "当前执行进度", required = true)
-        @JsonProperty(value = "execCurrent", required = true)
+        @Schema(name = "ExecCurrent", title = "当前执行进度", required = true)
+        @JsonProperty(value = "ExecCurrent", required = true)
         @NotNull
         private Integer execCurrent;
 
-        @Schema(name = "execProgress", title = "当前执行进度百分比", required = true)
-        @JsonProperty(value = "execProgress", required = true)
+        @Schema(name = "ExecProgress", title = "当前执行进度百分比", required = true)
+        @JsonProperty(value = "ExecProgress", required = true)
         @NotNull
         private Integer execProgress;
 

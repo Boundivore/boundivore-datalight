@@ -21,15 +21,19 @@ import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
+import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
 import cn.boundivore.dl.orm.po.single.TDlService;
 import cn.boundivore.dl.service.master.manage.service.bean.ClusterMeta;
+import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
 import cn.boundivore.dl.service.master.manage.service.job.Intention;
 import cn.boundivore.dl.service.master.manage.service.job.Job;
 import cn.boundivore.dl.service.master.manage.service.job.JobCache;
+import cn.boundivore.dl.service.master.manage.service.job.Plan;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
@@ -244,13 +248,117 @@ public class MasterJobService {
      * Throws:
      *
      * @param jobId 服务、组件相关的作业 ID
-     * @return null
+     * @return Result<AbstractJobVo.JobProgressVo> 进度信息
      */
-    public String getJobProgress(Long jobId) {
+    public Result<AbstractJobVo.JobProgressVo> getJobProgress(Long jobId) {
         Job job = JobCache.getInstance().get(jobId);
 
-        Assert.notNull(job, () -> new BException("NodeJobId 错误或缓存信息已失效"));
+        Assert.notNull(
+                job,
+                () -> new BException("JobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
+        );
 
+        // 获取 Job 的元数据信息
+        JobMeta jobMeta = job.getJobMeta();
+        // 获取 Job 的计划信息
+        Plan plan = job.getPlan();
+
+        // 获取集群 ID
+        Long clusterId = jobMeta.getClusterMeta().getCurrentClusterId();
+
+        // 创建结果对象
+        AbstractJobVo.JobProgressVo jobProgressVo = new AbstractJobVo.JobProgressVo()
+                .setJobId(jobId)
+                .setClusterId(clusterId);
+
+        // 组装计划进度信息
+        AbstractJobVo.JobPlanProgressVo jobPlanProgressVo = this.createJobPlanProgressVo(
+                clusterId,
+                jobId,
+                jobMeta,
+                plan
+        );
+        jobProgressVo.setJobPlanProgressVo(jobPlanProgressVo);
+
+        // 组装执行进度信息
+        AbstractJobVo.JobExecProgressVo jobExecProgressVo = this.createJobExecProgressVo(
+                jobId,
+                clusterId,
+                plan
+        );
+        jobProgressVo.setJobExecProgressVo(jobExecProgressVo);
+
+        // 组装每个节点的执行进度信息
+        List<AbstractJobVo.ExecProgressPerNodeVo> execProgressPerNodeList = this.createExecProgressPerNodeList(jobMeta);
+        jobExecProgressVo.setExecProgressPerNodeList(execProgressPerNodeList);
+
+        return Result.success(jobProgressVo);
+    }
+
+    /**
+     * Description: 创建 Job 计划制定进度 Vo
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @param jobId     Job ID
+     * @param jobMeta   Job 元数据信息
+     * @param plan      计划信息
+     * @return AbstractJobVo.JobPlanProgressVo 计划制定进度
+     */
+    private AbstractJobVo.JobPlanProgressVo createJobPlanProgressVo(Long clusterId,
+                                                                    Long jobId,
+                                                                    JobMeta jobMeta,
+                                                                    Plan plan) {
+
+        AbstractJobVo.JobPlanProgressVo jobPlanProgressVo = new AbstractJobVo.JobPlanProgressVo();
+
+        return jobPlanProgressVo;
+    }
+
+    /**
+     * Description: 创建当前 Job 执行进度 Vo
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobId     Job ID
+     * @param clusterId 集群 ID
+     * @param plan      计划信息
+     * @return AbstractJobVo.JobExecProgressVo Job 执行进度
+     */
+    private AbstractJobVo.JobExecProgressVo createJobExecProgressVo(Long jobId,
+                                                                    Long clusterId,
+                                                                    Plan plan) {
+        AbstractJobVo.JobExecProgressVo jobExecProgressVo = new AbstractJobVo.JobExecProgressVo();
+
+        return jobExecProgressVo;
+    }
+
+
+    /**
+     * Description: 创建每个节点执行进度 Vo
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobMeta Job 元数据信息
+     * @return List<AbstractJobVo.ExecProgressPerNodeVo> 每个节点进度信息
+     */
+    private List<AbstractJobVo.ExecProgressPerNodeVo> createExecProgressPerNodeList(JobMeta jobMeta) {
         return null;
     }
 

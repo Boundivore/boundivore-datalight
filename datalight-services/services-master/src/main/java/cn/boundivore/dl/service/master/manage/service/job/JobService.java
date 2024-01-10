@@ -844,16 +844,16 @@ public class JobService {
      * Throws: DatabaseException
      *
      * @param jobMeta   Job 元数据信息
-     * @param logStdout 标准输出
-     * @param logErrout 标准错误输出
+     * @param logStdOut 标准输出
+     * @param logErrOut 标准错误输出
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
     public void saveLog(JobMeta jobMeta,
-                        String logStdout,
-                        String logErrout) {
+                        String logStdOut,
+                        String logErrOut) {
         TDlJobLog tDlJobLog = new TDlJobLog();
 
         tDlJobLog.setTag(jobMeta.getTag());
@@ -864,8 +864,8 @@ public class JobService {
         tDlJobLog.setTaskId(null);
         tDlJobLog.setStepId(null);
 
-        tDlJobLog.setLogStdout(logStdout);
-        tDlJobLog.setLogErrout(logErrout);
+        tDlJobLog.setLogStdout(logStdOut);
+        tDlJobLog.setLogErrout(logErrOut);
 
         Assert.isTrue(
                 this.tDlJobLogService.save(tDlJobLog),
