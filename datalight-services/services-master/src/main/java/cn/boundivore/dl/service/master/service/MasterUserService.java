@@ -97,6 +97,10 @@ public class MasterUserService {
 
         //保存用户基础信息
         TDlUser tUser = this.iUserConverter.convert2TUsers(userBaseRequest);
+        // 如果是初始化超级用户，则用户 ID  设置为 1
+        if(isInit){
+            tUser.setId(1L);
+        }
         Assert.isTrue(
                 this.tDlUserService.save(tUser),
                 () -> new DatabaseException("用户基础数据保存失败")
