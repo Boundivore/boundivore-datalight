@@ -29,6 +29,7 @@ import cn.boundivore.dl.orm.po.single.TDlService;
 import cn.boundivore.dl.service.master.manage.service.bean.ClusterMeta;
 import cn.boundivore.dl.service.master.manage.service.job.Intention;
 import cn.boundivore.dl.service.master.manage.service.job.Job;
+import cn.boundivore.dl.service.master.manage.service.job.JobCache;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
@@ -231,5 +232,26 @@ public class MasterJobService {
         );
     }
 
+
+    /**
+     * Description: 获取指定 Job 的进度信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobId 服务、组件相关的作业 ID
+     * @return null
+     */
+    public String getJobProgress(Long jobId) {
+        Job job = JobCache.getInstance().get(jobId);
+
+        Assert.notNull(job, () -> new BException("NodeJobId 错误或缓存信息已失效"));
+
+        return null;
+    }
 
 }

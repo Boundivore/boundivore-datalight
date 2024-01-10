@@ -486,7 +486,10 @@ public class MasterNodeJobService {
         // 从缓存中获取 NodeJob 对象
         NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
 
-        Assert.notNull(nodeJob, () -> new BException("NodeJobId 错误或缓存信息已失效"));
+        Assert.notNull(
+                nodeJob,
+                () -> new BException("NodeJobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
+        );
 
         // 获取节点 NodeJob 的元数据信息
         NodeJobMeta nodeJobMeta = nodeJob.getNodeJobMeta();
@@ -762,7 +765,11 @@ public class MasterNodeJobService {
      */
     public Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(Long nodeJobId) {
         NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
-        Assert.notNull(nodeJob, () -> new BException("NodeJobId 错误或缓存信息已失效"));
+
+        Assert.notNull(
+                nodeJob,
+                () -> new BException("NodeJobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
+        );
 
         // 创建 AllNodeJobTransferProgressVo 对象
         AbstractNodeJobVo.AllNodeJobTransferProgressVo allNodeJobTransferProgressVo = new AbstractNodeJobVo.AllNodeJobTransferProgressVo();
