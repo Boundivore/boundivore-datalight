@@ -332,8 +332,8 @@ public class MasterUserService {
 
         // 判断是否为修改自己的密码，如果不是，则判断是否为管理员代修改普通用户密码，如果也不是，则抛出异常
         Assert.isTrue(
-                !loginPrincipal.equals(dataLightEnv.getSuperUser()) &&
-                        !loginPrincipal.equals(changePasswordPrincipal),
+                loginPrincipal.equals(dataLightEnv.getSuperUser()) ||
+                        loginPrincipal.equals(changePasswordPrincipal),
                 () -> new BException("普通用户只可修改自身密码")
         );
 
