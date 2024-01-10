@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-//@SaCheckLogin
+@SaCheckLogin
 public class MasterUserController implements IMasterUserAPI {
 
     protected final MasterUserService masterUserService;
@@ -55,7 +55,6 @@ public class MasterUserController implements IMasterUserAPI {
         return this.masterUserService.login(request);
     }
 
-    @SaIgnore
     @Override
     public Result<String> logout(Long userId) throws Exception {
         return this.masterUserService.logout(userId);
@@ -73,7 +72,7 @@ public class MasterUserController implements IMasterUserAPI {
     }
 
     @Override
-    public Result<Boolean> isNeed2ChangeSuperPassword() throws Exception {
-        return this.masterUserService.isNeed2ChangeSuperPassword();
+    public Result<Boolean> isNeed2ChangeSuperPassword(Long userId) throws Exception {
+        return this.masterUserService.isNeed2ChangeSuperPassword(userId);
     }
 }

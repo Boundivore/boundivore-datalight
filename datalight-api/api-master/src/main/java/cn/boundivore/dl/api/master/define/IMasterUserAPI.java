@@ -70,7 +70,7 @@ public interface IMasterUserAPI {
     @GetMapping(value = "/user/logout")
     @ApiOperation(notes = "用户登出", value = "用户登出")
     Result<String> logout(
-            @ApiParam(name = "UserId", value = "UserId")
+            @ApiParam(name = "UserId", value = "用户 ID")
             @RequestParam(value = "UserId", required = true)
             Long userId
     ) throws Exception;
@@ -78,7 +78,7 @@ public interface IMasterUserAPI {
     @GetMapping(value = "/user/isLogin")
     @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
     Result<Boolean> isLogin(
-            @ApiParam(name = "UserId", value = "UserId")
+            @ApiParam(name = "UserId", value = "用户 ID")
             @RequestParam(value = "UserId", required = true)
             Long userId
     ) throws Exception;
@@ -94,6 +94,10 @@ public interface IMasterUserAPI {
 
     @GetMapping(value = "/user/isNeed2ChangeSuperPassword")
     @ApiOperation(notes = "判断当前是否需要修改超级用户密码", value = "判断当前是否需要修改超级用户密码")
-    Result<Boolean> isNeed2ChangeSuperPassword() throws Exception;
+    Result<Boolean> isNeed2ChangeSuperPassword(
+            @ApiParam(name = "UserId", value = "用户 ID")
+            @RequestParam(value = "UserId", required = true)
+            Long userId
+    ) throws Exception;
 
 }

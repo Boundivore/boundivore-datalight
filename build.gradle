@@ -199,6 +199,7 @@ subprojects {
             dependency group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: retrofit2Version
             dependency group: 'com.squareup.retrofit2', name: 'converter-jackson', version: retrofit2Version
 
+            dependency group: 'cn.dev33', name: 'sa-token-core', version: saTokenVersion
             dependency group: 'cn.dev33', name: 'sa-token-jwt', version: saTokenVersion
             dependency group: 'cn.dev33', name: 'sa-token-spring-boot-starter', version: saTokenVersion
             dependency group: 'cn.dev33', name: 'sa-token-reactor-spring-boot-starter', version: saTokenVersion

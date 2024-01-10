@@ -8,6 +8,8 @@ dependencies {
         implementation 'org.apache.logging.log4j:log4j-api'
     }
 
+    implementation group: 'cn.dev33', name: 'sa-token-core'
+
     implementation group: 'cn.hutool', name: 'hutool-all'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'

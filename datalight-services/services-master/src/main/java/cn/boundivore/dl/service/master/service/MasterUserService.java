@@ -387,12 +387,24 @@ public class MasterUserService {
      *
      * @return Result<Boolean> true or false
      */
-    public Result<Boolean> isNeed2ChangeSuperPassword() {
+    public Result<Boolean> isNeed2ChangeSuperPassword(Long userId) {
+        // 根据当前登录的用户 ID 查询用户信息
         TDlUserAuth tDlUserAuth = this.tDlUserAuthService.lambdaQuery()
                 .select()
-                .eq(TDlUserAuth::getPrincipal, dataLightEnv.getSuperUser())
+                .eq(TDlUserAuth::getUserId, userId)
                 .one();
 
+        Assert.notNull(
+                tDlUserAuth,
+                () -> new BException("用户不存在")
+        );
+
+        // 如果当前登录的用户不是超级用户，则不需要修改密码
+        if(!tDlUserAuth.getPrincipal().equals(this.dataLightEnv.getSuperUser())) {
+            return Result.success(false);
+        }
+
+        // 如果是超级用户，则验证当前密码是否为初始密码
         boolean isNeed2ChangeSuperPassword = this.passwordEncoder.matches(
                 DigestUtil.md5Hex(dataLightEnv.getSuperUserDefaultPassword()),
                 tDlUserAuth.getCredential()

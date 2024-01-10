@@ -60,6 +60,15 @@ public class ResultPrefix {
      * 状态码前缀：远程调用异常
      */
     public static final String REMOTE_INVOKE_PREFIX = "G";
+    /**
+     * 状态码前缀：认证异常
+     */
+    public static final String AUTHENTICATION_PREFIX = "H";
+
+    /**
+     * 状态码前缀：鉴权异常
+     */
+    public static final String AUTHORIZATION_PREFIX = "I";
 
 
 }

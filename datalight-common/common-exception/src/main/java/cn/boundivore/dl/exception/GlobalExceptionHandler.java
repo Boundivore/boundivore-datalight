@@ -19,6 +19,7 @@ package cn.boundivore.dl.exception;
 import cn.boundivore.dl.base.result.ErrorMessage;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.result.ResultEnum;
+import cn.dev33.satoken.exception.NotLoginException;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -238,6 +239,47 @@ public class GlobalExceptionHandler {
         log.error(error);
         return Result.fail(
                 ResultEnum.FAIL_FILE_DOWNLOAD_EXCEPTION,
+                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+        );
+    }
+
+    @ExceptionHandler(NotLoginException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public Result<?> notLoginException(NotLoginException e) {
+        val error = ExceptionUtil.stacktraceToString(e);
+        log.error(error);
+
+        ResultEnum resultEnum = null;
+        switch (e.getType()) {
+            case NotLoginException.NOT_TOKEN:
+                resultEnum = ResultEnum.FAIL_NOT_TOKEN_EXCEPTION;
+                break;
+            case NotLoginException.INVALID_TOKEN:
+                resultEnum = ResultEnum.FAIL_INVALID_TOKEN_EXCEPTION;
+                break;
+            case NotLoginException.TOKEN_TIMEOUT:
+                resultEnum = ResultEnum.FAIL_TOKEN_TIMEOUT_EXCEPTION;
+                break;
+            case NotLoginException.BE_REPLACED:
+                resultEnum = ResultEnum.FAIL_BE_REPLACED_EXCEPTION;
+                break;
+            case NotLoginException.KICK_OUT:
+                resultEnum = ResultEnum.FAIL_KICK_OUT_EXCEPTION;
+                break;
+            case NotLoginException.TOKEN_FREEZE:
+                resultEnum = ResultEnum.FAIL_TOKEN_FREEZE_EXCEPTION;
+                break;
+            case NotLoginException.NO_PREFIX:
+                resultEnum = ResultEnum.FAIL_NO_PREFIX_EXCEPTION;
+                break;
+            default:
+                resultEnum = ResultEnum.FAIL_UNKNOWN_TOKEN_EXCEPTION;
+                break;
+        }
+
+        return Result.fail(
+                resultEnum,
                 new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
         );
     }
