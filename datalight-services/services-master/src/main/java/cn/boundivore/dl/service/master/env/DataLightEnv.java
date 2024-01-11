@@ -114,6 +114,7 @@ public class DataLightEnv {
             MASTER_IP = ReactiveAddressUtil.getInternalIPAddress();
             MASTER_REAL_IP = ReactiveAddressUtil.getInternalIPAddress();
             MASTER_HOSTNAME = ReactiveAddressUtil.getLocalHostName();
+            log.info("MASTER_IP: {}, MASTER_REAL_IP: {}, MASTER_HOSTNAME: {}", MASTER_IP, MASTER_REAL_IP, MASTER_HOSTNAME);
 
             PRIVATE_KEY_PATH = SpringContextUtil.PRIVATE_KEY_PATH;
 
