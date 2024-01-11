@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaCheckLogin
 public class MasterManageController implements IMasterManageAPI {
 
     private final MasterManageService masterManageService;
