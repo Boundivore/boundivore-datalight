@@ -579,10 +579,10 @@ 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
                 {
                     "PropertyList": [
                         {
-                            "Default": "/data/datalight/HDFS",
+                            "Default": "/data/datalight/data/HDFS",
                             "Describe": "DataNode 中数据的存储目录",
                             "Placeholder": "{{dfs.datanode.data.dir}}",
-                            "Value": "/data/datalight/HDFS"
+                            "Value": "/data/datalight/data/HDFS"
                         }
                     ],
                     "TemplatedFilePath": "/opt/datalight/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml"
