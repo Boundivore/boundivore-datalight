@@ -472,8 +472,10 @@ public class Job extends Thread {
 
         ExecStateEnum execStateEnum;
         try {
-            // 重载 Prometheus 并初始化 Grafana
-            this.reloadAndInitMonitor();
+            // 如果之前任务全部成功，则重载 Prometheus 并初始化 Grafana
+            if(this.jobMeta.getJobResult().isSuccess()){
+                this.reloadAndInitMonitor();
+            }
 
             // 记录 Job 结束时间(自动计算耗时)
             this.jobMeta.setEndTime(System.currentTimeMillis());

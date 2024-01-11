@@ -362,11 +362,11 @@ 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
         },
         {
             "ServiceName": "KUBESPHERE",
-            "SCStateEnum": "SELECTED"
+            "SCStateEnum": "UNSELECTED"
         },
         {
             "ServiceName": "HIVE",
-            "SCStateEnum": "SELECTED"
+            "SCStateEnum": "UNSELECTED"
         }
     ]
 }
@@ -568,7 +568,7 @@ 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
                             "Value": "/data/datalight/data/ZOOKEEPER/zkData"
                         }
                     ],
-                    "TemplatedFilePath": "D:/datalight/plugins/ZOOKEEPER/templated/conf/zoo.cfg"
+                    "TemplatedFilePath": "/opt/datalight/plugins/ZOOKEEPER/templated/conf/zoo.cfg"
                 }
             ],
             "ServiceName": "ZOOKEEPER"
@@ -584,7 +584,7 @@ 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
                             "Value": "/data/datalight/HDFS"
                         }
                     ],
-                    "TemplatedFilePath": "D:/datalight/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml"
+                    "TemplatedFilePath": "/opt/datalight/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml"
                 }
             ],
             "ServiceName": "HDFS"
