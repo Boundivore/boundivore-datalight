@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
 
-    <property name="logback.log.dir" value="/var/log/boundivore"/>
+    <property name="logback.log.dir" value="/data/datalight/logs/app"/>
     <property name="logback.app.name" value="datalight-master"/>
 
     <contextName>${logback.app.name}</contextName>

@@ -129,6 +129,7 @@ rpm -e --nodeps mariadb-libs-5.5.68-1.el7.x86_64
 java -jar /opt/datalight/app/service-worker-1.0.0.jar
 
 
+sh /opt/datalight/bin/datalight.sh stop master; \
 sh /opt/datalight/bin/datalight.sh stop worker; \
 /srv/datalight/KUBESPHERE/bin/kk delete cluster -f /srv/datalight/KUBESPHERE/conf/datalight-config-auth-harbor.yaml; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Grafana stop; \
