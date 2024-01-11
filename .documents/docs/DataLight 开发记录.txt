@@ -359,6 +359,14 @@ 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
         {
             "ServiceName": "YARN",
             "SCStateEnum": "SELECTED"
+        },
+        {
+            "ServiceName": "KUBESPHERE",
+            "SCStateEnum": "SELECTED"
+        },
+        {
+            "ServiceName": "HIVE",
+            "SCStateEnum": "SELECTED"
         }
     ]
 }
@@ -556,7 +564,7 @@ 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
                         {
                             "Default": "/data/datalight/data/ZOOKEEPER/zkData",
                             "Describe": "该目录为 Zookeeper 的数据目录以及 myid 文件所在目录",
-                            "Placeholder": "{{data-dir}}",
+                            "Placeholder": "{{DATA_DIR}}",
                             "Value": "/data/datalight/data/ZOOKEEPER/zkData"
                         }
                     ],

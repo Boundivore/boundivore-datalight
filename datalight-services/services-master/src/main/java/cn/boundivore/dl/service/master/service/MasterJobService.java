@@ -28,7 +28,6 @@ import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
 import cn.boundivore.dl.orm.po.single.TDlService;
-import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
 import cn.boundivore.dl.service.master.manage.service.bean.*;
 import cn.boundivore.dl.service.master.manage.service.job.Intention;
 import cn.boundivore.dl.service.master.manage.service.job.Job;
@@ -360,7 +359,7 @@ public class MasterJobService {
         int execProgress = plan.getExecProgress().get();
 
         return new AbstractJobVo.JobExecProgressVo()
-                .setJobExecStateEnum(NodeJobCache.getInstance().get(jobId).getNodeJobMeta().getExecStateEnum())
+                .setJobExecStateEnum(JobCache.getInstance().get(jobId).getJobMeta().getExecStateEnum())
                 .setJobId(jobId)
                 .setClusterId(clusterId)
                 .setExecTotal(execTotal)
