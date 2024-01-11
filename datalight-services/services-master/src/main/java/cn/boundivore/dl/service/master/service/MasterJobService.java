@@ -29,10 +29,7 @@ import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
 import cn.boundivore.dl.orm.po.single.TDlService;
 import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
-import cn.boundivore.dl.service.master.manage.service.bean.ClusterMeta;
-import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
-import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
-import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
+import cn.boundivore.dl.service.master.manage.service.bean.*;
 import cn.boundivore.dl.service.master.manage.service.job.Intention;
 import cn.boundivore.dl.service.master.manage.service.job.Job;
 import cn.boundivore.dl.service.master.manage.service.job.JobCache;
@@ -41,12 +38,14 @@ import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 /**
@@ -387,30 +386,66 @@ public class MasterJobService {
     private List<AbstractJobVo.ExecProgressPerNodeVo> createExecProgressPerNodeList(JobMeta jobMeta) {
         List<AbstractJobVo.ExecProgressPerNodeVo> execProgressPerNodeList = new ArrayList<>();
 
-        // 整理所有节点的 Task 信息
-        List<TaskMeta> taskMetaList = jobMeta.getStageMetaMap()
-                .values()
-                .stream()
-                .flatMap(i -> i.getTaskMetaMap().values().stream())
-                .collect(Collectors.toList());
+        final TreeMap<String, List<StepMeta>> hostnameToOrderedStepMetaMap = this.getHostnameStepMetaTreeMap(jobMeta);
 
-        // 按照节点进行分组
-        // TODO 2024-1-10 未完成，2024-1-11 需完成该功能：将 Stage 中的 Task 按照节点展开后，需要考虑每个节点中 Step 执行的逻辑顺序，要按照该顺序排序显示
-        List<List<TaskMeta>> taskMetaListGroupByNodeId = CollUtil.groupByField(taskMetaList, "nodeId");
-
-        taskMetaListGroupByNodeId.forEach(
-                taskMetaListInOneNode -> {
-                    AbstractJobVo.ExecProgressPerNodeVo execProgressPerNodeVo = this.createExecProgressPerNodeVo(taskMetaListInOneNode);
+        // 将每个节点所有 Step 组装到对应集合 Vo 中
+        hostnameToOrderedStepMetaMap.forEach(
+                (hostname, stepMetaList) -> {
+                    TaskMeta taskMeta = stepMetaList.get(0).getTaskMeta();
+                    AbstractJobVo.ExecProgressPerNodeVo execProgressPerNodeVo = this.createExecProgressPerNodeVo(
+                            taskMeta.getNodeId(),
+                            taskMeta.getHostname(),
+                            taskMeta.getNodeIp(),
+                            stepMetaList
+                    );
                     execProgressPerNodeList.add(execProgressPerNodeVo);
 
                     this.assembleExecProgressStepList(
                             execProgressPerNodeVo,
-                            taskMetaList
+                            stepMetaList
                     );
                 }
         );
 
         return execProgressPerNodeList;
+    }
+
+    /**
+     * Description: 根据 JobMeta 获取每个节点上所有 StepMeta 集合
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobMeta 作业的元数据信息
+     * @return TreeMap<String, List < StepMeta>> 以节点纬度，按顺序存储该节点上所有 StepMeta 信息
+     */
+    @NotNull
+    private TreeMap<String, List<StepMeta>> getHostnameStepMetaTreeMap(JobMeta jobMeta) {
+        final LinkedHashMap<Long, StageMeta> stageMetaMap = jobMeta.getStageMetaMap();
+
+        // 以节点纬度，按顺序存储该节点上所有 StepMeta 信息 <Hostname, List<StepMeta>>
+        final TreeMap<String, List<StepMeta>> nodeIdToOrderedStepMetaMap = new TreeMap<>();
+
+        // 按照执行顺序，整理每个节点的 StepMeta，最后多个 StepMetaList 返回时按照节点 hostname 字母自然排序
+        stageMetaMap.forEach(
+                (stageId, stageMeta) ->
+                        stageMeta.getTaskMetaMap().forEach(
+                                (taskId, taskMeta) -> {
+                                    // 注意这里不需要显式地放回 stepMetaList，因为 computeIfAbsent 已经做了这个工作
+                                    List<StepMeta> stepMetaList = nodeIdToOrderedStepMetaMap.computeIfAbsent(
+                                            taskMeta.getHostname(),
+                                            k -> new ArrayList<>()
+                                    );
+
+                                    stepMetaList.addAll(new ArrayList<>(taskMeta.getStepMetaMap().values()));
+                                }
+                        )
+        );
+        return nodeIdToOrderedStepMetaMap;
     }
 
     /**
@@ -423,19 +458,20 @@ public class MasterJobService {
      * Modification time:
      * Throws:
      *
-     * @param taskMetaList 当前作业下，当前节点所有任务的元数据信息
+     * @param stepMetaList 某一节点下所有 Task 下所有 Step 元数据信息
      * @return 每个节点的执行进度信息对象
      */
-    private AbstractJobVo.ExecProgressPerNodeVo createExecProgressPerNodeVo(List<TaskMeta> taskMetaList) {
-        int[] progressArr = this.calculatePerNodeProgress(taskMetaList);
-
-        // 同一节点下所有 TaskMeta 中的 Node 相关信息一致，因此只需取出第一个
-        TaskMeta firstTaskMeta = CollUtil.getFirst(taskMetaList);
+    private AbstractJobVo.ExecProgressPerNodeVo createExecProgressPerNodeVo(
+            long nodeId,
+            String hostname,
+            String nodeIp,
+            List<StepMeta> stepMetaList) {
+        int[] progressArr = this.calculatePerNodeProgress(stepMetaList);
 
         return new AbstractJobVo.ExecProgressPerNodeVo(
-                firstTaskMeta.getNodeId(),
-                firstTaskMeta.getHostname(),
-                firstTaskMeta.getNodeIp(),
+                nodeId,
+                hostname,
+                nodeIp,
                 progressArr[0],
                 progressArr[1],
                 progressArr[2],
@@ -453,21 +489,16 @@ public class MasterJobService {
      * Modification time:
      * Throws:
      *
-     * @param taskMetaList 某一节点下所有任务元数据信息
+     * @param stepMetaList 某一节点下所有 Task 下所有 Step 元数据信息
      * @return 每个节点上任务的进度数组
      */
-    private int[] calculatePerNodeProgress(List<TaskMeta> taskMetaList) {
+    private int[] calculatePerNodeProgress(List<StepMeta> stepMetaList) {
 
-        Collection<StepMeta> stepMetaCollection = taskMetaList
-                .stream()
-                .flatMap(i -> i.getStepMetaMap().values().stream())
-                .collect(Collectors.toList());
-
-        int execTotal = stepMetaCollection.size();
+        int execTotal = stepMetaList.size();
         int execCurrent = 0;
         int execProgress = 0;
 
-        for (StepMeta stepMeta : stepMetaCollection) {
+        for (StepMeta stepMeta : stepMetaList) {
             switch (stepMeta.getExecStateEnum()) {
                 case SUSPEND:
                 case RUNNING:
@@ -496,23 +527,21 @@ public class MasterJobService {
      * Throws:
      *
      * @param execProgressPerNodeVo 任务的执行进度信息对象
-     * @param taskMetaList          当前节点下所有任务的元数据信息
+     * @param stepMetaList          某一节点下所有 Task 下所有 Step 元数据信息
      */
     private void assembleExecProgressStepList(AbstractJobVo.ExecProgressPerNodeVo execProgressPerNodeVo,
-                                              List<TaskMeta> taskMetaList) {
+                                              List<StepMeta> stepMetaList) {
 
-        taskMetaList.forEach(
-                taskMeta -> taskMeta.getStepMetaMap().values().forEach(
-                        stepMeta -> {
-                            AbstractJobVo.ExecProgressStepVo execProgressStepVo = new AbstractJobVo.ExecProgressStepVo(
-                                    stepMeta.getType(),
-                                    stepMeta.getId(),
-                                    stepMeta.getName(),
-                                    stepMeta.getExecStateEnum()
-                            );
-                            execProgressPerNodeVo.getExecProgressStepList().add(execProgressStepVo);
-                        }
-                )
+        stepMetaList.forEach(
+                stepMeta -> {
+                    AbstractJobVo.ExecProgressStepVo execProgressStepVo = new AbstractJobVo.ExecProgressStepVo(
+                            stepMeta.getType(),
+                            stepMeta.getId(),
+                            stepMeta.getName(),
+                            stepMeta.getExecStateEnum()
+                    );
+                    execProgressPerNodeVo.getExecProgressStepList().add(execProgressStepVo);
+                }
         );
     }
 
