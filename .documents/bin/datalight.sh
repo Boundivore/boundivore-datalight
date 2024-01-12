@@ -46,9 +46,6 @@ start_service() {
     echo "No masterIp provided or masterIp is empty. Skipping IP validation."
   fi
 
-  # Now you can use master_ip_arg in your script where needed
-  echo "Argument for master IP: $master_ip_arg"
-
   # 根据api_type选择不同的配置文件
   local config_file="${app_conf_dir}/application-${api_type}.yml"
 
