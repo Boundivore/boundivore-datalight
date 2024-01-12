@@ -131,8 +131,8 @@ public class RemoteInvokeWorkerService {
     public IWorkerManageAPI iWorkerManageAPI(String ip) {
         return feignBuilder
                 .options(RequestOptionsGenerator.getRequestOptions(
-                                10 * 1000L,
-                                10 * 1000L
+                                2 * 1000L,
+                                2 * 1000L
                         )
                 )
                 .target(
