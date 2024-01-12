@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.worker;
 
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.service.worker.service.WorkerManageService;
+import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -45,12 +46,13 @@ public class DataLightWorkerApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        this.workerManageService.updateMasterMeta(
-                new MasterMetaRequest(
-                        DataLightWorkerApplication.MASTER_IP_FROM_SHELL
-                )
-        );
-
+        if (StrUtil.isNotBlank(DataLightWorkerApplication.MASTER_IP_FROM_SHELL)) {
+            this.workerManageService.updateMasterMeta(
+                    new MasterMetaRequest(
+                            DataLightWorkerApplication.MASTER_IP_FROM_SHELL
+                    )
+            );
+        }
     }
 
 }
