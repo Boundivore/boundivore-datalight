@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.worker;
 
 
 import io.prometheus.client.CollectorRegistry;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -41,10 +42,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@EnableDiscoveryClient
 //@EnableFeignClients(basePackages = {"cn.boundivore.dl"})
 @SpringBootApplication(scanBasePackages = {"cn.boundivore.dl"}, exclude = {DataSourceAutoConfiguration.class})
+@Slf4j
 public class DataLightWorkerApplication extends SpringBootServletInitializer {
+    public static String MASTER_IP_FROM_SHELL = "";
     public static void main(String[] args) {
         System.setProperty("spring.devtools.restart.enabled", "false");
+        String masterIp = System.getProperty("masterIp");
+        if(masterIp != null && !masterIp.isEmpty()) {
+            MASTER_IP_FROM_SHELL = masterIp;
+            log.info("当前 MasterIp: {}", MASTER_IP_FROM_SHELL);
+        }
+
         SpringApplication.run(DataLightWorkerApplication.class, args);
+
     }
 
     @Bean

@@ -18,6 +18,7 @@ fi
 operation="$1"
 component="$2"
 port="$3"
+master_ip="$4"
 
 # 获取当前脚本所在目录
 bin_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
@@ -33,10 +34,25 @@ start_service() {
   local api_type="$2"
   local port="$3"
 
+  # 如果 masterIp 参数不为空，则将参数传递到 main 方法中
+  if [[ -n "$master_ip" ]]; then
+    if validate_ip "$master_ip"; then
+      master_ip_arg="-DmasterIp=${master_ip}"
+    else
+      echo "masterIp is invalid"
+      exit 1
+    fi
+  else
+    echo "No masterIp provided or masterIp is empty. Skipping IP validation."
+  fi
+
+  # Now you can use master_ip_arg in your script where needed
+  echo "Argument for master IP: $master_ip_arg"
+
   # 根据api_type选择不同的配置文件
   local config_file="${app_conf_dir}/application-${api_type}.yml"
 
-  local command="nohup java -Dlogging.config=${app_conf_dir}/logback-${api_type}.xml -jar ${app_dir}/${jar_name} --spring.config.location=${config_file} > /dev/null 2>&1 & echo ${api_type} starting in \$!..."
+  local command="nohup java -Dlogging.config=${app_conf_dir}/logback-${api_type}.xml ${master_ip_arg} -jar ${app_dir}/${jar_name} --spring.config.location=${config_file} > /dev/null 2>&1 & echo ${api_type} starting in \$!..."
   # shellcheck disable=SC2155
   local pid=$(pgrep -f "${jar_name}")
 
@@ -113,6 +129,28 @@ execute_operation() {
     exit 1
     ;;
   esac
+}
+
+# 验证 IP 是否符合正则规则
+validate_ip() {
+  local ip=$1
+  local valid_ip_regex="^(([0-9]{1,3}\.){3}[0-9]{1,3})$"
+
+  if [[ $ip =~ $valid_ip_regex ]]; then
+    # The IP address is valid, now check each octet
+    IFS='.' read -r -a octets <<< "$ip"
+    for octet in "${octets[@]}"; do
+      if ((octet < 0 || octet > 255)); then
+        echo "Invalid IP address: $ip - octet $octet is out of range (0-255)"
+        return 1
+      fi
+    done
+  else
+    echo "Invalid IP address: $ip - does not match IPv4 format (x.x.x.x where x is 0-255)"
+    return 1
+  fi
+
+  return 0 # IP is valid
 }
 
 execute_operation "$component"

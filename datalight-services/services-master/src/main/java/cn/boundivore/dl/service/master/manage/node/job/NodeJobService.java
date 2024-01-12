@@ -457,7 +457,7 @@ public class NodeJobService {
     }
 
     /**
-     * Description: 推送安装包到指定节点
+     * Description: 扫描探测指定节点
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/3

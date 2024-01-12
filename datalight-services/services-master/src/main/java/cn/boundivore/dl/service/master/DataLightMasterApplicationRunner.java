@@ -16,8 +16,6 @@
  */
 package cn.boundivore.dl.service.master;
 
-import cn.boundivore.dl.cloud.utils.SpringContextUtil;
-import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.resolver.*;
 import cn.boundivore.dl.service.master.service.MasterManageService;
@@ -43,7 +41,7 @@ import org.springframework.stereotype.Component;
 @Order(1)
 @RequiredArgsConstructor
 @Slf4j
-public class DataLightApplicationRunner implements ApplicationRunner {
+public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
     private final MasterManageService masterManageService;
 

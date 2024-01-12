@@ -47,8 +47,8 @@ public enum NodeStateEnum implements IBaseEnum {
     PUSH_OK("9", "节点推送成功"),
 
     STARTING_WORKER("10", "正在启动 Worker"),
-    START_WORKER_OK("11", "启动 Worker 失败"),
-    START_WORKER_ERROR("12", "启动 Worker 成功"),
+    START_WORKER_ERROR("11", "启动 Worker 失败"),
+    START_WORKER_OK("12", "启动 Worker 成功"),
 
 
     MAINTENANCE("13", "维护中"),
