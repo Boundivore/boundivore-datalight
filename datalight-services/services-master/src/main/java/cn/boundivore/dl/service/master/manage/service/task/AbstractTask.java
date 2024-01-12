@@ -23,6 +23,7 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.exception.BashException;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.IConfig;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
@@ -162,6 +163,11 @@ public abstract class AbstractTask implements ITask {
                                 true
                         )
                 );
+
+        Assert.isTrue(
+                result.isSuccess(),
+                () -> new BashException(result.getMessage())
+        );
 
         return result.getMessage();
     }

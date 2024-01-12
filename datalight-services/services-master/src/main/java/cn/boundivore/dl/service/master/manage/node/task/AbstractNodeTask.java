@@ -243,7 +243,7 @@ public abstract class AbstractNodeTask implements INodeTask {
                 i -> intactCmd.append(i).append(" ")
         );
 
-        return nodeJobService.exec(
+        return this.nodeJobService.exec(
                 this.nodeTaskMeta.getHostname(),
                 this.nodeTaskMeta.getSshPort(),
                 this.nodeTaskMeta.getPrivateKeyPath(),
