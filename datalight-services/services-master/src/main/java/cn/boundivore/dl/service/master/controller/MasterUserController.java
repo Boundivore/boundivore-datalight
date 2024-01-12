@@ -56,14 +56,14 @@ public class MasterUserController implements IMasterUserAPI {
     }
 
     @Override
-    public Result<String> logout(Long userId) throws Exception {
-        return this.masterUserService.logout(userId);
+    public Result<String> logout() throws Exception {
+        return this.masterUserService.logout();
     }
 
     @SaIgnore
     @Override
-    public Result<Boolean> isLogin(Long userId) throws Exception {
-        return this.masterUserService.isLogin(userId);
+    public Result<Boolean> isLogin() throws Exception {
+        return this.masterUserService.isLogin();
     }
 
     @Override

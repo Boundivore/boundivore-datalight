@@ -153,6 +153,12 @@ public class MasterNodeJobService {
                 return NodeStateEnum.CHECKING;
             case DISPATCH:
                 return NodeStateEnum.PUSHING;
+            case START_WORKER:
+                return NodeStateEnum.STARTING_WORKER;
+            case SHUTDOWN:
+                return NodeStateEnum.STOPPED;
+            case RESTART:
+                return NodeStateEnum.RESTARTING;
             default:
                 return null;
         }
@@ -277,6 +283,9 @@ public class MasterNodeJobService {
             case DISPATCH:
                 boundaryNodeStateEnum = NodeStateEnum.CHECK_OK;
                 break;
+            case START_WORKER:
+                boundaryNodeStateEnum = NodeStateEnum.PUSH_OK;
+                break;
         }
 
         //如果传递的主机名中不满足对应状态，则抛出异常
@@ -344,6 +353,7 @@ public class MasterNodeJobService {
             case DETECT:
             case CHECK:
             case DISPATCH:
+            case START_WORKER:
                 // 获取节点初始化列表并进行排序
                 nodeIntentionList.addAll(
                         this.tDlNodeInitService.lambdaQuery()

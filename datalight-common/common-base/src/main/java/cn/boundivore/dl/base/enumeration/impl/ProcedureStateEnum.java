@@ -33,12 +33,13 @@ public enum ProcedureStateEnum implements IBaseEnum {
     PROCEDURE_DETECT("2", "异步探测节点连通性"),
     PROCEDURE_CHECK("3", "异步检查节点初始化环境"),
     PROCEDURE_DISPATCH("4", "异步推送安装包"),
-    PROCEDURE_ADD_NODE_DONE("5", "节点服役"),
-    PROCEDURE_SELECT_SERVICE("6", "选择服务"),
-    PROCEDURE_SELECT_COMPONENT("7", "选择组件"),
-    PROCEDURE_PRE_CONFIG("8", "预配置"),
-    PROCEDURE_DEPLOYING("9", "部署中"),
-    PROCEDURE_DEPLOYED("10", "部署完成");
+    PROCEDURE_START_WORKER("5", "异步启动 Worker 进程"),
+    PROCEDURE_ADD_NODE_DONE("6", "节点服役"),
+    PROCEDURE_SELECT_SERVICE("7", "选择服务"),
+    PROCEDURE_SELECT_COMPONENT("8", "选择组件"),
+    PROCEDURE_PRE_CONFIG("9", "预配置"),
+    PROCEDURE_DEPLOYING("10", "部署中"),
+    PROCEDURE_DEPLOYED("11", "部署完成");
 
 
     private final String code;

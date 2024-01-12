@@ -452,6 +452,70 @@ public class MasterNodeInitService {
         );
     }
 
+    /**
+     * Description: 启动指定节点的 Worker 进程
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 节点操作请求
+     * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
+     */
+    public Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(NodeJobRequest request) throws Exception {
+
+        Assert.isTrue(
+                request.getNodeActionTypeEnum() == NodeActionTypeEnum.START_WORKER,
+                () -> new BException(
+                        String.format(
+                                "调用接口与节点操作意图不匹配: %s, 期望意图: %s",
+                                request.getNodeActionTypeEnum(),
+                                NodeActionTypeEnum.START_WORKER
+                        )
+                )
+        );
+
+        // 检查节点个数是否合理
+        this.checkNodeCountInCluster(
+                request.getClusterId(),
+                (long) request.getNodeInfoList().size()
+        );
+
+        Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
+
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
+                new AbstractProcedureRequest.PersistProcedureRequest(
+                        request.getClusterId(),
+                        ProcedureStateEnum.PROCEDURE_START_WORKER,
+                        nodeJobId,
+                        request.getNodeInfoList()
+                                .stream()
+                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
+                                                i.getNodeId(),
+                                                i.getHostname()
+                                        )
+                                )
+                                .collect(Collectors.toList())
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存步骤信息失败")
+        );
+
+        return Result.success(
+                new AbstractNodeJobVo.NodeJobIdVo(
+                        request.getClusterId(),
+                        nodeJobId
+                )
+        );
+    }
+
 
     /**
      * Description: 切换初始化过程中的节点的状态
@@ -627,6 +691,24 @@ public class MasterNodeInitService {
 
 
     /**
+     * Description: 用于获取节点初始化任务 START_WORKER 之后的节点初始化列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/5
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 集群节点信息
+     * @return 包含节点初始化信息的 Result对象
+     */
+    public Result<AbstractNodeInitVo.NodeInitVo> initStartWorkerList(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+        return this.initList(request);
+    }
+
+
+    /**
      * Description: 获取节点初始化列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -690,7 +772,7 @@ public class MasterNodeInitService {
     }
 
     /**
-     * Description: 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 ExecStateEnum.OK
+     * Description: 如果有异步任务，则读取异步任务执行结果，如果该过程不包含异步任务，则直接返回 "ExecStateEnum.OK"
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/1/9
@@ -797,7 +879,7 @@ public class MasterNodeInitService {
                 .stream()
                 .map(i -> {
                     Assert.isTrue(
-                            i.getNodeInitState() == NodeStateEnum.PUSH_OK,
+                            i.getNodeInitState() == NodeStateEnum.START_WORKER_OK,
                             () -> new BException(
                                     String.format(
                                             "节点 %s 初始化状态为 %s 方可服役到集群, 当前状态: %s",

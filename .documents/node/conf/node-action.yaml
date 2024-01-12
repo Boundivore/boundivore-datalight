@@ -72,3 +72,18 @@ datalight:
       steps:
         - type: PUSH
           name: '推送安装包'
+
+    # 拉起节点上的 Worker 进程
+    - type: START_WORKER
+      start-state: STARTING_WORKER
+      success-state: START_WORKER_OK
+      fail-state: START_WORKER_ERROR
+      steps:
+        - type: SCRIPT
+          name: '启动节点 Worker'
+          shell: 'action-master-worker.sh'
+          args: [ 'restart', 'worker', '8002' ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0

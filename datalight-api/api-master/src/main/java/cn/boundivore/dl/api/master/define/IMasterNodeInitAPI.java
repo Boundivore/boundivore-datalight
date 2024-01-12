@@ -56,7 +56,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterNodeInitAPI {
 
     @PostMapping(value = "/node/init/hostname/parse")
-    @ApiOperation(notes = "解析节点主机名", value = "解析节点主机名")
+    @ApiOperation(notes = "Parse 解析节点主机名", value = "Parse 解析节点主机名")
     Result<ParseHostnameVo> parseHostname(
             @RequestBody
             @Valid
@@ -64,7 +64,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/detect")
-    @ApiOperation(notes = "节点异步探测连通性", value = "节点异步探测连通性")
+    @ApiOperation(notes = "Detect 节点异步探测连通性", value = "Detect 节点异步探测连通性")
     Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(
             @RequestBody
             @Valid
@@ -72,7 +72,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/check")
-    @ApiOperation(notes = "节点初始化检查", value = "节点初始化检查")
+    @ApiOperation(notes = "Check 节点初始化检查", value = "Check 节点初始化检查")
     Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(
             @RequestBody
             @Valid
@@ -80,15 +80,23 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/dispatch")
-    @ApiOperation(notes = "分发节点安装包", value = "分发节点安装包")
+    @ApiOperation(notes = "Dispatch 分发节点安装包", value = "Dispatch 分发节点安装包")
     Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(
             @RequestBody
             @Valid
             NodeJobRequest request
     ) throws Exception;
 
+    @PostMapping(value = "/node/init/startWorker")
+    @ApiOperation(notes = "StartWorker 启动节点 Worker 进程", value = "StartWorker 启动节点 Worker 进程")
+    Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(
+            @RequestBody
+            @Valid
+            NodeJobRequest request
+    ) throws Exception;
+
     @GetMapping(value = "/node/init/parse/list")
-    @ApiOperation(notes = "获取节点初始化列表， Parse 执行之后", value = "获取节点初始化列表， Parse 执行之后")
+    @ApiOperation(notes = "Parse 获取节点初始化列表", value = "Parse 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initParseList(
             @ApiParam(name = "ClusterId", value = "ClusterId")
             @RequestParam(value = "ClusterId", required = true)
@@ -96,7 +104,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/detect/list")
-    @ApiOperation(notes = "获取节点初始化列表， Detect 执行之后", value = "获取节点初始化列表， Detect 执行之后")
+    @ApiOperation(notes = "Detect 获取节点初始化列表", value = "Detect 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initDetectList(
             @RequestBody
             @Valid
@@ -106,7 +114,7 @@ public interface IMasterNodeInitAPI {
 
 
     @PostMapping(value = "/node/init/check/list")
-    @ApiOperation(notes = "获取节点初始化列表， Check 执行之后", value = "获取节点初始化列表， Check 执行之后")
+    @ApiOperation(notes = "Check 获取节点初始化列表", value = "Check 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initCheckList(
             @RequestBody
             @Valid
@@ -114,15 +122,23 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/dispatch/list")
-    @ApiOperation(notes = "获取节点初始化列表， Dispatch 执行之后", value = "获取节点初始化列表， Dispatch 执行之后")
+    @ApiOperation(notes = "Dispatch 获取节点初始化列表", value = "Dispatch 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(
             @RequestBody
             @Valid
             AbstractNodeInitRequest.NodeInitInfoListRequest request
     ) throws Exception;
 
+    @PostMapping(value = "/node/init/startWorker/list")
+    @ApiOperation(notes = "StartWorker 获取节点初始化列表", value = "StartWorker 获取节点初始化列表")
+    Result<AbstractNodeInitVo.NodeInitVo> initStartWorkerList(
+            @RequestBody
+            @Valid
+            AbstractNodeInitRequest.NodeInitInfoListRequest request
+    ) throws Exception;
+
     @PostMapping(value = "/node/init/add")
-    @ApiOperation(notes = "服役节点到指定集群", value = "服役节点到指定集群")
+    @ApiOperation(notes = "Add 服役节点到指定集群", value = "Add 服役节点到指定集群")
     Result<String> addNode(
             @RequestBody
             @Valid

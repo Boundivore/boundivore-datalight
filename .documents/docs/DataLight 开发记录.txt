@@ -321,6 +321,26 @@ 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
     "SshPort": 22
 }
 
+启动节点 Worker 进程：
+{
+    "ClusterId": 1,
+    "NodeActionTypeEnum": "START_WORKER",
+    "NodeInfoList": [
+        {
+            "Hostname": "node01",
+            "NodeId": 1
+        },
+        {
+            "Hostname": "node02",
+            "NodeId": 2
+        },
+        {
+            "Hostname": "node03",
+            "NodeId": 3
+        }
+    ],
+    "SshPort": 22
+}
 
 服役到指定集群：
 {

@@ -35,7 +35,8 @@ public enum NodeActionTypeEnum implements IBaseEnum {
     RESTART("1", "重启节点"),
     DETECT("2", "探测节点"),
     CHECK("3", "初始化节点"),
-    DISPATCH("4", "分发安装包");
+    DISPATCH("4", "分发安装包"),
+    START_WORKER("5", "启动 Worker 进程");
 
     private final String code;
     private final String message;

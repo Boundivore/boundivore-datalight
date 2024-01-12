@@ -48,47 +48,57 @@ public class MasterNodeInitController implements IMasterNodeInitAPI {
 
     @Override
     public Result<ParseHostnameVo> parseHostname(ParseHostnameRequest request) throws Exception {
-        return masterNodeInitService.parseHostname(request);
+        return this.masterNodeInitService.parseHostname(request);
     }
 
     @Override
     public Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(NodeJobRequest request) throws Exception {
-        return masterNodeInitService.detectNode(request);
+        return this.masterNodeInitService.detectNode(request);
     }
 
     @Override
     public Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(NodeJobRequest request) throws Exception {
-        return masterNodeInitService.checkNode(request);
+        return this.masterNodeInitService.checkNode(request);
     }
 
     @Override
     public Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(NodeJobRequest request) throws Exception {
-        return masterNodeInitService.dispatchNode(request);
+        return this.masterNodeInitService.dispatchNode(request);
+    }
+
+    @Override
+    public Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(NodeJobRequest request) throws Exception {
+        return this.masterNodeInitService.startNodeWorker(request);
     }
 
     @Override
     public Result<AbstractNodeInitVo.NodeInitVo> initParseList(Long clusterId) throws Exception {
-        return masterNodeInitService.initParseList(clusterId);
+        return this.masterNodeInitService.initParseList(clusterId);
     }
 
     @Override
     public Result<AbstractNodeInitVo.NodeInitVo> initDetectList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
-        return masterNodeInitService.initDetectList(request);
+        return this.masterNodeInitService.initDetectList(request);
     }
 
     @Override
     public Result<AbstractNodeInitVo.NodeInitVo> initCheckList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
-        return masterNodeInitService.initCheckList(request);
+        return this.masterNodeInitService.initCheckList(request);
     }
 
     @Override
     public Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
-        return masterNodeInitService.initDispatchList(request);
+        return this.masterNodeInitService.initDispatchList(request);
+    }
+
+    @Override
+    public Result<AbstractNodeInitVo.NodeInitVo> initStartWorkerList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
+        return this.masterNodeInitService.initStartWorkerList(request);
     }
 
     @Override
     public Result<String> addNode(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
-        return masterNodeInitService.addNode(request);
+        return this.masterNodeInitService.addNode(request);
     }
 
 }

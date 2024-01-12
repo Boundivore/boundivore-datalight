@@ -69,19 +69,11 @@ public interface IMasterUserAPI {
 
     @GetMapping(value = "/user/logout")
     @ApiOperation(notes = "用户登出", value = "用户登出")
-    Result<String> logout(
-            @ApiParam(name = "UserId", value = "用户 ID")
-            @RequestParam(value = "UserId", required = true)
-            Long userId
-    ) throws Exception;
+    Result<String> logout() throws Exception;
 
     @GetMapping(value = "/user/isLogin")
     @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
-    Result<Boolean> isLogin(
-            @ApiParam(name = "UserId", value = "用户 ID")
-            @RequestParam(value = "UserId", required = true)
-            Long userId
-    ) throws Exception;
+    Result<Boolean> isLogin() throws Exception;
 
     @PostMapping(value = "/user/changePassword")
     @ApiOperation(notes = "修改密码", value = "修改密码")

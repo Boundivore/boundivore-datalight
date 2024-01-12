@@ -141,6 +141,7 @@ public class NodeJobService {
             case DETECT:
             case CHECK:
             case DISPATCH:
+            case START_WORKER:
                 this.masterNodeInitService.switchNodeInitState(
                         nodeJobMeta.getClusterId(),
                         nodeTaskMeta.getNodeId(),

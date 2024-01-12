@@ -299,8 +299,8 @@ public class MasterUserService {
      *
      * @return Result<String> 成功或失败
      */
-    public Result<String> logout(Long userId) throws Exception {
-        StpUtil.logout(userId);
+    public Result<String> logout() throws Exception {
+        StpUtil.logout();
         return Result.success();
     }
 
@@ -316,8 +316,8 @@ public class MasterUserService {
      *
      * @return Result<Boolean> 登录或未登录
      */
-    public Result<Boolean> isLogin(Long userId) throws Exception {
-        return Result.success(StpUtil.isLogin(userId));
+    public Result<Boolean> isLogin() throws Exception {
+        return Result.success(StpUtil.isLogin());
     }
 
     /**

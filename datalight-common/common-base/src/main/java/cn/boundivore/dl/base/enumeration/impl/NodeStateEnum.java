@@ -46,17 +46,21 @@ public enum NodeStateEnum implements IBaseEnum {
     PUSH_ERROR("8", "节点推送失败"),
     PUSH_OK("9", "节点推送成功"),
 
+    STARTING_WORKER("10", "正在启动 Worker"),
+    START_WORKER_OK("11", "启动 Worker 失败"),
+    START_WORKER_ERROR("12", "启动 Worker 成功"),
 
-    MAINTENANCE("10", "维护中"),
-    MAINTENANCE_ADD("11", "维护-新增"),
-    MAINTENANCE_ALTER("12", "维护-变更"),
 
-    STOPPING("13", "正在关机"),
-    STARTED("14", "运行中"),
-    STARTING("15", "正在开机"),
-    STOPPED("16", "已关机"),
-    RESTARTING("17", "正在重启"),
-    REMOVED("18", "已移除");
+    MAINTENANCE("13", "维护中"),
+    MAINTENANCE_ADD("14", "维护-新增"),
+    MAINTENANCE_ALTER("15", "维护-变更"),
+
+    STOPPING("16", "正在关机"),
+    STARTED("17", "运行中"),
+    STARTING("18", "正在开机"),
+    STOPPED("19", "已关机"),
+    RESTARTING("20", "正在重启"),
+    REMOVED("21", "已移除");
 
     private final String code;
     private final String message;
