@@ -41,13 +41,17 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
     @TableField("procedure_state")
     private ProcedureStateEnum procedureState;
 
-    @Schema(name = "节点 Job Id")
+    @Schema(name = "节点作业 ID")
     @TableField("node_job_id")
     private Long nodeJobId;
 
     @Schema(name = "当前操作的节点信息列表")
     @TableField("node_info_list_base64")
     private String nodeInfoListBase64;
+
+    @Schema(name = "作业 ID")
+    @TableField("job_id")
+    private Long jobId;
 
 
 }

@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 09/01/2024 17:09:43
+ Date: 15/01/2024 17:39:55
 */
 
 SET NAMES utf8mb4;
@@ -134,8 +134,9 @@ CREATE TABLE `t_dl_init_procedure`  (
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `procedure_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '进度名称',
   `procedure_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '进度状态 枚举，具体见代码',
-  `node_job_id` bigint(20) NULL DEFAULT NULL COMMENT '节点 Job Id',
+  `node_job_id` bigint(20) NULL DEFAULT NULL COMMENT '节点作业 ID',
   `node_info_list_base64` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '节点信息列表',
+  `job_id` bigint(20) NULL DEFAULT NULL COMMENT '作业 ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '初始化步骤缓存信息表' ROW_FORMAT = DYNAMIC;
 
