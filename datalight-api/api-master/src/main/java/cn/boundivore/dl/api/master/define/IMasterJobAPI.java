@@ -72,16 +72,16 @@ public interface IMasterJobAPI {
             Long jobId,
 
             @ApiParam(name = "StageId", value = "阶段 ID")
-            @RequestParam(value = "StageId", required = true)
+            @RequestParam(value = "StageId", required = false)
             @NotNull
             Long stageId,
 
             @ApiParam(name = "TaskId", value = "任务 ID")
-            @RequestParam(value = "TaskId", required = true)
+            @RequestParam(value = "TaskId", required = false)
             Long taskId,
 
             @ApiParam(name = "StepId", value = "步骤 ID")
-            @RequestParam(value = "StepId", required = true)
+            @RequestParam(value = "StepId", required = false)
             Long stepId
     ) throws Exception;
 

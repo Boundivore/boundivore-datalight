@@ -94,11 +94,11 @@ public interface IMasterNodeJobAPI {
             Long nodeJobId,
 
             @ApiParam(name = "NodeTaskId", value = "节点任务 ID")
-            @RequestParam(value = "NodeTaskId", required = true)
+            @RequestParam(value = "NodeTaskId", required = false)
             Long nodeTaskId,
 
             @ApiParam(name = "NodeStepId", value = "节点步骤 ID")
-            @RequestParam(value = "NodeStepId", required = true)
+            @RequestParam(value = "NodeStepId", required = false)
             Long nodeStepId
     ) throws Exception;
 
