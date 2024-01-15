@@ -25,6 +25,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotNull;
+
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 
@@ -74,6 +76,28 @@ public interface IMasterNodeJobAPI {
             Long nodeTaskId,
 
             @ApiParam(name = "NodeStepId", value = "NodeStepId")
+            @RequestParam(value = "NodeStepId", required = true)
+            Long nodeStepId
+    ) throws Exception;
+
+    @GetMapping(value = "/job/getNodeJobLogList")
+    @ApiOperation(notes = "获取节点作业日志信息列表", value = "获取节点作业日志信息列表")
+    Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(
+            @ApiParam(name = "集群 ID", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            @NotNull
+            Long clusterId,
+
+            @ApiParam(name = "节点作业 ID", value = "节点作业 ID")
+            @RequestParam(value = "NodeJobId", required = true)
+            @NotNull
+            Long nodeJobId,
+
+            @ApiParam(name = "节点任务 ID", value = "节点任务 ID")
+            @RequestParam(value = "NodeTaskId", required = true)
+            Long nodeTaskId,
+
+            @ApiParam(name = "节点步骤 ID", value = "节点步骤 ID")
             @RequestParam(value = "NodeStepId", required = true)
             Long nodeStepId
     ) throws Exception;

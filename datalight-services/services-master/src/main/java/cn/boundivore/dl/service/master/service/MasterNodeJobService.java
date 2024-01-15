@@ -31,7 +31,9 @@ import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.po.single.TDlNodeInit;
 import cn.boundivore.dl.orm.po.single.TDlNodeJob;
+import cn.boundivore.dl.orm.po.single.TDlNodeJobLog;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeInitServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobLogServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
@@ -44,6 +46,7 @@ import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
 import cn.boundivore.dl.service.master.manage.node.job.NodePlan;
 import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.hutool.core.lang.Assert;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
@@ -74,6 +77,8 @@ public class MasterNodeJobService {
     private final TDlNodeServiceImpl tDlNodeService;
 
     private final TDlNodeJobServiceImpl tDlNodeJobService;
+
+    private final TDlNodeJobLogServiceImpl tDlNodeJobLogService;
 
     /**
      * Description: 执行节点异步操作
@@ -937,6 +942,64 @@ public class MasterNodeJobService {
         );
 
         return Result.success(nodeJobTransferProgressDetailVo);
+    }
+
+    /**
+     * Description: 获取节点作业日志列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId  集群 ID
+     * @param nodeJobId  节点作业 ID
+     * @param nodeTaskId 任务 ID
+     * @param nodeStepId 步骤 ID
+     * @return Result<AbstractJobVo.JobLogListVo> 日志信息列表
+     */
+    public Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(Long clusterId,
+                                                                    Long nodeJobId,
+                                                                    Long nodeTaskId,
+                                                                    Long nodeStepId) {
+
+        LambdaQueryChainWrapper<TDlNodeJobLog> tDlNodeJobLogWrapper = this.tDlNodeJobLogService.lambdaQuery()
+                .select()
+                .eq(TDlNodeJobLog::getClusterId, clusterId)
+                .eq(TDlNodeJobLog::getNodeJobId, nodeJobId);
+
+        if (nodeTaskId != null) {
+            tDlNodeJobLogWrapper = tDlNodeJobLogWrapper.eq(TDlNodeJobLog::getNodeTaskId, nodeTaskId);
+        }
+
+        if (nodeStepId != null) {
+            tDlNodeJobLogWrapper = tDlNodeJobLogWrapper.eq(TDlNodeJobLog::getNodeStepId, nodeStepId);
+        }
+
+        List<TDlNodeJobLog> tDlNodeJobLogList = tDlNodeJobLogWrapper.list();
+        String tag = tDlNodeJobLogList.isEmpty() ? null : tDlNodeJobLogList.get(0).getTag();
+
+        List<AbstractNodeJobVo.NodeJobLogVo> nodeJobLogList = tDlNodeJobLogList
+                .stream()
+                .map(i -> new AbstractNodeJobVo.NodeJobLogVo(
+                                i.getNodeJobId(),
+                                i.getNodeTaskId(),
+                                i.getNodeStepId(),
+                                i.getLogStdout(),
+                                i.getLogErrout()
+                        )
+                )
+                .collect(Collectors.toList());
+
+        AbstractNodeJobVo.NodeJobLogListVo nodeJobLogListVo = new AbstractNodeJobVo.NodeJobLogListVo(
+                clusterId,
+                tag,
+                nodeJobLogList
+        );
+
+        return Result.success(nodeJobLogListVo);
     }
 
 }

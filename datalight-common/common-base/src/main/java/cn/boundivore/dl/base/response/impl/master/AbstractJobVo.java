@@ -40,8 +40,8 @@ public abstract class AbstractJobVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "JobIdVo",
-            description = "JobIdVo: JobId 信息"
+            name = "AbstractJobVo.JobIdVo",
+            description = "AbstractJobVo.JobIdVo: JobId 信息"
     )
     public static class JobIdVo implements IVo {
 
@@ -63,8 +63,8 @@ public abstract class AbstractJobVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "JobProgressVo",
-            description = "JobProgressVo: Job 计划进度信息"
+            name = "AbstractJobVo.JobProgressVo",
+            description = "AbstractJobVo.JobProgressVo: Job 计划进度信息"
     )
     public static class JobProgressVo implements IVo {
 
@@ -95,8 +95,8 @@ public abstract class AbstractJobVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "JobPlanProgressVo",
-            description = "JobPlanProgressVo: Job 计划进度信息"
+            name = "AbstractJobVo.JobPlanProgressVo",
+            description = "AbstractJobVo.JobPlanProgressVo: Job 计划进度信息"
     )
     public static class JobPlanProgressVo implements IVo {
 
@@ -142,8 +142,8 @@ public abstract class AbstractJobVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "JobExecProgressVo",
-            description = "JobExecProgressVo: Job 执行进度信息"
+            name = "AbstractJobVo.JobExecProgressVo",
+            description = "AbstractJobVo.JobExecProgressVo: Job 执行进度信息"
     )
     public static class JobExecProgressVo implements IVo {
 
@@ -189,8 +189,8 @@ public abstract class AbstractJobVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "ExecProgressPerNodeVo",
-            description = "ExecProgressPerNodeVo: Job 中每个节点的执行进度信息"
+            name = "AbstractJobVo.ExecProgressPerNodeVo",
+            description = "AbstractJobVo.ExecProgressPerNodeVo: Job 中每个节点的执行进度信息"
     )
     public static class ExecProgressPerNodeVo implements IVo {
 
@@ -235,8 +235,8 @@ public abstract class AbstractJobVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "ExecProgressStepVo",
-            description = "ExecProgressStepVo: Job 中每个节点的 Step 执行进度信息"
+            name = "AbstractJobVo.ExecProgressStepVo",
+            description = "AbstractJobVo.ExecProgressStepVo: Job 中每个节点的 Step 执行进度信息"
     )
     public static class ExecProgressStepVo implements IVo {
 
@@ -259,6 +259,75 @@ public abstract class AbstractJobVo {
         @JsonProperty(value = "StepExecState", required = true)
         @NotNull
         private ExecStateEnum stepExecStateEnum;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractJobVo.JobLogListVo",
+            description = "AbstractJobVo.JobLogListVo: Job 的日志信息列表"
+    )
+    public static class JobLogListVo implements IVo {
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
+        @Schema(name = "Tag", title = "同批任务唯一标识", required = true)
+        @JsonProperty(value = "Tag", required = true)
+        @NotNull
+        private String tag;
+
+        @Schema(name = "JobLogList", title = "作业日志列表", required = true)
+        @JsonProperty(value = "JobLogList", required = true)
+        @NotNull
+        private List<JobLogVo> jobLogList;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractJobVo.JobLogVo",
+            description = "AbstractJobVo.JobLogVo: Job 的日志信息"
+    )
+    public static class JobLogVo implements IVo {
+
+        @Schema(name = "JobId", title = "作业 ID", required = true)
+        @JsonProperty(value = "JobId", required = true)
+        @NotNull
+        private Long jobId;
+
+        @Schema(name = "StageId", title = "阶段 ID", required = true)
+        @JsonProperty(value = "StageId", required = true)
+        @NotNull
+        private Long stageId;
+
+        @Schema(name = "TaskId", title = "任务 ID", required = true)
+        @JsonProperty(value = "TaskId", required = true)
+        @NotNull
+        private Long taskId;
+
+        @Schema(name = "StepId", title = "步骤 ID", required = true)
+        @JsonProperty(value = "StepId", required = true)
+        @NotNull
+        private Long stepId;
+
+        @Schema(name = "LogStdOut", title = "标准日志", required = true)
+        @JsonProperty(value = "LogStdOut", required = true)
+        @NotNull
+        private String logStdOut;
+
+        @Schema(name = "LogErrOut", title = "错误日志", required = true)
+        @JsonProperty(value = "LogErrOut", required = true)
+        @NotNull
+        private String logErrOut;
 
     }
 }

@@ -22,8 +22,6 @@ import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStepTypeEnum;
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -511,6 +509,70 @@ public abstract class AbstractNodeJobVo {
         @JsonProperty(value = "Speed", required = true)
         @NotNull
         private String speed;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractJobVo.NodeJobLogListVo",
+            description = "AbstractJobVo.NodeJobLogListVo: NodeJob 的日志信息列表"
+    )
+    public static class NodeJobLogListVo implements IVo {
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
+        @Schema(name = "Tag", title = "同批任务唯一标识", required = true)
+        @JsonProperty(value = "Tag", required = true)
+        @NotNull
+        private String tag;
+
+        @Schema(name = "NodeJobLogList", title = "节点作业日志列表", required = true)
+        @JsonProperty(value = "NodeJobLogList", required = true)
+        @NotNull
+        private List<NodeJobLogVo> nodeJobLogList;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractNodeJobVo.NodeJobLogVo",
+            description = "AbstractNodeJobVo.NodeJobLogVo: NodeJob 的日志信息"
+    )
+    public static class NodeJobLogVo implements IVo {
+
+        @Schema(name = "NodeJobId", title = "节点作业 ID", required = true)
+        @JsonProperty(value = "NodeJobId", required = true)
+        @NotNull
+        private Long nodeJobId;
+
+        @Schema(name = "NodeTaskId", title = "节点任务 ID", required = true)
+        @JsonProperty(value = "NodeTaskId", required = true)
+        @NotNull
+        private Long nodeTaskId;
+
+        @Schema(name = "StepId", title = "节点步骤 ID", required = true)
+        @JsonProperty(value = "StepId", required = true)
+        @NotNull
+        private Long nodeStepId;
+
+        @Schema(name = "LogStdOut", title = "标准日志", required = true)
+        @JsonProperty(value = "LogStdOut", required = true)
+        @NotNull
+        private String logStdOut;
+
+        @Schema(name = "LogErrOut", title = "错误日志", required = true)
+        @JsonProperty(value = "LogErrOut", required = true)
+        @NotNull
+        private String logErrOut;
+
     }
 
 

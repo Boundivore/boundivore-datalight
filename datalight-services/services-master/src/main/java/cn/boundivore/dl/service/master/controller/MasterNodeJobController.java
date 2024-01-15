@@ -43,18 +43,31 @@ public class MasterNodeJobController implements IMasterNodeJobAPI {
 
     @Override
     public Result<AbstractNodeJobVo.NodeJobProgressVo> getNodeJobProgress(Long nodeJobId) throws Exception {
-        return masterNodeJobService.getNodeJobProgress(nodeJobId);
+        return this.masterNodeJobService.getNodeJobProgress(nodeJobId);
     }
 
     @Override
     public Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(Long nodeJobId) throws Exception {
-        return masterNodeJobService.getNodeJobDispatchProgress(nodeJobId);
+        return this.masterNodeJobService.getNodeJobDispatchProgress(nodeJobId);
     }
 
     @Override
     public Result<AbstractNodeJobVo.NodeJobTransferProgressDetailVo> getNodeJobDispatchProgressDetail(Long nodeJobId,
                                                                                                       Long nodeTaskId,
                                                                                                       Long nodeStepId) throws Exception {
-        return masterNodeJobService.getNodeJobDispatchProgressDetail(nodeJobId, nodeTaskId, nodeStepId);
+        return this.masterNodeJobService.getNodeJobDispatchProgressDetail(nodeJobId, nodeTaskId, nodeStepId);
+    }
+
+    @Override
+    public Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(Long clusterId,
+                                                                        Long nodeJobId,
+                                                                        Long nodeTaskId,
+                                                                        Long nodeStepId) throws Exception {
+        return this.masterNodeJobService.getNodeJobLogList(
+                clusterId,
+                nodeJobId,
+                nodeTaskId,
+                nodeStepId
+        );
     }
 }

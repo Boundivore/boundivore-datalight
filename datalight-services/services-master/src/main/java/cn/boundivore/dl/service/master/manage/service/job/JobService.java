@@ -781,16 +781,16 @@ public class JobService {
      * Throws: DatabaseException
      *
      * @param stepMeta  Step 元数据信息
-     * @param logStdout 标准输出
-     * @param logErrout 标准错误输出
+     * @param logStdOut 标准输出
+     * @param logErrOut 标准错误输出
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
     public void saveLog(StepMeta stepMeta,
-                        String logStdout,
-                        String logErrout) {
+                        String logStdOut,
+                        String logErrOut) {
         TaskMeta taskMeta = stepMeta.getTaskMeta();
         StageMeta stageMeta = taskMeta.getStageMeta();
         JobMeta jobMeta = stageMeta.getJobMeta();
@@ -811,7 +811,7 @@ public class JobService {
                         taskMeta.getHostname(),
                         stageMeta.getServiceName(),
                         taskMeta.getComponentName(),
-                        logStdout
+                        logStdOut
                 )
         );
 
@@ -821,7 +821,7 @@ public class JobService {
                         taskMeta.getHostname(),
                         stageMeta.getServiceName(),
                         taskMeta.getComponentName(),
-                        logErrout
+                        logErrOut
                 )
         );
 

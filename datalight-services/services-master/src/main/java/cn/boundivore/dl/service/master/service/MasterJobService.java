@@ -27,7 +27,9 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
+import cn.boundivore.dl.orm.po.single.TDlJobLog;
 import cn.boundivore.dl.orm.po.single.TDlService;
+import cn.boundivore.dl.orm.service.single.impl.TDlJobLogServiceImpl;
 import cn.boundivore.dl.service.master.manage.service.bean.*;
 import cn.boundivore.dl.service.master.manage.service.job.Intention;
 import cn.boundivore.dl.service.master.manage.service.job.Job;
@@ -36,6 +38,7 @@ import cn.boundivore.dl.service.master.manage.service.job.Plan;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -68,6 +71,8 @@ public class MasterJobService {
     private final MasterServiceService masterServiceService;
 
     private final ComponentNodeMapper componentNodeMapper;
+
+    private final TDlJobLogServiceImpl tDlJobLogService;
 
     /**
      * Description: 开始生成部署计划，并部署服务、组件
@@ -542,6 +547,71 @@ public class MasterJobService {
                     execProgressPerNodeVo.getExecProgressStepList().add(execProgressStepVo);
                 }
         );
+    }
+
+    /**
+     * Description: 获取作业日志列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @param jobId     作业 ID
+     * @param stageId   阶段 ID
+     * @param taskId    任务 ID
+     * @param stepId    步骤 ID
+     * @return Result<AbstractJobVo.JobLogListVo> 日志信息列表
+     */
+    public Result<AbstractJobVo.JobLogListVo> getJobLogList(Long clusterId,
+                                                            Long jobId,
+                                                            Long stageId,
+                                                            Long taskId,
+                                                            Long stepId) {
+
+        LambdaQueryChainWrapper<TDlJobLog> tDlJobLogWrapper = this.tDlJobLogService.lambdaQuery()
+                .select()
+                .eq(TDlJobLog::getClusterId, clusterId)
+                .eq(TDlJobLog::getJobId, jobId);
+
+        if (stageId != null) {
+            tDlJobLogWrapper = tDlJobLogWrapper.eq(TDlJobLog::getStageId, stageId);
+        }
+
+        if (taskId != null) {
+            tDlJobLogWrapper = tDlJobLogWrapper.eq(TDlJobLog::getTaskId, taskId);
+        }
+
+        if (stepId != null) {
+            tDlJobLogWrapper = tDlJobLogWrapper.eq(TDlJobLog::getStepId, stepId);
+        }
+
+        List<TDlJobLog> tDlJobLogList = tDlJobLogWrapper.list();
+        String tag = tDlJobLogList.isEmpty() ? null : tDlJobLogList.get(0).getTag();
+
+        List<AbstractJobVo.JobLogVo> jobLogList = tDlJobLogList
+                .stream()
+                .map(i -> new AbstractJobVo.JobLogVo(
+                                i.getJobId(),
+                                i.getStageId(),
+                                i.getTaskId(),
+                                i.getStepId(),
+                                i.getLogStdout(),
+                                i.getLogErrout()
+                        )
+                )
+                .collect(Collectors.toList());
+
+        AbstractJobVo.JobLogListVo jobLogListVo = new AbstractJobVo.JobLogListVo(
+                clusterId,
+                tag,
+                jobLogList
+        );
+
+        return Result.success(jobLogListVo);
     }
 
 }
