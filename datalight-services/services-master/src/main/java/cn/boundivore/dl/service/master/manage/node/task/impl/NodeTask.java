@@ -95,6 +95,7 @@ public class NodeTask extends AbstractNodeTask {
                 nodeStepMeta.getNodeStepResult().setSuccess(true);
                 super.nodeJobService.saveLog(nodeStepMeta, output, "");
             } catch (Exception e) {
+                nodeStepMeta.getNodeStepResult().setSuccess(false);
                 exceptionStr = ExceptionUtil.stacktraceToString(e);
                 super.nodeJobService.saveLog(nodeStepMeta, "", exceptionStr);
                 log.error(exceptionStr);

@@ -88,6 +88,7 @@ public class Task extends AbstractTask {
                 stepMeta.getStepResult().setSuccess(true);
                 super.jobService.saveLog(stepMeta, output, "");
             } catch (Exception e) {
+                stepMeta.getStepResult().setSuccess(false);
                 exceptionStr = ExceptionUtil.stacktraceToString(e);
                 super.jobService.saveLog(stepMeta, "", exceptionStr);
                 log.error(exceptionStr);
