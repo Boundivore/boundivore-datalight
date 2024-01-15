@@ -59,14 +59,17 @@ public abstract class AbstractProcedureRequest {
         @NotNull
         private ProcedureStateEnum procedureStateEnum;
 
-        @Schema(name = "NodeJobId", title = "NodeJob Id", required = true)
+        @Schema(name = "NodeJobId", title = "节点作业 ID", required = true)
         @JsonProperty(value = "NodeJobId", required = true)
         private Long nodeJobId;
 
         @Schema(name = "NodeInfoList", title = "节点信息列表", required = true)
         @JsonProperty(value = "NodeInfoList", required = true)
-        @NotNull
         private List<NodeInfoListRequest> nodeInfoList;
+
+        @Schema(name = "JobId", title = "作业 ID", required = true)
+        @JsonProperty(value = "JobId", required = true)
+        private Long jobId;
 
 
     }

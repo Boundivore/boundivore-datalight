@@ -17,10 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.ServiceTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.*;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
@@ -307,6 +304,13 @@ public class MasterComponentService {
         if (!toRemoveTDlComponentIds.isEmpty()) {
             this.tDlComponentService.removeBatchByIds(toRemoveTDlComponentIds);
         }
+
+        // 记录组件 Procedure
+        this.masterInitProcedureService.persistServiceComponentProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_SELECT_COMPONENT
+        );
 
         return Result.success();
     }

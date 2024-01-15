@@ -166,7 +166,9 @@ public class MasterInitProcedureService {
         tDlInitProcedure.setProcedureName(request.getProcedureStateEnum().getMessage());
         tDlInitProcedure.setProcedureState(request.getProcedureStateEnum());
         tDlInitProcedure.setNodeJobId(request.getNodeJobId());
-        tDlInitProcedure.setNodeInfoListBase64(this.nodeInfoList2Base64(request.getNodeInfoList()));
+        if (CollUtil.isNotEmpty(request.getNodeInfoList())) {
+            tDlInitProcedure.setNodeInfoListBase64(this.nodeInfoList2Base64(request.getNodeInfoList()));
+        }
 
         return tDlInitProcedure;
     }
@@ -372,5 +374,82 @@ public class MasterInitProcedureService {
         return Result.success(true);
     }
 
+
+    /**
+     * Description: 记录节点初始化信息步骤
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId          集群 ID
+     * @param nodeJobId          节点作业 ID
+     * @param procedureStateEnum 步骤状态枚举
+     * @param nodeInfoList       节点初始信息列表
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void persistNodeInitProcedure(Long clusterId,
+                                         Long nodeJobId,
+                                         ProcedureStateEnum procedureStateEnum,
+                                         List<AbstractProcedureRequest.NodeInfoListRequest> nodeInfoList) {
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.persistInitStatus(
+                new AbstractProcedureRequest.PersistProcedureRequest(
+                        clusterId,
+                        procedureStateEnum,
+                        nodeJobId,
+                        nodeInfoList,
+                        null
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存节点步骤信息失败")
+        );
+    }
+
+    /**
+     * Description: 记录节点初始化信息步骤
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId          集群 ID
+     * @param procedureStateEnum 步骤状态枚举
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void persistServiceComponentProcedure(Long clusterId,
+                                                 Long jobId,
+                                                 ProcedureStateEnum procedureStateEnum) {
+        // 记录步骤信息
+        boolean isPersistProcedureSuccess = this.persistInitStatus(
+                new AbstractProcedureRequest.PersistProcedureRequest(
+                        clusterId,
+                        procedureStateEnum,
+                        null,
+                        null,
+                        jobId
+                )
+        ).isSuccess();
+
+        Assert.isTrue(
+                isPersistProcedureSuccess,
+                () -> new BException("保存服务组件步骤信息失败")
+        );
+    }
 
 }

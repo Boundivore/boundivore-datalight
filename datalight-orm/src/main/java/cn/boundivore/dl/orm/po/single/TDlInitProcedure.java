@@ -2,11 +2,9 @@ package cn.boundivore.dl.orm.po.single;
 
 import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,15 +40,15 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
     private ProcedureStateEnum procedureState;
 
     @Schema(name = "节点作业 ID")
-    @TableField("node_job_id")
+    @TableField(value = "node_job_id", updateStrategy = FieldStrategy.IGNORED)
     private Long nodeJobId;
 
     @Schema(name = "当前操作的节点信息列表")
-    @TableField("node_info_list_base64")
+    @TableField(value = "node_info_list_base64", updateStrategy = FieldStrategy.IGNORED)
     private String nodeInfoListBase64;
 
     @Schema(name = "作业 ID")
-    @TableField("job_id")
+    @TableField(value = "job_id", updateStrategy = FieldStrategy.IGNORED)
     private Long jobId;
 
 

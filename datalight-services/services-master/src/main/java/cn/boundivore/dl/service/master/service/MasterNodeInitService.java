@@ -145,20 +145,14 @@ public class MasterNodeInitService {
                 () -> new DatabaseException("保存节点初始信息失败")
         );
 
-        // 记录步骤信息
-        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new AbstractProcedureRequest.PersistProcedureRequest(
-                        request.getClusterId(),
-                        ProcedureStateEnum.PROCEDURE_PARSE_HOSTNAME,
-                        null,
-                        null
-                )
-        ).isSuccess();
-
-        Assert.isTrue(
-                isPersistProcedureSuccess,
-                () -> new BException("保存步骤信息失败")
+        // 调用函数记录 Procedure
+        this.masterInitProcedureService.persistNodeInitProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_PARSE_HOSTNAME,
+                null
         );
+
 
         return Result.success(
                 new ParseHostnameVo(
@@ -183,6 +177,10 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -204,26 +202,20 @@ public class MasterNodeInitService {
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
 
-        // 记录步骤信息
-        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new AbstractProcedureRequest.PersistProcedureRequest(
-                        request.getClusterId(),
-                        ProcedureStateEnum.PROCEDURE_DETECT,
-                        nodeJobId,
-                        request.getNodeInfoList()
-                                .stream()
-                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
-                                                i.getNodeId(),
-                                                i.getHostname()
-                                        )
+        // 调用函数记录 Procedure
+        this.masterInitProcedureService.persistNodeInitProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_DETECT,
+                request.getNodeInfoList()
+                        .stream()
+                        .map(i ->
+                                new AbstractProcedureRequest.NodeInfoListRequest(
+                                        i.getNodeId(),
+                                        i.getHostname()
                                 )
-                                .collect(Collectors.toList())
-                )
-        ).isSuccess();
-
-        Assert.isTrue(
-                isPersistProcedureSuccess,
-                () -> new BException("保存步骤信息失败")
+                        )
+                        .collect(Collectors.toList())
         );
 
         return Result.success(
@@ -247,6 +239,10 @@ public class MasterNodeInitService {
      * @param request 初始化节点请求体
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -304,26 +300,20 @@ public class MasterNodeInitService {
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
 
-        // 记录步骤信息
-        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new AbstractProcedureRequest.PersistProcedureRequest(
-                        request.getClusterId(),
-                        ProcedureStateEnum.PROCEDURE_CHECK,
-                        nodeJobId,
-                        request.getNodeInfoList()
-                                .stream()
-                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
-                                                i.getNodeId(),
-                                                i.getHostname()
-                                        )
+        // 调用函数记录 Procedure
+        this.masterInitProcedureService.persistNodeInitProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_CHECK,
+                request.getNodeInfoList()
+                        .stream()
+                        .map(i ->
+                                new AbstractProcedureRequest.NodeInfoListRequest(
+                                        i.getNodeId(),
+                                        i.getHostname()
                                 )
-                                .collect(Collectors.toList())
-                )
-        ).isSuccess();
-
-        Assert.isTrue(
-                isPersistProcedureSuccess,
-                () -> new BException("保存步骤信息失败")
+                        )
+                        .collect(Collectors.toList())
         );
 
 
@@ -400,6 +390,10 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -421,28 +415,21 @@ public class MasterNodeInitService {
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
 
-        // 记录步骤信息
-        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new AbstractProcedureRequest.PersistProcedureRequest(
-                        request.getClusterId(),
-                        ProcedureStateEnum.PROCEDURE_DISPATCH,
-                        nodeJobId,
-                        request.getNodeInfoList()
-                                .stream()
-                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
-                                                i.getNodeId(),
-                                                i.getHostname()
-                                        )
+        // 调用函数记录 Procedure
+        this.masterInitProcedureService.persistNodeInitProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_DISPATCH,
+                request.getNodeInfoList()
+                        .stream()
+                        .map(i ->
+                                new AbstractProcedureRequest.NodeInfoListRequest(
+                                        i.getNodeId(),
+                                        i.getHostname()
                                 )
-                                .collect(Collectors.toList())
-                )
-        ).isSuccess();
-
-        Assert.isTrue(
-                isPersistProcedureSuccess,
-                () -> new BException("保存步骤信息失败")
+                        )
+                        .collect(Collectors.toList())
         );
-
 
         return Result.success(
                 new AbstractNodeJobVo.NodeJobIdVo(
@@ -465,6 +452,10 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -486,26 +477,20 @@ public class MasterNodeInitService {
 
         Long nodeJobId = this.masterNodeJobService.initNodeJob(request, true);
 
-        // 记录步骤信息
-        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new AbstractProcedureRequest.PersistProcedureRequest(
-                        request.getClusterId(),
-                        ProcedureStateEnum.PROCEDURE_START_WORKER,
-                        nodeJobId,
-                        request.getNodeInfoList()
-                                .stream()
-                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
-                                                i.getNodeId(),
-                                                i.getHostname()
-                                        )
+        // 调用函数记录 Procedure
+        this.masterInitProcedureService.persistNodeInitProcedure(
+                request.getClusterId(),
+                nodeJobId,
+                ProcedureStateEnum.PROCEDURE_START_WORKER,
+                request.getNodeInfoList()
+                        .stream()
+                        .map(i ->
+                                new AbstractProcedureRequest.NodeInfoListRequest(
+                                        i.getNodeId(),
+                                        i.getHostname()
                                 )
-                                .collect(Collectors.toList())
-                )
-        ).isSuccess();
-
-        Assert.isTrue(
-                isPersistProcedureSuccess,
-                () -> new BException("保存步骤信息失败")
+                        )
+                        .collect(Collectors.toList())
         );
 
         return Result.success(
@@ -951,26 +936,20 @@ public class MasterNodeInitService {
                 () -> new DatabaseException("删除节点初始化信息失败")
         );
 
-        // 记录步骤信息
-        boolean isPersistProcedureSuccess = this.masterInitProcedureService.persistInitStatus(
-                new AbstractProcedureRequest.PersistProcedureRequest(
-                        request.getClusterId(),
-                        ProcedureStateEnum.PROCEDURE_ADD_NODE_DONE,
-                        null,
-                        request.getNodeInfoList()
-                                .stream()
-                                .map(i -> new AbstractProcedureRequest.NodeInfoListRequest(
-                                                i.getNodeId(),
-                                                i.getHostname()
-                                        )
+        // 调用函数记录 Procedure
+        this.masterInitProcedureService.persistNodeInitProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_ADD_NODE_DONE,
+                request.getNodeInfoList()
+                        .stream()
+                        .map(i ->
+                                new AbstractProcedureRequest.NodeInfoListRequest(
+                                        i.getNodeId(),
+                                        i.getHostname()
                                 )
-                                .collect(Collectors.toList())
-                )
-        ).isSuccess();
-
-        Assert.isTrue(
-                isPersistProcedureSuccess,
-                () -> new BException("保存步骤信息失败")
+                        )
+                        .collect(Collectors.toList())
         );
 
         return Result.success();
@@ -996,6 +975,5 @@ public class MasterNodeInitService {
                 () -> new BException("操作完成后的集群可用节点个数需要大于等于 3 个, 请合理规划")
         );
     }
-
 
 }

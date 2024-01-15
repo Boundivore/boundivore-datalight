@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.ServiceTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
@@ -206,6 +207,13 @@ public class MasterServiceService {
         Assert.isTrue(
                 this.tDlServiceService.saveOrUpdateBatch(newTDlServiceList),
                 () -> new DatabaseException("记录服务选项到数据库失败")
+        );
+
+        // 记录服务 Procedure
+        this.masterInitProcedureService.persistServiceComponentProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_SELECT_SERVICE
         );
 
 
@@ -538,7 +546,7 @@ public class MasterServiceService {
                 .ne(TDlService::getServiceState, REMOVED)
                 .one();
 
-        if(tDlService == null){
+        if (tDlService == null) {
             tDlService = new TDlService();
             tDlService.setClusterId(clusterId);
             tDlService.setServiceName(serviceName);
@@ -601,9 +609,9 @@ public class MasterServiceService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群 ID
+     * @param clusterId       集群 ID
      * @param serviceNameList 服务名称列表
-     * @param isPriorityAsc 是否按照优先级升序排序，true 为升序，false 为降序
+     * @param isPriorityAsc   是否按照优先级升序排序，true 为升序，false 为降序
      * @return 服务在数据库中记录的实体
      */
     public List<TDlService> getTDlServiceListSorted(Long clusterId,

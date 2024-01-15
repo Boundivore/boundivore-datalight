@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
@@ -83,6 +84,13 @@ public class MasterDeployService {
         this.masterConfigPreService.replaceZookeeperMyIdDir2DataDir(request.getClusterId());
 
         Long jobId = masterJobService.initJob(request, true);
+
+        // 记录部署 Procedure
+        this.masterInitProcedureService.persistServiceComponentProcedure(
+                request.getClusterId(),
+                jobId,
+                ProcedureStateEnum.PROCEDURE_DEPLOYING
+        );
 
 
         return Result.success(

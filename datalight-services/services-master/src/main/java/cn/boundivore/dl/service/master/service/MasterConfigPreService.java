@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.ConfigPreSaveRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigPreVo;
@@ -57,6 +58,8 @@ public class MasterConfigPreService {
     private final MasterServiceService masterServiceService;
 
     private final TDlConfigPreServiceImpl tDlConfigPreService;
+
+    private final MasterInitProcedureService masterInitProcedureService;
 
 
     /**
@@ -252,6 +255,13 @@ public class MasterConfigPreService {
         Assert.isTrue(
                 this.tDlConfigPreService.saveBatch(tDlConfigPreList),
                 () -> new DatabaseException("保存预配置信息到失败")
+        );
+
+        // 记录预配置 Procedure
+        this.masterInitProcedureService.persistServiceComponentProcedure(
+                request.getClusterId(),
+                null,
+                ProcedureStateEnum.PROCEDURE_PRE_CONFIG
         );
 
         return Result.success();
