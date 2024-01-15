@@ -40,7 +40,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterNodeJobAPI", tags = {"Master 接口：节点异步任务管理相关"})
+@Api(value = "IMasterNodeJobAPI", tags = {"Master 接口：节点作业异步任务管理相关"})
 @FeignClient(
         name = "IMasterNodeJobAPI",
         contextId = "IMasterNodeJobAPI",
@@ -49,7 +49,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterNodeJobAPI {
 
     @GetMapping(value = "/node/job/progress")
-    @ApiOperation(notes = "获取节点任务进度", value = "获取节点任务进度")
+    @ApiOperation(notes = "获取节点作业进度", value = "获取节点作业进度")
     Result<AbstractNodeJobVo.NodeJobProgressVo> getNodeJobProgress(
             @ApiParam(name = "NodeJobId", value = "NodeJobId")
             @RequestParam(value = "NodeJobId", required = true)
