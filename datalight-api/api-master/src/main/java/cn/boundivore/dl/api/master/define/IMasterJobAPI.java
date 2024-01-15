@@ -61,26 +61,26 @@ public interface IMasterJobAPI {
     @GetMapping(value = "/job/getJobLogList")
     @ApiOperation(notes = "获取作业日志信息列表", value = "获取作业日志信息列表")
     Result<AbstractJobVo.JobLogListVo> getJobLogList(
-            @ApiParam(name = "集群 ID", value = "集群 ID")
+            @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             @NotNull
             Long clusterId,
 
-            @ApiParam(name = "作业 ID", value = "节点作业 ID")
+            @ApiParam(name = "JobId", value = "作业 ID")
             @RequestParam(value = "JobId", required = true)
             @NotNull
             Long jobId,
 
-            @ApiParam(name = "阶段 ID", value = "阶段 ID")
+            @ApiParam(name = "StageId", value = "阶段 ID")
             @RequestParam(value = "StageId", required = true)
             @NotNull
             Long stageId,
 
-            @ApiParam(name = "任务 ID", value = "任务 ID")
+            @ApiParam(name = "TaskId", value = "任务 ID")
             @RequestParam(value = "TaskId", required = true)
             Long taskId,
 
-            @ApiParam(name = "步骤 ID", value = "步骤 ID")
+            @ApiParam(name = "StepId", value = "步骤 ID")
             @RequestParam(value = "StepId", required = true)
             Long stepId
     ) throws Exception;

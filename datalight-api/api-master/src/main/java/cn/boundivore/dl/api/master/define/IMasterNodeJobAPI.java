@@ -83,21 +83,21 @@ public interface IMasterNodeJobAPI {
     @GetMapping(value = "/job/getNodeJobLogList")
     @ApiOperation(notes = "获取节点作业日志信息列表", value = "获取节点作业日志信息列表")
     Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(
-            @ApiParam(name = "集群 ID", value = "集群 ID")
+            @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             @NotNull
             Long clusterId,
 
-            @ApiParam(name = "节点作业 ID", value = "节点作业 ID")
+            @ApiParam(name = "NodeJobId", value = "节点作业 ID")
             @RequestParam(value = "NodeJobId", required = true)
             @NotNull
             Long nodeJobId,
 
-            @ApiParam(name = "节点任务 ID", value = "节点任务 ID")
+            @ApiParam(name = "NodeTaskId", value = "节点任务 ID")
             @RequestParam(value = "NodeTaskId", required = true)
             Long nodeTaskId,
 
-            @ApiParam(name = "节点步骤 ID", value = "节点步骤 ID")
+            @ApiParam(name = "NodeStepId", value = "节点步骤 ID")
             @RequestParam(value = "NodeStepId", required = true)
             Long nodeStepId
     ) throws Exception;
