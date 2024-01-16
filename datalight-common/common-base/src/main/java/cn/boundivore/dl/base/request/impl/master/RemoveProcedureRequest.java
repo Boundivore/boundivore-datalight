@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.base.request.impl.master;
 
-import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -51,10 +50,5 @@ public class RemoveProcedureRequest implements IRequest {
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
     private Long clusterId;
-
-    @Schema(name = "Tag", title = "步骤唯一标识", required = true)
-    @JsonProperty(value = "Tag", required = true)
-    @NotNull
-    private String tag;
 
 }

@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.MasterWorkerEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
@@ -96,6 +97,8 @@ public class JobService {
     private final TDlStepServiceImpl tDlStepService;
 
     private final TDlJobLogServiceImpl tDlJobLogService;
+
+    private final MasterInitProcedureService masterInitProcedureService;
 
     /**
      * Description: 提交异步任务到线程池
@@ -890,6 +893,30 @@ public class JobService {
      */
     public List<TDlComponent> getTDlComponentListByServiceName(Long clusterId, String serviceName) {
         return this.masterComponentService.getTDlComponentListByServiceName(clusterId, serviceName);
+    }
+
+    /**
+     * Description: 整个步骤完成后，清除步骤记录信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/16
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void clearProcedure(Long clusterId) {
+        this.masterInitProcedureService.removeInitProcedure(
+                new RemoveProcedureRequest(
+                        clusterId
+                )
+        );
     }
 
 }

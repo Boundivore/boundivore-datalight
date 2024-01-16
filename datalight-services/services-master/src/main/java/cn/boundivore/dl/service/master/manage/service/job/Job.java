@@ -504,6 +504,9 @@ public class Job extends Thread {
         //清除所有可能残留的异步任务
         this.plan.clear();
 
+        // 如果是部署服务或组件，则完成后，清除 Procedure 信息
+        this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
+
         JobCache.getInstance().releaseActiveJobId(this.jobMeta.getId());
     }
 
