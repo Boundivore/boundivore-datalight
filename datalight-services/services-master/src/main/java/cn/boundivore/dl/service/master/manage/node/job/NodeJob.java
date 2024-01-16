@@ -16,10 +16,12 @@
  */
 package cn.boundivore.dl.service.master.manage.node.job;
 
+import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.service.master.converter.INodeStepConverter;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
@@ -35,6 +37,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -89,15 +92,31 @@ public class NodeJob extends Thread {
      *
      * @return NodeJob
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     public NodeJob init() throws InterruptedException {
-        this.initJobMeta();
-        this.plan(this.nodeJobMeta);
+        try {
+            this.initJobMeta();
+            this.plan(this.nodeJobMeta);
 
-        this.nodeJobService.updateNodeJobDatabase(this.nodeJobMeta);
-        NodeJobCache.getInstance().cache(this);
+            this.nodeJobService.updateNodeJobDatabase(this.nodeJobMeta);
+            NodeJobCache.getInstance().cache(this);
 
-        this.nodePlan.initExecTotal(this.nodeJobMeta);
-        this.isInit = true;
+            this.nodePlan.initExecTotal(this.nodeJobMeta);
+            this.isInit = true;
+
+        } catch (Exception e) {
+            NodeJobCache.getInstance().releaseActiveNodeJobId();
+            throw new BException(
+                    String.format(
+                            "初始化 NodeJob 异常: %s",
+                            ExceptionUtil.getSimpleMessage(e)
+                    )
+            );
+        }
+
         return this;
     }
 
@@ -274,7 +293,11 @@ public class NodeJob extends Thread {
      *
      * @param nodeJobMeta 工作元数据信息
      */
-    private void plan(NodeJobMeta nodeJobMeta) {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void plan(NodeJobMeta nodeJobMeta) {
         nodeJobMeta.getNodeTaskMetaMap()
                 .forEach((kTask, vTask) -> {
                             log.info(
@@ -304,7 +327,11 @@ public class NodeJob extends Thread {
      * Modified by:
      * Modification time:
      */
-    private void execute() {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void execute() {
         // 记录 NodeJob 起始时间
         this.nodeJobMeta.setStartTime(System.currentTimeMillis());
 
@@ -379,7 +406,11 @@ public class NodeJob extends Thread {
      *
      * @param execStateEnum 当前状态
      */
-    private void updateJobExecutionStatus(ExecStateEnum execStateEnum) {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void updateJobExecutionStatus(ExecStateEnum execStateEnum) {
         // 更新当前作业的执行状态到内存缓存
         this.nodeJobService.updateJobMemory(this.nodeJobMeta, execStateEnum);
         // 更新当前作业的执行状态到数据库
@@ -397,6 +428,10 @@ public class NodeJob extends Thread {
      * Modification time:
      * Throws:
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     @Override
     public void run() {
         Assert.isTrue(

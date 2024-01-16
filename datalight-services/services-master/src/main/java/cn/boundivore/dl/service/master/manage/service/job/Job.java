@@ -16,15 +16,18 @@
  */
 package cn.boundivore.dl.service.master.manage.service.job;
 
+import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.service.master.converter.IStepConverter;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
+import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
 import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
@@ -42,6 +45,7 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -97,18 +101,32 @@ public class Job extends Thread {
      *
      * @return Job
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     public Job init() throws InterruptedException {
         // 初始化 JobMeta，并组装 Stage、Task
-        this.initJobMeta();
+        try {
+            this.initJobMeta();
 
-        // 根据初始化的元数据信息，初始化计划信息，并组装、填充待执行异步线程
-        this.plan(this.jobMeta);
+            // 根据初始化的元数据信息，初始化计划信息，并组装、填充待执行异步线程
+            this.plan(this.jobMeta);
 
-        this.jobService.updateJobDatabase(this.jobMeta);
-        JobCache.getInstance().cache(this);
+            this.jobService.updateJobDatabase(this.jobMeta);
+            JobCache.getInstance().cache(this);
 
-        this.plan.initExecTotal(this.jobMeta);
-        this.isInit = true;
+            this.plan.initExecTotal(this.jobMeta);
+            this.isInit = true;
+        } catch (Exception e) {
+            JobCache.getInstance().releaseActiveJobId();
+            throw new BException(
+                    String.format(
+                            "初始化 Job 异常: %s",
+                            ExceptionUtil.getSimpleMessage(e)
+                    )
+            );
+        }
         return this;
     }
 
@@ -402,7 +420,11 @@ public class Job extends Thread {
      *
      * @param jobMeta 工作元数据信息
      */
-    private void plan(JobMeta jobMeta) {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void plan(JobMeta jobMeta) {
 
         jobMeta.getStageMetaMap()
                 .forEach((kStage, vStage) -> {
@@ -445,7 +467,11 @@ public class Job extends Thread {
      * Modified by:
      * Modification time:
      */
-    private void execute() {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void execute() {
         //记录 Job 起始时间
         this.jobMeta.setStartTime(System.currentTimeMillis());
 
@@ -520,6 +546,10 @@ public class Job extends Thread {
      * Modification time:
      * Throws:
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
     @Override
     public void run() {
         Assert.isTrue(
@@ -542,7 +572,11 @@ public class Job extends Thread {
      *
      * @param execStateEnum 当前状态
      */
-    private void updateJobExecutionStatus(ExecStateEnum execStateEnum) {
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void updateJobExecutionStatus(ExecStateEnum execStateEnum) {
         // 更新当前作业的执行状态到内存缓存
         this.jobService.updateJobMemory(this.jobMeta, execStateEnum);
         // 更新当前作业的执行状态到数据库
