@@ -758,7 +758,7 @@ public class JobService {
      * @param clusterId   集群 ID
      * @param nodeId      节点 ID
      * @param serviceName 服务名称
-     * @return true 需要初始化移除目录，false，不需要初始化移除目录
+     * @return true: 需要初始化移除目录，false: 不需要初始化移除目录
      */
     public boolean isInit(Long clusterId, Long nodeId, String serviceName) {
         List<TDlComponent> tDlComponentListByServiceName = this.masterComponentService
