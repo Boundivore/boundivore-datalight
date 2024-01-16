@@ -44,6 +44,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -299,12 +300,24 @@ public class Job extends Thread {
         SCStateEnum finalFailState = failState;
         SCStateEnum finalSuccessState = successState;
 
+        /* 使用一个原子标记来标识是否是第一个TaskMeta
+         * 用于判断当前 Task 是否需要阻塞自身执行
+         * （即阻塞 "保存通用配置"，等待配置就绪后，后续任务即可直接引用已保存的配置内容）
+         * 用于 MasterConfigSyncService.saveConfigOrUpdateBatch 过程进入无锁保存配置逻辑，提升部署速度
+         */
+        AtomicBoolean isFirstTaskMeta = new AtomicBoolean(true);
+
         //实例化组装每一个 TaskMeta
         return nodeList.stream()
                 .map(i -> {
                             TaskMeta taskMeta = new TaskMeta()
                                     .setStageMeta(stageMeta)
-                                    .setWait(false)//TODO 如需滚动重启等需求，可控制该参数
+                                    // 配置当前 Task 是否需要等待前面的任务完成，再执行自身
+                                    // 通过控制传递该参数的 true false 值可用于滚动重启等功能
+                                    .setWait(this.intention.isOneByOne())
+                                    // 配置当前 Task 是否需要阻塞自身执行，直到自身执行完成
+                                    // 同时通过控制传递该参数的 true false 值也可用于滚动重启等功能
+                                    .setBlock(isFirstTaskMeta.getAndSet(false))
                                     .setId(IdWorker.getId())
                                     .setName(String.format(
                                                     "%s:%s[%s]",
@@ -347,7 +360,6 @@ public class Job extends Thread {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * Description: 初始化当前 StepMeta，StepMeta 为具体某个Service，某个 Component，某个 Node，某个 Action 的一个操作；
      * 因为 TaskMeta 会包含一组 StepMeta，因此返回 List<StepMeta>
@@ -374,8 +386,8 @@ public class Job extends Thread {
         );
 
         List<YamlServiceDetail.Step> finalSteps = new LinkedList<>(action.getSteps());
-        //TODO 针对所有节点，针对同一个服务，如果是第一个执行配置文件初始化的任务，则阻塞，其他任务则不阻塞，可提升并发速度
-        //TODO 注意：该操作仅仅是为了在这里备注，需要修改代码的位置位于：添加 TaskMeta 的位置
+        // 针对所有节点，针对同一个服务，如果是第一个执行配置文件初始化的任务，则阻塞，其他任务则不阻塞，可提升并发速度
+        // 注意：该操作仅仅是为了在这里备注，对应功能的逻辑代码的位置位于：添加 TaskMeta 的位置，通过 AtomicBoolean 控制
         if (taskMeta.isFirstDeployInNode()) {
             YamlServiceDetail.Initialize initialize = ResolverYamlServiceDetail.SERVICE_MAP
                     .get(taskMeta.getServiceName()).getInitialize();

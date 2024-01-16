@@ -21,16 +21,13 @@ import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
 import cn.boundivore.dl.service.master.manage.service.stage.AbstractStage;
 import cn.boundivore.dl.service.master.manage.service.task.ITask;
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
-import cn.hutool.core.thread.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -71,8 +68,12 @@ public class Stage extends AbstractStage {
             //缓存 Future 到队列，后续阻塞读取
             Future<TaskMeta> f = super.jobService.submit(task);
             taskFutureList.add(f);
-
             priority = taskMeta.getPriority();
+
+            // 判断当前 Task 是否需要阻塞执行
+            if (taskMeta.isBlock()) {
+                this.blockAndCheckCurrentTask(f);
+            }
 
         }
 
@@ -118,5 +119,38 @@ public class Stage extends AbstractStage {
                         )
                 )
         );
+    }
+
+    /**
+     * Description: 检查当前 Task 是否成功，如果不成功，则抛出异常
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/6/8 17:30
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param currentTask 当前提交的任务
+     */
+    private void blockAndCheckCurrentTask(Future<TaskMeta> currentTask) throws BException {
+        //获取执行的任务中是否包含失败的任务
+        TaskMeta taskMeta = null;
+        try {
+            taskMeta = currentTask.get();
+        } catch (Exception e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+        }
+
+        Assert.isTrue(
+                taskMeta != null && taskMeta.getTaskResult().isSuccess(),
+                () -> new BException(
+                        String.format(
+                                "Stage(%s) 中包含的 Task 执行失败, 请排查后重新尝试",
+                                this.stageMeta.getName()
+                        )
+                )
+        );
+
     }
 }

@@ -60,9 +60,12 @@ public class TaskMeta extends TimeMeta {
     //组件当前状态
     private SCStateEnum currentState;
 
-    // 标记：用于判断开始执行当前 Task 之前，是否需要阻塞等待之前 Task 执行完毕，true（需要），false（不需要）
+    // 标记：用于判断开始执行当前 Task 之前，是否需要阻塞等待之前 Task 执行完毕，true: 需要，false: 不需要
     // 例如利用与滚动重启，或低功耗部署等（Task runs One by one）
     protected boolean wait;
+
+    // 标记：用于标记当前任务是否需要阻塞等待完成 true: 需要，false: 不需要
+    protected boolean block;
 
     private long id;
 

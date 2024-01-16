@@ -125,6 +125,7 @@ public class MasterJobService {
         final Intention intention = new Intention()
                 .setClusterMeta(clusterMeta)
                 .setActionTypeEnum(request.getActionTypeEnum())
+                .setOneByOne(request.getIsOneByOne())
                 .setServiceList(
                         tDlServiceList.stream()
                                 .map(i -> this.intentionService(

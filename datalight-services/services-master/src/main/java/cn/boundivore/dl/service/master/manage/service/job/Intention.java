@@ -49,6 +49,8 @@ public class Intention {
 
     private List<Service> serviceList;
 
+    private boolean isOneByOne;
+
 
     @Data
     @AllArgsConstructor

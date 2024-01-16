@@ -66,5 +66,8 @@ public class JobRequest implements IRequest {
     @NotEmpty
     private List<String> serviceNameList;
 
+    @Schema(name = "IsOneByOne", title = "是否为滚动操作依次执行", required = true)
+    @JsonProperty(value = "IsOneByOne", required = true)
+    private Boolean isOneByOne = false;
 
 }
