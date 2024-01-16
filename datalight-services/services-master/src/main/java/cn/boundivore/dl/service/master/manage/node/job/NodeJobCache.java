@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.manage.node.job;
 
+import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.exception.BException;
 import cn.hutool.cache.Cache;
@@ -60,7 +61,7 @@ public class NodeJobCache {
         this.activeJobLock = new ReentrantLock();
 
         // 内存中缓存若干 NodeJob
-        this.cache = CacheUtil.newFIFOCache(5);
+        this.cache = CacheUtil.newFIFOCache(Constants.CACHE_CAPACITY);
         this.cache.setListener((key, nodeJob) ->
                 log.info("NodeJob 缓存清除: {}({})",
                         nodeJob.getNodeJobMeta().getName(),
