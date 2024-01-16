@@ -44,12 +44,12 @@ public class MasterConfigPreController implements IMasterConfigPreAPI {
 
 
     @Override
-    public Result<ConfigPreVo> configPreList(Long clusterId) throws Exception {
-        return this.masterConfigPreService.configPreList(clusterId);
+    public Result<ConfigPreVo> getConfigPreList(Long clusterId) throws Exception {
+        return this.masterConfigPreService.getConfigPreList(clusterId);
     }
 
     @Override
-    public Result<String> configPreSave(ConfigPreSaveRequest request) throws Exception {
-        return this.masterConfigPreService.configPreSave(request);
+    public Result<String> saveConfigPre(ConfigPreSaveRequest request) throws Exception {
+        return this.masterConfigPreService.saveConfigPre(request);
     }
 }

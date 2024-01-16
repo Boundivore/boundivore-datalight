@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterConfigPreAPI {
     @GetMapping(value = "/config/pre/list")
     @ApiOperation(notes = "根据待部署的服务组件获取预配置项", value = "根据待部署的服务组件获取预配置项")
-    Result<ConfigPreVo> configPreList(
+    Result<ConfigPreVo> getConfigPreList(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
@@ -60,7 +60,7 @@ public interface IMasterConfigPreAPI {
 
     @PostMapping(value = "/config/pre/save")
     @ApiOperation(notes = "设置预配置项", value = "设置预配置项")
-    Result<String> configPreSave(
+    Result<String> saveConfigPre(
             @RequestBody
             @Valid
             ConfigPreSaveRequest request

@@ -75,7 +75,7 @@ public class MasterConfigPreService {
      * @param clusterId 当前操作的集群 ID
      * @return 返回预配置信息
      */
-    public Result<ConfigPreVo> configPreList(Long clusterId) {
+    public Result<ConfigPreVo> getConfigPreList(Long clusterId) {
         // 获取待部署的服务列表
         List<TDlService> tDlServiceList = masterServiceService.getTDlServiceListByState(
                 clusterId,
@@ -216,7 +216,7 @@ public class MasterConfigPreService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> configPreSave(ConfigPreSaveRequest request) {
+    public Result<String> saveConfigPre(ConfigPreSaveRequest request) {
 
         Long clusterId = request.getClusterId();
         List<ConfigPreSaveRequest.ServiceRequest> serviceList = request.getServiceList();

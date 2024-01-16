@@ -68,8 +68,8 @@ public class ServiceDependenciesVo implements IVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ServiceRelativeVo.RelativeDetailVo",
-            description = "ServiceRelativeVo.RelativeDetailVo: 当前服务"
+            name = "ServiceDependenciesVo.RelativeDetailVo",
+            description = "ServiceDependenciesVo.RelativeDetailVo: 当前服务"
     )
     public static class ServiceDetailVo implements IVo {
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
@@ -111,8 +111,8 @@ public class ServiceDependenciesVo implements IVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ServiceRelativeVo.ComponentDetailVo",
-            description = "ServiceRelativeVo.ComponentDetailVo: 当前组件"
+            name = "ServiceDependenciesVo.ComponentDetailVo",
+            description = "ServiceDependenciesVo.ComponentDetailVo: 当前组件"
     )
     public static class ComponentDetailVo implements IVo {
 
@@ -150,8 +150,8 @@ public class ServiceDependenciesVo implements IVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Schema(
-            name = "ServiceRelativeVo.ConfDirVo",
-            description = "ServiceRelativeVo.ConfDirVo: 服务配置目录与模板目录信息"
+            name = "ServiceDependenciesVo.ConfDirVo",
+            description = "ServiceDependenciesVo.ConfDirVo: 服务配置目录与模板目录信息"
     )
     public static class ConfDirVo implements Serializable {
         @Schema(name = "ServiceConfDir", title = "服务配置文件目录", required = true)
@@ -169,10 +169,11 @@ public class ServiceDependenciesVo implements IVo {
     @AllArgsConstructor
     @NoArgsConstructor
     @Schema(
-            name = "ServiceRelativeVo.PropertyVo",
-            description = "ServiceRelativeVo.PropertyVo: 预配置属性信息"
+            name = "ServiceDependenciesVo.PropertyVo",
+            description = "ServiceDependenciesVo.PropertyVo: 预配置属性信息"
     )
     public static class PropertyVo implements Serializable {
+
         @Schema(name = "TemplatedFilePath", title = "配置文件模板路径", required = true)
         @JsonProperty(value = "TemplatedFilePath", required = true)
         private String templatedFilePath;
