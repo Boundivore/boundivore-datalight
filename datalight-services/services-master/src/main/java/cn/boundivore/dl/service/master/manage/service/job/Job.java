@@ -16,13 +16,11 @@
  */
 package cn.boundivore.dl.service.master.manage.service.job;
 
-import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.service.master.converter.IStepConverter;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
@@ -44,7 +42,6 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;

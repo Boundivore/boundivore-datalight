@@ -88,10 +88,6 @@ public class MasterJobService {
      *                      例如先启动的服务，在执行关闭相关操作的计划时，可能最后关闭
      * @return Long 任务构建成功且开始运行，返回 JobId
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Long initJob(JobRequest request, boolean isPriorityAsc) throws Exception {
 
         // 之前必须经过检查，以确保下面的数据的严谨性和操作的严谨性

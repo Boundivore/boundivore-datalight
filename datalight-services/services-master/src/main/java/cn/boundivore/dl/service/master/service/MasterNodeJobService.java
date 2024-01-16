@@ -94,10 +94,6 @@ public class MasterNodeJobService {
      * @param isAsc   是否按照节点主机名正序执行，true：正序，false：逆序
      * @return NodeJobId
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Long initNodeJob(NodeJobRequest request, boolean isAsc) throws Exception {
 
         // 检查 NodeJob 合法性

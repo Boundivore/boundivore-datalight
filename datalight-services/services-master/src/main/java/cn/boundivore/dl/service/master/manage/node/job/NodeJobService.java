@@ -80,7 +80,7 @@ public class NodeJobService {
     private final MasterNodeInitService masterNodeInitService;
     private final MasterNodeService masterNodeService;
 
-    private final TDlNodeJobServiceImpl tDlJobNodeService;
+    private final TDlNodeJobServiceImpl tDlNodeJobService;
 
     private final TDlNodeTaskServiceImpl tDlTaskNodeService;
 
@@ -203,9 +203,9 @@ public class NodeJobService {
                 .setDuration(nodeJobMeta.getDuration())
                 .setId(nodeJobMeta.getId());
 
-        boolean saveOrUpdateSuccess = this.tDlJobNodeService.getById(nodeJobMeta.getId()) == null
-                ? this.tDlJobNodeService.save(tDlNodeJob)
-                : this.tDlJobNodeService.updateById(tDlNodeJob);
+        boolean saveOrUpdateSuccess = this.tDlNodeJobService.getById(nodeJobMeta.getId()) == null
+                ? this.tDlNodeJobService.save(tDlNodeJob)
+                : this.tDlNodeJobService.updateById(tDlNodeJob);
 
         Assert.isTrue(
                 saveOrUpdateSuccess,
