@@ -389,9 +389,6 @@ public class NodeJob extends Thread {
 
         // 清除所有可能残留的异步任务
         this.nodePlan.clear();
-
-        // 释放当前活动作业的标识符
-        NodeJobCache.getInstance().releaseActiveNodeJobId();
     }
 
     /**
@@ -439,7 +436,11 @@ public class NodeJob extends Thread {
                 () -> new BException("执行 NodeJob 前需要先调用 init() 初始化任务计划")
         );
 
-        this.execute();
+        try {
+            this.execute();
+        } finally {
+            NodeJobCache.getInstance().releaseActiveNodeJobId();
+        }
     }
 
     /**

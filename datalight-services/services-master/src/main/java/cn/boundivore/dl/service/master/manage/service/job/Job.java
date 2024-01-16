@@ -27,7 +27,6 @@ import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.service.master.converter.IStepConverter;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
-import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
 import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
@@ -499,7 +498,7 @@ public class Job extends Thread {
         ExecStateEnum execStateEnum;
         try {
             // 如果之前任务全部成功，则重载 Prometheus 并初始化 Grafana
-            if(this.jobMeta.getJobResult().isSuccess()){
+            if (this.jobMeta.getJobResult().isSuccess()) {
                 this.reloadAndInitMonitor();
             }
 
@@ -532,8 +531,6 @@ public class Job extends Thread {
 
         // 如果是部署服务或组件，则完成后，清除 Procedure 信息
         this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
-
-        JobCache.getInstance().releaseActiveJobId();
     }
 
     /**
@@ -557,7 +554,11 @@ public class Job extends Thread {
                 () -> new BException("执行 Job 前需要先调用 init() 初始化任务计划")
         );
 
-        this.execute();
+        try {
+            this.execute();
+        } finally {
+            JobCache.getInstance().releaseActiveJobId();
+        }
     }
 
     /**

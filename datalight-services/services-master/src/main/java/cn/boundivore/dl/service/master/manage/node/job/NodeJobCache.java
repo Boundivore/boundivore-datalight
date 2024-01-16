@@ -55,7 +55,7 @@ public class NodeJobCache {
     private final ReentrantLock activeJobLock;
 
     @Getter
-    private final AtomicLong activeJobId = new AtomicLong(0);
+    private final AtomicLong activeJobId = new AtomicLong(0L);
 
     private NodeJobCache() {
         this.activeJobLock = new ReentrantLock();
