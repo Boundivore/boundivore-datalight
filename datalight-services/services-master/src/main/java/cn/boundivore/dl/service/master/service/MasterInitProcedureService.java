@@ -308,7 +308,7 @@ public class MasterInitProcedureService {
      * Throws:
      *
      * @param request 包含集群 ID 的请求体
-     * @return Result<String>
+     * @return Result<String> 成功或失败
      */
     public Result<String> removeInitProcedure(RemoveProcedureRequest request) {
         TDlInitProcedure tDlInitProcedure = this.tDlInitProcedureService.lambdaQuery()
