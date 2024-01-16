@@ -364,7 +364,7 @@ public class NodeJob extends Thread {
         this.nodePlan.clear();
 
         // 释放当前活动作业的标识符
-        NodeJobCache.getInstance().releaseActiveNodeJobId(this.nodeJobMeta.getId());
+        NodeJobCache.getInstance().releaseActiveNodeJobId();
     }
 
     /**

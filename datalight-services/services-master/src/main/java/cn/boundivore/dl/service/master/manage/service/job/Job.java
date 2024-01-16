@@ -129,7 +129,7 @@ public class Job extends Thread {
                 JobCache.getInstance().setActiveJobId(jobMetaId),
                 () -> new BException(
                         String.format(
-                                "安全起见，不允许同时对集群服务组件进行变更，已有其他活跃的任务正在运行: %s",
+                                "安全起见，不允许同时启动多个作业对集群服务组件进行变更，已有其他活跃的任务正在运行: %s",
                                 JobCache.getInstance().getActiveJobId()
                         )
                 )
@@ -507,7 +507,7 @@ public class Job extends Thread {
         // 如果是部署服务或组件，则完成后，清除 Procedure 信息
         this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
 
-        JobCache.getInstance().releaseActiveJobId(this.jobMeta.getId());
+        JobCache.getInstance().releaseActiveJobId();
     }
 
     /**

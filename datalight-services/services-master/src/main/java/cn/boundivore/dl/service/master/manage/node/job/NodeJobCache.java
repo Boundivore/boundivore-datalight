@@ -214,22 +214,10 @@ public class NodeJobCache {
      * Creation time: 2023/6/8
      * Throws:
      *
-     * @param nodeJobId 节点异步 Job Id
-     * @return boolean 如果成功释放活跃的 nodeJobId，则返回 true，否则返回 false
      */
-    public boolean releaseActiveNodeJobId(Long nodeJobId) {
-        Assert.isTrue(
-                this.activeJobId.get() != 0L,
-                () -> new BException("当前没有活跃的 Job")
-        );
-
-        Assert.isTrue(
-                nodeJobId != null && nodeJobId != 0L,
-                () -> new BException("JobId 不能为空")
-        );
-
-        return this.activeJobId.compareAndSet(nodeJobId, 0L);
+    public void releaseActiveNodeJobId() {
+        if(this.activeJobId.get() != 0L){
+            this.activeJobId.set(0L);
+        }
     }
-
-
 }

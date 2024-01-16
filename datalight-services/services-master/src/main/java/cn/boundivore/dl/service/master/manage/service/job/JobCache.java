@@ -54,7 +54,7 @@ public class JobCache {
     private final ReentrantLock activeJobLock;
 
     @Getter
-    private final AtomicLong activeJobId = new AtomicLong(0);
+    private final AtomicLong activeJobId = new AtomicLong(0L);
 
     private JobCache() {
         this.activeJobLock = new ReentrantLock();
@@ -212,22 +212,11 @@ public class JobCache {
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/6/8 10:23
      * Throws:
-     *
-     * @param jobId Job ID
-     * @return boolean 如果成功释放活跃的 Job ID，则返回 true，否则返回 false
      */
-    public boolean releaseActiveJobId(Long jobId) {
-        Assert.isTrue(
-                this.activeJobId.get() != 0L,
-                () -> new BException("当前没有活跃的 Job")
-        );
-
-        Assert.isTrue(
-                jobId != null && jobId != 0L,
-                () -> new BException("JobId 不能为空")
-        );
-
-        return this.activeJobId.compareAndSet(jobId, 0L);
+    public void releaseActiveJobId() {
+        if (this.activeJobId.get() != 0L) {
+            this.activeJobId.set(0L);
+        }
     }
 
 
