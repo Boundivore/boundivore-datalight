@@ -52,6 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -225,26 +226,26 @@ public class JobService {
             rollbackFor = DatabaseException.class
     )
     public void updateJobDatabase(JobMeta jobMeta) {
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStateMemory()
-        //此时会从内从中最新的元数据状态更新到数据库
-        TDlJob tDlJob = this.tDlJobService.getById(jobMeta.getId());
-        tDlJob = tDlJob == null ? new TDlJob() : tDlJob;
-
+        // 注意：执行更新数据库前，务必先更新内存，例如： this.updateJobMemory()
+        // 此时会从内存中最新的元数据状态更新到数据库
+        TDlJob tDlJob = new TDlJob();
         tDlJob.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobName(jobMeta.getName())
                 .setJobState(jobMeta.getExecStateEnum())
                 .setStartTime(jobMeta.getStartTime())
                 .setEndTime(jobMeta.getEndTime())
-                .setDuration(jobMeta.getDuration());
+                .setDuration(jobMeta.getDuration())
+                .setId(jobMeta.getId());
 
-        tDlJob.setId(jobMeta.getId());
+        boolean operationSuccess = this.tDlJobService.getById(jobMeta.getId()) == null
+                ? this.tDlJobService.save(tDlJob)
+                : this.tDlJobService.updateById(tDlJob);
 
         Assert.isTrue(
-                this.tDlJobService.saveOrUpdate(tDlJob),
-                () -> new DatabaseException("更新 JobMeta 到数据库失败")
+                operationSuccess,
+                () -> new DatabaseException("更新或保存 Job 到数据库失败")
         );
-
     }
 
 
@@ -283,14 +284,11 @@ public class JobService {
             rollbackFor = DatabaseException.class
     )
     public void updateStageDatabase(StageMeta stageMeta) {
-
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStateMemory()
-        //此时会从内从中最新的元数据状态更新到数据库
+        // 注意：执行更新数据库前，务必先更新内存，例如： this.updateStageMemory()
+        // 此时会从内存中最新的元数据状态更新到数据库
         JobMeta jobMeta = stageMeta.getJobMeta();
 
-        TDlStage tDlStage = this.tDlStageService.getById(stageMeta.getId());
-        tDlStage = tDlStage == null ? new TDlStage() : tDlStage;
-
+        TDlStage tDlStage = new TDlStage();
         tDlStage.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobId(jobMeta.getId())
@@ -299,13 +297,16 @@ public class JobService {
                 .setServiceName(stageMeta.getServiceName())
                 .setStartTime(stageMeta.getStartTime())
                 .setEndTime(stageMeta.getEndTime())
-                .setDuration(stageMeta.getDuration());
+                .setDuration(stageMeta.getDuration())
+                .setId(stageMeta.getId());
 
-        tDlStage.setId(stageMeta.getId());
+        boolean operationSuccess = this.tDlStageService.getById(stageMeta.getId()) == null
+                ? this.tDlStageService.save(tDlStage)
+                : this.tDlStageService.updateById(tDlStage);
 
         Assert.isTrue(
-                this.tDlStageService.saveOrUpdate(tDlStage),
-                () -> new DatabaseException("更新 StageMeta 到数据库失败")
+                operationSuccess,
+                () -> new DatabaseException("更新或保存 Stage 到数据库失败")
         );
     }
 
@@ -343,15 +344,12 @@ public class JobService {
     )
     public void updateTaskDatabase(TaskMeta taskMeta) {
 
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStateMemory()
+        //注意：执行更新数据库前，务必先更新内存，例如： this.updateTaskMemory()
         //此时会从内从中最新的元数据状态更新到数据库
         JobMeta jobMeta = taskMeta.getStageMeta().getJobMeta();
         StageMeta stageMeta = taskMeta.getStageMeta();
 
-        TDlTask tDlTask = this.tDlTaskService.getById(taskMeta.getId());
-        tDlTask = tDlTask == null ? new TDlTask() : tDlTask;
-
-
+        TDlTask tDlTask = new TDlTask();
         tDlTask.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobId(jobMeta.getId())
@@ -366,13 +364,16 @@ public class JobService {
                 .setComponentName(taskMeta.getComponentName())
                 .setStartTime(taskMeta.getStartTime())
                 .setEndTime(taskMeta.getEndTime())
-                .setDuration(taskMeta.getDuration());
+                .setDuration(taskMeta.getDuration())
+                .setId(taskMeta.getId());
 
-        tDlTask.setId(taskMeta.getId());
+        boolean operationSuccess = this.tDlTaskService.getById(taskMeta.getId()) == null
+                ? this.tDlTaskService.save(tDlTask)
+                : this.tDlTaskService.updateById(tDlTask);
 
         Assert.isTrue(
-                this.tDlTaskService.saveOrUpdate(tDlTask),
-                () -> new DatabaseException("更新 TaskMeta 到数据库失败")
+                operationSuccess,
+                () -> new DatabaseException("更新或保存 Task 到数据库失败")
         );
     }
 
@@ -410,16 +411,14 @@ public class JobService {
     )
     public void updateStepDatabase(StepMeta stepMeta) {
 
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStepStateMemory()，
+        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStepMemory()，
         //此时会从内从中最新的元数据状态更新到数据库
         TaskMeta taskMeta = stepMeta.getTaskMeta();
-
         JobMeta jobMeta = taskMeta.getStageMeta().getJobMeta();
+
         StageMeta stageMeta = taskMeta.getStageMeta();
 
-        TDlStep tDlStep = this.tDlStepService.getById(stepMeta.getId());
-        tDlStep = tDlStep == null ? new TDlStep() : tDlStep;
-
+        TDlStep tDlStep = new TDlStep();
         tDlStep.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobId(jobMeta.getId())
@@ -430,13 +429,16 @@ public class JobService {
                 .setStepType(stepMeta.getType())
                 .setStartTime(stepMeta.getStartTime())
                 .setEndTime(stepMeta.getEndTime())
-                .setDuration(stepMeta.getDuration());
+                .setDuration(stepMeta.getDuration())
+                .setId(stepMeta.getId());
 
-        tDlStep.setId(stepMeta.getId());
+        boolean operationSuccess = this.tDlStepService.getById(stepMeta.getId()) == null
+                ? this.tDlStepService.save(tDlStep)
+                : this.tDlStepService.updateById(tDlStep);
 
         Assert.isTrue(
-                this.tDlStepService.saveOrUpdate(tDlStep),
-                () -> new DatabaseException("更新 StepMeta 到数据库失败")
+                operationSuccess,
+                () -> new DatabaseException("更新或保存 Task 到数据库失败")
         );
     }
 

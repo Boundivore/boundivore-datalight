@@ -100,10 +100,6 @@ public class Job extends Thread {
      *
      * @return Job
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Job init() throws InterruptedException {
         // 初始化 JobMeta，并组装 Stage、Task
         try {
@@ -419,10 +415,6 @@ public class Job extends Thread {
      *
      * @param jobMeta 工作元数据信息
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void plan(JobMeta jobMeta) {
 
         jobMeta.getStageMetaMap()
@@ -466,10 +458,6 @@ public class Job extends Thread {
      * Modified by:
      * Modification time:
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void execute() {
         //记录 Job 起始时间
         this.jobMeta.setStartTime(System.currentTimeMillis());
@@ -543,10 +531,6 @@ public class Job extends Thread {
      * Modification time:
      * Throws:
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     @Override
     public void run() {
         Assert.isTrue(
@@ -573,10 +557,6 @@ public class Job extends Thread {
      *
      * @param execStateEnum 当前状态
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void updateJobExecutionStatus(ExecStateEnum execStateEnum) {
         // 更新当前作业的执行状态到内存缓存
         this.jobService.updateJobMemory(this.jobMeta, execStateEnum);

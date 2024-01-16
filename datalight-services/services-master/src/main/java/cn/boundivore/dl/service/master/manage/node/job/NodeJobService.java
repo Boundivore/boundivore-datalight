@@ -171,7 +171,7 @@ public class NodeJobService {
      * @param nodeJobMeta   NodeJob 元数据信息
      * @param execStateEnum 执行状态
      */
-    public void updateJobMemory(NodeJobMeta nodeJobMeta, ExecStateEnum execStateEnum) {
+    public void updateNodeJobMemory(NodeJobMeta nodeJobMeta, ExecStateEnum execStateEnum) {
         nodeJobMeta.setExecStateEnum(execStateEnum);
     }
 
@@ -191,24 +191,25 @@ public class NodeJobService {
             rollbackFor = DatabaseException.class
     )
     public void updateNodeJobDatabase(NodeJobMeta nodeJobMeta) {
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStateMemory()
+        //注意：执行更新数据库前，务必先更新内存，例如： this.updateNodeJobMemory()
         //此时会从内从中最新的元数据状态更新到数据库
-        TDlNodeJob tDlNodeJob = this.tDlJobNodeService.getById(nodeJobMeta.getId());
-        tDlNodeJob = tDlNodeJob == null ? new TDlNodeJob() : tDlNodeJob;
-
+        TDlNodeJob tDlNodeJob = new TDlNodeJob();
         tDlNodeJob.setTag(nodeJobMeta.getTag())
                 .setClusterId(nodeJobMeta.getClusterId())
                 .setNodeJobName(nodeJobMeta.getName())
                 .setNodeJobState(nodeJobMeta.getExecStateEnum())
                 .setStartTime(nodeJobMeta.getStartTime())
                 .setEndTime(nodeJobMeta.getEndTime())
-                .setDuration(nodeJobMeta.getDuration());
+                .setDuration(nodeJobMeta.getDuration())
+                .setId(nodeJobMeta.getId());
 
-        tDlNodeJob.setId(nodeJobMeta.getId());
+        boolean saveOrUpdateSuccess = this.tDlJobNodeService.getById(nodeJobMeta.getId()) == null
+                ? this.tDlJobNodeService.save(tDlNodeJob)
+                : this.tDlJobNodeService.updateById(tDlNodeJob);
 
         Assert.isTrue(
-                this.tDlJobNodeService.saveOrUpdate(tDlNodeJob),
-                () -> new DatabaseException("更新 NodeJobMeta 到数据库失败")
+                saveOrUpdateSuccess,
+                () -> new DatabaseException("保存或更新 NodeJob 到数据库失败")
         );
 
     }
@@ -245,15 +246,10 @@ public class NodeJobService {
             rollbackFor = DatabaseException.class
     )
     public void updateNodeTaskDatabase(NodeTaskMeta nodeTaskMeta) {
-
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStateMemory()
-        //此时会从内从中最新的元数据状态更新到数据库
+        //注意：执行更新数据库前，务必先更新内存，例如： this.updateNodeTaskMemory()
+        //此时会从内存中最新的元数据状态更新到数据库
         NodeJobMeta nodeJobMeta = nodeTaskMeta.getNodeJobMeta();
-
-        TDlNodeTask tDlNodeTask = this.tDlTaskNodeService.getById(nodeTaskMeta.getId());
-        tDlNodeTask = tDlNodeTask == null ? new TDlNodeTask() : tDlNodeTask;
-
-
+        TDlNodeTask tDlNodeTask = new TDlNodeTask();
         tDlNodeTask.setTag(nodeJobMeta.getTag())
                 .setClusterId(nodeJobMeta.getClusterId())
                 .setNodeJobId(nodeJobMeta.getId())
@@ -265,13 +261,16 @@ public class NodeJobService {
                 .setNodeActionType(nodeTaskMeta.getNodeActionTypeEnum())
                 .setStartTime(nodeTaskMeta.getStartTime())
                 .setEndTime(nodeTaskMeta.getEndTime())
-                .setDuration(nodeTaskMeta.getDuration());
+                .setDuration(nodeTaskMeta.getDuration())
+                .setId(nodeTaskMeta.getId());
 
-        tDlNodeTask.setId(nodeTaskMeta.getId());
+        boolean saveOrUpdateSuccess = this.tDlTaskNodeService.getById(nodeTaskMeta.getId()) == null
+                ? this.tDlTaskNodeService.save(tDlNodeTask)
+                : this.tDlTaskNodeService.updateById(tDlNodeTask);
 
         Assert.isTrue(
-                this.tDlTaskNodeService.saveOrUpdate(tDlNodeTask),
-                () -> new DatabaseException("更新 NodeTaskMeta 到数据库失败")
+                saveOrUpdateSuccess,
+                () -> new DatabaseException("保存或更新 NodeTaskMeta 到数据库失败")
         );
     }
 
@@ -308,16 +307,12 @@ public class NodeJobService {
             rollbackFor = DatabaseException.class
     )
     public void updateNodeStepDatabase(NodeStepMeta nodeStepMeta) {
-
-        //注意：执行更新数据库前，务必先更新内存，例如： this.updateStepStateMemory()，
-        //此时会从内从中最新的元数据状态更新到数据库
+        // 注意：执行更新数据库前，务必先更新内存，例如： this.updateNodeStepMemory()，
+        // 此时会从内存中最新的元数据状态更新到数据库
         NodeTaskMeta nodeTaskMeta = nodeStepMeta.getNodeTaskMeta();
-
         NodeJobMeta nodeJobMeta = nodeTaskMeta.getNodeJobMeta();
 
-        TDlNodeStep tDlNodeStep = this.tDlStepNodeService.getById(nodeStepMeta.getId());
-        tDlNodeStep = tDlNodeStep == null ? new TDlNodeStep() : tDlNodeStep;
-
+        TDlNodeStep tDlNodeStep = new TDlNodeStep();
         tDlNodeStep.setTag(nodeJobMeta.getTag())
                 .setClusterId(nodeJobMeta.getClusterId())
                 .setNodeJobId(nodeJobMeta.getId())
@@ -327,13 +322,16 @@ public class NodeJobService {
                 .setNodeStepType(nodeStepMeta.getType())
                 .setStartTime(nodeStepMeta.getStartTime())
                 .setEndTime(nodeStepMeta.getEndTime())
-                .setDuration(nodeStepMeta.getDuration());
+                .setDuration(nodeStepMeta.getDuration())
+                .setId(nodeStepMeta.getId());
 
-        tDlNodeStep.setId(nodeStepMeta.getId());
+        boolean saveOrUpdateSuccess = this.tDlStepNodeService.getById(nodeStepMeta.getId()) == null
+                ? this.tDlStepNodeService.save(tDlNodeStep)
+                : this.tDlStepNodeService.updateById(tDlNodeStep);
 
         Assert.isTrue(
-                this.tDlStepNodeService.saveOrUpdate(tDlNodeStep),
-                () -> new DatabaseException("更新 NodeStepMeta 到数据库失败")
+                saveOrUpdateSuccess,
+                () -> new DatabaseException("保存或更新 NodeStepMeta 到数据库失败")
         );
     }
 

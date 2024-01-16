@@ -16,12 +16,10 @@
  */
 package cn.boundivore.dl.service.master.manage.node.job;
 
-import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.service.master.converter.INodeStepConverter;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
@@ -37,7 +35,6 @@ import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -92,10 +89,6 @@ public class NodeJob extends Thread {
      *
      * @return NodeJob
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public NodeJob init() throws InterruptedException {
         try {
             this.initJobMeta();
@@ -293,10 +286,6 @@ public class NodeJob extends Thread {
      *
      * @param nodeJobMeta 工作元数据信息
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void plan(NodeJobMeta nodeJobMeta) {
         nodeJobMeta.getNodeTaskMetaMap()
                 .forEach((kTask, vTask) -> {
@@ -327,16 +316,12 @@ public class NodeJob extends Thread {
      * Modified by:
      * Modification time:
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void execute() {
         // 记录 NodeJob 起始时间
         this.nodeJobMeta.setStartTime(System.currentTimeMillis());
 
         // 更新当前作业的执行状态到内存缓存和数据库
-        updateJobExecutionStatus(ExecStateEnum.RUNNING);
+        this.updateJobExecutionStatus(ExecStateEnum.RUNNING);
 
         List<Future<NodeTaskMeta>> taskFutureList = new ArrayList<>();
 
@@ -403,13 +388,9 @@ public class NodeJob extends Thread {
      *
      * @param execStateEnum 当前状态
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void updateJobExecutionStatus(ExecStateEnum execStateEnum) {
         // 更新当前作业的执行状态到内存缓存
-        this.nodeJobService.updateJobMemory(this.nodeJobMeta, execStateEnum);
+        this.nodeJobService.updateNodeJobMemory(this.nodeJobMeta, execStateEnum);
         // 更新当前作业的执行状态到数据库
         this.nodeJobService.updateNodeJobDatabase(this.nodeJobMeta);
     }
@@ -425,10 +406,6 @@ public class NodeJob extends Thread {
      * Modification time:
      * Throws:
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     @Override
     public void run() {
         Assert.isTrue(
