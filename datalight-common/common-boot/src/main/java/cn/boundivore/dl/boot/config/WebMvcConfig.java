@@ -33,6 +33,13 @@ import org.springframework.web.servlet.config.annotation.*;
  */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/").setViewName("forward:/index.html");
+//        registry.addViewController("/**").setViewName("forward:/index.html");
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(new AccessAuthorizationInterceptor())
