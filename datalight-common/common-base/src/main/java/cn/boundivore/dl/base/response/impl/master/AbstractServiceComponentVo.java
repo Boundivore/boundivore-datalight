@@ -121,8 +121,8 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "DLCVersion", required = true)
         private String dlcVersion;
 
-        @Schema(name = "ServiceComponentSummaryVo", title = "服务与组件信息列表", required = true)
-        @JsonProperty(value = "ServiceComponentSummaryVo", required = true)
+        @Schema(name = "ServiceComponentSummaryList", title = "服务与组件信息列表", required = true)
+        @JsonProperty(value = "ServiceComponentSummaryList", required = true)
         private List<ServiceComponentSummaryVo> serviceComponentSummaryList;
     }
 
