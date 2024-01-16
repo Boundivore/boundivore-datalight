@@ -142,10 +142,6 @@ public class MasterNodeJobService {
      * @param nodeActionTypeEnum 节点操作类型
      * @return NodeStateEnum 节点此时应处在的状态
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public NodeStateEnum resolveNodeStateFromAction(NodeActionTypeEnum nodeActionTypeEnum) {
         switch (nodeActionTypeEnum) {
             case DETECT:
@@ -178,10 +174,6 @@ public class MasterNodeJobService {
      * @param nodeInfoList  节点信息列表
      * @param nodeStateEnum 将要切换到的状态
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void switchNodeInitStateFromAction(List<NodeInfoRequest> nodeInfoList, NodeStateEnum nodeStateEnum) {
 
         List<Long> nodeIdList = nodeInfoList

@@ -177,10 +177,6 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -239,10 +235,6 @@ public class MasterNodeInitService {
      * @param request 初始化节点请求体
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -390,10 +382,6 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -452,10 +440,6 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(

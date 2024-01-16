@@ -72,10 +72,6 @@ public class MasterNodeService {
      * @param request 当前即将对节点进行的操作请求
      * @return Result<String>
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Result<AbstractNodeJobVo.NodeJobIdVo> operateNode(NodeJobRequest request) throws Exception {
         Long jobId = -1L;
         if (request.getNodeActionTypeEnum() == NodeActionTypeEnum.START) {
@@ -105,10 +101,6 @@ public class MasterNodeService {
      * @param request 节点操作请求体
      * @return 返回固定值为 -1 的 NodeJobId，因为此操作不会产生异步任务
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public Long operateNode2Started(NodeJobRequest request) {
         // 检查节点是否均存在
         Map<Long, TDlNode> tDlNodeMap = this.checkNodeExistsById(
@@ -188,10 +180,6 @@ public class MasterNodeService {
      * @param nodeId        节点 ID
      * @param nodeStateEnum 初始化过程中的节点切换为指定状态
      */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
     public void switchNodeState(Long clusterId,
                                 Long nodeId,
                                 NodeStateEnum nodeStateEnum) {
