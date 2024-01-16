@@ -183,7 +183,6 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "ComponentNodeList", required = true)
         private List<ComponentNodeVo> componentNodeList;
 
-
     }
 
     @Data
