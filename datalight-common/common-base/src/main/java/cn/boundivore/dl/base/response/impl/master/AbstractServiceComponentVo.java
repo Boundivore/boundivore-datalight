@@ -176,11 +176,11 @@ public abstract class AbstractServiceComponentVo {
         private long min;
 
         @Schema(name = "MutexesList", title = "与当前组件互斥的组件名列表（即不允许出现在同一节点）", required = true)
-        @JsonProperty("MutexesList")
+        @JsonProperty(value = "MutexesList", required = true)
         private List<String> mutexesList;
 
         @Schema(name = "ComponentNodeList", title = "当前组件在节点的分布信息列表", required = true)
-        @JsonProperty("ComponentNodeList")
+        @JsonProperty(value = "ComponentNodeList", required = true)
         private List<ComponentNodeVo> componentNodeList;
 
 
