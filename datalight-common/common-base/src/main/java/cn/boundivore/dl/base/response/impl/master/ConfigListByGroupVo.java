@@ -126,29 +126,4 @@ public class ConfigListByGroupVo implements IVo {
         @JsonProperty(value = "ConfigVersion", required = true)
         private Long configVersion;
     }
-
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    @Builder
-    @Schema(
-            name = "ConfigListByGroupVo.ComponentNodeVo",
-            description = "ConfigListByGroupVo.ComponentNodeVo: 组件所在节点信息"
-    )
-    public static class ComponentNodeVo implements IVo {
-
-        @Schema(name = "NodeId", title = "节点 ID", required = true)
-        @JsonProperty(value = "NodeId", required = true)
-        private Long nodeId;
-
-        @Schema(name = "Hostname", title = "节点主机名", required = true)
-        @JsonProperty(value = "Hostname", required = true)
-        private String hostname;
-
-        @Schema(name = "NodeIp", title = "节点 IP 地址", required = true)
-        @JsonProperty(value = "NodeIp", required = true)
-        private String nodeIp;
-    }
 }
