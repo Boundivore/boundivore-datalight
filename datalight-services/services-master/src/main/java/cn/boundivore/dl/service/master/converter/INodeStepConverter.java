@@ -37,6 +37,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
+@Component
 public interface INodeStepConverter {
 
     INodeStepConverter INSTANCE = Mappers.getMapper(INodeStepConverter.class);

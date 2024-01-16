@@ -38,6 +38,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
+@Component
 public interface IServiceComponentConverter {
 
     IServiceComponentConverter INSTANCE = Mappers.getMapper(IServiceComponentConverter.class);
