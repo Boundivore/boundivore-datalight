@@ -52,7 +52,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
@@ -228,23 +227,24 @@ public class JobService {
     public void updateJobDatabase(JobMeta jobMeta) {
         // 注意：执行更新数据库前，务必先更新内存，例如： this.updateJobMemory()
         // 此时会从内存中最新的元数据状态更新到数据库
-        TDlJob tDlJob = new TDlJob();
+        TDlJob tDlJob = this.tDlJobService.getById(jobMeta.getId());
+
+        if (tDlJob == null) {
+            tDlJob = new TDlJob();
+            tDlJob.setVersion(0L).setId(jobMeta.getId());
+        }
+
         tDlJob.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobName(jobMeta.getName())
                 .setJobState(jobMeta.getExecStateEnum())
                 .setStartTime(jobMeta.getStartTime())
                 .setEndTime(jobMeta.getEndTime())
-                .setDuration(jobMeta.getDuration())
-                .setId(jobMeta.getId());
-
-        boolean operationSuccess = this.tDlJobService.getById(jobMeta.getId()) == null
-                ? this.tDlJobService.save(tDlJob)
-                : this.tDlJobService.updateById(tDlJob);
+                .setDuration(jobMeta.getDuration());
 
         Assert.isTrue(
-                operationSuccess,
-                () -> new DatabaseException("更新或保存 Job 到数据库失败")
+                this.tDlJobService.saveOrUpdate(tDlJob),
+                () -> new DatabaseException("保存或更新 Job 到数据库失败")
         );
     }
 
@@ -288,7 +288,13 @@ public class JobService {
         // 此时会从内存中最新的元数据状态更新到数据库
         JobMeta jobMeta = stageMeta.getJobMeta();
 
-        TDlStage tDlStage = new TDlStage();
+        TDlStage tDlStage = this.tDlStageService.getById(stageMeta.getId());
+
+        if (tDlStage == null) {
+            tDlStage = new TDlStage();
+            tDlStage.setVersion(0L).setId(jobMeta.getId());
+        }
+
         tDlStage.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobId(jobMeta.getId())
@@ -297,16 +303,11 @@ public class JobService {
                 .setServiceName(stageMeta.getServiceName())
                 .setStartTime(stageMeta.getStartTime())
                 .setEndTime(stageMeta.getEndTime())
-                .setDuration(stageMeta.getDuration())
-                .setId(stageMeta.getId());
-
-        boolean operationSuccess = this.tDlStageService.getById(stageMeta.getId()) == null
-                ? this.tDlStageService.save(tDlStage)
-                : this.tDlStageService.updateById(tDlStage);
+                .setDuration(stageMeta.getDuration());
 
         Assert.isTrue(
-                operationSuccess,
-                () -> new DatabaseException("更新或保存 Stage 到数据库失败")
+                this.tDlStageService.saveOrUpdate(tDlStage),
+                () -> new DatabaseException("保存或更新 Stage 到数据库失败")
         );
     }
 
@@ -349,7 +350,13 @@ public class JobService {
         JobMeta jobMeta = taskMeta.getStageMeta().getJobMeta();
         StageMeta stageMeta = taskMeta.getStageMeta();
 
-        TDlTask tDlTask = new TDlTask();
+        TDlTask tDlTask = this.tDlTaskService.getById(taskMeta.getId());
+
+        if (tDlTask == null) {
+            tDlTask = new TDlTask();
+            tDlTask.setVersion(0L).setId(jobMeta.getId());
+        }
+
         tDlTask.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobId(jobMeta.getId())
@@ -364,16 +371,11 @@ public class JobService {
                 .setComponentName(taskMeta.getComponentName())
                 .setStartTime(taskMeta.getStartTime())
                 .setEndTime(taskMeta.getEndTime())
-                .setDuration(taskMeta.getDuration())
-                .setId(taskMeta.getId());
-
-        boolean operationSuccess = this.tDlTaskService.getById(taskMeta.getId()) == null
-                ? this.tDlTaskService.save(tDlTask)
-                : this.tDlTaskService.updateById(tDlTask);
+                .setDuration(taskMeta.getDuration());
 
         Assert.isTrue(
-                operationSuccess,
-                () -> new DatabaseException("更新或保存 Task 到数据库失败")
+                this.tDlTaskService.saveOrUpdate(tDlTask),
+                () -> new DatabaseException("保存或更新 Task 到数据库失败")
         );
     }
 
@@ -418,7 +420,13 @@ public class JobService {
 
         StageMeta stageMeta = taskMeta.getStageMeta();
 
-        TDlStep tDlStep = new TDlStep();
+        TDlStep tDlStep = this.tDlStepService.getById(stepMeta.getId());
+
+        if (tDlStep == null) {
+            tDlStep = new TDlStep();
+            tDlStep.setVersion(0L).setId(jobMeta.getId());
+        }
+
         tDlStep.setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobId(jobMeta.getId())
@@ -429,16 +437,11 @@ public class JobService {
                 .setStepType(stepMeta.getType())
                 .setStartTime(stepMeta.getStartTime())
                 .setEndTime(stepMeta.getEndTime())
-                .setDuration(stepMeta.getDuration())
-                .setId(stepMeta.getId());
-
-        boolean operationSuccess = this.tDlStepService.getById(stepMeta.getId()) == null
-                ? this.tDlStepService.save(tDlStep)
-                : this.tDlStepService.updateById(tDlStep);
+                .setDuration(stepMeta.getDuration());
 
         Assert.isTrue(
-                operationSuccess,
-                () -> new DatabaseException("更新或保存 Task 到数据库失败")
+                this.tDlStepService.saveOrUpdate(tDlStep),
+                () -> new DatabaseException("保存或更新 Step 到数据库失败")
         );
     }
 
