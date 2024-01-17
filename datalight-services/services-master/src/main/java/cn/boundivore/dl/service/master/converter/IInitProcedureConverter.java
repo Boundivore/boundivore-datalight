@@ -24,6 +24,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
@@ -40,7 +41,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
-@Component
+@Configuration
 public interface IInitProcedureConverter {
 
     IInitProcedureConverter INSTANCE = Mappers.getMapper(IInitProcedureConverter.class);
