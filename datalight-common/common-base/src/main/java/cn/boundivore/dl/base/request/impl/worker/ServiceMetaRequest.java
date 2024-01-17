@@ -73,8 +73,8 @@ public class ServiceMetaRequest implements IRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "ServiceMetaRequest#ServiceRequest",
-            description = "ServiceMetaRequest#ServiceRequest: 服务信息"
+            name = "ServiceMetaRequest.ServiceRequest",
+            description = "ServiceMetaRequest.ServiceRequest: 服务信息"
     )
     public static class ServiceRequest implements IRequest {
 

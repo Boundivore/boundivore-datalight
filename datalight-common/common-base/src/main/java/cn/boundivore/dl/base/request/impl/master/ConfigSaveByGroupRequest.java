@@ -77,8 +77,8 @@ public class ConfigSaveByGroupRequest implements IRequest {
             }
     )
     @Schema(
-            name = "ConfigSaveByGroupRequest#ConfigGroupRequest",
-            description = "ConfigSaveByGroupRequest#ConfigGroupRequest: 当前配置信息"
+            name = "ConfigSaveByGroupRequest.ConfigGroupRequest",
+            description = "ConfigSaveByGroupRequest.ConfigGroupRequest: 当前配置信息"
     )
     public static class ConfigGroupRequest implements IRequest {
 
@@ -114,8 +114,8 @@ public class ConfigSaveByGroupRequest implements IRequest {
     @Accessors(chain = true)
     @Builder
     @Schema(
-            name = "ConfigSaveByGroupRequest#ConfigNodeRequest",
-            description = "ConfigSaveByGroupRequest#ConfigNodeRequest: 节点信息"
+            name = "ConfigSaveByGroupRequest.ConfigNodeRequest",
+            description = "ConfigSaveByGroupRequest.ConfigNodeRequest: 节点信息"
     )
     public static class ConfigNodeRequest implements IRequest {
 

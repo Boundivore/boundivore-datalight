@@ -45,8 +45,8 @@ public abstract class AbstractNodeInitRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractNodeInitRequest#NodeInitInfoListRequest",
-            description = "AbstractNodeInitRequest#NodeInitInfoListRequest: 初始化状态下的节点列表 请求体"
+            name = "AbstractNodeInitRequest.NodeInitInfoListRequest",
+            description = "AbstractNodeInitRequest.NodeInitInfoListRequest: 初始化状态下的节点列表 请求体"
     )
     public static class NodeInitInfoListRequest implements IRequest {
 

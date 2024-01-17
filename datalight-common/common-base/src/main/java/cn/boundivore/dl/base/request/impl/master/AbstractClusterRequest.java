@@ -47,8 +47,8 @@ public abstract class AbstractClusterRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractClusterRequest#ClusterNewRequest",
-            description = "AbstractClusterRequest#ClusterNewRequest: 新建集群 请求体"
+            name = "AbstractClusterRequest.ClusterNewRequest",
+            description = "AbstractClusterRequest.ClusterNewRequest: 新建集群 请求体"
     )
     public static class ClusterNewRequest implements IRequest {
 

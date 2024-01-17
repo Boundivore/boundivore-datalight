@@ -65,8 +65,8 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ConfigPreSaveRequest#ServiceRequest",
-            description = "ConfigPreListVo#ServiceRequest: 当前服务"
+            name = "ConfigPreSaveRequest.ServiceRequest",
+            description = "ConfigPreListVo.ServiceRequest: 当前服务"
     )
     public static class ServiceRequest implements IRequest {
 
@@ -85,8 +85,8 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ConfigPreSaveRequest#PlaceholderInfoRequest",
-            description = "ConfigPreSaveRequest#PlaceholderInfoRequest: 预配置信息"
+            name = "ConfigPreSaveRequest.PlaceholderInfoRequest",
+            description = "ConfigPreSaveRequest.PlaceholderInfoRequest: 预配置信息"
     )
     public static class PlaceholderInfoRequest implements IRequest {
 
@@ -104,8 +104,8 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ConfigPreSaveRequest#PropertyRequest",
-            description = "ConfigPreSaveRequest#PropertyRequest: 预配置属性信息"
+            name = "ConfigPreSaveRequest.PropertyRequest",
+            description = "ConfigPreSaveRequest.PropertyRequest: 预配置属性信息"
     )
     public static class PropertyRequest implements IRequest {
 

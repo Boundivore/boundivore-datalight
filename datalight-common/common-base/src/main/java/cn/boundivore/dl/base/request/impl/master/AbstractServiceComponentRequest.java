@@ -46,8 +46,8 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractServiceComponentRequest#ServiceSelectRequest",
-            description = "AbstractServiceComponentRequest#ServiceSelectRequest: " +
+            name = "AbstractServiceComponentRequest.ServiceSelectRequest",
+            description = "AbstractServiceComponentRequest.ServiceSelectRequest: " +
                     "部署前，选择服务(需传递全部服务名称，以及服务选中或未选中状态) 请求体"
     )
     public static class ServiceSelectRequest implements IRequest {
@@ -69,7 +69,7 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractServiceComponentRequest#ServiceRequest",
+            name = "AbstractServiceComponentRequest.ServiceRequest",
             description = "服务信息 请求体"
     )
     public static class ServiceRequest implements IRequest {
@@ -91,7 +91,7 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractServiceComponentRequest#ComponentSelectRequest",
+            name = "AbstractServiceComponentRequest.ComponentSelectRequest",
             description = "部署前，选择组件请求体"
     )
     public static class ComponentSelectRequest implements IRequest {
@@ -113,8 +113,8 @@ public abstract class AbstractServiceComponentRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractServiceComponentRequest#ComponentRequest",
-            description = "AbstractServiceComponentRequest#ComponentRequest: " +
+            name = "AbstractServiceComponentRequest.ComponentRequest",
+            description = "AbstractServiceComponentRequest.ComponentRequest: " +
                     "组件信息 请求体"
     )
     public static class ComponentRequest implements IRequest {
