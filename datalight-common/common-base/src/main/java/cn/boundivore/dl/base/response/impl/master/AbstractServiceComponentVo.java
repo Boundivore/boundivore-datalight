@@ -50,8 +50,8 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "ClusterId", required = true)
         private Long clusterId;
 
-        @Schema(name = "DLCVersion", title = "服务组件包版本", required = true)
-        @JsonProperty(value = "DLCVersion", required = true)
+        @Schema(name = "DlcVersion", title = "服务组件包版本", required = true)
+        @JsonProperty(value = "DlcVersion", required = true)
         private String dlcVersion;
 
         @Schema(name = "ServiceSummaryList", title = "服务概览列表", required = true)
@@ -117,8 +117,8 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "ClusterId", required = true)
         private Long clusterId;
 
-        @Schema(name = "DLCVersion", title = "服务组件包版本", required = true)
-        @JsonProperty(value = "DLCVersion", required = true)
+        @Schema(name = "DlcVersion", title = "服务组件包版本", required = true)
+        @JsonProperty(value = "DlcVersion", required = true)
         private String dlcVersion;
 
         @Schema(name = "ServiceComponentSummaryList", title = "服务与组件信息列表", required = true)

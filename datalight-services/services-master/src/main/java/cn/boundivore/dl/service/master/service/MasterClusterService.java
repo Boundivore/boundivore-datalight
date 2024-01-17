@@ -77,7 +77,7 @@ public class MasterClusterService {
 
         Assert.isTrue(
                 dlcVersion.equals(dlcVersionInYaml),
-                () -> new BException("无法匹配对应的 DLCVersion")
+                () -> new BException("无法匹配对应的 DlcVersion")
         );
 
         // TODO 使用正则判断集群名称的合法性
