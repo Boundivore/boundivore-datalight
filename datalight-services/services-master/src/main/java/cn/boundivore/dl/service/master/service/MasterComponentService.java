@@ -102,7 +102,7 @@ public class MasterComponentService {
         // 过滤掉本轮操作没有被选择的服务
         List<AbstractServiceComponentVo.ServiceSummaryVo> selectedServiceSummaryList = serviceSummaryVoMap.values()
                 .stream()
-                .filter(i -> i.getScStateEnum() == SELECTED || i.getScStateEnum() == SELECTED_ADDITION)
+                .filter(i -> i.getScStateEnum() != UNSELECTED && i.getScStateEnum() != REMOVED)
                 .collect(Collectors.toList());
 
         return Result.success(
