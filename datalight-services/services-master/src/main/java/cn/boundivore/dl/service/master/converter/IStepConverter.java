@@ -37,7 +37,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
-@Configuration
+@Component
 public interface IStepConverter {
 
     IStepConverter INSTANCE = Mappers.getMapper(IStepConverter.class);

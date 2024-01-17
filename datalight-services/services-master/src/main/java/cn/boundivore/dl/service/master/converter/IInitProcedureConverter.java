@@ -41,7 +41,7 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
  */
 
 @Mapper(componentModel = SPRING)
-@Configuration
+@Component
 public interface IInitProcedureConverter {
 
     IInitProcedureConverter INSTANCE = Mappers.getMapper(IInitProcedureConverter.class);
