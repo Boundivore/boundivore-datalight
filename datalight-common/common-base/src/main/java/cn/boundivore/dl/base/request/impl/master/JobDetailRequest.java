@@ -77,7 +77,7 @@ public class JobDetailRequest implements IRequest {
             name = "JobDetailRequest.JobDetailServiceRequest",
             description = "JobDetailRequest.JobDetailServiceRequest: Job 详细执行服务请求体"
     )
-    public static class JobDetailServiceRequest {
+    public static class JobDetailServiceRequest implements IRequest {
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -99,7 +99,7 @@ public class JobDetailRequest implements IRequest {
             name = "JobDetailRequest.JobDetailComponentRequest",
             description = "JobDetailRequest.JobDetailComponentRequest: Job 详细执行组件请求体"
     )
-    public static class JobDetailComponentRequest {
+    public static class JobDetailComponentRequest implements IRequest {
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -120,7 +120,7 @@ public class JobDetailRequest implements IRequest {
             name = "JobDetailRequest.JobDetailNodeRequest",
             description = "JobDetailRequest.JobDetailNodeRequest: Job 详细执行节点请求体"
     )
-    public static class JobDetailNodeRequest {
+    public static class JobDetailNodeRequest implements IRequest {
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull
