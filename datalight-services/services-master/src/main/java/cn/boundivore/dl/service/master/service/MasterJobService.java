@@ -19,6 +19,7 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
@@ -75,7 +76,7 @@ public class MasterJobService {
     private final TDlJobLogServiceImpl tDlJobLogService;
 
     /**
-     * Description: 开始生成部署计划，并部署服务、组件
+     * Description: 以 ServiceName 为入口，开始生成作业计划，并部署 or 启动 or 停止 or 重启等对应服务下的所有组件
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/5/30
@@ -83,7 +84,7 @@ public class MasterJobService {
      * Modified by:
      * Modification time:
      *
-     * @param request       将要部署的目标集群和将要部署的服务
+     * @param request       将要部署的目标集群和将要操作的服务
      * @param isPriorityAsc 决定按照服务以及组件的正序优先级还是逆序优先级生成任务，
      *                      例如先启动的服务，在执行关闭相关操作的计划时，可能最后关闭
      * @return Long 任务构建成功且开始运行，返回 JobId
@@ -96,6 +97,76 @@ public class MasterJobService {
         List<TDlService> tDlServiceList = this.masterServiceService.getTDlServiceListSorted(
                 request.getClusterId(),
                 request.getServiceNameList(),
+                isPriorityAsc
+        );
+
+        // 根据当前集群 ID 获取本集群信息
+        AbstractClusterVo.ClusterVo currentCluster = this.masterClusterService
+                .getClusterById(request.getClusterId())
+                .getData();
+        ClusterMeta clusterMeta = new ClusterMeta()
+                .setCurrentClusterId(currentCluster.getClusterId())
+                .setCurrentClusterName(currentCluster.getClusterName())
+                .setCurrentClusterTypeEnum(currentCluster.getClusterTypeEnum());
+
+        // 当前集群如果是计算集群，获取所依赖的集群信息
+        if (currentCluster.getClusterTypeEnum() == ClusterTypeEnum.COMPUTE) {
+            AbstractClusterVo.ClusterVo relativeCluster = this.masterClusterService
+                    .getClusterRelative(request.getClusterId())
+                    .getData();
+
+            clusterMeta
+                    .setRelativeCusterId(relativeCluster.getClusterId())
+                    .setRelativeClusterName(relativeCluster.getClusterName())
+                    .setRelativeClusterTypeEnum(relativeCluster.getClusterTypeEnum());
+        }
+
+
+        // 创建 Job 任务意图
+        final Intention intention = new Intention()
+                .setClusterMeta(clusterMeta)
+                .setActionTypeEnum(request.getActionTypeEnum())
+                .setOneByOne(request.getIsOneByOne())
+                .setServiceList(
+                        tDlServiceList.stream()
+                                .map(i -> this.intentionService(
+                                                i,
+                                                isPriorityAsc
+                                        )
+                                )
+                                .collect(Collectors.toList())
+                );
+
+        // 创建并执行 Job
+        final Job job = new Job(intention).init();
+        job.start();
+
+        return job.getJobMeta().getId();
+    }
+
+
+    /**
+     * Description: 以 ServiceName 以及 Component 为入口，开始生成作业计划，并启动 or 停止 or 重启等对应服务下的所有组件
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/5/30
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     *
+     * @param request       将要部署的目标集群和将要操作的服务以及组件
+     * @param isPriorityAsc 决定按照服务以及组件的正序优先级还是逆序优先级生成任务，
+     *                      例如先启动的服务，在执行关闭相关操作的计划时，可能最后关闭
+     * @return Long 任务构建成功且开始运行，返回 JobId
+     */
+    public Long initJob(JobDetailRequest request, boolean isPriorityAsc) throws Exception {
+
+        // 之前必须经过检查，以确保下面的数据的严谨性和操作的严谨性
+        // 对准备部署的服务按照服务优先级进行排序，部署过程中，将按照服务优先级升序逐个部署，即此时 isPriorityAsc = true
+        // 根据优先级升序或降序排序服务列表, 如果是其他操作，可通过 isPriorityAsc 调整执行顺序（true 为正序，false 为倒序）
+        List<TDlService> tDlServiceList = this.masterServiceService.getTDlServiceListSorted(
+                request.getClusterId(),
+                request.getJobDetailServiceList().stream().map(JobDetailRequest.JobDetailServiceRequest::getServiceName).collect(Collectors.toList()),
                 isPriorityAsc
         );
 

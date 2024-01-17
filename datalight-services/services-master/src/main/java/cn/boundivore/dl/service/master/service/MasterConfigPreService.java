@@ -83,7 +83,7 @@ public class MasterConfigPreService {
         );
 
         // 根据待部署的服务列表，组装每一个服务应该操作的预配置信息
-        List<ConfigPreVo.ServiceVo> serviceList = tDlServiceList.stream()
+        List<ConfigPreVo.ConfigPreServiceVo> serviceList = tDlServiceList.stream()
                 .map(this::buildServiceVoFromTDlService)
                 .collect(Collectors.toList());
 
@@ -112,9 +112,9 @@ public class MasterConfigPreService {
      * @param tDlService DTO
      * @return ServiceVo 服务信息和占位信息响应体
      */
-    private ConfigPreVo.ServiceVo buildServiceVoFromTDlService(TDlService tDlService) {
+    private ConfigPreVo.ConfigPreServiceVo buildServiceVoFromTDlService(TDlService tDlService) {
 
-        ConfigPreVo.ServiceVo voService = new ConfigPreVo.ServiceVo(
+        ConfigPreVo.ConfigPreServiceVo voService = new ConfigPreVo.ConfigPreServiceVo(
                 tDlService.getServiceName(),
                 CollUtil.newArrayList()
         );
@@ -157,8 +157,8 @@ public class MasterConfigPreService {
         String templatedFilePath = placeholderInfo.getTemplatedFilePath();
         List<YamlServicePlaceholder.Property> yamlPropertyList = placeholderInfo.getProperties();
 
-        List<ConfigPreVo.PropertyVo> voPropertyList = yamlPropertyList.stream()
-                .map(p -> new ConfigPreVo.PropertyVo(p.getPlaceholder(), p.getDescribe(), p.getDefaultValue()))
+        List<ConfigPreVo.ConfigPrePropertyVo> voPropertyList = yamlPropertyList.stream()
+                .map(p -> new ConfigPreVo.ConfigPrePropertyVo(p.getPlaceholder(), p.getDescribe(), p.getDefaultValue()))
                 .collect(Collectors.toList());
 
         return new ConfigPreVo.PlaceholderInfoVo(templatedFilePath, voPropertyList);

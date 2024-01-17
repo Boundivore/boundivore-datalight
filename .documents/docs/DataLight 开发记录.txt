@@ -242,6 +242,13 @@ yum -y install gcc perl-ExtUtils-MakeMaker
 Token:
 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
 
+登录：
+{
+    "Credential": "21232f297a57a5a743894a0e4a801fc3",
+    "IdentityType": "USERNAME",
+    "Principal": "admin"
+}
+
 新建集群：
 {
     "ClusterDesc": "第1个集群（MIXED 集群）",

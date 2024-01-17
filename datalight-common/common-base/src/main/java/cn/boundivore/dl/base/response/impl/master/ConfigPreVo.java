@@ -54,9 +54,9 @@ public class ConfigPreVo implements IVo {
     @JsonProperty(value = "ClusterId", required = true)
     private Long clusterId;
 
-    @Schema(name = "ServiceList", title = "多个服务的预配置列表", required = true)
-    @JsonProperty(value = "ServiceList", required = true)
-    private List<ServiceVo> serviceList;
+    @Schema(name = "ConfigPreServiceList", title = "多个服务的预配置列表", required = true)
+    @JsonProperty(value = "ConfigPreServiceList", required = true)
+    private List<ConfigPreServiceVo> configPreServiceList;
 
 
     @Data
@@ -65,10 +65,10 @@ public class ConfigPreVo implements IVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ConfigPreVo.ServiceVo",
-            description = "ConfigPreVo.ServiceVo 当前服务"
+            name = "ConfigPreVo.ConfigPreServiceVo",
+            description = "ConfigPreVo.ConfigPreServiceVo 当前服务"
     )
-    public static class ServiceVo implements IVo {
+    public static class ConfigPreServiceVo implements IVo {
 
         @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -94,9 +94,9 @@ public class ConfigPreVo implements IVo {
         @JsonProperty(value = "TemplatedFilePath", required = true)
         private String templatedFilePath;
 
-        @Schema(name = "PropertyList", title = "属性列表", required = true)
-        @JsonProperty(value = "PropertyList", required = true)
-        private List<PropertyVo> propertyList;
+        @Schema(name = "ConfigPrePropertyList", title = "属性列表", required = true)
+        @JsonProperty(value = "ConfigPrePropertyList", required = true)
+        private List<ConfigPrePropertyVo> configPrePropertyList;
     }
 
     @Data
@@ -105,10 +105,10 @@ public class ConfigPreVo implements IVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ConfigPreVo.PropertyVo",
-            description = "ConfigPreVo.PropertyVo 预配置属性信息"
+            name = "ConfigPreVo.ConfigPrePropertyVo",
+            description = "ConfigPreVo.ConfigPrePropertyVo 预配置属性信息"
     )
-    public static class PropertyVo implements IVo {
+    public static class ConfigPrePropertyVo implements IVo {
 
         @Schema(name = "Placeholder", title = "占位符", required = true)
         @JsonProperty(value = "Placeholder", required = true)
