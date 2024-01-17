@@ -18,8 +18,6 @@ package cn.boundivore.dl.base.request.impl.master;
 
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,7 +44,7 @@ import java.util.List;
 @Accessors(chain = true)
 @Schema(
         name = "ConfigPreSaveRequest",
-        description = "ConfigPreListRequest: 预配置项列表 请求体"
+        description = "ConfigPreListRequest 预配置项列表 请求体"
 )
 public class ConfigPreSaveRequest implements IRequest {
 
@@ -57,7 +55,7 @@ public class ConfigPreSaveRequest implements IRequest {
 
     @Schema(name = "ServiceList", title = "多个服务的预配置列表", required = true)
     @JsonProperty(value = "ServiceList", required = true)
-    private List<ServiceRequest> serviceList;
+    private List<ConfigPreServiceRequest> configPreServiceRequest;
 
 
     @Data
@@ -65,10 +63,10 @@ public class ConfigPreSaveRequest implements IRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "ConfigPreSaveRequest.ServiceRequest",
-            description = "ConfigPreListVo.ServiceRequest: 当前服务"
+            name = "ConfigPreSaveRequest.ConfigPreServiceRequest",
+            description = "ConfigPreSaveRequest.ConfigPreServiceRequest 当前服务"
     )
-    public static class ServiceRequest implements IRequest {
+    public static class ConfigPreServiceRequest implements IRequest {
 
         @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -86,7 +84,7 @@ public class ConfigPreSaveRequest implements IRequest {
     @AllArgsConstructor
     @Schema(
             name = "ConfigPreSaveRequest.PlaceholderInfoRequest",
-            description = "ConfigPreSaveRequest.PlaceholderInfoRequest: 预配置信息"
+            description = "ConfigPreSaveRequest.PlaceholderInfoRequest 预配置信息"
     )
     public static class PlaceholderInfoRequest implements IRequest {
 
@@ -105,7 +103,7 @@ public class ConfigPreSaveRequest implements IRequest {
     @AllArgsConstructor
     @Schema(
             name = "ConfigPreSaveRequest.PropertyRequest",
-            description = "ConfigPreSaveRequest.PropertyRequest: 预配置属性信息"
+            description = "ConfigPreSaveRequest.PropertyRequest 预配置属性信息"
     )
     public static class PropertyRequest implements IRequest {
 

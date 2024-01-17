@@ -19,8 +19,6 @@ package cn.boundivore.dl.base.request.impl.master;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,10 +45,10 @@ public abstract class AbstractClusterRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractClusterRequest.ClusterNewRequest",
-            description = "AbstractClusterRequest.ClusterNewRequest: 新建集群 请求体"
+            name = "AbstractClusterRequest.NewClusterRequest",
+            description = "AbstractClusterRequest.NewClusterRequest 新建集群 请求体"
     )
-    public static class ClusterNewRequest implements IRequest {
+    public static class NewClusterRequest implements IRequest {
 
         @Schema(name = "DlcVersion", title = "DataLight 服务组件包版本", required = true)
         @JsonProperty(value = "DlcVersion", required = true)

@@ -30,7 +30,7 @@ import java.util.List;
  * Description: 获取当前服务下所有配置信息概览列表
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/6/19
+ * Creation time :2023/6/19
  * Modification description:
  * Modified by:
  * Modification time:
@@ -43,7 +43,7 @@ import java.util.List;
 @AllArgsConstructor
 @Schema(
         name = "ConfigListVo",
-        description = "ConfigListVo: 配置文件列表"
+        description = "ConfigListVo 配置文件列表"
 )
 public class ConfigSummaryListVo implements IVo {
 
@@ -71,7 +71,7 @@ public class ConfigSummaryListVo implements IVo {
     )
     @Schema(
             name = "ConfigPreVo.ConfigSummaryVo",
-            description = "ConfigPreVo.ConfigSummaryVo: 当前配置信息概览"
+            description = "ConfigPreVo.ConfigSummaryVo 当前配置信息概览"
     )
     public static class ConfigSummaryVo implements IVo {
 

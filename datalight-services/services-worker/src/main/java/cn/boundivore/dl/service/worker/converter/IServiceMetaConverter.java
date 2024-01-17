@@ -47,8 +47,8 @@ public interface IServiceMetaConverter {
 
     MetaCache.ServiceMeta convert2ServiceMeta(ServiceMetaRequest request);
 
-    List<MetaCache.Service> convert2Service(List<ServiceMetaRequest.ServiceRequest> requestList);
+    List<MetaCache.Service> convert2Service(List<ServiceMetaRequest.MetaServiceRequest> requestList);
 
-    List<MetaCache.Component> convert2Component(List<ServiceMetaRequest.ComponentRequest> request);
+    List<MetaCache.Component> convert2Component(List<ServiceMetaRequest.MetaComponentRequest> request);
 
 }

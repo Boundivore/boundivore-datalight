@@ -19,8 +19,6 @@ package cn.boundivore.dl.base.request.impl.worker;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,7 +43,7 @@ import java.util.List;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(name = "ServiceMetaRequest", description = "MasterMetaRequest: Service 服务元数据信息")
+@Schema(name = "ServiceMetaRequest", description = "ServiceMetaRequest: Service 服务元数据信息")
 public class ServiceMetaRequest implements IRequest {
 
     @Schema(name = "NodeId", title = "Worker 当前节点 ID", required = true)
@@ -63,10 +61,10 @@ public class ServiceMetaRequest implements IRequest {
     @NotNull
     private String ip;
 
-    @Schema(name = "ServiceList", title = "服务元信息列表", required = true)
-    @JsonProperty("ServiceList")
+    @Schema(name = "MetaServiceList", title = "服务元信息列表", required = true)
+    @JsonProperty("MetaServiceList")
     @NotNull
-    private List<ServiceRequest> serviceList;
+    private List<MetaServiceRequest> metaServiceList;
 
     @Data
     @AllArgsConstructor
@@ -76,7 +74,7 @@ public class ServiceMetaRequest implements IRequest {
             name = "ServiceMetaRequest.ServiceRequest",
             description = "ServiceMetaRequest.ServiceRequest: 服务信息"
     )
-    public static class ServiceRequest implements IRequest {
+    public static class MetaServiceRequest implements IRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty("ClusterId")
@@ -93,10 +91,10 @@ public class ServiceMetaRequest implements IRequest {
         @NotNull
         private SCStateEnum scStateEnum;
 
-        @Schema(name = "ServiceName", title = "服务名称", required = true)
-        @JsonProperty("ServiceName")
+        @Schema(name = "MetaComponentList", title = "服务名称", required = true)
+        @JsonProperty("MetaComponentList")
         @NotNull
-        private List<ComponentRequest> componentList;
+        private List<MetaComponentRequest> metaComponentList;
 
     }
 
@@ -105,10 +103,10 @@ public class ServiceMetaRequest implements IRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "ServiceMetaRequest.ComponentRequest",
-            description = "ServiceMetaRequest.ComponentRequest: 组件信息"
+            name = "ServiceMetaRequest.MetaComponentRequest",
+            description = "ServiceMetaRequest.MetaComponentRequest: 组件信息"
     )
-    public static class ComponentRequest implements IRequest {
+    public static class MetaComponentRequest implements IRequest {
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty("ComponentName")

@@ -24,7 +24,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
@@ -48,7 +47,7 @@ public interface IClusterConverter {
     @Mappings({
             @Mapping(source = "clusterTypeEnum", target = "clusterType")
     })
-    TDlCluster convert2TDlCluster(AbstractClusterRequest.ClusterNewRequest request);
+    TDlCluster convert2TDlCluster(AbstractClusterRequest.NewClusterRequest request);
 
     @Mappings({
             @Mapping(source = "id", target = "clusterId"),

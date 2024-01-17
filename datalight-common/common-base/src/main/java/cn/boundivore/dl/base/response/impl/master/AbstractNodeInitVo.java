@@ -41,7 +41,7 @@ public abstract class AbstractNodeInitVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeInitVo.NodeInitVo",
-            description = "AbstractNodeInitVo.NodeInitVo: NodeInitVo 节点初始化信息"
+            description = "AbstractNodeInitVo.NodeInitVo 节点初始化信息"
     )
     public static class NodeInitVo implements IVo {
 
@@ -67,7 +67,7 @@ public abstract class AbstractNodeInitVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeInitVo.NodeInitDetailVo",
-            description = "AbstractNodeInitVo.NodeInitDetailVo: NodeInitDetailVo 节点初始化信息详情"
+            description = "AbstractNodeInitVo.NodeInitDetailVo 节点初始化信息详情"
     )
     public static class NodeInitDetailVo implements IVo {
 

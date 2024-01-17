@@ -71,11 +71,9 @@ public class ConfigSaveRequest implements IRequest {
     @Accessors(chain = true)
     @NoArgsConstructor
     @AllArgsConstructor
-//    @Schema(
-//            name = "ConfigSaveRequest.ConfigRequest",
-//            description = "ConfigSaveRequest.ConfigRequest: 单个配置 请求体"
-//    )
-    @Schema(name = "ConfigSaveRequest.ConfigRequest", description = "ConfigSaveRequest.ConfigRequest: 单个配置 请求体")
+    @Schema(name = "ConfigSaveRequest.ConfigRequest",
+            description = "ConfigSaveRequest.ConfigRequest: 单个配置 请求体"
+    )
     public static class ConfigRequest implements IRequest {
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)

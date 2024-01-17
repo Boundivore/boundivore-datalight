@@ -36,7 +36,7 @@ public abstract class AbstractInitProcedureVo {
     @Accessors(chain = true)
     @Schema(
             name = "InitProcedureVo",
-            description = "InitProcedureVo: 初始化步骤信息"
+            description = "InitProcedureVo 初始化步骤信息"
     )
     public static class InitProcedureVo implements IVo {
 
@@ -78,7 +78,7 @@ public abstract class AbstractInitProcedureVo {
     @Accessors(chain = true)
     @Schema(
             name = "NodeInfoListVo",
-            description = "NodeInfoListVo: 节点信息列表响应体"
+            description = "NodeInfoListVo 节点信息列表响应体"
     )
     public static class NodeInfoListVo implements IVo {
         @Schema(name = "NodeId", title = "节点 Id", required = true)

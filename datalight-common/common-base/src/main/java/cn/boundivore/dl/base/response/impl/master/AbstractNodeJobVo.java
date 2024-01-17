@@ -40,7 +40,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobIdVo",
-            description = "AbstractNodeJobVo.NodeJobIdVo: NodeJobId 信息"
+            description = "AbstractNodeJobVo.NodeJobIdVo 信息"
     )
     public static class NodeJobIdVo implements IVo {
 
@@ -62,7 +62,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobProgressVo",
-            description = "AbstractNodeJobVo.NodeJobProgressVo: NodeJob 计划进度信息"
+            description = "AbstractNodeJobVo.NodeJobProgressVo NodeJob 计划进度信息"
     )
     public static class NodeJobProgressVo implements IVo {
 
@@ -94,7 +94,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobPlanProgressVo",
-            description = "AbstractNodeJobVo.NodeJobPlanProgressVo: NodeJob 计划进度信息"
+            description = "AbstractNodeJobVo.NodeJobPlanProgressVo NodeJob 计划进度信息"
     )
     public static class NodeJobPlanProgressVo implements IVo {
 
@@ -141,7 +141,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobExecProgressVo",
-            description = "AbstractNodeJobVo.NodeJobExecProgressVo: NodeJob 执行进度信息"
+            description = "AbstractNodeJobVo.NodeJobExecProgressVo NodeJob 执行进度信息"
     )
     public static class NodeJobExecProgressVo implements IVo {
 
@@ -188,7 +188,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.ExecProgressPerNodeVo",
-            description = "AbstractNodeJobVo.ExecProgressPerNodeVo: NodeJob 中每个节点的执行进度信息"
+            description = "AbstractNodeJobVo.ExecProgressPerNodeVo NodeJob 中每个节点的执行进度信息"
     )
     public static class ExecProgressPerNodeVo implements IVo {
         @Schema(name = "NodeId", title = "节点 ID", required = true)
@@ -243,7 +243,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.ExecProgressStepVo",
-            description = "AbstractNodeJobVo.ExecProgressStepVo: NodeJob 中每个节点的 Step 执行进度信息"
+            description = "AbstractNodeJobVo.ExecProgressStepVo NodeJob 中每个节点的 Step 执行进度信息"
     )
     public static class ExecProgressStepVo implements IVo {
 
@@ -276,7 +276,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobTransferProgressVo",
-            description = "AbstractNodeJobVo.NodeJobTransferProgressVo: NodeJob 全部文件分发进度"
+            description = "AbstractNodeJobVo.NodeJobTransferProgressVo NodeJob 全部文件分发进度"
     )
     public static class AllNodeJobTransferProgressVo implements IVo {
 
@@ -304,7 +304,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobTransferProgressVo",
-            description = "AbstractNodeJobVo.NodeJobTransferProgressVo: NodeJob 当前节点传输概览"
+            description = "AbstractNodeJobVo.NodeJobTransferProgressVo NodeJob 当前节点传输概览"
     )
     public static class NodeJobTransferProgressVo implements IVo {
 
@@ -358,7 +358,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.FileBytesProgressVo",
-            description = "AbstractNodeJobVo.FileBytesProgressVo: NodeJob 当前正在传输的文件字节进度信息"
+            description = "AbstractNodeJobVo.FileBytesProgressVo NodeJob 当前正在传输的文件字节进度信息"
     )
     public static class FileBytesProgressVo implements IVo {
         @Schema(name = "TotalBytes", title = "所有文件总字节数", required = true)
@@ -383,7 +383,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.FileCountProgressVo",
-            description = "AbstractNodeJobVo.FileCountProgressVo: NodeJob 当前正在传输的文件个数进度信息"
+            description = "AbstractNodeJobVo.FileCountProgressVo NodeJob 当前正在传输的文件个数进度信息"
     )
     public static class FileCountProgressVo implements IVo {
         @Schema(name = "TotalFileCount", title = "所有文件个数", required = true)
@@ -408,7 +408,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.CurrentFileProgressVo",
-            description = "AbstractNodeJobVo.CurrentFileProgressVo: NodeJob 当前正在传输的文件进度信息"
+            description = "AbstractNodeJobVo.CurrentFileProgressVo NodeJob 当前正在传输的文件进度信息"
     )
     public static class CurrentFileProgressVo implements IVo {
         @Schema(name = "CurrentFilename", title = "当前正在传输的文件", required = true)
@@ -443,7 +443,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobTransferProgressDetailVo",
-            description = "AbstractNodeJobVo.NodeJobTransferProgressDetailVo: NodeJob 当前节点传输详情"
+            description = "AbstractNodeJobVo.NodeJobTransferProgressDetailVo NodeJob 当前节点传输详情"
     )
     public static class NodeJobTransferProgressDetailVo implements IVo {
 
@@ -476,7 +476,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.FileProgressVo",
-            description = "AbstractNodeJobVo.FileProgressVo: NodeJob 单个文件分发进度"
+            description = "AbstractNodeJobVo.FileProgressVo NodeJob 单个文件分发进度"
     )
     public static class FileProgressVo implements IVo {
 
@@ -517,7 +517,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.NodeJobLogListVo",
-            description = "AbstractJobVo.NodeJobLogListVo: NodeJob 的日志信息列表"
+            description = "AbstractJobVo.NodeJobLogListVo NodeJob 的日志信息列表"
     )
     public static class NodeJobLogListVo implements IVo {
 
@@ -544,7 +544,7 @@ public abstract class AbstractNodeJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeJobVo.NodeJobLogVo",
-            description = "AbstractNodeJobVo.NodeJobLogVo: NodeJob 的日志信息"
+            description = "AbstractNodeJobVo.NodeJobLogVo NodeJob 的日志信息"
     )
     public static class NodeJobLogVo implements IVo {
 

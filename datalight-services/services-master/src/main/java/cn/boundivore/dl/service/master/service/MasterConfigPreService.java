@@ -223,7 +223,7 @@ public class MasterConfigPreService {
     public Result<String> saveConfigPre(ConfigPreSaveRequest request) {
 
         Long clusterId = request.getClusterId();
-        List<ConfigPreSaveRequest.ServiceRequest> serviceList = request.getServiceList();
+        List<ConfigPreSaveRequest.ConfigPreServiceRequest> serviceList = request.getConfigPreServiceRequest();
 
         //删除之前的预配置信息
         this.deleteConfigPreBatch(clusterId);

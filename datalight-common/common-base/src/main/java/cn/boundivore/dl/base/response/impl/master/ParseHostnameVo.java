@@ -45,7 +45,7 @@ import java.util.List;
 @Accessors(chain = true)
 @Schema(
         name = "ParseHostnameVo",
-        description = "ParseHostnameVo: 解析节点主机名 响应体"
+        description = "ParseHostnameVo 解析节点主机名 响应体"
 )
 public class ParseHostnameVo implements IVo {
 

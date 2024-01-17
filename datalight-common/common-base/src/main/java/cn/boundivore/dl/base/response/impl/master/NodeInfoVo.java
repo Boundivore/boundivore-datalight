@@ -44,7 +44,7 @@ import javax.validation.constraints.NotNull;
 @Accessors(chain = true)
 @Schema(
         name = "NodeInfoVo",
-        description = "NodeInfoVo: 节点信息 响应体"
+        description = "NodeInfoVo 节点信息 响应体"
 )
 public class NodeInfoVo implements IVo {
 

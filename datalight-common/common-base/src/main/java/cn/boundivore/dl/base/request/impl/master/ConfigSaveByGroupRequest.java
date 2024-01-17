@@ -33,7 +33,7 @@ import java.util.List;
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/5
- * Modification description:
+ * Modification: description:
  * Modified by:
  * Modification time:
  * Version: V1.0
@@ -44,7 +44,7 @@ import java.util.List;
 @Accessors(chain = true)
 @Schema(
         name = "ConfigSaveByGroupRequest",
-        description = "ConfigSaveByGroupRequest: 保存服务组件配置 请求体"
+        description = "ConfigSaveByGroupRequest 保存服务组件配置 请求体"
 )
 public class ConfigSaveByGroupRequest implements IRequest {
 
@@ -78,7 +78,7 @@ public class ConfigSaveByGroupRequest implements IRequest {
     )
     @Schema(
             name = "ConfigSaveByGroupRequest.ConfigGroupRequest",
-            description = "ConfigSaveByGroupRequest.ConfigGroupRequest: 当前配置信息"
+            description = "ConfigSaveByGroupRequest.ConfigGroupRequest 当前配置信息"
     )
     public static class ConfigGroupRequest implements IRequest {
 
@@ -115,7 +115,7 @@ public class ConfigSaveByGroupRequest implements IRequest {
     @Builder
     @Schema(
             name = "ConfigSaveByGroupRequest.ConfigNodeRequest",
-            description = "ConfigSaveByGroupRequest.ConfigNodeRequest: 节点信息"
+            description = "ConfigSaveByGroupRequest.ConfigNodeRequest 节点信息"
     )
     public static class ConfigNodeRequest implements IRequest {
 

@@ -49,7 +49,7 @@ public abstract class AbstractUserRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractUserRequest.UserAuthRequest",
-            description = "UserAuthRequest 用户登录、认证 请求体"
+            description = "AbstractUserRequest.UserAuthRequest 用户登录、认证 请求体"
     )
     public static class UserAuthRequest implements IRequest {
 
@@ -77,7 +77,7 @@ public abstract class AbstractUserRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractUserRequest.UserBaseRequest",
-            description = "UserBaseRequest 用户基础信息 请求体"
+            description = "AbstractUserRequest.UserBaseRequest 用户基础信息 请求体"
     )
     public static class UserBaseRequest implements IRequest {
 
@@ -100,7 +100,7 @@ public abstract class AbstractUserRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractUserRequest.UserRegisterRequest",
-            description = "UserRegisterRequest 用户注册请求体"
+            description = "AbstractUserRequest.UserRegisterRequest 用户注册请求体"
     )
     public static class UserRegisterRequest implements IRequest {
 
@@ -122,7 +122,7 @@ public abstract class AbstractUserRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractUserRequest.UserChangePasswordRequest",
-            description = "UserChangePasswordRequest 用户修改密码 请求体"
+            description = "AbstractUserRequest.UserChangePasswordRequest 用户修改密码 请求体"
     )
     public static class UserChangePasswordRequest implements IRequest {
 

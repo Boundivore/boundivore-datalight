@@ -43,7 +43,7 @@ import java.util.List;
 @AllArgsConstructor
 @Schema(
         name = "ConfigListByGroupVo",
-        description = "ConfigListByGroupVo: 指定配置文件的详细信息（包含分组）"
+        description = "ConfigListByGroupVo 指定配置文件的详细信息（包含分组）"
 )
 public class ConfigListByGroupVo implements IVo {
 
@@ -74,7 +74,7 @@ public class ConfigListByGroupVo implements IVo {
     )
     @Schema(
             name = "ConfigListByGroupVo.ConfigGroupVo",
-            description = "ConfigListByGroupVo.ConfigGroupVo: 当前配置信息"
+            description = "ConfigListByGroupVo.ConfigGroupVo 当前配置信息"
     )
     public static class ConfigGroupVo implements IVo {
 
@@ -106,7 +106,7 @@ public class ConfigListByGroupVo implements IVo {
     @Builder
     @Schema(
             name = "ConfigListByGroupVo.ConfigNodeVo",
-            description = "ConfigListByGroupVo.ConfigNodeVo: 节点信息"
+            description = "ConfigListByGroupVo.ConfigNodeVo 节点信息"
     )
     public static class ConfigNodeVo implements IVo {
 

@@ -31,7 +31,6 @@ import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -68,7 +67,7 @@ public class MasterClusterService {
      * @param request 新建集群请求体
      * @return Result<AbstractClusterVo.ClusterVo> 创建后的集群信息
      */
-    public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.ClusterNewRequest request) {
+    public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.NewClusterRequest request) {
 
         // 检查 DLC 合法性
         String dlcVersion = request.getDlcVersion();

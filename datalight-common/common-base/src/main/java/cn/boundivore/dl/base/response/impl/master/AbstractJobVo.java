@@ -41,7 +41,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.JobIdVo",
-            description = "AbstractJobVo.JobIdVo: JobId 信息"
+            description = "AbstractJobVo.JobIdVo JobId 信息"
     )
     public static class JobIdVo implements IVo {
 
@@ -64,7 +64,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.JobProgressVo",
-            description = "AbstractJobVo.JobProgressVo: Job 计划进度信息"
+            description = "AbstractJobVo.JobProgressVo Job 计划进度信息"
     )
     public static class JobProgressVo implements IVo {
 
@@ -96,7 +96,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.JobPlanProgressVo",
-            description = "AbstractJobVo.JobPlanProgressVo: Job 计划进度信息"
+            description = "AbstractJobVo.JobPlanProgressVo Job 计划进度信息"
     )
     public static class JobPlanProgressVo implements IVo {
 
@@ -143,7 +143,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.JobExecProgressVo",
-            description = "AbstractJobVo.JobExecProgressVo: Job 执行进度信息"
+            description = "AbstractJobVo.JobExecProgressVo Job 执行进度信息"
     )
     public static class JobExecProgressVo implements IVo {
 
@@ -190,7 +190,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.ExecProgressPerNodeVo",
-            description = "AbstractJobVo.ExecProgressPerNodeVo: Job 中每个节点的执行进度信息"
+            description = "AbstractJobVo.ExecProgressPerNodeVo Job 中每个节点的执行进度信息"
     )
     public static class ExecProgressPerNodeVo implements IVo {
 
@@ -236,7 +236,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.ExecProgressStepVo",
-            description = "AbstractJobVo.ExecProgressStepVo: Job 中每个节点的 Step 执行进度信息"
+            description = "AbstractJobVo.ExecProgressStepVo Job 中每个节点的 Step 执行进度信息"
     )
     public static class ExecProgressStepVo implements IVo {
 
@@ -268,7 +268,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.JobLogListVo",
-            description = "AbstractJobVo.JobLogListVo: Job 的日志信息列表"
+            description = "AbstractJobVo.JobLogListVo Job 的日志信息列表"
     )
     public static class JobLogListVo implements IVo {
 
@@ -295,7 +295,7 @@ public abstract class AbstractJobVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractJobVo.JobLogVo",
-            description = "AbstractJobVo.JobLogVo: Job 的日志信息"
+            description = "AbstractJobVo.JobLogVo Job 的日志信息"
     )
     public static class JobLogVo implements IVo {
 

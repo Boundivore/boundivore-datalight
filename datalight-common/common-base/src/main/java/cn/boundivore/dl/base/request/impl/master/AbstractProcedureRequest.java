@@ -44,8 +44,8 @@ public abstract class AbstractProcedureRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "PersistProcedureRequest",
-            description = "PersistProcedureRequest: 持久化初始化进度状态请求体"
+            name = "AbstractProcedureRequest.PersistProcedureRequest",
+            description = "AbstractProcedureRequest.PersistProcedureRequest 持久化初始化进度状态请求体"
     )
     public static class PersistProcedureRequest implements IRequest {
 
@@ -79,8 +79,8 @@ public abstract class AbstractProcedureRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "NodeInfoListRequest",
-            description = "NodeInfoListRequest: 操作的节点信息列表请求体"
+            name = "AbstractProcedureRequest.NodeInfoListRequest",
+            description = "AbstractProcedureRequest.NodeInfoListRequest 操作的节点信息列表请求体"
     )
     public static class NodeInfoListRequest implements IRequest {
         @Schema(name = "NodeId", title = "节点 Id", required = true)

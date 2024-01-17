@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  * Description: 当前服务相关的服务和组件信息
- * Created by: Boundivore
+ * Created: by Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/19
  * Modification description:
@@ -49,7 +49,7 @@ import java.util.List;
 @AllArgsConstructor
 @Schema(
         name = "ServiceDependenciesVo",
-        description = "ServiceDependenciesVo: 当前服务相关的服务和组件信息"
+        description = "ServiceDependenciesVo 当前服务相关的服务和组件信息"
 )
 public class ServiceDependenciesVo implements IVo {
 
@@ -69,7 +69,7 @@ public class ServiceDependenciesVo implements IVo {
     @AllArgsConstructor
     @Schema(
             name = "ServiceDependenciesVo.RelativeDetailVo",
-            description = "ServiceDependenciesVo.RelativeDetailVo: 当前服务"
+            description = "ServiceDependenciesVo.RelativeDetailVo 当前服务"
     )
     public static class ServiceDetailVo implements IVo {
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
@@ -112,7 +112,7 @@ public class ServiceDependenciesVo implements IVo {
     @AllArgsConstructor
     @Schema(
             name = "ServiceDependenciesVo.ComponentDetailVo",
-            description = "ServiceDependenciesVo.ComponentDetailVo: 当前组件"
+            description = "ServiceDependenciesVo.ComponentDetailVo 当前组件"
     )
     public static class ComponentDetailVo implements IVo {
 
@@ -151,7 +151,7 @@ public class ServiceDependenciesVo implements IVo {
     @NoArgsConstructor
     @Schema(
             name = "ServiceDependenciesVo.ConfDirVo",
-            description = "ServiceDependenciesVo.ConfDirVo: 服务配置目录与模板目录信息"
+            description = "ServiceDependenciesVo.ConfDirVo 服务配置目录与模板目录信息"
     )
     public static class ConfDirVo implements Serializable {
         @Schema(name = "ServiceConfDir", title = "服务配置文件目录", required = true)
@@ -170,7 +170,7 @@ public class ServiceDependenciesVo implements IVo {
     @NoArgsConstructor
     @Schema(
             name = "ServiceDependenciesVo.PropertyVo",
-            description = "ServiceDependenciesVo.PropertyVo: 预配置属性信息"
+            description = "ServiceDependenciesVo.PropertyVo 预配置属性信息"
     )
     public static class PropertyVo implements Serializable {
 

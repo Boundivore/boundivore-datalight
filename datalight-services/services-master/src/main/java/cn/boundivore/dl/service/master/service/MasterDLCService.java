@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.response.impl.master.AbstractDLCVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractDlcVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.converter.IDLCConverter;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
@@ -54,11 +54,11 @@ public class MasterDLCService {
      * Modification time:
      * Throws:
      *
-     * @return Result<AbstractDLCVo.DLCSummaryVo> 包中服务的相关信息
+     * @return Result<AbstractDlcVo.DLCSummaryVo> 包中服务的相关信息
      */
-    public Result<AbstractDLCVo.DLCServiceVo> dlcServiceList() {
+    public Result<AbstractDlcVo.DlcServiceVo> dlcServiceList() {
         return Result.success(
-                new AbstractDLCVo.DLCServiceVo(
+                new AbstractDlcVo.DlcServiceVo(
                         ResolverYamlServiceManifest.SERVICE_MANIFEST_YAML
                                 .getDataLight()
                                 .getDlcVersion(),
@@ -81,19 +81,19 @@ public class MasterDLCService {
      * Modification time:
      * Throws:
      *
-     * @return Result<AbstractDLCVo.DLCComponentVo> 服务组件列表信息
+     * @return Result<AbstractDlcVo.DLCComponentVo> 服务组件列表信息
      */
-    public Result<AbstractDLCVo.DLCComponentVo> dlcComponentList() {
+    public Result<AbstractDlcVo.DlcComponentVo> dlcComponentList() {
 
         return Result.success(
-                new AbstractDLCVo.DLCComponentVo(
+                new AbstractDlcVo.DlcComponentVo(
                         ResolverYamlServiceManifest.SERVICE_MANIFEST_YAML
                                 .getDataLight()
                                 .getDlcVersion(),
                         ResolverYamlServiceDetail.SERVICE_MAP
                                 .values()
                                 .stream()
-                                .map(i -> new AbstractDLCVo.ServiceComponentSummaryVo(
+                                .map(i -> new AbstractDlcVo.DlcServiceComponentSummaryVo(
                                                 this.iDlcConverter.convert2ServiceSummaryVo(i),
                                                 ResolverYamlServiceDetail.COMPONENT_LIST_MAP
                                                         .get(i.getName())

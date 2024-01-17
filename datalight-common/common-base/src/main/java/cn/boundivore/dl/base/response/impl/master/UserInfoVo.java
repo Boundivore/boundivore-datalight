@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(
         name = "UserInfoVo",
-        description = "UserInfoVo: 用户信息"
+        description = "UserInfoVo 用户信息"
 )
 public class UserInfoVo implements IVo {
 
@@ -70,7 +70,7 @@ public class UserInfoVo implements IVo {
     @JsonProperty(value = "Token", required = true)
     private String token;
 
-    @Schema(name = "TokenTimeout", title = "获取指定 token 剩余有效时间(单位: 秒。-1: 永久有效，-2: 没有这个值)", required = true)
+    @Schema(name = "TokenTimeout", title = "获取指定 token 剩余有效时间(单位 秒。-1 永久有效，-2 没有这个值)", required = true)
     @JsonProperty(value = "TokenTimeout", required = true)
     private Long tokenTimeout;
 

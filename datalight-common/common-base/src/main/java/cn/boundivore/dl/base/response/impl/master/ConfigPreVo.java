@@ -46,7 +46,7 @@ import java.util.List;
 @AllArgsConstructor
 @Schema(
         name = "ConfigPreVo",
-        description = "ConfigPreVo: 待部署的服务组件预配置信息"
+        description = "ConfigPreVo 待部署的服务组件预配置信息"
 )
 public class ConfigPreVo implements IVo {
 
@@ -66,7 +66,7 @@ public class ConfigPreVo implements IVo {
     @AllArgsConstructor
     @Schema(
             name = "ConfigPreVo.ServiceVo",
-            description = "ConfigPreVo.ServiceVo: 当前服务"
+            description = "ConfigPreVo.ServiceVo 当前服务"
     )
     public static class ServiceVo implements IVo {
 
@@ -86,7 +86,7 @@ public class ConfigPreVo implements IVo {
     @AllArgsConstructor
     @Schema(
             name = "ConfigPreVo.PlaceholderInfoVo",
-            description = "ConfigPreVo.PlaceholderInfoVo: 预配置信息"
+            description = "ConfigPreVo.PlaceholderInfoVo 预配置信息"
     )
     public static class PlaceholderInfoVo implements IVo {
 
@@ -106,7 +106,7 @@ public class ConfigPreVo implements IVo {
     @AllArgsConstructor
     @Schema(
             name = "ConfigPreVo.PropertyVo",
-            description = "ConfigPreVo.PropertyVo: 预配置属性信息"
+            description = "ConfigPreVo.PropertyVo 预配置属性信息"
     )
     public static class PropertyVo implements IVo {
 

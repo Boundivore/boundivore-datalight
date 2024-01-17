@@ -16,14 +16,13 @@
  */
 package cn.boundivore.dl.service.master.converter;
 
-import cn.boundivore.dl.base.response.impl.master.AbstractDLCVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractDlcVo;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
@@ -55,7 +54,7 @@ public interface IDLCConverter {
                     @Mapping(source = "relatives", target = "relativeList")
             }
     )
-    AbstractDLCVo.ServiceSummaryVo convert2ServiceSummaryVo(YamlServiceDetail.Service service);
+    AbstractDlcVo.DlcServiceSummaryVo convert2ServiceSummaryVo(YamlServiceDetail.Service service);
 
     @Mappings(
             {
@@ -63,6 +62,6 @@ public interface IDLCConverter {
                     @Mapping(source = "mutexes", target = "mutexesList")
             }
     )
-    AbstractDLCVo.ComponentSummaryVo convert2ComponentSummaryVo(YamlServiceDetail.Component component);
+    AbstractDlcVo.DlcComponentSummaryVo convert2ComponentSummaryVo(YamlServiceDetail.Component component);
 
 }

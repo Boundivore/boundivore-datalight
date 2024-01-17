@@ -42,7 +42,7 @@ public abstract class AbstractServiceComponentVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractServiceComponentVo.ServiceVo",
-            description = "AbstractServiceComponentVo.ServiceVo: 集群中的服务列表"
+            description = "AbstractServiceComponentVo.ServiceVo 集群中的服务列表"
     )
     public final static class ServiceVo implements IVo {
 
@@ -66,7 +66,7 @@ public abstract class AbstractServiceComponentVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractServiceComponentVo.ServiceSummaryVo",
-            description = "AbstractServiceComponentVo.ServiceSummaryVo: 服务信息"
+            description = "AbstractServiceComponentVo.ServiceSummaryVo 服务信息"
     )
     public final static class ServiceSummaryVo implements IVo {
 
@@ -109,7 +109,7 @@ public abstract class AbstractServiceComponentVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractServiceComponentVo.ComponentVo",
-            description = "AbstractServiceComponentVo.ComponentVo: 集群中服务与组件详细信息列表"
+            description = "AbstractServiceComponentVo.ComponentVo 集群中服务与组件详细信息列表"
     )
     public final static class ComponentVo implements IVo {
 
@@ -133,7 +133,7 @@ public abstract class AbstractServiceComponentVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractServiceComponentVo.ServiceComponentSummaryVo",
-            description = "AbstractServiceComponentVo.ServiceComponentSummaryVo: 服务组件信息"
+            description = "AbstractServiceComponentVo.ServiceComponentSummaryVo 服务组件信息"
     )
     public final static class ServiceComponentSummaryVo implements IVo {
 
@@ -155,7 +155,7 @@ public abstract class AbstractServiceComponentVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractServiceComponentVo.ComponentSummaryVo",
-            description = "AbstractServiceComponentVo.ComponentSummaryVo: 组件信息"
+            description = "AbstractServiceComponentVo.ComponentSummaryVo 组件信息"
     )
     public final static class ComponentSummaryVo implements IVo {
 
@@ -191,7 +191,7 @@ public abstract class AbstractServiceComponentVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractServiceComponentVo.ComponentNodeVo",
-            description = "AbstractServiceComponentVo.ComponentNodeVo: 组件在节点的分布信息"
+            description = "AbstractServiceComponentVo.ComponentNodeVo 组件在节点的分布信息"
     )
     public final static class ComponentNodeVo implements IVo {
 

@@ -42,7 +42,7 @@ public abstract class AbstractClusterVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractClusterVo.ClusterListVo",
-            description = "AbstractClusterVo.ClusterListVo: 集群信息列表"
+            description = "AbstractClusterVo.ClusterListVo 集群信息列表"
     )
     public static class ClusterListVo implements IVo {
         @Schema(name = "ClusterList", title = "集群 ID", required = true)
@@ -58,7 +58,7 @@ public abstract class AbstractClusterVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractClusterVo.ClusterVo",
-            description = "AbstractClusterVo.ClusterVo: 集群信息"
+            description = "AbstractClusterVo.ClusterVo 集群信息"
     )
     public static class ClusterVo implements IVo {
 

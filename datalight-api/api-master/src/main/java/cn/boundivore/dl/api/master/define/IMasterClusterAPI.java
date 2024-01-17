@@ -57,7 +57,7 @@ public interface IMasterClusterAPI {
     Result<AbstractClusterVo.ClusterVo> clusterNew(
             @RequestBody
             @Valid
-            AbstractClusterRequest.ClusterNewRequest request
+            AbstractClusterRequest.NewClusterRequest request
     ) throws Exception;
 
     @GetMapping(value = "/cluster/getById")

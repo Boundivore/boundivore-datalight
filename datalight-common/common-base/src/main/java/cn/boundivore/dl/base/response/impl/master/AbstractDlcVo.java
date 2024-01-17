@@ -20,8 +20,6 @@ package cn.boundivore.dl.base.response.impl.master;
 import cn.boundivore.dl.base.enumeration.impl.ServiceTypeEnum;
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,25 +29,25 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
-public abstract class AbstractDLCVo {
+public abstract class AbstractDlcVo {
 
     @Data
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "AbstractDLCVo.DLCServiceVo",
-            description = "AbstractDLCVo.DLCServiceVo: 服务列表信息"
+            name = "AbstractDlcVo.DlcServiceVo",
+            description = "AbstractDlcVo.DlcServiceVo 服务列表信息"
     )
-    public final static class DLCServiceVo implements IVo {
+    public final static class DlcServiceVo implements IVo {
 
-        @Schema(name = "DLCVersion", title = "服务组件包版本", required = true)
-        @JsonProperty(value = "DLCVersion", required = true)
+        @Schema(name = "DlcVersion", title = "服务组件包版本", required = true)
+        @JsonProperty(value = "DlcVersion", required = true)
         private String dlcVersion;
 
-        @Schema(name = "ServiceSummaryList", title = "服务概览列表", required = true)
-        @JsonProperty(value = "ServiceSummaryList", required = true)
-        private List<ServiceSummaryVo> serviceSummaryList;
+        @Schema(name = "DlcServiceSummaryList", title = "服务概览列表", required = true)
+        @JsonProperty(value = "DlcServiceSummaryList", required = true)
+        private List<DlcServiceSummaryVo> dlcServiceSummaryList;
     }
 
     @Data
@@ -57,10 +55,10 @@ public abstract class AbstractDLCVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "AbstractDLCVo.ServiceSummaryVo",
-            description = "AbstractDLCVo.ServiceSummaryVo: 服务信息"
+            name = "AbstractDlcVo.DlcServiceSummaryVo",
+            description = "AbstractDlcVo.DlcServiceSummaryVo 服务信息"
     )
-    public final static class ServiceSummaryVo implements IVo {
+    public final static class DlcServiceSummaryVo implements IVo {
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -100,18 +98,18 @@ public abstract class AbstractDLCVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "AbstractDLCVo.DLCComponentVo",
-            description = "AbstractDLCVo.DLCComponentVo: 服务与组件详细信息列表"
+            name = "AbstractDlcVo.DlcComponentVo",
+            description = "AbstractDlcVo.DlcComponentVo 服务与组件详细信息列表"
     )
-    public final static class DLCComponentVo implements IVo {
+    public final static class DlcComponentVo implements IVo {
 
-        @Schema(name = "DLCVersion", title = "服务组件包版本", required = true)
-        @JsonProperty(value = "DLCVersion", required = true)
+        @Schema(name = "DlcVersion", title = "服务组件包版本", required = true)
+        @JsonProperty(value = "DlcVersion", required = true)
         private String dlcVersion;
 
-        @Schema(name = "ServiceComponentSummaryList", title = "服务列表", required = true)
-        @JsonProperty(value = "ServiceComponentSummaryList", required = true)
-        private List<ServiceComponentSummaryVo> serviceComponentSummaryList;
+        @Schema(name = "DlcServiceComponentSummaryList", title = "服务列表", required = true)
+        @JsonProperty(value = "DlcServiceComponentSummaryList", required = true)
+        private List<DlcServiceComponentSummaryVo> dlcServiceComponentSummaryList;
     }
 
 
@@ -120,18 +118,18 @@ public abstract class AbstractDLCVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "AbstractDLCVo.ServiceVo",
-            description = "AbstractDLCVo.ServiceVo: 服务组件信息"
+            name = "AbstractDlcVo.DlcServiceComponentSummaryVo",
+            description = "AbstractDlcVo.DlcServiceComponentSummaryVo 服务组件信息"
     )
-    public final static class ServiceComponentSummaryVo implements IVo {
+    public final static class DlcServiceComponentSummaryVo implements IVo {
 
-        @Schema(name = "ServiceSummary", title = "服务名称", required = true)
-        @JsonProperty(value = "ServiceSummary", required = true)
-        private ServiceSummaryVo serviceSummaryVo;
+        @Schema(name = "DlcServiceSummary", title = "服务名称", required = true)
+        @JsonProperty(value = "DlcServiceSummary", required = true)
+        private DlcServiceSummaryVo dlcServiceSummaryVo;
 
-        @Schema(name = "ComponentSummaryList", title = "组件概览列表", required = true)
-        @JsonProperty(value = "ComponentSummaryList", required = true)
-        private List<ComponentSummaryVo> componentSummaryList;
+        @Schema(name = "DlcComponentSummaryList", title = "组件概览列表", required = true)
+        @JsonProperty(value = "DlcComponentSummaryList", required = true)
+        private List<DlcComponentSummaryVo> dlcComponentSummaryList;
 
 
     }
@@ -141,10 +139,10 @@ public abstract class AbstractDLCVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "AbstractDLCVo.ComponentSummaryVo",
-            description = "AbstractDLCVo.ComponentSummaryVo: 组件信息"
+            name = "AbstractDlcVo.DlcComponentSummaryVo",
+            description = "AbstractDlcVo.DlcComponentSummaryVo 组件信息"
     )
-    public final static class ComponentSummaryVo implements IVo {
+    public final static class DlcComponentSummaryVo implements IVo {
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)

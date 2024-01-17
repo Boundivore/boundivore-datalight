@@ -40,7 +40,7 @@ public abstract class AbstractNodeVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeVo.NodeVo",
-            description = "AbstractNodeVo.NodeVo: NodeVo 节点信息"
+            description = "AbstractNodeVo.NodeVo 节点信息"
     )
     public static class NodeVo implements IVo {
 
@@ -62,7 +62,7 @@ public abstract class AbstractNodeVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractNodeVo.NodeDetailVo",
-            description = "AbstractNodeVo.NodeDetailVo: NodeDetailVo 节点信息详情"
+            description = "AbstractNodeVo.NodeDetailVo NodeDetailVo 节点信息详情"
     )
     public static class NodeDetailVo implements IVo {
 

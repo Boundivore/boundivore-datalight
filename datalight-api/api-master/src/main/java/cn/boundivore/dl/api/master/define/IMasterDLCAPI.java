@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.api.master.define;
 
-import cn.boundivore.dl.base.response.impl.master.AbstractDLCVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractDlcVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,10 +46,10 @@ public interface IMasterDLCAPI {
 
     @GetMapping(value = "/dlc/service/list")
     @ApiOperation(notes = "获取服务组件包中的服务列表", value = "获取服务组件包中的服务列表")
-    Result<AbstractDLCVo.DLCServiceVo> dlcServiceList() throws Exception;
+    Result<AbstractDlcVo.DlcServiceVo> dlcServiceList() throws Exception;
 
     @GetMapping(value = "/dlc/component/list")
     @ApiOperation(notes = "获取服务组件包中的组件列表", value = "获取服务组件包中的组件列表")
-    Result<AbstractDLCVo.DLCComponentVo> dlcComponentList() throws Exception;
+    Result<AbstractDlcVo.DlcComponentVo> dlcComponentList() throws Exception;
 
 }
