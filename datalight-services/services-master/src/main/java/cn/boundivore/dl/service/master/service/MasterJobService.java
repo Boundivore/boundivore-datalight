@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
@@ -25,7 +24,6 @@ import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
 import cn.boundivore.dl.orm.po.single.TDlJobLog;
@@ -43,7 +41,6 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -166,7 +163,11 @@ public class MasterJobService {
         // 根据优先级升序或降序排序服务列表, 如果是其他操作，可通过 isPriorityAsc 调整执行顺序（true 为正序，false 为倒序）
         List<TDlService> tDlServiceList = this.masterServiceService.getTDlServiceListSorted(
                 request.getClusterId(),
-                request.getJobDetailServiceList().stream().map(JobDetailRequest.JobDetailServiceRequest::getServiceName).collect(Collectors.toList()),
+                request.getJobDetailServiceList()
+                        .stream()
+                        .map(JobDetailRequest.JobDetailServiceRequest::getServiceName)
+                        .collect(Collectors.toList()
+                        ),
                 isPriorityAsc
         );
 
