@@ -112,6 +112,44 @@ public class MasterJobService {
     }
 
     /**
+     * Description: 根据当前集群 ID 获取本集群以及关联集群信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/23
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @return ClusterMeta 当前集群以及关联集群元数据信息
+     */
+    public ClusterMeta getClusterMeta(Long clusterId) {
+        // 根据当前集群 ID 获取本集群信息
+        AbstractClusterVo.ClusterVo currentCluster = masterClusterService
+                .getClusterById(clusterId)
+                .getData();
+        ClusterMeta clusterMeta = new ClusterMeta()
+                .setCurrentClusterId(currentCluster.getClusterId())
+                .setCurrentClusterName(currentCluster.getClusterName())
+                .setCurrentClusterTypeEnum(currentCluster.getClusterTypeEnum());
+
+        // 当前集群如果是计算集群，获取所依赖的集群信息
+        if (currentCluster.getClusterTypeEnum() == ClusterTypeEnum.COMPUTE) {
+            AbstractClusterVo.ClusterVo relativeCluster = masterClusterService
+                    .getClusterRelative(clusterId)
+                    .getData();
+
+            clusterMeta
+                    .setRelativeCusterId(relativeCluster.getClusterId())
+                    .setRelativeClusterName(relativeCluster.getClusterName())
+                    .setRelativeClusterTypeEnum(relativeCluster.getClusterTypeEnum());
+        }
+
+        return clusterMeta;
+    }
+
+    /**
      * Description: 以 ServiceName 为入口，开始生成作业计划，
      * 并部署 or 启动 or 停止 or 重启等对应服务下的所有组件
      * Created by: Boundivore
@@ -137,27 +175,8 @@ public class MasterJobService {
                 isPriorityAsc
         );
 
-        // 根据当前集群 ID 获取本集群信息
-        AbstractClusterVo.ClusterVo currentCluster = this.masterClusterService
-                .getClusterById(request.getClusterId())
-                .getData();
-        ClusterMeta clusterMeta = new ClusterMeta()
-                .setCurrentClusterId(currentCluster.getClusterId())
-                .setCurrentClusterName(currentCluster.getClusterName())
-                .setCurrentClusterTypeEnum(currentCluster.getClusterTypeEnum());
-
-        // 当前集群如果是计算集群，获取所依赖的集群信息
-        if (currentCluster.getClusterTypeEnum() == ClusterTypeEnum.COMPUTE) {
-            AbstractClusterVo.ClusterVo relativeCluster = this.masterClusterService
-                    .getClusterRelative(request.getClusterId())
-                    .getData();
-
-            clusterMeta
-                    .setRelativeCusterId(relativeCluster.getClusterId())
-                    .setRelativeClusterName(relativeCluster.getClusterName())
-                    .setRelativeClusterTypeEnum(relativeCluster.getClusterTypeEnum());
-        }
-
+        // 根据当前集群 ID 获取本集群以及关联集群信息
+        ClusterMeta clusterMeta = this.getClusterMeta(request.getClusterId());
 
         // 创建 Job 任务意图
         final Intention intention = new Intention()
@@ -213,26 +232,8 @@ public class MasterJobService {
                 isPriorityAsc
         );
 
-        // 根据当前集群 ID 获取本集群信息
-        AbstractClusterVo.ClusterVo currentCluster = this.masterClusterService
-                .getClusterById(request.getClusterId())
-                .getData();
-        ClusterMeta clusterMeta = new ClusterMeta()
-                .setCurrentClusterId(currentCluster.getClusterId())
-                .setCurrentClusterName(currentCluster.getClusterName())
-                .setCurrentClusterTypeEnum(currentCluster.getClusterTypeEnum());
-
-        // 当前集群如果是计算集群，获取所依赖的集群信息
-        if (currentCluster.getClusterTypeEnum() == ClusterTypeEnum.COMPUTE) {
-            AbstractClusterVo.ClusterVo relativeCluster = this.masterClusterService
-                    .getClusterRelative(request.getClusterId())
-                    .getData();
-
-            clusterMeta
-                    .setRelativeCusterId(relativeCluster.getClusterId())
-                    .setRelativeClusterName(relativeCluster.getClusterName())
-                    .setRelativeClusterTypeEnum(relativeCluster.getClusterTypeEnum());
-        }
+        // 根据当前集群 ID 获取本集群以及关联集群信息
+        ClusterMeta clusterMeta = this.getClusterMeta(request.getClusterId());
 
         // 获取当前服务下用户对于特定节点上的特定组件的操作列表
         // Map<ServiceName, List<JobDetailRequest.JobDetailComponentRequest>>
