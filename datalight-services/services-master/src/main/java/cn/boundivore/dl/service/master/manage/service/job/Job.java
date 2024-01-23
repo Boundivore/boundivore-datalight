@@ -113,6 +113,7 @@ public class Job extends Thread {
             this.isInit = true;
         } catch (Exception e) {
             JobCache.getInstance().releaseActiveJobId();
+            log.error(ExceptionUtil.stacktraceToString(e));
             throw new BException(
                     String.format(
                             "初始化 Job 异常: %s",
