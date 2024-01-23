@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
@@ -42,10 +43,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -73,7 +71,49 @@ public class MasterJobService {
     private final TDlJobLogServiceImpl tDlJobLogService;
 
     /**
-     * Description: 以 ServiceName 为入口，开始生成作业计划，并部署 or 启动 or 停止 or 重启等对应服务下的所有组件
+     * Description: 根据操作的行为类型，以确定后续应该获取对应的组件状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/22
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param actionTypeEnum 操作的行为类型
+     * @return List<SCStateEnum> 后续应该获取对应的组件状态
+     */
+    public List<SCStateEnum> getComponentStateFilterList(ActionTypeEnum actionTypeEnum) {
+        final List<SCStateEnum> componentSCSStateEnumList = new ArrayList<>();
+        switch (actionTypeEnum) {
+            case DEPLOY:
+                componentSCSStateEnumList.add(SCStateEnum.SELECTED);
+                componentSCSStateEnumList.add(SCStateEnum.SELECTED_ADDITION);
+                break;
+            case START:
+                componentSCSStateEnumList.add(SCStateEnum.STOPPED);
+                break;
+            case STOP:
+                componentSCSStateEnumList.add(SCStateEnum.STARTED);
+                componentSCSStateEnumList.add(SCStateEnum.STOPPED);
+                break;
+            case RESTART:
+                componentSCSStateEnumList.add(SCStateEnum.STARTED);
+                componentSCSStateEnumList.add(SCStateEnum.STOPPED);
+                break;
+            case REMOVE:
+                componentSCSStateEnumList.add(SCStateEnum.STOPPED);
+                break;
+            case DECOMMISSION:
+                break;
+        }
+
+        return componentSCSStateEnumList;
+    }
+
+    /**
+     * Description: 以 ServiceName 为入口，开始生成作业计划，
+     * 并部署 or 启动 or 停止 or 重启等对应服务下的所有组件
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/5/30
@@ -128,7 +168,8 @@ public class MasterJobService {
                         tDlServiceList.stream()
                                 .map(i -> this.intentionService(
                                                 i,
-                                                isPriorityAsc
+                                                isPriorityAsc,
+                                                this.getComponentStateFilterList(request.getActionTypeEnum())
                                         )
                                 )
                                 .collect(Collectors.toList())
@@ -143,7 +184,8 @@ public class MasterJobService {
 
 
     /**
-     * Description: 以 ServiceName 以及 Component 为入口，开始生成作业计划，并启动 or 停止 or 重启等对应服务下的所有组件
+     * Description: 以 ServiceName 以及 Component 为入口，开始生成作业计划，
+     * 并启动 or 停止 or 重启等对应服务下指定的组件
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/5/30
@@ -192,6 +234,25 @@ public class MasterJobService {
                     .setRelativeClusterTypeEnum(relativeCluster.getClusterTypeEnum());
         }
 
+        // 获取当前服务下用户对于特定节点上的特定组件的操作列表
+        // Map<ServiceName, List<JobDetailRequest.JobDetailComponentRequest>>
+        Map<String, List<JobDetailRequest.JobDetailComponentRequest>> serviceNameToComponentListMap = request
+                .getJobDetailServiceList()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                // 键：ServiceName
+                                JobDetailRequest.JobDetailServiceRequest::getServiceName,
+                                // 值：JobDetailComponentList
+                                JobDetailRequest.JobDetailServiceRequest::getJobDetailComponentList,
+                                // 如果有重复的 ServiceName，合并列表
+                                (existing, replacement) -> {
+                                    existing.addAll(replacement);
+                                    return existing;
+                                }
+                        )
+                );
+
 
         // 创建 Job 任务意图
         final Intention intention = new Intention()
@@ -202,7 +263,9 @@ public class MasterJobService {
                         tDlServiceList.stream()
                                 .map(i -> this.intentionService(
                                                 i,
-                                                isPriorityAsc
+                                                isPriorityAsc,
+                                                this.getComponentStateFilterList(request.getActionTypeEnum()),
+                                                serviceNameToComponentListMap.get(i.getServiceName())
                                         )
                                 )
                                 .collect(Collectors.toList())
@@ -229,16 +292,17 @@ public class MasterJobService {
      * @param isPriorityAsc 优先级正序或逆序
      * @return 返回 Job 任务意图中的 Service 信息
      */
-    private Intention.Service intentionService(TDlService tDlService, boolean isPriorityAsc) {
+    private Intention.Service intentionService(TDlService tDlService,
+                                               boolean isPriorityAsc,
+                                               List<SCStateEnum> componentSCSStateEnumList) {
 
         //通过 JOIN 关联 Component 和 Node 表，查找出所有组件分布到所有节点的情况
-        List<ComponentNodeDto> componentNodeDtoList = componentNodeMapper.selectComponentNodeInStatesDto(
+        List<ComponentNodeDto> componentNodeDtoList = this.componentNodeMapper.selectComponentNodeInStatesDto(
                 tDlService.getClusterId(),
                 tDlService.getServiceName(),
-                CollUtil.newArrayList(
-                        SCStateEnum.SELECTED
-                )
+                componentSCSStateEnumList
         );
+
 
         //当前服务
         //按照组件名称进行分组，一个组件可能会在多个节点中部署
@@ -251,6 +315,75 @@ public class MasterJobService {
                                 .values()
                                 .stream()
                                 .map(this::intentionComponent)
+                                .sorted(
+                                        (o1, o2) -> isPriorityAsc ?
+                                                o1.getPriority().compareTo(o2.getPriority()) :
+                                                o2.getPriority().compareTo(o1.getPriority())
+                                )
+                                .collect(Collectors.toList())
+
+                );
+    }
+
+    /**
+     * Description: 组装 Job 意图中的 Service
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/6/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlService    某个服务的相关数据库信息
+     * @param isPriorityAsc 优先级正序或逆序
+     * @return 返回 Job 任务意图中的 Service 信息
+     */
+    private Intention.Service intentionService(TDlService tDlService,
+                                               boolean isPriorityAsc,
+                                               List<SCStateEnum> componentSCSStateEnumList,
+                                               List<JobDetailRequest.JobDetailComponentRequest> jobDetailComponentList) {
+
+        //通过 JOIN 关联 Component 和 Node 表，查找出所有组件分布到所有节点的情况
+        List<ComponentNodeDto> componentNodeDtoList = this.componentNodeMapper.selectComponentNodeInStatesDto(
+                tDlService.getClusterId(),
+                tDlService.getServiceName(),
+                componentSCSStateEnumList
+        );
+
+        // 获取当前服务下用户对于特定节点上的特定组件的操作列表
+        // Map<ComponentName, List<JobDetailRequest.JobDetailNodeRequest>>
+        Map<String, List<JobDetailRequest.JobDetailNodeRequest>> componentNameToJobNodeListMap = jobDetailComponentList
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                // 键：ComponentName
+                                JobDetailRequest.JobDetailComponentRequest::getComponentName,
+                                // 值：JobDetailComponentRequest
+                                JobDetailRequest.JobDetailComponentRequest::getJobDetailNodeList,
+                                // 如果有重复的 ComponentName，合并列表
+                                (existing, replacement) -> {
+                                    existing.addAll(replacement);
+                                    return existing;
+                                }
+                        )
+                );
+
+        //当前服务
+        //按照组件名称进行分组，一个组件可能会在多个节点中部署
+        return new Intention.Service()
+                .setServiceName(tDlService.getServiceName())
+                .setPriority(tDlService.getPriority())
+                .setComponentList(
+                        componentNodeDtoList.stream()
+                                .collect(Collectors.groupingBy(ComponentNodeDto::getComponentName))
+                                .values()
+                                .stream()
+                                .map(i -> this.intentionComponent(
+                                                i,
+                                                componentNameToJobNodeListMap.get(CollUtil.getFirst(i).getComponentName())
+                                        )
+                                )
                                 .sorted(
                                         (o1, o2) -> isPriorityAsc ?
                                                 o1.getPriority().compareTo(o2.getPriority()) :
@@ -285,6 +418,52 @@ public class MasterJobService {
                 .setPriority(first.getComponentPriority())
                 .setNodeList(
                         componentNodeDtoList.stream()
+                                .map(c -> new Intention.Node()
+                                        .setNodeId(c.getNodeId())
+                                        .setNodeIp(c.getIpv4())
+                                        .setHostname(c.getHostname()))
+                                .collect(Collectors.toList())
+                );
+    }
+
+    /**
+     * Description: 组装 Job 意图中的 Component
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/6/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param componentNodeDtoList 当前服务下的某个组件（对应多个节点）
+     * @return 返回 Job 任务意图中的 Component 信息
+     */
+    private Intention.Component intentionComponent(List<ComponentNodeDto> componentNodeDtoList,
+                                                   List<JobDetailRequest.JobDetailNodeRequest> jobDetailNodeList) {
+
+        //当前组中所有元素均为相同的 ComponentName，任意取出一个获得 ComponentName 和 Priority 即可
+        ComponentNodeDto first = CollUtil.getFirst(componentNodeDtoList);
+
+        // 获取当前服务下用户对于特定节点上的特定组件的操作列表
+        // Map<NodeId, JobDetailRequest.JobDetailNodeRequest>
+        Map<Long, JobDetailRequest.JobDetailNodeRequest> nodeIdToNodeRequestMap = jobDetailNodeList
+                .stream()
+                .collect(Collectors.toMap(
+                                // 键：NodeId
+                                JobDetailRequest.JobDetailNodeRequest::getNodeId,
+                                // 值：JobDetailNodeRequest 对象本身
+                                nodeRequest -> nodeRequest
+                        )
+                );
+
+        //包含当前服务下，当前组件中涉及到的所有节点
+        return new Intention.Component()
+                .setComponentName(first.getComponentName())
+                .setPriority(first.getComponentPriority())
+                .setNodeList(
+                        componentNodeDtoList.stream()
+                                .filter(i -> nodeIdToNodeRequestMap.containsKey(i.getNodeId()))
                                 .map(c -> new Intention.Node()
                                         .setNodeId(c.getNodeId())
                                         .setNodeIp(c.getIpv4())

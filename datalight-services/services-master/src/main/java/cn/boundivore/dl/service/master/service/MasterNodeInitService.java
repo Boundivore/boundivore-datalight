@@ -17,9 +17,11 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.*;
+import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.request.impl.master.*;
-import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeInitVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.ParseHostnameVo;
@@ -44,7 +46,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -336,26 +337,28 @@ public class MasterNodeInitService {
                                    List<String> hostnameList,
                                    List<String> ipv4List) {
 
-        List<Long> clusterIdList = new ArrayList<>();
+        /* 同一个 DataLight Master 实例，在同一个局域网中，不应按照集群来区分内网 IP 的重复情况，应该全局去重内网 IP
+            List<Long> clusterIdList = new ArrayList<>();
 
-        AbstractClusterVo.ClusterVo currentCluster = this.masterClusterService
-                .getClusterById(clusterId)
-                .getData();
-
-        clusterIdList.add(currentCluster.getClusterId());
-
-        if (currentCluster.getClusterTypeEnum() == ClusterTypeEnum.COMPUTE) {
-            AbstractClusterVo.ClusterVo relativeCluster = this.masterClusterService
-                    .getClusterRelative(clusterId)
+            AbstractClusterVo.ClusterVo currentCluster = this.masterClusterService
+                    .getClusterById(clusterId)
                     .getData();
-            clusterIdList.add(relativeCluster.getClusterId());
-        }
+
+            clusterIdList.add(currentCluster.getClusterId());
+
+            if (currentCluster.getClusterTypeEnum() == ClusterTypeEnum.COMPUTE) {
+                AbstractClusterVo.ClusterVo relativeCluster = this.masterClusterService
+                        .getClusterRelative(clusterId)
+                        .getData();
+                clusterIdList.add(relativeCluster.getClusterId());
+            }
+        */
 
         // 检查对应集群中是否存在重复的节点信息
         Assert.isFalse(
                 this.tDlNodeService.lambdaQuery()
                         .select()
-                        .in(TDlNode::getClusterId, clusterIdList)
+//                        .in(TDlNode::getClusterId, clusterIdList)
                         .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
                         .and(i -> i
                                 .in(TDlNode::getHostname, hostnameList)

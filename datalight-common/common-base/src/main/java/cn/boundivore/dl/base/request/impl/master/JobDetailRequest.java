@@ -100,8 +100,8 @@ public class JobDetailRequest implements IRequest {
             description = "JobDetailRequest.JobDetailComponentRequest: Job 详细执行组件请求体"
     )
     public static class JobDetailComponentRequest implements IRequest {
-        @Schema(name = "ClusterId", title = "集群 ID", required = true)
-        @JsonProperty(value = "ClusterId", required = true)
+        @Schema(name = "ComponentName", title = "组件名称", required = true)
+        @JsonProperty(value = "ComponentName", required = true)
         @NotNull
         private String componentName;
 
