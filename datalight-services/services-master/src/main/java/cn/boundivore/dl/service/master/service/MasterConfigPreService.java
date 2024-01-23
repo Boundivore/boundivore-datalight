@@ -228,30 +228,31 @@ public class MasterConfigPreService {
         //删除之前的预配置信息
         this.deleteConfigPreBatch(clusterId);
 
-        List<TDlConfigPre> tDlConfigPreList = serviceList.stream()
-                .flatMap(
-                        service -> service.getPlaceholderInfoList()
-                                .stream()
-                                .flatMap(
-                                        placeholderInfo -> placeholderInfo.getPropertyList()
-                                                .stream()
-                                                .map(property -> {//根据传入的信息，创建每一个预配置信息项
-                                                            TDlConfigPre tDlConfigPre = new TDlConfigPre();
-                                                            tDlConfigPre.setClusterId(clusterId);
-                                                            tDlConfigPre.setServiceName(service.getServiceName());
-                                                            tDlConfigPre.setTemplatedConfigPath(placeholderInfo.getTemplatedFilePath());
-                                                            tDlConfigPre.setPlaceholder(property.getPlaceholder());
-                                                            tDlConfigPre.setDefaultValue(property.getDefaultValue());
-                                                            tDlConfigPre.setValue(
-                                                                    StrUtil.isBlank(property.getValue()) ?
-                                                                            property.getDefaultValue() :
-                                                                            property.getValue()
-                                                            );
+        List<TDlConfigPre> tDlConfigPreList = serviceList
+                .stream()
+                .filter(service -> service != null && service.getPlaceholderInfoList() != null && !service.getPlaceholderInfoList().isEmpty())
+                .flatMap(service -> service.getPlaceholderInfoList()
+                        .stream()
+                        .flatMap(
+                                placeholderInfo -> placeholderInfo.getPropertyList()
+                                        .stream()
+                                        .map(property -> {//根据传入的信息，创建每一个预配置信息项
+                                                    TDlConfigPre tDlConfigPre = new TDlConfigPre();
+                                                    tDlConfigPre.setClusterId(clusterId);
+                                                    tDlConfigPre.setServiceName(service.getServiceName());
+                                                    tDlConfigPre.setTemplatedConfigPath(placeholderInfo.getTemplatedFilePath());
+                                                    tDlConfigPre.setPlaceholder(property.getPlaceholder());
+                                                    tDlConfigPre.setDefaultValue(property.getDefaultValue());
+                                                    tDlConfigPre.setValue(
+                                                            StrUtil.isBlank(property.getValue()) ?
+                                                                    property.getDefaultValue() :
+                                                                    property.getValue()
+                                                    );
 
-                                                            return tDlConfigPre;
-                                                        }
-                                                )
-                                )
+                                                    return tDlConfigPre;
+                                                }
+                                        )
+                        )
                 )
                 .collect(Collectors.toList());
 
