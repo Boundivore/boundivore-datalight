@@ -53,7 +53,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop journalnode" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start journalnode" "${USER_NAME}"
     ;;
   *)
@@ -72,7 +72,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop namenode" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start namenode" "${USER_NAME}"
     ;;
   *)
@@ -92,7 +92,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop zkfc" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start zkfc" "${USER_NAME}"
     ;;
   *)
@@ -112,7 +112,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop datanode" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start datanode" "${USER_NAME}"
     ;;
   "refresh")
@@ -138,7 +138,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop httpfs" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start httpfs" "${USER_NAME}"
     ;;
   *)

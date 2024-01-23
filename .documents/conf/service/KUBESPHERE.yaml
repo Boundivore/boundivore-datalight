@@ -80,6 +80,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 Harbor'
@@ -91,6 +94,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 Harbor'
@@ -102,6 +108,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 Harbor'
@@ -151,6 +160,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 K8S'
@@ -162,6 +174,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 K8S'
@@ -173,6 +188,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 K8S'

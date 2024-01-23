@@ -126,10 +126,51 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 Client 部署'
+                name: '正在完成 ZookeeperClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
                 sleep: 0
 
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 ZookeeperClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '停止 ZookeeperClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '重启 ZookeeperClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0

@@ -389,7 +389,7 @@ public class Job extends Thread {
         List<YamlServiceDetail.Step> finalSteps = new LinkedList<>(action.getSteps());
         // 针对所有节点，针对同一个服务，如果是第一个执行配置文件初始化的任务，则阻塞，其他任务则不阻塞，可提升并发速度
         // 注意：该操作仅仅是为了在这里备注，对应功能的逻辑代码的位置位于：添加 TaskMeta 的位置，通过 AtomicBoolean 控制
-        if (taskMeta.isFirstDeployInNode()) {
+        if (taskMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY && taskMeta.isFirstDeployInNode()) {
             YamlServiceDetail.Initialize initialize = ResolverYamlServiceDetail.SERVICE_MAP
                     .get(taskMeta.getServiceName()).getInitialize();
 
@@ -528,7 +528,9 @@ public class Job extends Thread {
         this.plan.clear();
 
         // 如果是部署服务或组件，则完成后，清除 Procedure 信息
-        this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
+        if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) {
+            this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
+        }
     }
 
     /**

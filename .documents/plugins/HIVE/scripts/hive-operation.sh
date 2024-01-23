@@ -51,7 +51,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop journalnode" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start journalnode" "${USER_NAME}"
     ;;
   *)
@@ -70,7 +70,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon stop namenode" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs --daemon start namenode" "${USER_NAME}"
     ;;
   *)

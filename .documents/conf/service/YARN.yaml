@@ -83,6 +83,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 ResourceManager1'
@@ -94,6 +97,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 ResourceManager1'
@@ -105,6 +111,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 ResourceManager1'
@@ -136,6 +145,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 ResourceManage2'
@@ -147,6 +159,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 ResourceManage2'
@@ -158,6 +173,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 ResourceManage2'
@@ -189,6 +207,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 NodeManager'
@@ -200,6 +221,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 NodeManager'
@@ -211,6 +235,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 NodeManager'
@@ -242,6 +269,9 @@ datalight:
               sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 TimelineServer'
@@ -253,6 +283,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 TimelineServer'
@@ -264,6 +297,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 TimelineServer'
@@ -295,6 +331,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 HistoryServer'
@@ -306,6 +345,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 HistoryServer'
@@ -317,6 +359,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 HistoryServer'
@@ -339,9 +384,51 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 Client 部署'
+                name: '正在完成 YARNClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 YARNClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '停止 YARNClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '重启 YARNClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
                 sleep: 0

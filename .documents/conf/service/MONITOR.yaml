@@ -112,6 +112,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 Prometheus'
@@ -122,6 +125,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 Prometheus'
@@ -132,6 +138,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 Prometheus'
@@ -162,6 +171,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 AlertManager'
@@ -172,6 +184,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 AlertManager'
@@ -182,6 +197,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 AlertManager'
@@ -212,6 +230,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 MySQLExporter'
@@ -222,6 +243,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 MySQLExporter'
@@ -232,6 +256,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 MySQLExporter'
@@ -262,6 +289,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 NodeExporter'
@@ -272,6 +302,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 NodeExporter'
@@ -282,6 +315,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 NodeExporter'
@@ -312,6 +348,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 Grafana'
@@ -322,6 +361,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 Grafana'
@@ -332,6 +374,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 Grafana'

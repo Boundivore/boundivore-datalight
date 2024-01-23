@@ -53,7 +53,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon stop resourcemanager" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon start resourcemanager" "${USER_NAME}"
     ;;
   *)
@@ -72,7 +72,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon stop nodemanager" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon start nodemanager" "${USER_NAME}"
     ;;
   *)
@@ -92,7 +92,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon stop timelineserver" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/yarn --daemon start timelineserver" "${USER_NAME}"
     ;;
   *)
@@ -112,7 +112,7 @@ case "${COMPONENT_NAME}" in
     ;;
   "restart")
     su -c "${CURRENT_SERVICE_DIR}/bin/mapred --daemon stop historyserver" "${USER_NAME}"
-    sleep 2
+    sleep 3
     su -c "${CURRENT_SERVICE_DIR}/bin/mapred --daemon start historyserver" "${USER_NAME}"
     ;;
   *)

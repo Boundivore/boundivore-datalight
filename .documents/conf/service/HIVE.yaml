@@ -83,6 +83,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 MetaStore'
@@ -94,6 +97,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 MetaStore'
@@ -105,6 +111,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 MetaStore'
@@ -136,6 +145,9 @@ datalight:
                 sleep: 1000
 
           - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '启动 HiveServer2'
@@ -147,6 +159,9 @@ datalight:
                 sleep: 1000
 
           - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '停止 HiveServer2'
@@ -158,6 +173,9 @@ datalight:
                 sleep: 1000
 
           - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
             steps:
               - type: SCRIPT
                 name: '重启 HiveServer2'
@@ -180,9 +198,51 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 Client 部署'
+                name: '正在完成 HIVEClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 HIVEClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '停止 HIVEClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '重启 HIVEClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
                 sleep: 0
