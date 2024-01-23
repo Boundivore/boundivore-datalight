@@ -45,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -312,13 +313,13 @@ public class MasterInitProcedureService {
      *
      * @return List<Long> 集群 ID 列表
      */
-    public List<Long> getClusterIdListWithInProcedure() {
+    public Set<Long> getClusterIdListWithInProcedure() {
         return this.tDlInitProcedureService.lambdaQuery()
                 .select()
                 .list()
                 .stream()
                 .map(TDlInitProcedure::getClusterId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     /**

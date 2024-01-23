@@ -34,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -214,8 +215,8 @@ public class MasterClusterService {
      */
     public Result<AbstractClusterVo.ClusterListVo> getClusterList() {
 
-        List<Long> clusterIdListWithInProcedure = this.masterInitProcedureService.getClusterIdListWithInProcedure();
-        List<Long> clusterIdListWithInNode = this.masterNodeService.getClusterIdListWithInNode();
+        Set<Long> clusterIdListWithInProcedure = this.masterInitProcedureService.getClusterIdListWithInProcedure();
+        Set<Long> clusterIdListWithInNode = this.masterNodeService.getClusterIdListWithInNode();
 
         return Result.success(
                 new AbstractClusterVo.ClusterListVo(

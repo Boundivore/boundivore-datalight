@@ -39,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -424,14 +425,14 @@ public class MasterNodeService {
      *
      * @return List<Long> 集群 ID 列表
      */
-    public List<Long> getClusterIdListWithInNode() {
+    public Set<Long> getClusterIdListWithInNode() {
         return this.tDlNodeService.lambdaQuery()
                 .select()
                 .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
                 .list()
                 .stream()
                 .map(TDlNode::getClusterId)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
 }
