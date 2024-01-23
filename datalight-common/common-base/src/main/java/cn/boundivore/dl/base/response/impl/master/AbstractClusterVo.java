@@ -102,6 +102,11 @@ public abstract class AbstractClusterVo {
         @NotNull
         private Boolean isExistInitProcedure = false;
 
+        @Schema(name = "HasAlreadyNode", title = "集群是否存在已服役节点", required = true)
+        @JsonProperty(value = "HasAlreadyNode", required = true)
+        @NotNull
+        private Boolean hasAlreadyNode = false;
+
     }
 
 }

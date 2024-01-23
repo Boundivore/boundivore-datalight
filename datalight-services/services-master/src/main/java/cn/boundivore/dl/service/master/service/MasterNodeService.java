@@ -27,6 +27,7 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
+import cn.boundivore.dl.orm.po.single.TDlInitProcedure;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
 import cn.hutool.core.lang.Assert;
@@ -409,6 +410,28 @@ public class MasterNodeService {
                 .eq(TDlNode::getClusterId, clusterId)
                 .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
                 .count();
+    }
+
+    /**
+     * Description: 查询所有存在未完成步骤的集群列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/3
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return List<Long> 集群 ID 列表
+     */
+    public List<Long> getClusterIdListWithInNode() {
+        return this.tDlNodeService.lambdaQuery()
+                .select()
+                .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
+                .list()
+                .stream()
+                .map(TDlNode::getClusterId)
+                .collect(Collectors.toList());
     }
 
 }

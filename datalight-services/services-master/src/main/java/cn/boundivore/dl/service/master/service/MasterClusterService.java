@@ -57,6 +57,8 @@ public class MasterClusterService {
 
     private final MasterInitProcedureService masterInitProcedureService;
 
+    private final MasterNodeService masterNodeService;
+
     /**
      * Description: 新建集群
      * Created by: Boundivore
@@ -213,6 +215,7 @@ public class MasterClusterService {
     public Result<AbstractClusterVo.ClusterListVo> getClusterList() {
 
         List<Long> clusterIdListWithInProcedure = this.masterInitProcedureService.getClusterIdListWithInProcedure();
+        List<Long> clusterIdListWithInNode = this.masterNodeService.getClusterIdListWithInNode();
 
         return Result.success(
                 new AbstractClusterVo.ClusterListVo(
@@ -222,7 +225,10 @@ public class MasterClusterService {
                                 .list()
                                 .stream()
                                 .map(iClusterConverter::convert2ClusterVo)
-                                .peek(i -> i.setIsExistInitProcedure(clusterIdListWithInProcedure.contains(i.getClusterId())))
+                                .peek(i -> {
+                                    i.setIsExistInitProcedure(clusterIdListWithInProcedure.contains(i.getClusterId()));
+                                    i.setHasAlreadyNode(clusterIdListWithInNode.contains(i.getClusterId()));
+                                })
                                 .collect(Collectors.toList())
                 )
         );

@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.request.IRequest;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlService;
@@ -50,6 +51,8 @@ public class MasterOperationService {
     private final MasterJobService masterJobService;
 
     private final MasterServiceService masterServiceService;
+
+    private final MasterComponentService masterComponentService;
 
     /**
      * Description: 启动、重启、停止服务或组件
@@ -135,10 +138,34 @@ public class MasterOperationService {
             jobDetailRequest = (JobDetailRequest) request;
         }
 
+        // 检查操作行为是否合法
         ActionTypeEnum actionTypeEnum = jobRequest != null
                 ? jobRequest.getActionTypeEnum()
                 : jobDetailRequest.getActionTypeEnum();
 
+        // TODO 检查将要操作的服务或组件是否存在对应的行为操作，与 Yaml 配置相关联进行校检
+        switch (actionTypeEnum) {
+            case START:
+                break;
+            case STOP:
+                break;
+            case RESTART:
+                break;
+            case DECOMMISSION:
+                break;
+            case DEPLOY:
+                break;
+            case REMOVE:
+            default:
+                throw new BException(
+                        String.format(
+                                "当前接口不支持的 ActionType: %s",
+                                actionTypeEnum
+                        )
+                );
+        }
+
+        // 检查需要操作的符合是否合法
         List<String> serviceNameList = jobRequest != null
                 ? jobRequest.getServiceNameList()
                 : jobDetailRequest.getJobDetailServiceList()
@@ -146,7 +173,6 @@ public class MasterOperationService {
                 .map(JobDetailRequest.JobDetailServiceRequest::getServiceName)
                 .collect(Collectors.toList());
 
-        // 检查需要操作的符合是否合法
         final Map<String, TDlService> tDlServiceMap = this.masterServiceService
                 .getTDlServiceList(clusterId)
                 .stream()
@@ -169,29 +195,15 @@ public class MasterOperationService {
                 )
         );
 
+
         // TODO 检查操作的组件是否在对应节点存在
+        if(jobDetailRequest != null){
+            AbstractServiceComponentVo.ComponentVo componentVo = this.masterComponentService.getComponentList(clusterId).getData();
+            // TODO 用 jobDetailRequest  对比 componentVo，且对应组件在对应节点上的状态不能是 REMOVED
 
-
-        switch (actionTypeEnum) {
-            case START:
-                break;
-            case STOP:
-                break;
-            case RESTART:
-                break;
-            case DECOMMISSION:
-                break;
-            case DEPLOY:
-                break;
-            case REMOVE:
-            default:
-                throw new BException(
-                        String.format(
-                                "当前接口不支持的 ActionType: %s",
-                                actionTypeEnum
-                        )
-                );
         }
+
+
 
 
     }
