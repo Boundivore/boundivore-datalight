@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -53,6 +54,8 @@ public class MasterClusterService {
     private final TDlClusterServiceImpl tDlClusterService;
 
     private final IClusterConverter iClusterConverter;
+
+    private final MasterInitProcedureService masterInitProcedureService;
 
     /**
      * Description: 新建集群
@@ -208,6 +211,9 @@ public class MasterClusterService {
      * @return Result<AbstractClusterVo.ClusterListVo> 所有集群信息列表
      */
     public Result<AbstractClusterVo.ClusterListVo> getClusterList() {
+
+        List<Long> clusterIdListWithInProcedure = this.masterInitProcedureService.getClusterIdListWithInProcedure();
+
         return Result.success(
                 new AbstractClusterVo.ClusterListVo(
                         this.tDlClusterService.lambdaQuery()
@@ -216,6 +222,7 @@ public class MasterClusterService {
                                 .list()
                                 .stream()
                                 .map(iClusterConverter::convert2ClusterVo)
+                                .peek(i -> i.setIsExistInitProcedure(clusterIdListWithInProcedure.contains(i.getClusterId())))
                                 .collect(Collectors.toList())
                 )
         );

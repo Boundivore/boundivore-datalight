@@ -45,6 +45,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description: 集群节点初始化、服务安装等步骤记录接口服务类，需要考虑多人、多端同时操作的容错性和程序健壮
@@ -168,7 +169,7 @@ public class MasterInitProcedureService {
         tDlInitProcedure.setNodeJobId(request.getNodeJobId());
         if (CollUtil.isNotEmpty(request.getNodeInfoList())) {
             tDlInitProcedure.setNodeInfoListBase64(this.nodeInfoList2Base64(request.getNodeInfoList()));
-        }else{
+        } else {
             tDlInitProcedure.setNodeInfoListBase64(null);
         }
 
@@ -297,6 +298,27 @@ public class MasterInitProcedureService {
                 .eq(TDlInitProcedure::getClusterId, clusterId)
                 .exists();
         return Result.success(isExist);
+    }
+
+    /**
+     * Description: 查询所有存在未完成步骤的集群列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/3
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return List<Long> 集群 ID 列表
+     */
+    public List<Long> getClusterIdListWithInProcedure() {
+        return this.tDlInitProcedureService.lambdaQuery()
+                .select()
+                .list()
+                .stream()
+                .map(TDlInitProcedure::getClusterId)
+                .collect(Collectors.toList());
     }
 
     /**

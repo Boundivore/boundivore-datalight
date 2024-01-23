@@ -97,6 +97,11 @@ public abstract class AbstractClusterVo {
         @NotNull
         private Long relativeClusterId;
 
+        @Schema(name = "IsExistInitProcedure", title = "出否存在未完成的步骤信息", required = true)
+        @JsonProperty(value = "IsExistInitProcedure", required = true)
+        @NotNull
+        private Boolean isExistInitProcedure = false;
+
     }
 
 }
