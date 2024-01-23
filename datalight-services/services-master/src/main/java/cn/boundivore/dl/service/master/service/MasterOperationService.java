@@ -25,9 +25,11 @@ import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlService;
+import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -137,6 +139,39 @@ public class MasterOperationService {
                 ? jobRequest.getActionTypeEnum()
                 : jobDetailRequest.getActionTypeEnum();
 
+        List<String> serviceNameList = jobRequest != null
+                ? jobRequest.getServiceNameList()
+                : jobDetailRequest.getJobDetailServiceList()
+                .stream()
+                .map(JobDetailRequest.JobDetailServiceRequest::getServiceName)
+                .collect(Collectors.toList());
+
+        // 检查需要操作的符合是否合法
+        final Map<String, TDlService> tDlServiceMap = this.masterServiceService
+                .getTDlServiceList(clusterId)
+                .stream()
+                .filter(i -> i.getServiceState() != SCStateEnum.REMOVED
+                        && i.getServiceState() != SCStateEnum.SELECTED
+                        && i.getServiceState() != SCStateEnum.UNSELECTED)
+                .collect(Collectors.toMap(TDlService::getServiceName, i -> i));
+
+        serviceNameList.forEach(i ->
+                Assert.notNull(
+                        tDlServiceMap.get(i),
+                        () -> new BException(
+                                String.format(
+                                        "部署操作必须选择不处于 %s、%s、%s状态的服务",
+                                        SCStateEnum.REMOVED,
+                                        SCStateEnum.SELECTED,
+                                        SCStateEnum.UNSELECTED
+                                )
+                        )
+                )
+        );
+
+        // TODO 检查操作的组件是否在对应节点存在
+
+
         switch (actionTypeEnum) {
             case START:
                 break;
@@ -149,7 +184,6 @@ public class MasterOperationService {
             case DEPLOY:
                 break;
             case REMOVE:
-                break;
             default:
                 throw new BException(
                         String.format(
@@ -158,14 +192,6 @@ public class MasterOperationService {
                         )
                 );
         }
-
-        final Map<String, TDlService> tDlServiceMap = this.masterServiceService
-                .getTDlServiceList(clusterId)
-                .stream()
-                .filter(i -> i.getServiceState() == SCStateEnum.SELECTED
-                        || i.getServiceState() == SCStateEnum.SELECTED_ADDITION
-                        || i.getServiceState() == SCStateEnum.CHANGING)
-                .collect(Collectors.toMap(TDlService::getServiceName, i -> i));
 
 
     }
