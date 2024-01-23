@@ -16,18 +16,18 @@
  */
 package cn.boundivore.dl.service.master.controller;
 
-import cn.boundivore.dl.api.master.define.IMasterOperateAPI;
+import cn.boundivore.dl.api.master.define.IMasterOperationAPI;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.service.master.service.MasterOperateService;
+import cn.boundivore.dl.service.master.service.MasterOperationService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Description: MasterOperateController
+ * Description: MasterOperationController
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/1/23
@@ -39,18 +39,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @SaCheckLogin
-public class MasterOperateController implements IMasterOperateAPI {
+public class MasterOperationController implements IMasterOperationAPI {
 
-    private final MasterOperateService masterOperateService;
+    private final MasterOperationService masterOperationService;
 
 
     @Override
     public Result<AbstractJobVo.JobIdVo> operate(JobDetailRequest request) throws Exception {
-        return this.masterOperateService.operate(request);
+        return this.masterOperationService.operate(request);
     }
 
     @Override
     public Result<AbstractJobVo.JobIdVo> operate(JobRequest request) throws Exception {
-        return this.masterOperateService.operate(request);
+        return this.masterOperationService.operate(request);
     }
 }

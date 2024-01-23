@@ -41,13 +41,13 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterOperateAPI", tags = {"Master 接口：服务操作相关"})
+@Api(value = "IMasterOperationAPI", tags = {"Master 接口：服务操作相关"})
 @FeignClient(
-        name = "IMasterOperateAPI",
-        contextId = "IMasterOperateAPI",
+        name = "IMasterOperationAPI",
+        contextId = "IMasterOperationAPI",
         path = MASTER_URL_PREFIX
 )
-public interface IMasterOperateAPI {
+public interface IMasterOperationAPI {
     @PostMapping(value = "/operate/jobDetail")
     @ApiOperation(notes = "服务详细操作", value = "服务详细操作")
     Result<AbstractJobVo.JobIdVo> operate(
