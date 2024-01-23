@@ -292,7 +292,7 @@ public class JobService {
 
         if (tDlStage == null) {
             tDlStage = new TDlStage();
-            tDlStage.setVersion(0L).setId(jobMeta.getId());
+            tDlStage.setVersion(0L).setId(stageMeta.getId());
         }
 
         tDlStage.setTag(jobMeta.getTag())
@@ -354,7 +354,7 @@ public class JobService {
 
         if (tDlTask == null) {
             tDlTask = new TDlTask();
-            tDlTask.setVersion(0L).setId(jobMeta.getId());
+            tDlTask.setVersion(0L).setId(taskMeta.getId());
         }
 
         tDlTask.setTag(jobMeta.getTag())
@@ -416,15 +416,14 @@ public class JobService {
         //注意：执行更新数据库前，务必先更新内存，例如： this.updateStepMemory()，
         //此时会从内从中最新的元数据状态更新到数据库
         TaskMeta taskMeta = stepMeta.getTaskMeta();
-        JobMeta jobMeta = taskMeta.getStageMeta().getJobMeta();
-
         StageMeta stageMeta = taskMeta.getStageMeta();
+        JobMeta jobMeta = stageMeta.getJobMeta();
 
         TDlStep tDlStep = this.tDlStepService.getById(stepMeta.getId());
 
         if (tDlStep == null) {
             tDlStep = new TDlStep();
-            tDlStep.setVersion(0L).setId(jobMeta.getId());
+            tDlStep.setVersion(0L).setId(stepMeta.getId());
         }
 
         tDlStep.setTag(jobMeta.getTag())
