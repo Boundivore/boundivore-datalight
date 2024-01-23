@@ -16,13 +16,20 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.IRequest;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.orm.po.single.TDlService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Description: 启动、重启、停止服务或组件
@@ -113,10 +120,53 @@ public class MasterOperationService {
      * Throws:
      *
      * @param clusterId 集群 ID
-     * @param request   请求体
+     * @param request   JobRequest or JobDetailRequest 请求体
      */
     private void checkLegality(Long clusterId,
                                IRequest request) {
+
+        JobRequest jobRequest = null;
+        JobDetailRequest jobDetailRequest = null;
+        if (request instanceof JobRequest) {
+            jobRequest = (JobRequest) request;
+        } else {
+            jobDetailRequest = (JobDetailRequest) request;
+        }
+
+        ActionTypeEnum actionTypeEnum = jobRequest != null
+                ? jobRequest.getActionTypeEnum()
+                : jobDetailRequest.getActionTypeEnum();
+
+        switch (actionTypeEnum) {
+            case START:
+                break;
+            case STOP:
+                break;
+            case RESTART:
+                break;
+            case DECOMMISSION:
+                break;
+            case DEPLOY:
+                break;
+            case REMOVE:
+                break;
+            default:
+                throw new BException(
+                        String.format(
+                                "当前接口不支持的 ActionType: %s",
+                                actionTypeEnum
+                        )
+                );
+        }
+
+        final Map<String, TDlService> tDlServiceMap = this.masterServiceService
+                .getTDlServiceList(clusterId)
+                .stream()
+                .filter(i -> i.getServiceState() == SCStateEnum.SELECTED
+                        || i.getServiceState() == SCStateEnum.SELECTED_ADDITION
+                        || i.getServiceState() == SCStateEnum.CHANGING)
+                .collect(Collectors.toMap(TDlService::getServiceName, i -> i));
+
 
     }
 }
