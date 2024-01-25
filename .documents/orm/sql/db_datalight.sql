@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 15/01/2024 17:39:55
+ Date: 25/01/2024 10:42:42
 */
 
 SET NAMES utf8mb4;
@@ -47,6 +47,7 @@ CREATE TABLE `t_dl_cluster`  (
   `cluster_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '集群状态 枚举值，见代码',
   `cluster_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '集群描述',
   `relative_cluster_id` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关联集群 ID 只有计算集群可以关联存储或混合集群',
+  `is_current_view` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为当前视图 1：当前集群视图正在被预览，0：当前集群视图没有被预览。默认值为0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '集群信息表' ROW_FORMAT = DYNAMIC;
 

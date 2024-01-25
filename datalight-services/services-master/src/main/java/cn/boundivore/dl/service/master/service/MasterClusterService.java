@@ -33,7 +33,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -135,7 +134,10 @@ public class MasterClusterService {
         // 新增集群
         TDlCluster tDlCluster = iClusterConverter.convert2TDlCluster(request);
         tDlCluster.setVersion(0L);
+        // TODO 部署完成后，切换集群状态到 STARTED
         tDlCluster.setClusterState(ClusterStateEnum.MAINTENANCE);
+        // 当前集群是否为首页预览集群
+        tDlCluster.setIsCurrentView(false);
 
         Assert.isTrue(
                 this.tDlClusterService.save(tDlCluster),
@@ -338,5 +340,22 @@ public class MasterClusterService {
         return Result.success(
                 this.iClusterConverter.convert2ClusterVo(mixedTDlCluster)
         );
+    }
+
+    /**
+     * Description: 更新指定集群为正在预览的集群
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param
+     * @return
+     */
+    public Result<String> updateClusterCurrentView() {
+        return null;
     }
 }

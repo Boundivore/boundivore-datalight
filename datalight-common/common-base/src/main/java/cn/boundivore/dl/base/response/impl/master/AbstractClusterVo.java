@@ -107,6 +107,11 @@ public abstract class AbstractClusterVo {
         @NotNull
         private Boolean hasAlreadyNode = false;
 
+        @Schema(name = "IsCurrentView", title = "集群是否在首页正在被预览", required = true)
+        @JsonProperty(value = "IsCurrentView", required = true)
+        @NotNull
+        private Boolean isCurrentView = false;
+
     }
 
 }

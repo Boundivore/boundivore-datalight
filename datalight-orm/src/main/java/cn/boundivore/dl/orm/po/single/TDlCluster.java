@@ -54,5 +54,9 @@ public class TDlCluster extends TBasePo<TDlCluster> {
     @TableField("relative_cluster_id")
     private String relativeClusterId;
 
+    @Schema(name = "是否为当前视图 1：当前集群视图正在被预览，0：当前集群视图没有被预览。默认值为0")
+    @TableField("is_current_view")
+    private Boolean isCurrentView;
+
 
 }
