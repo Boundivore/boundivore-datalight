@@ -66,4 +66,13 @@ public interface IMasterComponentAPI {
             @Valid
             AbstractServiceComponentRequest.ComponentSelectRequest request
     ) throws Exception;
+
+    @PostMapping(value = "/component/removeBatchByIds")
+    @ApiOperation(notes = "批量移除组件", value = "批量移除组件")
+    Result<String> removeComponentBatchByIds(
+            @RequestBody
+            @Valid
+            AbstractServiceComponentRequest.ComponentIdListRequest request
+    ) throws Exception;
+
 }

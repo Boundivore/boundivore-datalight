@@ -19,8 +19,6 @@ package cn.boundivore.dl.base.request.impl.master;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -68,6 +66,6 @@ public class NodeJobRequest implements IRequest {
     @Schema(name = "NodeInfoList", title = "选择的节点列表", required = true)
     @JsonProperty(value = "NodeInfoList", required = true)
     @NotNull
-    private List<NodeInfoRequest> nodeInfoList;
+    private List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList;
 
 }

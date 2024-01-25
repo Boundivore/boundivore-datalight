@@ -19,7 +19,8 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
-import cn.boundivore.dl.base.request.impl.master.NodeInfoRequest;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
@@ -27,8 +28,9 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
-import cn.boundivore.dl.orm.po.single.TDlInitProcedure;
+import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
+import cn.boundivore.dl.orm.service.single.impl.TDlComponentServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +60,8 @@ import java.util.stream.Collectors;
 public class MasterNodeService {
 
     private final TDlNodeServiceImpl tDlNodeService;
+
+    private final TDlComponentServiceImpl tDlComponentService;
 
     private final MasterNodeJobService masterNodeJobService;
 
@@ -108,7 +112,7 @@ public class MasterNodeService {
         Map<Long, TDlNode> tDlNodeMap = this.checkNodeExistsById(
                 request.getNodeInfoList()
                         .stream()
-                        .map(NodeInfoRequest::getNodeId)
+                        .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                         .collect(Collectors.toList())
         );
 
@@ -414,7 +418,7 @@ public class MasterNodeService {
     }
 
     /**
-     * Description: 查询所有存在未完成步骤的集群列表
+     * Description: 查询所有非 REMOVED 的节点列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/1/3
@@ -433,6 +437,60 @@ public class MasterNodeService {
                 .stream()
                 .map(TDlNode::getClusterId)
                 .collect(Collectors.toSet());
+    }
+
+    /**
+     * Description: 批量移除某个集群下的某些节点（可单独移除 1 个节点）
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 节点 ID 列表请求体
+     * @return 成功或失败
+     */
+    public Result<String> removeBatchByIds(AbstractNodeRequest.NodeIdListRequest request) {
+
+        // 读取将要删除的节点信息
+        List<TDlNode> tDlNodeList = this.tDlNodeService.lambdaQuery()
+                .select()
+                .eq(TDlNode::getClusterId, request.getClusterId())
+                .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
+                .in(TBasePo::getId, request.getNodeIdList())
+                .list();
+
+        Assert.notEmpty(
+                tDlNodeList,
+                () -> new BException("节点列表中不存在尚未移除的节点")
+        );
+
+        Assert.isTrue(
+                tDlNodeList.size() == request.getNodeIdList().size(),
+                () -> new BException("将要移除的列表中存在不符合移除条件的节点信息，请重新确认")
+        );
+
+        // 判断本批次节点中是否存在未删除的组件
+        Assert.isFalse(
+                this.tDlComponentService.lambdaQuery()
+                        .select()
+                        .eq(TDlComponent::getClusterId, request.getClusterId())
+                        .in(TDlComponent::getNodeId, request.getNodeIdList())
+                        .ne(TDlComponent::getComponentState, SCStateEnum.REMOVED)
+                        .exists(),
+                () -> new BException("节点列表中的节点存在未移除的组件，请确认移除对应组件后，再移除节点")
+        );
+
+        // 所有操作将会彻底删除数据，审计功能中将会保留操作数据历史
+        Assert.isTrue(
+                this.tDlNodeService.removeBatchByIds(tDlNodeList),
+                () -> new DatabaseException("移除节点失败")
+        );
+
+
+        return Result.success();
     }
 
 }

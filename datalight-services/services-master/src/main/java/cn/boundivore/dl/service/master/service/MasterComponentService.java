@@ -905,4 +905,68 @@ public class MasterComponentService {
     }
 
 
+    /**
+     * Description: 批量移除组件
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 组件 ID 列表
+     * @return 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<String> removeComponentBatchByIds(AbstractServiceComponentRequest.ComponentIdListRequest request) {
+        // 获取当前集群中未移除的组件信息
+        List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, request.getClusterId())
+                .eq(TDlComponent::getServiceName, request.getServiceName())
+                .in(TBasePo::getId, request.getComponentIdList())
+                .eq(TDlComponent::getComponentState, STOPPED)
+                .list();
+
+        Assert.notEmpty(
+                tDlComponentList,
+                () -> new BException("未找到符合移除条件的组件信息，请确保移除前组件处于停止运行状态")
+        );
+
+        Assert.isTrue(
+                tDlComponentList.size() == request.getComponentIdList().size(),
+                () -> new BException("将要移除的列表中存在不符合移除条件的组件信息，请确保移除前组件处于停止运行状态")
+        );
+
+        // 批量移除组件信息
+        // 所有操作将会彻底删除数据，审计功能中将会保留操作数据历史
+        Assert.isTrue(
+                this.tDlComponentService.removeBatchByIds(tDlComponentList),
+                () -> new DatabaseException("移除组件失败")
+        );
+
+        // 判断指定服务下，如果已经没有可用组件，则自动删除该服务
+        boolean isNotRemovedExist = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, request.getClusterId())
+                .eq(TDlComponent::getServiceName, request.getServiceName())
+                .ne(TDlComponent::getComponentState, REMOVED)
+                .exists();
+
+        // 如果除已移除组件外，不存在其他组件，则删除该服务
+        if (!isNotRemovedExist) {
+            this.masterServiceService.removeServiceByName(
+                    request.getClusterId(),
+                    request.getServiceName()
+            );
+        }
+
+        return Result.success();
+    }
+
+
 }

@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.api.master.define;
 
+import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
@@ -66,6 +67,14 @@ public interface IMasterNodeAPI {
             @ApiParam(name = "ClusterId", value = "ClusterId")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
+    ) throws Exception;
+
+    @PostMapping(value = "/node/removeBatchByIds")
+    @ApiOperation(notes = "批量移除节点", value = "批量移除节点")
+    Result<String> removeBatchByIds(
+            @RequestBody
+            @Valid
+            AbstractNodeRequest.NodeIdListRequest request
     ) throws Exception;
 
 }

@@ -46,31 +46,41 @@ public class MasterClusterController implements IMasterClusterAPI {
 
     @Override
     public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.NewClusterRequest request) throws Exception {
-        return masterClusterServices.clusterNew(request);
+        return this.masterClusterServices.clusterNew(request);
     }
 
     @Override
     public Result<AbstractClusterVo.ClusterVo> getClusterById(Long clusterId) throws Exception {
-        return masterClusterServices.getClusterById(clusterId);
+        return this.masterClusterServices.getClusterById(clusterId);
     }
 
     @Override
     public Result<AbstractClusterVo.ClusterListVo> getClusterListByClusterType(ClusterTypeEnum clusterTypeEnum) throws Exception {
-        return masterClusterServices.getClusterListByClusterType(clusterTypeEnum);
+        return this.masterClusterServices.getClusterListByClusterType(clusterTypeEnum);
     }
 
     @Override
     public Result<AbstractClusterVo.ClusterListVo> getClusterList() throws Exception {
-        return masterClusterServices.getClusterList();
+        return this.masterClusterServices.getClusterList();
     }
 
     @Override
     public Result<AbstractClusterVo.ClusterListVo> getComputeClusterListByRelativeClusterId(Long clusterId) throws Exception {
-        return masterClusterServices.getComputeClusterListByRelativeClusterId(clusterId);
+        return this.masterClusterServices.getComputeClusterListByRelativeClusterId(clusterId);
     }
 
     @Override
     public Result<AbstractClusterVo.ClusterVo> getClusterRelative(Long clusterId) throws Exception {
-        return masterClusterServices.getClusterRelative(clusterId);
+        return this.masterClusterServices.getClusterRelative(clusterId);
+    }
+
+    @Override
+    public Result<AbstractClusterVo.ClusterVo> updateClusterCurrentView(AbstractClusterRequest.ClusterIdRequest request) throws Exception {
+        return this.masterClusterServices.updateClusterCurrentView(request);
+    }
+
+    @Override
+    public Result<AbstractClusterVo.ClusterVo> removeCluster(AbstractClusterRequest.ClusterIdRequest request) throws Exception {
+        return this.masterClusterServices.removeCluster(request);
     }
 }

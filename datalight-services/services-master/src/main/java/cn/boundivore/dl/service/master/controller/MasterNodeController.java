@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterNodeAPI;
+import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
@@ -46,11 +47,16 @@ public class MasterNodeController implements IMasterNodeAPI {
 
     @Override
     public Result<AbstractNodeJobVo.NodeJobIdVo> operateNode(NodeJobRequest request) throws Exception {
-        return masterNodeService.operateNode(request);
+        return this.masterNodeService.operateNode(request);
     }
 
     @Override
     public Result<AbstractNodeVo.NodeVo> getNodeList(Long clusterId) throws Exception {
-        return masterNodeService.getNodeList(clusterId);
+        return this.masterNodeService.getNodeList(clusterId);
+    }
+
+    @Override
+    public Result<String> removeBatchByIds(AbstractNodeRequest.NodeIdListRequest request) throws Exception {
+        return this.masterNodeService.removeBatchByIds(request);
     }
 }

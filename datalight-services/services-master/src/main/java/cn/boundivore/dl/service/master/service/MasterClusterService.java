@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ClusterStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractClusterRequest;
@@ -32,6 +33,7 @@ import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,6 +74,7 @@ public class MasterClusterService {
      * @param request 新建集群请求体
      * @return Result<AbstractClusterVo.ClusterVo> 创建后的集群信息
      */
+
     public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.NewClusterRequest request) {
 
         // 检查 DLC 合法性
@@ -217,7 +220,9 @@ public class MasterClusterService {
      */
     public Result<AbstractClusterVo.ClusterListVo> getClusterList() {
 
+        // 集群步骤 ID 列表
         Set<Long> clusterIdListWithInProcedure = this.masterInitProcedureService.getClusterIdListWithInProcedure();
+        // 集群中存在的非 REMOVED 状态的节点 ID
         Set<Long> clusterIdListWithInNode = this.masterNodeService.getClusterIdListWithInNode();
 
         return Result.success(
@@ -352,10 +357,91 @@ public class MasterClusterService {
      * Modification time:
      * Throws:
      *
-     * @param
-     * @return
+     * @param request 集群 ID 请求体
+     * @return Result<AbstractClusterVo.ClusterVo> 集群信息
      */
-    public Result<String> updateClusterCurrentView() {
-        return null;
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<AbstractClusterVo.ClusterVo> updateClusterCurrentView(AbstractClusterRequest.ClusterIdRequest request) {
+
+        // 将集群列表中所有 is_current_view 字段设置为 false
+        if (this.tDlClusterService.lambdaQuery()
+                .select()
+                .eq(TDlCluster::getIsCurrentView, true)
+                .exists()) {
+            Assert.isTrue(
+                    this.tDlClusterService.lambdaUpdate()
+                            .eq(TDlCluster::getIsCurrentView, true)
+                            .update(),
+                    () -> new DatabaseException("集群当前视图初始化失败")
+            );
+        }
+
+        // 将当前传递的集群 ID 对应的 is_current_view 字段设置为 true
+        TDlCluster tDlCluster = this.tDlClusterService.getById(request.getClusterId());
+        Assert.notNull(
+                tDlCluster,
+                () -> new DatabaseException(
+                        String.format(
+                                "集群 ID 不存在: %s",
+                                request.getClusterId()
+                        )
+                )
+        );
+
+        tDlCluster.setIsCurrentView(true);
+
+        Assert.isTrue(
+                this.tDlClusterService.updateById(tDlCluster),
+                () -> new DatabaseException("更新集群视图标记失败")
+        );
+
+        return Result.success(this.iClusterConverter.convert2ClusterVo(tDlCluster));
+    }
+
+
+    /**
+     * Description: 根据集群 ID 移除集群
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 集群 ID 请求体
+     * @return Result<AbstractClusterVo.ClusterVo> 集群信息
+     */
+    public Result<AbstractClusterVo.ClusterVo> removeCluster(AbstractClusterRequest.ClusterIdRequest request) throws Exception {
+
+        // 需判断集群是否存在未移除的节点，如果存在，则无法删除
+        Assert.isTrue(
+                this.masterNodeService.getNodeCount(request.getClusterId()) <= 0,
+                () -> new BException("集群存在未移除的节点，请先移除集群下所有节点")
+        );
+
+        // 判断集群 ID 是否存在
+        TDlCluster tDlCluster = this.tDlClusterService.getById(request.getClusterId());
+        Assert.notNull(
+                tDlCluster,
+                () -> new DatabaseException(
+                        String.format(
+                                "集群 ID 不存在: %s",
+                                request.getClusterId()
+                        )
+                )
+        );
+
+        // 所有操作将会彻底删除数据，审计功能中将会保留操作数据历史
+        Assert.isTrue(
+                this.tDlClusterService.removeById(tDlCluster),
+                () -> new DatabaseException("移除集群信息失败")
+        );
+
+
+        return Result.success(this.iClusterConverter.convert2ClusterVo(tDlCluster));
     }
 }

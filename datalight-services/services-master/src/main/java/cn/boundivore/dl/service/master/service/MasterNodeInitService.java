@@ -262,7 +262,7 @@ public class MasterNodeInitService {
                         TBasePo::getId,
                         request.getNodeInfoList()
                                 .stream()
-                                .map(NodeInfoRequest::getNodeId)
+                                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                                 .collect(Collectors.toList())
                 )
                 .list();
@@ -274,7 +274,7 @@ public class MasterNodeInitService {
                                 "无法找到对应的节点信息: %s",
                                 request.getNodeInfoList()
                                         .stream()
-                                        .map(NodeInfoRequest::getNodeId)
+                                        .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                                         .collect(Collectors.toList())
                         )
                 )
@@ -706,7 +706,7 @@ public class MasterNodeInitService {
                 .eq(TDlNodeInit::getClusterId, clusterId)
                 .in(TBasePo::getId, request.getNodeInfoList()
                         .stream()
-                        .map(NodeInfoRequest::getNodeId).collect(Collectors.toList())
+                        .map(AbstractNodeRequest.NodeInfoRequest::getNodeId).collect(Collectors.toList())
                 )
                 .orderByAsc(TDlNodeInit::getHostname)
                 .list());
@@ -844,7 +844,7 @@ public class MasterNodeInitService {
                         TBasePo::getId,
                         request.getNodeInfoList()
                                 .stream()
-                                .map(NodeInfoRequest::getNodeId)
+                                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                                 .collect(Collectors.toList())
                 )
                 .list()
@@ -889,7 +889,7 @@ public class MasterNodeInitService {
                                 "无法找到对应的节点信息: %s",
                                 request.getNodeInfoList()
                                         .stream()
-                                        .map(NodeInfoRequest::getNodeId)
+                                        .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                                         .collect(Collectors.toList())
                         )
                 )
@@ -917,10 +917,10 @@ public class MasterNodeInitService {
                 tDlNodeInitService.removeBatchByIds(
                         request.getNodeInfoList()
                                 .stream()
-                                .map(NodeInfoRequest::getNodeId)
+                                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                                 .collect(Collectors.toList())
                 ),
-                () -> new DatabaseException("删除节点初始化信息失败")
+                () -> new DatabaseException("移除节点初始化信息失败")
         );
 
         // 调用函数记录 Procedure

@@ -16,11 +16,10 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
-import cn.boundivore.dl.base.request.impl.master.NodeInfoRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
@@ -50,7 +49,6 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -107,7 +105,7 @@ public class MasterNodeJobService {
 
         List<String> hostnameList = request.getNodeInfoList()
                 .stream()
-                .map(NodeInfoRequest::getHostname)
+                .map(AbstractNodeRequest.NodeInfoRequest::getHostname)
                 .collect(Collectors.toList());
 
         final NodeIntention nodeIntention = new NodeIntention()
@@ -174,11 +172,11 @@ public class MasterNodeJobService {
      * @param nodeInfoList  节点信息列表
      * @param nodeStateEnum 将要切换到的状态
      */
-    public void switchNodeInitStateFromAction(List<NodeInfoRequest> nodeInfoList, NodeStateEnum nodeStateEnum) {
+    public void switchNodeInitStateFromAction(List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList, NodeStateEnum nodeStateEnum) {
 
         List<Long> nodeIdList = nodeInfoList
                 .stream()
-                .map(NodeInfoRequest::getNodeId)
+                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                 .collect(Collectors.toList());
 
         List<TDlNodeInit> tDlNodeInitList = this.tDlNodeInitService.lambdaQuery()
@@ -211,7 +209,7 @@ public class MasterNodeJobService {
         Long clusterId = request.getClusterId();
         List<Long> nodeIdList = request.getNodeInfoList()
                 .stream()
-                .map(NodeInfoRequest::getNodeId)
+                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                 .collect(Collectors.toList());
 
         List<TDlNodeInit> tDlNodeInitList = this.tDlNodeInitService.lambdaQuery()

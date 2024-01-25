@@ -44,11 +44,16 @@ public class MasterComponentController implements IMasterComponentAPI {
 
     @Override
     public Result<AbstractServiceComponentVo.ComponentVo> getComponentList(Long clusterId) throws Exception {
-        return masterComponentService.getComponentList(clusterId);
+        return this.masterComponentService.getComponentList(clusterId);
     }
 
     @Override
     public Result<String> saveComponentSelected(AbstractServiceComponentRequest.ComponentSelectRequest request) throws Exception {
-        return masterComponentService.saveComponentSelected(request);
+        return this.masterComponentService.saveComponentSelected(request);
+    }
+
+    @Override
+    public Result<String> removeComponentBatchByIds(AbstractServiceComponentRequest.ComponentIdListRequest request) throws Exception {
+        return this.masterComponentService.removeComponentBatchByIds(request);
     }
 }

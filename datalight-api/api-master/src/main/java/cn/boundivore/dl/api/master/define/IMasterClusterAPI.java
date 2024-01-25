@@ -95,4 +95,21 @@ public interface IMasterClusterAPI {
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
+
+    @PostMapping(value = "/cluster/updateCurrentView")
+    @ApiOperation(notes = "更新集群视图标记", value = "更新集群视图标记")
+    Result<AbstractClusterVo.ClusterVo> updateClusterCurrentView(
+            @RequestBody
+            @Valid
+            AbstractClusterRequest.ClusterIdRequest request
+    ) throws Exception;
+
+    @PostMapping(value = "/cluster/remove")
+    @ApiOperation(notes = "移除集群", value = "移除集群")
+    Result<AbstractClusterVo.ClusterVo> removeCluster(
+            @RequestBody
+            @Valid
+            AbstractClusterRequest.ClusterIdRequest request
+    ) throws Exception;
+
 }

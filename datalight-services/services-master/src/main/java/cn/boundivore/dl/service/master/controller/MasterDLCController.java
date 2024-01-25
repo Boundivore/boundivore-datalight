@@ -44,11 +44,11 @@ public class MasterDLCController implements IMasterDLCAPI {
 
     @Override
     public Result<AbstractDlcVo.DlcServiceVo> dlcServiceList() throws Exception {
-        return masterDLCService.dlcServiceList();
+        return this.masterDLCService.dlcServiceList();
     }
 
     @Override
     public Result<AbstractDlcVo.DlcComponentVo> dlcComponentList() throws Exception {
-        return masterDLCService.dlcComponentList();
+        return this.masterDLCService.dlcComponentList();
     }
 }

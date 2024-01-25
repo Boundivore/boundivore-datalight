@@ -45,6 +45,21 @@ public abstract class AbstractClusterRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
+            name = "AbstractClusterRequest.ClusterIdRequest",
+            description = "AbstractClusterRequest.ClusterIdRequest 集群 ID 请求体"
+    )
+    public static class ClusterIdRequest implements IRequest {
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
             name = "AbstractClusterRequest.NewClusterRequest",
             description = "AbstractClusterRequest.NewClusterRequest 新建集群 请求体"
     )

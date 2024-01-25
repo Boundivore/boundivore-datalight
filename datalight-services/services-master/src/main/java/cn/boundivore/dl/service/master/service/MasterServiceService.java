@@ -629,4 +629,43 @@ public class MasterServiceService {
     }
 
 
+    /**
+     * Description: 移除指定服务。注：移除服务操作不需要前端主动发起，当用户移除某服务下所有组件时，该服务将自动被移除
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId   集群 ID
+     * @param serviceName 服务名称
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void removeServiceByName(Long clusterId, String serviceName) {
+
+        // 查询指定服务信息
+        TDlService tDlService = this.tDlServiceService.lambdaQuery()
+                .select()
+                .eq(TDlService::getClusterId, clusterId)
+                .eq(TDlService::getServiceName, serviceName)
+                .one();
+
+        Assert.notNull(
+                tDlService,
+                () -> new BException("指定集群中无对应服务")
+        );
+
+        // 所有操作将会彻底删除数据，审计功能中将会保留操作数据历史
+        Assert.isTrue(
+                this.tDlServiceService.removeById(tDlService.getId()),
+                () -> new DatabaseException("同步移除服务失败")
+        );
+
+    }
+
 }

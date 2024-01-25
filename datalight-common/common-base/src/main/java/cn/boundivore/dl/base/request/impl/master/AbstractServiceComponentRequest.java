@@ -27,6 +27,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -41,6 +42,50 @@ import java.util.List;
  * Version: V1.0
  */
 public abstract class AbstractServiceComponentRequest {
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractServiceComponentRequest.ComponentIdListRequest",
+            description = "AbstractServiceComponentRequest.ComponentIdListRequest: 组件 ID 列表请求体"
+    )
+    public final static class ComponentIdListRequest {
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
+        @JsonProperty(value = "ServiceName", required = true)
+        @NotNull
+        private String serviceName;
+
+        @Schema(name = "ComponentIdList", title = "组件 ID 列表", required = true)
+        @JsonProperty(value = "ComponentIdList", required = true)
+        @NotEmpty
+        private List<ComponentIdRequest> componentIdList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractServiceComponentRequest.ComponentIdRequest",
+            description = "AbstractServiceComponentRequest.ComponentIdRequest: 组件 ID 请求体"
+    )
+    public final static class ComponentIdRequest implements IRequest {
+
+        @Schema(name = "ComponentId", title = "组件 ID", required = true)
+        @JsonProperty(value = "ComponentId", required = true)
+        @NotNull
+        private Long componentId;
+    }
+
+
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
