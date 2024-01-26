@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterComponentAPI {
     @GetMapping(value = "/component/list")
-    @ApiOperation(notes = "获取被选择服务下的组件信息列表并附带其状态信息", value = "获取被选择服务下的组件信息列表并附带其状态信息")
+    @ApiOperation(notes = "获取服务下的组件信息列表并附带其状态信息", value = "获取服务下的组件信息列表并附带其状态信息")
     Result<AbstractServiceComponentVo.ComponentVo> getComponentList(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)

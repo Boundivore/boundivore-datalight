@@ -20,8 +20,6 @@ package cn.boundivore.dl.base.response.impl.master;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -111,6 +109,49 @@ public abstract class AbstractNodeVo {
         @NotNull
         private NodeStateEnum nodeState;
 
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractNodeVo.NodeWithComponentListVo",
+            description = "AbstractNodeVo.NodeWithComponentListVo 节点信息详情与组件分布信息列表"
+    )
+    public static class NodeWithComponentListVo implements IVo {
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
+        @Schema(name = "NodeWithComponentList", title = "节点信息详情与组件分布信息列表", required = true)
+        @JsonProperty(value = "NodeWithComponentList", required = true)
+        @NotNull
+        private List<NodeWithComponentVo> nodeWithComponentList;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractNodeVo.NodeWithComponentVo",
+            description = "AbstractNodeVo.NodeWithComponentVo 节点信息详情与组件分布信息"
+    )
+    public static class NodeWithComponentVo implements IVo {
+
+        @Schema(name = "NodeDetail", title = "节点信息详情", required = true)
+        @JsonProperty(value = "NodeDetail", required = true)
+        @NotNull
+        private NodeDetailVo nodeDetail;
+
+        @Schema(name = "ComponentName", title = "组件名称", required = true)
+        @JsonProperty(value = "ComponentName", required = true)
+        @NotNull
+        private List<String> componentName;
 
     }
 }

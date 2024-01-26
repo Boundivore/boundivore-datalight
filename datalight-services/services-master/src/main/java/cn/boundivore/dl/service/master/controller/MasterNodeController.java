@@ -59,4 +59,9 @@ public class MasterNodeController implements IMasterNodeAPI {
     public Result<String> removeBatchByIds(AbstractNodeRequest.NodeIdListRequest request) throws Exception {
         return this.masterNodeService.removeBatchByIds(request);
     }
+
+    @Override
+    public Result<AbstractNodeVo.NodeWithComponentListVo> getNodeListWithComponent(Long clusterId) throws Exception {
+        return this.masterNodeService.getNodeListWithComponent(clusterId);
+    }
 }

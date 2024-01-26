@@ -77,4 +77,13 @@ public interface IMasterNodeAPI {
             AbstractNodeRequest.NodeIdListRequest request
     ) throws Exception;
 
+    @GetMapping(value = "/node/listWithComponent")
+    @ApiOperation(notes = "获取节点列表附带其组件信息", value = "获取节点列表附带其组件信息")
+    Result<AbstractNodeVo.NodeWithComponentListVo> getNodeListWithComponent(
+            @ApiParam(name = "ClusterId", value = "ClusterId")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId
+    ) throws Exception;
+
+
 }

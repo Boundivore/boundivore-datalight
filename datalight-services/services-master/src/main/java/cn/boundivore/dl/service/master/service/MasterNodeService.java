@@ -38,10 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,6 +55,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterNodeService {
+
+    private final MasterInitProcedureService masterInitProcedureService;
 
     private final TDlNodeServiceImpl tDlNodeService;
 
@@ -238,6 +237,130 @@ public class MasterNodeService {
                         clusterId,
                         nodeDetailList
                 )
+        );
+    }
+
+    /**
+     * Description: 获取节点列表附带其上的组件信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/6
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群ID
+     * @return 节点列表结果
+     */
+    public Result<AbstractNodeVo.NodeWithComponentListVo> getNodeListWithComponent(Long clusterId) {
+
+        // 优化数据库查询，使用单个查询以减少数据库访问次数
+        Map<Long, List<String>> nodeIdComponentNameMap = this.getNodeComponents(clusterId);
+
+        // 处理节点信息，并与组件信息结合
+        List<AbstractNodeVo.NodeWithComponentVo> nodeWithComponentList = this.getNodes(clusterId, nodeIdComponentNameMap);
+
+        // 构建并返回结果
+        return Result.success(
+                new AbstractNodeVo.NodeWithComponentListVo(
+                        clusterId,
+                        nodeWithComponentList
+                )
+        );
+    }
+
+    /**
+     * Description: 优化数据库查询，使用单个查询以减少数据库访问次数
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @return Map<Long, List < String>> 返回
+     */
+    private Map<Long, List<String>> getNodeComponents(Long clusterId) {
+        // 优化：使用方法来封装组件查询逻辑
+        return this.tDlComponentService.lambdaQuery()
+                .select(TDlComponent::getNodeId, TDlComponent::getComponentName)
+                .ne(TDlComponent::getComponentState, SCStateEnum.REMOVED)
+                .eq(TDlComponent::getClusterId, clusterId)
+                .list()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        TDlComponent::getNodeId,
+                        Collectors.mapping(TDlComponent::getComponentName, Collectors.toList())
+                ));
+    }
+
+
+    /**
+     * Description: 处理节点信息，并与组件信息结合
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId              集群 ID
+     * @param nodeIdComponentNameMap 节点 ID 与组件名称列表的映射关系
+     * @return List<AbstractNodeVo.NodeWithComponentVo> 节点信息与组件信息列表
+     */
+    private List<AbstractNodeVo.NodeWithComponentVo> getNodes(Long clusterId,
+                                                              final Map<Long, List<String>> nodeIdComponentNameMap) {
+        return this.tDlNodeService.lambdaQuery()
+                .eq(TDlNode::getClusterId, clusterId)
+                .notIn(TDlNode::getNodeState, NodeStateEnum.REMOVED)
+                .orderByAsc(TDlNode::getHostname)
+                .list()
+                .stream()
+                .map(node -> this.mapNodeToNodeWithComponentVo(node, nodeIdComponentNameMap))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Description: 逐个组装 NodeWithComponentVo 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlNode                数据库节点信息
+     * @param nodeIdComponentNameMap 节点 ID 与组件名称映射
+     * @return AbstractNodeVo.NodeWithComponentVo 节点与组件信息
+     */
+    private AbstractNodeVo.NodeWithComponentVo mapNodeToNodeWithComponentVo(TDlNode tDlNode,
+                                                                            Map<Long, List<String>> nodeIdComponentNameMap) {
+
+        // 抽象方法来构建 NodeWithComponentVo 对象
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = new AbstractNodeVo.NodeDetailVo()
+                .setNodeId(tDlNode.getId())
+                .setHostname(tDlNode.getHostname())
+                .setNodeIp(tDlNode.getIpv4())
+                .setSshPort(tDlNode.getSshPort())
+                .setCpuArch(tDlNode.getCpuArch())
+                .setCpuCores(tDlNode.getCpuCores())
+                .setRam(tDlNode.getRam())
+                .setDiskTotal(tDlNode.getDisk())
+                .setNodeState(tDlNode.getNodeState());
+
+        List<String> componentNames = nodeIdComponentNameMap.getOrDefault(
+                tDlNode.getId(),
+                Collections.emptyList()
+        );
+
+        return new AbstractNodeVo.NodeWithComponentVo(
+                nodeDetailVo,
+                componentNames
         );
     }
 
@@ -470,6 +593,12 @@ public class MasterNodeService {
         Assert.isTrue(
                 tDlNodeList.size() == request.getNodeIdList().size(),
                 () -> new BException("将要移除的列表中存在不符合移除条件的节点信息，请重新确认")
+        );
+
+        // 判断当前集群是否还有初始化步骤在进行
+        Assert.isFalse(
+                this.masterInitProcedureService.isExistInitProcedure(request.getClusterId()).getData(),
+                () -> new BException("当前集群有正在初始化的步骤，请先完成或取消初始化步骤再执行移除节点操作")
         );
 
         // 判断本批次节点中是否存在未删除的组件
