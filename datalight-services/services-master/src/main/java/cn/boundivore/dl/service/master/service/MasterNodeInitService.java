@@ -202,7 +202,7 @@ public class MasterNodeInitService {
         // 调用函数记录 Procedure
         this.masterInitProcedureService.persistNodeInitProcedure(
                 request.getClusterId(),
-                null,
+                nodeJobId,
                 ProcedureStateEnum.PROCEDURE_DETECT,
                 request.getNodeInfoList()
                         .stream()
@@ -296,7 +296,7 @@ public class MasterNodeInitService {
         // 调用函数记录 Procedure
         this.masterInitProcedureService.persistNodeInitProcedure(
                 request.getClusterId(),
-                null,
+                nodeJobId,
                 ProcedureStateEnum.PROCEDURE_CHECK,
                 request.getNodeInfoList()
                         .stream()
@@ -409,7 +409,7 @@ public class MasterNodeInitService {
         // 调用函数记录 Procedure
         this.masterInitProcedureService.persistNodeInitProcedure(
                 request.getClusterId(),
-                null,
+                nodeJobId,
                 ProcedureStateEnum.PROCEDURE_DISPATCH,
                 request.getNodeInfoList()
                         .stream()
