@@ -370,16 +370,21 @@ public class MasterJobService {
                         )
                 );
 
+        // <ComponentName, List<ComponentNodeDto>>
+        Map<String, List<ComponentNodeDto>> componentNameNodeMap = componentNodeDtoList
+                .stream()
+                .collect(Collectors.groupingBy(ComponentNodeDto::getComponentName));
+
         //当前服务
         //按照组件名称进行分组，一个组件可能会在多个节点中部署
         return new Intention.Service()
                 .setServiceName(tDlService.getServiceName())
                 .setPriority(tDlService.getPriority())
                 .setComponentList(
-                        componentNodeDtoList.stream()
-                                .collect(Collectors.groupingBy(ComponentNodeDto::getComponentName))
+                        componentNameNodeMap
                                 .values()
                                 .stream()
+                                .filter(i -> componentNameToJobNodeListMap.containsKey(CollUtil.getFirst(i).getComponentName()))
                                 .map(i -> this.intentionComponent(
                                                 i,
                                                 componentNameToJobNodeListMap.get(CollUtil.getFirst(i).getComponentName())
@@ -438,6 +443,7 @@ public class MasterJobService {
      * Throws:
      *
      * @param componentNodeDtoList 当前服务下的某个组件（对应多个节点）
+     * @param jobDetailNodeList    本次请求涉及到的节点
      * @return 返回 Job 任务意图中的 Component 信息
      */
     private Intention.Component intentionComponent(List<ComponentNodeDto> componentNodeDtoList,
@@ -448,7 +454,7 @@ public class MasterJobService {
 
         // 获取当前服务下用户对于特定节点上的特定组件的操作列表
         // Map<NodeId, JobDetailRequest.JobDetailNodeRequest>
-        Map<Long, JobDetailRequest.JobDetailNodeRequest> nodeIdToNodeRequestMap = jobDetailNodeList
+        final Map<Long, JobDetailRequest.JobDetailNodeRequest> nodeIdToNodeRequestMap = jobDetailNodeList
                 .stream()
                 .collect(Collectors.toMap(
                                 // 键：NodeId
