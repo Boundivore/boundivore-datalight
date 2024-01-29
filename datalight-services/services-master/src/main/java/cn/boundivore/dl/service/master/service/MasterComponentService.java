@@ -81,6 +81,62 @@ public class MasterComponentService {
     private final MasterInitProcedureService masterInitProcedureService;
 
     /**
+     * Description: 根据提供的服务名称获取该服务下组件的分布情况
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/29
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId   集群 ID
+     * @param serviceName 服务名称
+     * @return Result<AbstractServiceComponentVo.ComponentVo> 当前集群中的对应服务的组件信息
+     */
+    public Result<AbstractServiceComponentVo.ComponentVo> getComponentList(Long clusterId, String serviceName) {
+        // 获取当前集群中服务的状态
+        Map<String, AbstractServiceComponentVo.ServiceSummaryVo> serviceSummaryVoMap = this.masterServiceService
+                .getServiceSummaryVoMap(clusterId);
+
+        AbstractServiceComponentVo.ServiceSummaryVo serviceSummaryVo = serviceSummaryVoMap.get(serviceName);
+
+        Assert.notNull(
+                serviceSummaryVo,
+                () -> new BException("无法匹配对应服务")
+        );
+
+        Assert.isTrue(
+                serviceSummaryVo.getScStateEnum() != UNSELECTED
+                        && serviceSummaryVo.getScStateEnum() != REMOVED,
+                () -> new BException("服务未被选择且未被部署")
+        );
+
+        // 将当前服务置于列表之中
+        List<AbstractServiceComponentVo.ServiceSummaryVo> selectedServiceSummaryList = CollUtil.newArrayList(
+                serviceSummaryVo
+        );
+
+        return Result.success(
+                new AbstractServiceComponentVo.ComponentVo(
+                        clusterId,
+                        ResolverYamlServiceManifest.SERVICE_MANIFEST_YAML
+                                .getDataLight()
+                                .getDlcVersion(),
+                        // 组装 List<ServiceComponentSummaryVo>
+                        selectedServiceSummaryList.stream()
+                                .map(i -> new AbstractServiceComponentVo.ServiceComponentSummaryVo(
+                                                i,
+                                                this.getComponentSummaryMap(clusterId, i.getServiceName())
+                                        )
+                                )
+                                .sorted(Comparator.comparing(o -> o.getServiceSummaryVo().getPriority()))
+                                .collect(Collectors.toList())
+                )
+        );
+    }
+
+    /**
      * Description: 获取所有组件信息列表，并附带组件在当前集群的状态
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com

@@ -51,6 +51,19 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
         path = MASTER_URL_PREFIX
 )
 public interface IMasterComponentAPI {
+
+    @GetMapping(value = "/component/listByServiceName")
+    @ApiOperation(notes = "获取指定服务下的组件分布信息", value = "获取指定服务下的组件分布信息")
+    Result<AbstractServiceComponentVo.ComponentVo> getComponentList(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId,
+
+            @ApiParam(name = "ServiceName", value = "服务名称")
+            @RequestParam(value = "ServiceName", required = true)
+            String serviceName
+    ) throws Exception;
+
     @GetMapping(value = "/component/list")
     @ApiOperation(notes = "获取服务下的组件信息列表并附带其状态信息", value = "获取服务下的组件信息列表并附带其状态信息")
     Result<AbstractServiceComponentVo.ComponentVo> getComponentList(
@@ -58,6 +71,7 @@ public interface IMasterComponentAPI {
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
+
 
     @PostMapping(value = "/component/select")
     @ApiOperation(notes = "选择准备部署的组件", value = "选择准备部署的组件")
