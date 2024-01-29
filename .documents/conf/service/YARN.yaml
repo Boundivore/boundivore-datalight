@@ -98,8 +98,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 ResourceManager1'
@@ -160,8 +160,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 ResourceManage2'
@@ -222,8 +222,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 NodeManager'
@@ -284,8 +284,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 TimelineServer'
@@ -346,8 +346,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 HistoryServer'
@@ -407,8 +407,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 YARNClient'

@@ -126,8 +126,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 Prometheus'
@@ -185,8 +185,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 AlertManager'
@@ -244,8 +244,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 MySQLExporter'
@@ -303,8 +303,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 NodeExporter'
@@ -362,8 +362,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 Grafana'

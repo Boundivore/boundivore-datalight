@@ -98,8 +98,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 JournalNode'
@@ -169,8 +169,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 NameNode1'
@@ -240,8 +240,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 NameNode2'
@@ -311,8 +311,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 ZKFailoverController1'
@@ -374,8 +374,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 ZKFailoverController2'
@@ -436,8 +436,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 DataNode'
@@ -498,8 +498,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 HttpFS'
@@ -559,8 +559,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 HDFSClient'

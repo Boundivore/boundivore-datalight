@@ -97,10 +97,7 @@ public abstract class AbstractTask implements ITask {
 
             this.run();
             this.success();
-
-            this.taskMeta.setCurrentState(this.taskMeta.getSuccessState());
         } catch (BException e) {
-            this.taskMeta.setCurrentState(this.taskMeta.getFailState());
             log.error(ExceptionUtil.stacktraceToString(e));
             this.fail();
         } finally {

@@ -149,8 +149,8 @@ datalight:
 
           - type: STOP
             start-state: STOPPING
-            success-state: STARTED
-            fail-state: STOPPED
+            success-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
                 name: '停止 ZookeeperClient'
