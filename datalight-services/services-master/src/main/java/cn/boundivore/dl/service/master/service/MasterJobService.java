@@ -304,6 +304,11 @@ public class MasterJobService {
                 componentSCSStateEnumList
         );
 
+        Assert.notEmpty(
+                componentNodeDtoList,
+                () -> new BException("未找到满足操作意图的组件项")
+        );
+
 
         //当前服务
         //按照组件名称进行分组，一个组件可能会在多个节点中部署
@@ -350,6 +355,11 @@ public class MasterJobService {
                 tDlService.getClusterId(),
                 tDlService.getServiceName(),
                 componentSCSStateEnumList
+        );
+
+        Assert.notEmpty(
+                componentNodeDtoList,
+                () -> new BException("未找到满足操作意图的组件项")
         );
 
         // 获取当前服务下用户对于特定节点上的特定组件的操作列表
