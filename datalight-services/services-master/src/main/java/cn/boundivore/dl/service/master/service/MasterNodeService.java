@@ -582,12 +582,18 @@ public class MasterNodeService {
                 .select()
                 .eq(TDlNode::getClusterId, request.getClusterId())
                 .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
-                .in(TBasePo::getId, request.getNodeIdList())
+                .in(
+                        TBasePo::getId,
+                        request.getNodeIdList()
+                                .stream()
+                                .map(AbstractNodeRequest.NodeIdRequest::getNodeId)
+                                .collect(Collectors.toList())
+                )
                 .list();
 
         Assert.notEmpty(
                 tDlNodeList,
-                () -> new BException("节点列表中不存在尚未移除的节点")
+                () -> new BException("请求节点列表中不存在尚未移除的节点")
         );
 
         Assert.isTrue(
