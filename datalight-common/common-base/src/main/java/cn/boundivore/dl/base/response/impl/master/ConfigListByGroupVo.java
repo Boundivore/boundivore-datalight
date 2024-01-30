@@ -108,6 +108,11 @@ public class ConfigListByGroupVo implements IVo {
             name = "ConfigListByGroupVo.ConfigNodeVo",
             description = "ConfigListByGroupVo.ConfigNodeVo 节点信息"
     )
+    @EqualsAndHashCode(
+            exclude = {
+                    "configVersion"
+            }
+    )
     public static class ConfigNodeVo implements IVo {
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)

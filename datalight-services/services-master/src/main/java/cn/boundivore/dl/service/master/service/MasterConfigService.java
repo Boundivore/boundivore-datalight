@@ -642,7 +642,9 @@ public class MasterConfigService {
                     configGroup,
                     k -> new ArrayList<>()
             );
-            configNodeList.add(configNodeVo);
+            if (!configNodeList.contains(configNodeVo)) {
+                configNodeList.add(configNodeVo);
+            }
             // 将 ConfigNode 列表设置到对应的 ConfigGroup 中
             if (configGroup.getConfigNodeList() == null || configGroup.getConfigNodeList().isEmpty()) {
                 configGroup.setConfigNodeList(configNodeList);
@@ -732,12 +734,12 @@ public class MasterConfigService {
                 .collect(Collectors.toList());
 
         this.masterComponentService.updateComponentRestartMark(
-               new AbstractServiceComponentRequest.UpdateNeedRestartRequest(
-                       request.getClusterId(),
-                       request.getServiceName(),
-                       nodeIdList,
-                       true
-               )
+                new AbstractServiceComponentRequest.UpdateNeedRestartRequest(
+                        request.getClusterId(),
+                        request.getServiceName(),
+                        nodeIdList,
+                        true
+                )
         );
 
 
