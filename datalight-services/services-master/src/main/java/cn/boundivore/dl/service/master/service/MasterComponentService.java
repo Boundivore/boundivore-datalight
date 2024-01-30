@@ -41,7 +41,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -986,7 +985,13 @@ public class MasterComponentService {
                 .select()
                 .eq(TDlComponent::getClusterId, request.getClusterId())
                 .eq(TDlComponent::getServiceName, request.getServiceName())
-                .in(TBasePo::getId, request.getComponentIdList())
+                .in(
+                        TBasePo::getId,
+                        request.getComponentIdList()
+                                .stream()
+                                .map(AbstractServiceComponentRequest.ComponentIdRequest::getComponentId)
+                                .collect(Collectors.toList())
+                )
                 .eq(TDlComponent::getComponentState, STOPPED)
                 .list();
 
