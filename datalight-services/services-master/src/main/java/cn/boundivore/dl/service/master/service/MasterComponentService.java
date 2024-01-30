@@ -262,6 +262,7 @@ public class MasterComponentService {
             return tDlComponentList
                     .stream()
                     .map(i -> new AbstractServiceComponentVo.ComponentNodeVo(
+                                    i.getId(),
                                     i.getNodeId(),
                                     tDlNodeMap.get(i.getNodeId()).getHostname(),
                                     tDlNodeMap.get(i.getNodeId()).getIpv4(),

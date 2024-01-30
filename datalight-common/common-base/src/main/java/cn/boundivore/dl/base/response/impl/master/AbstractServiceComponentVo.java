@@ -195,6 +195,10 @@ public abstract class AbstractServiceComponentVo {
     )
     public final static class ComponentNodeVo implements IVo {
 
+        @Schema(name = "ComponentId", title = "组件 ID", required = true)
+        @JsonProperty(value = "ComponentId", required = true)
+        private Long componentId;
+
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         private Long nodeId;
