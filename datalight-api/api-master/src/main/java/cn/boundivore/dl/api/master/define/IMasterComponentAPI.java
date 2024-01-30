@@ -89,4 +89,12 @@ public interface IMasterComponentAPI {
             AbstractServiceComponentRequest.ComponentIdListRequest request
     ) throws Exception;
 
+    @PostMapping(value = "/component/updateComponentRestartMark")
+    @ApiOperation(notes = "更新组件重启标记", value = "更新组件重启标记")
+    Result<String> updateComponentRestartMark(
+            @RequestBody
+            @Valid
+            AbstractServiceComponentRequest.UpdateNeedRestartRequest request
+    ) throws Exception;
+
 }

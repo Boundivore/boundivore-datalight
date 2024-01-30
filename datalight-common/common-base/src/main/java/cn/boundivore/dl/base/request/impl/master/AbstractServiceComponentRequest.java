@@ -184,6 +184,38 @@ public abstract class AbstractServiceComponentRequest {
 
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractServiceComponentRequest.UpdateNeedRestartRequest",
+            description = "AbstractServiceComponentRequest.更新组件重启标记 请求体"
+    )
+    public static class UpdateNeedRestartRequest implements IRequest {
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
+        @JsonProperty(value = "ServiceName", required = true)
+        @NotNull
+        private String serviceName;
+
+        @Schema(name = "NodeIdList", title = "节点 ID 列表", required = true)
+        @JsonProperty(value = "NodeIdList", required = true)
+        @NotNull
+        private List<Long> nodeIdList;
+
+        @Schema(name = "NeedRestart", title = "是否需要重启标记", required = true)
+        @JsonProperty(value = "NeedRestart", required = true)
+        @NotNull
+        private Boolean needRestart;
+
+    }
+
 
 
 }

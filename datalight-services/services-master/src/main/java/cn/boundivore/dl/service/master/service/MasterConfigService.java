@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
@@ -731,10 +732,12 @@ public class MasterConfigService {
                 .collect(Collectors.toList());
 
         this.masterComponentService.updateComponentRestartMark(
-                request.getClusterId(),
-                request.getServiceName(),
-                nodeIdList,
-                true
+               new AbstractServiceComponentRequest.UpdateNeedRestartRequest(
+                       request.getClusterId(),
+                       request.getServiceName(),
+                       nodeIdList,
+                       true
+               )
         );
 
 

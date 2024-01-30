@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.MasterWorkerEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
@@ -946,13 +947,15 @@ public class JobService {
         intention.getServiceList().forEach(
                 service -> service.getComponentList().forEach(
                         component -> this.masterComponentService.updateComponentRestartMark(
-                                clusterId,
-                                service.getServiceName(),
-                                component.getNodeList()
-                                        .stream()
-                                        .map(Intention.Node::getNodeId)
-                                        .collect(Collectors.toList()),
-                                false
+                                new AbstractServiceComponentRequest.UpdateNeedRestartRequest(
+                                        clusterId,
+                                        service.getServiceName(),
+                                        component.getNodeList()
+                                                .stream()
+                                                .map(Intention.Node::getNodeId)
+                                                .collect(Collectors.toList()),
+                                        false
+                                )
                         ))
         );
     }
