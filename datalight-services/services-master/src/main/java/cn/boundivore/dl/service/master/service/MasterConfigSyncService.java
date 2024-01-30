@@ -32,6 +32,7 @@ import java.util.List;
 
 /**
  * Description: 同步或异步修改配置文件逻辑控制服务
+ * TODO 考虑修改配置后，是否需要重启组件
  * Created by: Boundivore
  * E-mail: boundivore@formail.com
  * Creation time: 2023/8/1
@@ -57,7 +58,7 @@ public class MasterConfigSyncService {
      * Modification time:
      * Throws:
      *
-     * @param request 配置文件保存请求
+     * @param request     配置文件保存请求
      * @return 成功返回 true，失败返回  false
      */
     public boolean saveConfigOrUpdateBatch(ConfigSaveRequest request) {
@@ -73,7 +74,7 @@ public class MasterConfigSyncService {
                     configContentPersisted.getGroupTDlConfigContentMap()
             ).isSuccess();
         } else {
-            synchronized (this){
+            synchronized (this) {
                 log.info("{} 配置未全部就绪，准备同步初始化", request.getServiceName());
                 return this.masterConfigService.saveConfigOrUpdateBatch(
                         request,
@@ -120,7 +121,7 @@ public class MasterConfigSyncService {
      * @param request 将要修改的配置文件分组
      */
     public Result<String> saveConfigByGroupSync(ConfigSaveByGroupRequest request) {
-        synchronized (this){
+        synchronized (this) {
             return this.masterConfigService.saveConfigByGroup(request);
         }
     }

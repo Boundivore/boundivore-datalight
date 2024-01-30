@@ -219,6 +219,10 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "SCStateEnum", required = true)
         private SCStateEnum scStateEnum;
 
+        @Schema(name = "NeedRestart", title = "是否需要重启", required = true)
+        @JsonProperty(value = "NeedRestart", required = true)
+        private Boolean needRestart;
+
 
     }
 

@@ -267,7 +267,8 @@ public class MasterComponentService {
                                     tDlNodeMap.get(i.getNodeId()).getHostname(),
                                     tDlNodeMap.get(i.getNodeId()).getIpv4(),
                                     tDlNodeMap.get(i.getNodeId()).getNodeState(),
-                                    i.getComponentState()
+                                    i.getComponentState(),
+                                    i.getNeedRestart()
                             )
                     )
                     // 按节点主机名进行排序
@@ -1029,6 +1030,54 @@ public class MasterComponentService {
         }
 
         return Result.success();
+    }
+
+    /**
+     * Description: 更新组件是否需要重启标识
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/30
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId   集群 ID
+     * @param serviceName 服务名称
+     * @param nodeIdList  涉及到指定服务下修改配置的节点列表
+     * @param needRestart 是否需要重启
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void updateComponentRestartMark(Long clusterId,
+                                           String serviceName,
+                                           List<Long> nodeIdList,
+                                           Boolean needRestart) {
+
+        // 读取对应的组件列表
+        List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, clusterId)
+                .eq(TDlComponent::getServiceName, serviceName)
+                .in(TDlComponent::getNodeId, nodeIdList)
+                .list();
+
+        Assert.notEmpty(
+                tDlComponentList,
+                () -> new BException("无法匹配到对应组件信息")
+        );
+
+        List<TDlComponent> prepareUpdateTdlComponentList = tDlComponentList.stream()
+                .map(i -> i.setNeedRestart(needRestart))
+                .collect(Collectors.toList());
+
+        Assert.isTrue(
+                this.tDlComponentService.updateBatchById(prepareUpdateTdlComponentList),
+                () -> new DatabaseException("更新是否需要重启标识失败")
+        );
+
     }
 
 

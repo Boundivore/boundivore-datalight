@@ -923,4 +923,38 @@ public class JobService {
         );
     }
 
+    /**
+     * Description: 更新组件重启标记
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/16
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param intention 操作意图
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void updateComponentRestartMark(Intention intention) {
+
+        Long clusterId = intention.getClusterMeta().getCurrentClusterId();
+
+        intention.getServiceList().forEach(
+                service -> service.getComponentList().forEach(
+                        component -> this.masterComponentService.updateComponentRestartMark(
+                                clusterId,
+                                service.getServiceName(),
+                                component.getNodeList()
+                                        .stream()
+                                        .map(Intention.Node::getNodeId)
+                                        .collect(Collectors.toList()),
+                                false
+                        ))
+        );
+    }
+
 }

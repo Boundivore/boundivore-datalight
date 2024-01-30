@@ -53,7 +53,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Description: 服务预配置、服务组件配置相关逻辑
+ * Description: 服务组件配置文件相关逻辑
+ * TODO 考虑修改配置后，是否需要重启组件，同时考虑检查配置文件未发生变动，则不更新重启标记，发生变动则更新标记
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/5
@@ -80,6 +81,8 @@ public class MasterConfigService {
     private final ConfigEventPublisher publisher;
 
     private final RemoteInvokeWorkerService remoteInvokeWorkerService;
+
+    private final MasterComponentService masterComponentService;
 
 
     /**
@@ -717,6 +720,23 @@ public class MasterConfigService {
             // 在事务完成后执行发布 "配置变更" 事件
             this.publishConfigChange(clusterId, serviceName);
         }
+
+        // 更新组件是否需要重启标记
+        List<Long> nodeIdList = request.getConfigGroupList()
+                .stream()
+                .flatMap(i -> i.getConfigNodeList()
+                        .stream()
+                        .map(ConfigSaveByGroupRequest.ConfigNodeRequest::getNodeId)
+                )
+                .collect(Collectors.toList());
+
+        this.masterComponentService.updateComponentRestartMark(
+                request.getClusterId(),
+                request.getServiceName(),
+                nodeIdList,
+                true
+        );
+
 
         return Result.success();
     }

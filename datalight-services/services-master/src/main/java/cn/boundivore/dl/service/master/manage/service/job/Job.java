@@ -531,6 +531,12 @@ public class Job extends Thread {
         if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) {
             this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
         }
+
+        // 如果是重启组件，则更新组件 "重启标记 needRestart" 为 false
+        if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.RESTART
+                || this.jobMeta.getActionTypeEnum() == ActionTypeEnum.START) {
+            this.jobService.updateComponentRestartMark(this.intention);
+        }
     }
 
     /**
