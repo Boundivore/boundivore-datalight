@@ -534,7 +534,8 @@ public class Job extends Thread {
 
         // 如果是重启组件，则更新组件 "重启标记 needRestart" 为 false
         if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.RESTART
-                || this.jobMeta.getActionTypeEnum() == ActionTypeEnum.START) {
+                || this.jobMeta.getActionTypeEnum() == ActionTypeEnum.START
+                || this.jobMeta.getActionTypeEnum() == ActionTypeEnum.STOP) {
             this.jobService.updateComponentRestartMark(this.intention);
         }
     }
