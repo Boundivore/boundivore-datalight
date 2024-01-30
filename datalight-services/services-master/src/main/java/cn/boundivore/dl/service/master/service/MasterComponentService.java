@@ -41,6 +41,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -728,7 +729,7 @@ public class MasterComponentService {
                 .eq(TDlComponent::getNodeId, nodeId)
                 .eq(TDlComponent::getServiceName, serviceName)
                 .eq(TDlComponent::getComponentName, componentName)
-                .ne(TDlComponent::getComponentState, SCStateEnum.REMOVED)
+                .ne(TDlComponent::getComponentState, REMOVED)
                 .one();
 
         tDlComponent.setComponentState(scStateEnum);
@@ -777,23 +778,23 @@ public class MasterComponentService {
         // TODO 考虑 SELECTED_ADDITION
         if (scStateEnumSet.size() == 1) {
             // 如果状态枚举集合包含 REMOVED 状态
-            if (scStateEnumSet.contains(SCStateEnum.REMOVED)) {
-                return SCStateEnum.REMOVED;
+            if (scStateEnumSet.contains(REMOVED)) {
+                return REMOVED;
             }
 
             // 如果状态枚举集合包含 SELECTED 状态
-            if (scStateEnumSet.contains(SCStateEnum.SELECTED)) {
-                return SCStateEnum.SELECTED;
+            if (scStateEnumSet.contains(SELECTED)) {
+                return SELECTED;
             }
 
             // 如果状态枚举集合包含 UNSELECTED 状态
-            if (scStateEnumSet.contains(SCStateEnum.UNSELECTED)) {
-                return SCStateEnum.UNSELECTED;
+            if (scStateEnumSet.contains(UNSELECTED)) {
+                return UNSELECTED;
             }
         }
 
         // 默认返回 DEPLOYED 状态
-        return SCStateEnum.DEPLOYED;
+        return DEPLOYED;
     }
 
 
@@ -866,7 +867,7 @@ public class MasterComponentService {
                     SCStateEnum serviceState = this.masterServiceService.getServiceState(clusterId, serviceName);
 
                     // 容错，过滤无效的信息
-                    if (serviceState == SCStateEnum.REMOVED || serviceState == SCStateEnum.UNSELECTED) {
+                    if (serviceState == REMOVED || serviceState == UNSELECTED) {
                         log.error("存在不合逻辑的服务状态: {}", serviceState);
                     }
 
@@ -880,8 +881,8 @@ public class MasterComponentService {
                             clusterId,
                             serviceName,
                             CollUtil.newArrayList(
-                                    SCStateEnum.REMOVED,
-                                    SCStateEnum.UNSELECTED
+                                    REMOVED,
+                                    UNSELECTED
                             )
                     );
 
