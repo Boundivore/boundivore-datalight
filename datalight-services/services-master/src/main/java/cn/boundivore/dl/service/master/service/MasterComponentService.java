@@ -1064,7 +1064,9 @@ public class MasterComponentService {
                 () -> new BException("无法匹配到对应组件信息")
         );
 
-        List<TDlComponent> prepareUpdateTdlComponentList = tDlComponentList.stream()
+        List<TDlComponent> prepareUpdateTdlComponentList = tDlComponentList
+                .stream()
+                .filter(i -> !i.getComponentName().contains("Client"))
                 .map(i -> i.setNeedRestart(request.getNeedRestart()))
                 .collect(Collectors.toList());
 
