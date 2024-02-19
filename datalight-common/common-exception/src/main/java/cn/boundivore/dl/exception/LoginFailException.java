@@ -28,7 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class LoginFailException extends RuntimeException {
-    private String message;
+    private final String message;
     public LoginFailException(String message) {
         this.message = message;
     }

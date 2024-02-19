@@ -28,7 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class LicenseNotFoundException extends RuntimeException {
-    private String message;
+    private final String message;
     public LicenseNotFoundException(String message) {
         this.message = message;
     }

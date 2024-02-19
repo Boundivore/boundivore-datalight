@@ -28,7 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class FileUploadException extends RuntimeException {
-    private String message;
+    private final String message;
     public FileUploadException(String message) {
         this.message = message;
     }
