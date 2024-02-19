@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 import java.io.Serializable;
 
 /**
- * FUNCTIONAL_DESCRIPTION: 基础 Po，包含每张表的通用属性
+ * Description: 基础 Po，包含每张表的通用属性
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/6
