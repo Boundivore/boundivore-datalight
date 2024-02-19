@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.boot.lock.boot;
+package cn.boundivore.dl.boot.zookeeper.lock;
 
 import org.springframework.stereotype.Component;
 
