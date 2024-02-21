@@ -71,6 +71,7 @@ public class WorkerManageService {
      */
     public Result<String> updateMasterMeta(MasterMetaRequest request) {
         // Master 信息更新到 Worker 内存
+        log.info("接收到 Master({}) 元数据信息，更新内存缓存", request.getIp());
         this.metaCache.updateMasterMeta(
                 this.iMasterMetaConverter.convert2MasterMeta(request)
         );
