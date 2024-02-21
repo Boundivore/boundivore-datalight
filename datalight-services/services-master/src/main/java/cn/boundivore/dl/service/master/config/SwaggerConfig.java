@@ -63,16 +63,14 @@ public class SwaggerConfig extends AbsBaseSwaggerConfig {
 
 //        docket.pathProvider(new RelativePath)
 
-        log.info("Swagger 文档地址：http://{}:{}{}/swagger-ui/index.html",
+        log.info("Swagger 文档地址：http://{}:{}/swagger-ui/index.html",
                 hostName,
-                port,
-                MASTER_URL_PREFIX
+                port
         );
 
-        log.info("Knife4J 文档地址： http://{}:{}{}/doc.html",
+        log.info("Knife4J 文档地址： http://{}:{}/doc.html",
                 hostName,
-                port,
-                MASTER_URL_PREFIX
+                port
         );
 
         return SwaggerProperties.builder()

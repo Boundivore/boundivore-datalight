@@ -8,8 +8,8 @@ server:
   port: 8002
   tomcat:
     uri-encoding: UTF-8
-  servlet:
-    context-path: ${server.datalight.url.worker}
+  # servlet:
+  #   context-path: ${server.datalight.url.worker}
 spring:
   #  cloud:
   #    loadbalancer:
