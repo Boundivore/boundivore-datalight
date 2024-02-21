@@ -92,7 +92,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-
     public void configureAsyncSupport(final AsyncSupportConfigurer configurer) {
 
         configurer.setDefaultTimeout(30 * 1000);
