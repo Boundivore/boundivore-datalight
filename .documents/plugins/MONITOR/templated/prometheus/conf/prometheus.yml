@@ -61,12 +61,12 @@ scrape_configs:
       - targets: [ ]
 
   - job_name: 'DATALIGHT-Master'
-    metrics_path: '/api/v1/master/actuator/prometheus'
+    metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ ]
 
   - job_name: 'DATALIGHT-Worker'
-    metrics_path: '/api/v1/worker/actuator/prometheus'
+    metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ ]
 
