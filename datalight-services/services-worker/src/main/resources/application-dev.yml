@@ -8,12 +8,12 @@ server:
   port: 8002
   tomcat:
     uri-encoding: UTF-8
-  servlet:
-    context-path: ${server.datalight.url.worker}
+  # servlet:
+  #   context-path: ${server.datalight.url.worker}
 spring:
-#  cloud:
-#    loadbalancer:
-#      enabled: false
+  #  cloud:
+  #    loadbalancer:
+  #      enabled: false
   servlet:
     multipart:
       max-request-size: 5MB
@@ -70,11 +70,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: '*'
   metrics:
-    export:
-      prometheus:
-        enabled: true
-  endpoint:
-    prometheus:
-      enabled: true
+    tags:
+      application: ${spring.application.name}
