@@ -117,7 +117,7 @@ public class WorkerManageService {
         MetaCache.MasterMeta masterMeta = this.metaCache.getMasterMeta();
         if (masterMeta != null) {
             try {
-                // 随机延迟 100 ~ 5100 毫秒，防止出现集中访问 Master 造成性能波动
+                // 随机延迟 100 ~ 4100 毫秒，防止出现集中访问 Master 造成性能波动
                 long delaySeconds = RandomUtil.randomLong(4 * 1000L) + 100;
                 ThreadUtil.safeSleep(delaySeconds);
 
