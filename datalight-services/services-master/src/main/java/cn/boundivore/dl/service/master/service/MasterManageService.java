@@ -279,10 +279,10 @@ public class MasterManageService {
                                     try {
                                         // 首先尝试主动再次推送 Master 元数据信息，获取心跳，如失败，则尝试拉起
                                         this.publishMasterMeta(masterRealIp, i.getIpv4());
-                                        log.info("拉起前最后一次尝试更新 Master 元数据成功: {}", i.getIpv4());
+                                        log.info("拉起前最后一次尝试更新 Master({}) 元数据成功: Worker({})", masterRealIp, i.getIpv4());
                                     } catch (Exception e) {
                                         try {
-                                            log.info("尝试推送 Master 元数据到心跳超时节点[{}]失败，准备拉起",
+                                            log.info("尝试推送 Master 元数据到心跳超时节点({})失败，准备拉起",
                                                     i.getIpv4()
                                             );
 
