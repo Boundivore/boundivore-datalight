@@ -264,6 +264,7 @@ public class MasterManageService {
             log.info("等待拉起 Worker 数: {}", allInvalidWorkerTDlNodeList.size());
 
             final String masterRealIp = DataLightEnv.MASTER_REAL_IP;
+            log.info("当前 Master 真实 IP: {}", masterRealIp);
 
             final String cmd = String.format(
                     "%s/datalight.sh restart worker %s",
@@ -366,9 +367,9 @@ public class MasterManageService {
      */
     public void publishMasterMeta(String masterIp, String workerIp) {
         log.info(
-                "向 Worker({}) 推送 Master({}) 元数据信息",
-                workerIp,
-                masterIp
+                "推送 Master({}) 元数据信至 Worker({})",
+                masterIp,
+                workerIp
         );
 
         Result<String> result = this.remoteInvokeWorkerService

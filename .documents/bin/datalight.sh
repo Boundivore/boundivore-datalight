@@ -62,7 +62,7 @@ start_service() {
     if [ -n "${port}" ] && [ -n "${api_type}" ]; then
       # 等待Jar包初始化完成
       local attempt=0
-      while ! curl -s "http://localhost:${port}/api/v1/${api_type}/actuator/health" | grep -q '"status":"UP"'; do
+      while ! curl -s "http://localhost:${port}/actuator/health" | grep -q '"status":"UP"'; do
         sleep 1
         attempt=$((attempt + 1))
         if [ $attempt -ge 20 ]; then
