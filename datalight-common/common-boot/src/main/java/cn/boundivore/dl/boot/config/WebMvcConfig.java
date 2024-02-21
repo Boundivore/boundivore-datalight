@@ -16,8 +16,14 @@
  */
 package cn.boundivore.dl.boot.config;
 
+import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -36,8 +42,27 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-//        registry.addViewController("/").setViewName("forward:/index.html");
-//        registry.addViewController("/**").setViewName("forward:/index.html");
+        registry.addViewController("/notFound").setViewName("forward:/api/v1/master/index.html");
+    }
+
+    @Bean
+    public WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> containerCustomizer() {
+        return container -> {
+            container.addErrorPages(
+                    new ErrorPage(
+                            HttpStatus.NOT_FOUND,
+                            "/notFound")
+            );
+        };
+    }
+
+    @Bean
+    public TomcatServletWebServerFactory tomcatServletWebServerFactory() {
+        TomcatServletWebServerFactory tomcatServlet = new TomcatServletWebServerFactory();
+        tomcatServlet.addConnectorCustomizers(
+                (TomcatConnectorCustomizer) connector -> connector.setProperty("relaxedQueryChars", "[]{}")
+        );
+        return tomcatServlet;
     }
 
     @Override
@@ -57,9 +82,23 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
+//        registry.addResourceHandler("/api/v1/master/**")
+//                .addResourceLocations(
+//                        "classpath:/public/",
+//                        "classpath:/static/",
+//                        "classpath:/resources/",
+//                        "classpath:/META-INF/resources/"
+//                )
+//                .setCachePeriod(0);
+
+        registry.addResourceHandler("swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
+
+        registry.addResourceHandler("doc.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
     }
 
     @Override

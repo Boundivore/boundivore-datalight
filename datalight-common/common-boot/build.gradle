@@ -25,6 +25,9 @@ dependencies {
     implementation group: 'com.alibaba', name: 'transmittable-thread-local'
 
     implementation group: 'org.springframework.data', name: 'spring-data-commons'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-loadbalancer'
