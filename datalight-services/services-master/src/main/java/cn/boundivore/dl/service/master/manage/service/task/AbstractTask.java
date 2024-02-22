@@ -21,18 +21,19 @@ import cn.boundivore.dl.base.enumeration.impl.ExecTypeEnum;
 import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
-import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.BashException;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.IConfig;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
-import cn.boundivore.dl.service.master.manage.service.bean.*;
+import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
+import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
 import cn.boundivore.dl.service.master.manage.service.job.JobService;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.service.RemoteInvokeWorkerService;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.ArrayUtil;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -150,6 +151,10 @@ public abstract class AbstractTask implements ITask {
      * @return boolean 成功返回 true 失败返回 false
      */
     protected String command(StepMeta stepMeta) throws BException {
+        log.info("准备远程执行命令: {} {}",
+                stepMeta.getShell(),
+                ArrayUtil.toString(stepMeta.getArgs())
+        );
         Result<String> result = remoteInvokeWorkerService.iWorkerExecAPI(taskMeta.getNodeIp())
                 .exec(
                         new ExecRequest(

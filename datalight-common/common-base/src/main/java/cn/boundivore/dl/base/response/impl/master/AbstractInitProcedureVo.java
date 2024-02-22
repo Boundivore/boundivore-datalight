@@ -70,6 +70,11 @@ public abstract class AbstractInitProcedureVo {
         @NotNull
         private List<NodeInfoListVo> nodeInfoList;
 
+        @Schema(name = "JobId", title = "JobId", required = true)
+        @JsonProperty(value = "JobId", required = true)
+        @NotNull
+        private Long jobId;
+
     }
 
     @Data
