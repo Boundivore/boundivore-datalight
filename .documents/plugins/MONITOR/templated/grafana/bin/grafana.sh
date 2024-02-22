@@ -14,6 +14,7 @@ start_grafana() {
 
 stop_grafana() {
   pkill -f "${GRAFANA_CONFIG}"
+  exit 0
 }
 
 restart_grafana() {

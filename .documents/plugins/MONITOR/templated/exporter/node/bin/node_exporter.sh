@@ -13,6 +13,7 @@ start_exporter() {
 
 stop_exporter() {
   pkill -f "node_exporter ${LISTEN_ADDRESS}"
+  exit 0
 }
 
 restart_exporter() {

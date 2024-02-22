@@ -20,6 +20,7 @@ start_exporter() {
 
 stop_exporter() {
   pkill -f "${CONFIG_FILE}"
+  exit 0
 }
 
 restart_exporter() {

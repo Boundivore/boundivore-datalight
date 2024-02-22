@@ -15,6 +15,7 @@ start_alertmanager() {
 
 stop_alertmanager() {
   pkill -f "${ALERTMANAGER_CONFIG}"
+  exit 0
 }
 
 restart_alertmanager() {

@@ -23,6 +23,7 @@ start_prometheus() {
 
 stop_prometheus() {
   pkill -f "${PROMETHEUS_CONFIG}"
+  exit 0
 }
 
 restart_prometheus() {
