@@ -210,7 +210,7 @@ datalight:
             success-state: STARTED
             fail-state: STOPPED
             steps:
-              - type: SCRIPT
+              - type: COMMAND
                 name: '启动 HIVEClient'
                 shell: 'echo done'
                 args: [ ]
@@ -224,7 +224,7 @@ datalight:
             success-state: STOPPED
             fail-state: STARTED
             steps:
-              - type: SCRIPT
+              - type: COMMAND
                 name: '停止 HIVEClient'
                 shell: 'echo done'
                 args: [ ]
