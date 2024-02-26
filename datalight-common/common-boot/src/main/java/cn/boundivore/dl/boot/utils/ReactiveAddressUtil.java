@@ -224,7 +224,7 @@ public class ReactiveAddressUtil {
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            log.error(ExceptionUtil.stacktraceToString(e));
         }
 
         return null;
