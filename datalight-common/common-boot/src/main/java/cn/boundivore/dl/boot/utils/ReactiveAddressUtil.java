@@ -22,10 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.Objects;
@@ -212,19 +209,31 @@ public class ReactiveAddressUtil {
             while (interfaces.hasMoreElements()) {
                 NetworkInterface networkInterface = interfaces.nextElement();
 
-                // Check if the interface name starts with 'en'
-                if (networkInterface.getName().startsWith("en")) {
-                    Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
-                    while (addresses.hasMoreElements()) {
-                        InetAddress address = addresses.nextElement();
-                        if (!address.isLoopbackAddress() && address.isSiteLocalAddress()) {
+                // Skip loopback interfaces and down interfaces
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue;
+                }
+
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+
+                    // Skip loopback addresses
+                    if (address.isLoopbackAddress()) {
+                        continue;
+                    }
+
+                    // Consider only IPv4 addresses
+                    if (address instanceof Inet4Address) {
+                        // Check for site-local address which typically indicates an internal IP
+                        if (address.isSiteLocalAddress()) {
                             return address.getHostAddress();
                         }
                     }
                 }
             }
         } catch (SocketException e) {
-            e.printStackTrace();
+            log.error(ExceptionUtil.stacktraceToString(e));
         }
 
         return null;

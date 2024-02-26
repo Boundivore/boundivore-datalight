@@ -39,21 +39,21 @@ public class PortConstants {
             put("MONITOR-MySQLExporter", "9104");
             put("MONITOR-NodeExporter", "9100");
 
-            put("ZOOKEEPER-QuarumPeermain", "7001");
+            put("ZOOKEEPER-QuarumPeermain", "17001");
 
-            put("HDFS-JournalNode", "7002");
-            put("HDFS-NameNode", "7003");
-            put("HDFS-ZKFailoverController", "7004");
-            put("HDFS-DataNode", "7005");
-            put("HDFS-HttpFS", "7006");
+            put("HDFS-JournalNode", "17002");
+            put("HDFS-NameNode", "17003");
+            put("HDFS-ZKFailoverController", "17004");
+            put("HDFS-DataNode", "17005");
+            put("HDFS-HttpFS", "17006");
 
-            put("YARN-ResourceManager", "7007");
-            put("YARN-NodeManager", "7008");
-            put("YARN-TimelineServer", "7009");
-            put("YARN-HistoryServer", "7010");
+            put("YARN-ResourceManager", "17007");
+            put("YARN-NodeManager", "17008");
+            put("YARN-TimelineServer", "17009");
+            put("YARN-HistoryServer", "17010");
 
-            put("HIVE-MetaStore", "7011");
-            put("HIVE-HiveServer2", "7012");
+            put("HIVE-MetaStore", "17011");
+            put("HIVE-HiveServer2", "17012");
 
         }
     };
@@ -61,21 +61,21 @@ public class PortConstants {
     // <ServiceName-ComponentName, RemotePort>
     public final static Map<String, String> MONITOR_REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
         {
-            put("ZOOKEEPER-QuarumPeermain", "6001");
+            put("ZOOKEEPER-QuarumPeermain", "16001");
 
-            put("HDFS-JournalNode", "6002");
-            put("HDFS-NameNode", "6003");
-            put("HDFS-ZKFailoverController", "6004");
-            put("HDFS-DataNode", "6005");
-            put("HDFS-HttpFS", "6006");
+            put("HDFS-JournalNode", "16002");
+            put("HDFS-NameNode", "16003");
+            put("HDFS-ZKFailoverController", "16004");
+            put("HDFS-DataNode", "16005");
+            put("HDFS-HttpFS", "16006");
 
-            put("YARN-ResourceManager", "6007");
-            put("YARN-NodeManager", "6008");
-            put("YARN-TimelineServer", "6009");
-            put("YARN-HistoryServer", "6010");
+            put("YARN-ResourceManager", "16007");
+            put("YARN-NodeManager", "16008");
+            put("YARN-TimelineServer", "16009");
+            put("YARN-HistoryServer", "16010");
 
-            put("HIVE-MetaStore", "6011");
-            put("HIVE-HiveServer2", "6012");
+            put("HIVE-MetaStore", "16011");
+            put("HIVE-HiveServer2", "16012");
         }
     };
 

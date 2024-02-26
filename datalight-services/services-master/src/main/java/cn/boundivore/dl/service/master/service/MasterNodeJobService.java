@@ -420,11 +420,9 @@ public class MasterNodeJobService {
     private void moveMasterIntentionToEnd(List<NodeIntention.Node> nodeIntentionList) {
 
         // 查找是否存在对 Master 所在节点的操作意图
-        String masterIp = ReactiveAddressUtil.getInternalIPAddress();
-
         int masterNodeIntentionIndex = -1;
         for (int i = 0; i < nodeIntentionList.size(); i++) {
-            if (nodeIntentionList.get(i).getNodeIp().equals(masterIp)) {
+            if (nodeIntentionList.get(i).getNodeIp().equals(DataLightEnv.MASTER_IP)) {
                 masterNodeIntentionIndex = i;
                 break;
             }

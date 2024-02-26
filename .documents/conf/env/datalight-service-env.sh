@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# 获取当前脚本所在目录的绝对路径
-env_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
+# 获取脚本所在目录的绝对路径
+BASE_PATH=$(dirname "$(readlink -f "$0")")
 
 # 获取 datalight-env.sh 的绝对路径
-source_file_path=$(realpath "$env_dir/datalight-env.sh")
+source_file_path="${BASE_PATH}/datalight-env.sh"
 
 # shellcheck source=./datalight-env.sh
 source "${source_file_path}"

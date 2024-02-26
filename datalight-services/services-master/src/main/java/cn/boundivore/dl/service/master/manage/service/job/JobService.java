@@ -700,8 +700,6 @@ public class JobService {
      * @return Master Worker 信息列表
      */
     private List<MasterWorkerMeta> findMasterWorkerList(Long clusterId) {
-        final String masterIp = ReactiveAddressUtil.getInternalIPAddress();
-
         AbstractNodeVo.NodeVo nodeVo = this.masterNodeService.getNodeList(clusterId).getData();
         //Master
         MasterWorkerMeta masterMeta = new MasterWorkerMeta();
@@ -709,7 +707,7 @@ public class JobService {
         List<MasterWorkerMeta> masterWorkerMetaList = nodeVo.getNodeDetailList()
                 .stream()
                 .map(i -> {
-                            if (i.getNodeIp().equals(masterIp)) {
+                            if (i.getHostname().equals(DataLightEnv.MASTER_IP)) {
                                 masterMeta.setNodeId(i.getNodeId());
                                 masterMeta.setHostname(i.getHostname());
                                 masterMeta.setNodeIp(i.getNodeIp());
