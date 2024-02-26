@@ -51,7 +51,6 @@ public final class ResolverYamlDirectory {
      *
      * @param confPath 目录配置文件路径
      */
-    //TODO datalight-env.sh 修复
     public static void resolver(String confPath) throws IOException {
         log.info(confPath);
         //解析 Yaml
