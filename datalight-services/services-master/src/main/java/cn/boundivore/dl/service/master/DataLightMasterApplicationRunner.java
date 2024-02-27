@@ -18,8 +18,7 @@ package cn.boundivore.dl.service.master;
 
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.resolver.*;
-import cn.boundivore.dl.service.master.service.MasterManageService;
-import cn.boundivore.dl.service.master.service.MasterUserService;
+import cn.boundivore.dl.service.master.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -47,34 +46,50 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
     private final MasterUserService masterUserService;
 
+    private final MasterNodeJobService masterNodeJobService;
+
+    private final MasterJobService masterJobService;
+
+    private final MasterServiceService masterServiceService;
+
+    private final MasterComponentService masterComponentService;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
         // 下方存在变量前后依赖关系，需留意执行顺序，不可随意调整
         // ./conf/datalight
-        log.info("CONF_ENV_DIR: {}" , DataLightEnv.CONF_ENV_DIR);
+        log.info("CONF_ENV_DIR: {}", DataLightEnv.CONF_ENV_DIR);
         ResolverYamlDirectory.resolver(DataLightEnv.CONF_ENV_DIR);
 
         // ./conf/service
-        log.info("CONF_SERVICE_DIR: {}" , DataLightEnv.CONF_SERVICE_DIR);
+        log.info("CONF_SERVICE_DIR: {}", DataLightEnv.CONF_SERVICE_DIR);
         ResolverYamlServiceManifest.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./conf/service
-        log.info("CONF_SERVICE_DIR: {}" , DataLightEnv.CONF_SERVICE_DIR);
+        log.info("CONF_SERVICE_DIR: {}", DataLightEnv.CONF_SERVICE_DIR);
         ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./plugins
-        log.info("PLUGINS_DIR_LOCAL: {}" , DataLightEnv.PLUGINS_DIR_LOCAL);
+        log.info("PLUGINS_DIR_LOCAL: {}", DataLightEnv.PLUGINS_DIR_LOCAL);
         ResolverYamlServicePlaceholder.resolver(DataLightEnv.PLUGINS_DIR_LOCAL);
 
         // ./node/conf
-        log.info("NODE_CONF_DIR: {}" , DataLightEnv.NODE_CONF_DIR);
+        log.info("NODE_CONF_DIR: {}", DataLightEnv.NODE_CONF_DIR);
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
+        // 更新 Master 所在节点的元数据信息，TODO 如果后续开启 Master 高可用功能，则此处需要根据持有活跃锁的状态来执行下面的函数
         this.masterManageService.updateMasterMeta();
 
         // 检查超级用户是否注入到数据库
         this.masterUserService.checkInitSuperUser();
+
+        // 检查是否存在 Master 异常终止导致数据库状态异常，若存在，则使其恢复到正常状态
+        this.masterNodeJobService.checkNodeJobState();
+        this.masterJobService.checkJobState();
+        this.masterServiceService.checkServiceState();
+        this.masterComponentService.checkComponentState();
+
     }
 
 }

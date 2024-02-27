@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
@@ -49,6 +50,7 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -984,6 +986,25 @@ public class MasterNodeJobService {
         );
 
         return Result.success(nodeJobLogListVo);
+    }
+
+
+    /**
+     * Description: 检查是否存在异常状态的 NodeJob，若存在，则恢复
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void checkNodeJobState() {
+
     }
 
 }

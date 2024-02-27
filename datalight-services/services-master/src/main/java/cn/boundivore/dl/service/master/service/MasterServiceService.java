@@ -668,4 +668,24 @@ public class MasterServiceService {
 
     }
 
+
+    /**
+     * Description: 检查是否存在异常状态的 Service，若存在，则恢复
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void checkServiceState() {
+
+    }
+
+
 }
