@@ -50,6 +50,8 @@ public class TaskMeta extends TimeMeta {
 
     private StageMeta stageMeta;
 
+    private long id;
+
     //Task 执行时，组件状态
     private SCStateEnum startState;
 
@@ -68,8 +70,6 @@ public class TaskMeta extends TimeMeta {
 
     // 标记：用于标记当前任务是否需要阻塞等待完成 true: 需要，false: 不需要
     protected boolean block;
-
-    private long id;
 
     private String name;
 

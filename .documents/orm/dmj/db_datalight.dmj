@@ -853,9 +853,9 @@
           "Caption": "Job 信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 9,
-          "GraphDesc": "Left=12.93\r\nTop=1373.78",
+          "GraphDesc": "Left=12.93\r\nTop=1366.28",
           "MetaFields": {
-            "Count": 11,
+            "Count": 12,
             "items": [
               {
                 "ID": 1,
@@ -900,27 +900,36 @@
                 "DataLength": 20
               },
               {
-                "ID": 11,
-                "Name": "tag",
-                "OrderNo": 5,
-                "DisplayName": "同批任务唯一标识",
-                "DataType": 1,
-                "Not_Nullable": true,
-                "DataLength": 255
-              },
-              {
                 "ID": 7,
                 "Name": "cluster_id",
-                "OrderNo": 6,
+                "OrderNo": 5,
                 "DisplayName": "集群 ID",
                 "DataType": 2,
                 "Not_Nullable": true,
                 "DataLength": 20
               },
               {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 6,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 12,
+                "Name": "job_action_type",
+                "OrderNo": 7,
+                "DisplayName": "Job 行为类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
                 "ID": 5,
                 "Name": "job_name",
-                "OrderNo": 7,
+                "OrderNo": 8,
                 "DisplayName": "Job 名称",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -930,7 +939,7 @@
                 "ID": 6,
                 "Name": "job_state",
                 "Memo": "枚举值：见代码",
-                "OrderNo": 8,
+                "OrderNo": 9,
                 "DisplayName": "Job 状态",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -940,7 +949,7 @@
                 "ID": 11,
                 "Name": "start_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 9,
+                "OrderNo": 10,
                 "DisplayName": "执行起始时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -949,7 +958,7 @@
                 "ID": 12,
                 "Name": "end_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 10,
+                "OrderNo": 11,
                 "DisplayName": "执行结束时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -958,7 +967,7 @@
                 "ID": 13,
                 "Name": "duration",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 11,
+                "OrderNo": 12,
                 "DisplayName": "耗时",
                 "DataType": 2,
                 "DataLength": 20
@@ -972,9 +981,9 @@
           "Caption": "Stage 信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 10,
-          "GraphDesc": "Left=290.50\r\nTop=1367.03",
+          "GraphDesc": "Left=290.50\r\nTop=1364.03",
           "MetaFields": {
-            "Count": 13,
+            "Count": 15,
             "items": [
               {
                 "ID": 1,
@@ -1019,22 +1028,22 @@
                 "DataLength": 20
               },
               {
-                "ID": 11,
-                "Name": "tag",
-                "OrderNo": 5,
-                "DisplayName": "同批任务唯一标识",
-                "DataType": 1,
-                "Not_Nullable": true,
-                "DataLength": 255
-              },
-              {
                 "ID": 7,
                 "Name": "cluster_id",
-                "OrderNo": 6,
+                "OrderNo": 5,
                 "DisplayName": "集群 ID",
                 "DataType": 2,
                 "Not_Nullable": true,
                 "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 6,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
               },
               {
                 "ID": 8,
@@ -1075,10 +1084,29 @@
                 "DataLength": 255
               },
               {
+                "ID": 14,
+                "Name": "service_state",
+                "Memo": "枚举值：见代码",
+                "OrderNo": 11,
+                "DisplayName": "服务当前状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 15,
+                "Name": "priority",
+                "OrderNo": 12,
+                "DisplayName": "优先级",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
                 "ID": 11,
                 "Name": "start_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 11,
+                "OrderNo": 13,
                 "DisplayName": "执行起始时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -1087,7 +1115,7 @@
                 "ID": 12,
                 "Name": "end_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 12,
+                "OrderNo": 14,
                 "DisplayName": "执行结束时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -1096,7 +1124,7 @@
                 "ID": 13,
                 "Name": "duration",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 13,
+                "OrderNo": 15,
                 "DisplayName": "耗时",
                 "DataType": 2,
                 "DataLength": 20
@@ -1110,9 +1138,9 @@
           "Caption": "Task 信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 11,
-          "GraphDesc": "Left=573.50\r\nTop=1366.03",
+          "GraphDesc": "Left=573.50\r\nTop=1363.03",
           "MetaFields": {
-            "Count": 19,
+            "Count": 28,
             "items": [
               {
                 "ID": 1,
@@ -1270,10 +1298,92 @@
                 "DataLength": 255
               },
               {
+                "ID": 23,
+                "Name": "current_state",
+                "OrderNo": 17,
+                "DisplayName": "当前组件状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 20,
+                "Name": "start_state",
+                "OrderNo": 18,
+                "DisplayName": "执行时组件状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 21,
+                "Name": "fail_state",
+                "OrderNo": 19,
+                "DisplayName": "失败时组件状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 22,
+                "Name": "success_state",
+                "OrderNo": 20,
+                "DisplayName": "成功时组件状态",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 24,
+                "Name": "is_wait",
+                "OrderNo": 21,
+                "DisplayName": "是否阻塞执行",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 1
+              },
+              {
+                "ID": 25,
+                "Name": "is_block",
+                "OrderNo": 22,
+                "DisplayName": "是否阻塞自身",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 1
+              },
+              {
+                "ID": 26,
+                "Name": "priority",
+                "OrderNo": 23,
+                "DisplayName": "优先级",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 27,
+                "Name": "ram",
+                "OrderNo": 24,
+                "DisplayName": "内存大小",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 28,
+                "Name": "is_first_deploy",
+                "Memo": "是否所在节点第一次部署该服务",
+                "OrderNo": 25,
+                "DisplayName": "是否第一次部署",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 1
+              },
+              {
                 "ID": 11,
                 "Name": "start_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 17,
+                "OrderNo": 26,
                 "DisplayName": "执行起始时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -1282,7 +1392,7 @@
                 "ID": 12,
                 "Name": "end_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 18,
+                "OrderNo": 27,
                 "DisplayName": "执行结束时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -1291,7 +1401,7 @@
                 "ID": 13,
                 "Name": "duration",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 19,
+                "OrderNo": 28,
                 "DisplayName": "耗时",
                 "DataType": 2,
                 "DataLength": 20
@@ -1305,9 +1415,9 @@
           "Caption": "Step 信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 12,
-          "GraphDesc": "Left=856.19\r\nTop=1365.60",
+          "GraphDesc": "Left=856.19\r\nTop=1362.60",
           "MetaFields": {
-            "Count": 15,
+            "Count": 23,
             "items": [
               {
                 "ID": 1,
@@ -1352,22 +1462,22 @@
                 "DataLength": 20
               },
               {
-                "ID": 11,
-                "Name": "tag",
-                "OrderNo": 5,
-                "DisplayName": "同批任务唯一标识",
-                "DataType": 1,
-                "Not_Nullable": true,
-                "DataLength": 255
-              },
-              {
                 "ID": 7,
                 "Name": "cluster_id",
-                "OrderNo": 6,
+                "OrderNo": 5,
                 "DisplayName": "集群 ID",
                 "DataType": 2,
                 "Not_Nullable": true,
                 "DataLength": 20
+              },
+              {
+                "ID": 11,
+                "Name": "tag",
+                "OrderNo": 6,
+                "DisplayName": "同批任务唯一标识",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
               },
               {
                 "ID": 8,
@@ -1426,10 +1536,76 @@
                 "DataLength": 255
               },
               {
+                "ID": 16,
+                "Name": "jar",
+                "OrderNo": 13,
+                "DisplayName": "Jar 包名称",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 17,
+                "Name": "clazz",
+                "OrderNo": 14,
+                "DisplayName": "class 名称",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 18,
+                "Name": "shell",
+                "OrderNo": 15,
+                "DisplayName": "脚本名称",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 19,
+                "Name": "args",
+                "OrderNo": 16,
+                "DisplayName": "脚本参数",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 20,
+                "Name": "interactions",
+                "OrderNo": 17,
+                "DisplayName": "交互参数",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 21,
+                "Name": "exits",
+                "OrderNo": 18,
+                "DisplayName": "期望退出码",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 22,
+                "Name": "timeout",
+                "Memo": "单位：毫秒",
+                "OrderNo": 19,
+                "DisplayName": "脚本超时时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 23,
+                "Name": "sleep",
+                "Memo": "脚本执行后的等待时间，单位：毫秒",
+                "OrderNo": 20,
+                "DisplayName": "脚本睡眠时间",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
                 "ID": 11,
                 "Name": "start_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 13,
+                "OrderNo": 21,
                 "DisplayName": "执行起始时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -1438,7 +1614,7 @@
                 "ID": 12,
                 "Name": "end_time",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 14,
+                "OrderNo": 22,
                 "DisplayName": "执行结束时间",
                 "DataType": 2,
                 "DataLength": 20
@@ -1447,7 +1623,7 @@
                 "ID": 13,
                 "Name": "duration",
                 "Memo": "毫秒时间戳",
-                "OrderNo": 15,
+                "OrderNo": 23,
                 "DisplayName": "耗时",
                 "DataType": 2,
                 "DataLength": 20
@@ -2465,7 +2641,7 @@
           "Caption": "Job 工作日志信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 21,
-          "GraphDesc": "Left=857.44\r\nTop=1649.59",
+          "GraphDesc": "Left=1137.94\r\nTop=1364.09",
           "MetaFields": {
             "Count": 12,
             "items": [

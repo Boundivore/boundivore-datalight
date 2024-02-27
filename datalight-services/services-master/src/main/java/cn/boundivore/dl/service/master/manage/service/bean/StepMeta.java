@@ -18,12 +18,13 @@ package cn.boundivore.dl.service.master.manage.service.bean;
 
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.StepTypeEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description: StepMeta
@@ -31,8 +32,8 @@ import java.util.List;
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/8
  * Modification description:
- * Modified by: 
- * Modification time: 
+ * Modified by:
+ * Modification time:
  * Version: V1.0
  */
 @Data
@@ -47,6 +48,10 @@ import java.util.List;
 )
 public class StepMeta extends TimeMeta {
     private static final long serialVersionUID = -5826422108477860623L;
+
+    private TaskMeta taskMeta;
+
+    private Long id;
 
     private StepTypeEnum type;
 
@@ -67,10 +72,6 @@ public class StepMeta extends TimeMeta {
     private Long timeout;
 
     private Long sleep;
-
-    private TaskMeta taskMeta;
-
-    private Long id;
 
     private ExecStateEnum execStateEnum;
 
@@ -94,5 +95,46 @@ public class StepMeta extends TimeMeta {
         private static final long serialVersionUID = 3530275912314998697L;
 
         private boolean isSuccess;
+    }
+
+    /**
+     * Description: 获取字符串形式的参数列表，以英文逗号分割
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param list 参数列表
+     * @return 字符串形式的参数列表，以英文逗号分割
+     */
+    public static String list2Str(List<String> list) {
+        if (list == null) {
+            return null;
+        }
+        return String.join(",", list);
+    }
+
+    /**
+     * Description: 获取参数列表的字符串形式
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param str 参数列表的字符串形式，以英文逗号分割存储于数据库中
+     * @return List 列表
+     */
+    public static List<String> str2List(String str) {
+        if (str == null || str.isEmpty()) {
+            return null;
+        }
+        return Arrays.stream(str.split(","))
+                .collect(Collectors.toList());
     }
 }

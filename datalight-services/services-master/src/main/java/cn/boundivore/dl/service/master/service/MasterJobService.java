@@ -16,10 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.*;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
@@ -44,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -858,17 +854,6 @@ public class MasterJobService {
         AbstractClusterVo.ClusterVo currentClusterVo = this.masterClusterService.getClusterById(tDlJob.getClusterId()).getData();
         AbstractClusterVo.ClusterVo relativeClusterVo = this.masterClusterService.getClusterById(currentClusterVo.getRelativeClusterId()).getData();
 
-        // 获取服务状态
-        HashMap<String, TDlService> nameAndTDlServiceMap = this.masterServiceService.getTDlServiceList(tDlJob.getClusterId())
-                .stream()
-                .collect(Collectors.toMap(
-                                TDlService::getServiceName,
-                                Function.identity(),
-                                (existing, replacement) -> existing,
-                                HashMap::new
-                        )
-                );
-
         List<TDlStage> tDlStageList = this.tDlStageService.lambdaQuery()
                 .select()
                 .eq(TDlStage::getJobId, jobId)
@@ -890,7 +875,6 @@ public class MasterJobService {
                 tDlJob,
                 currentClusterVo,
                 relativeClusterVo,
-                nameAndTDlServiceMap,
                 tDlStageList,
                 tDlTaskList,
                 tDlStepList
@@ -917,17 +901,35 @@ public class MasterJobService {
                 execProgress
         );
 
+        JobCacheBean jobCacheBean = new JobCacheBean(jobMeta, plan);
 
-        return new JobCacheBean(
-                jobMeta,
-                plan
-        );
+        // 重新加载到内存
+        JobCacheUtil.getInstance().cache(jobCacheBean);
+
+        return jobCacheBean;
     }
 
+    /**
+     * Description: 从数据库中恢复 JobMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlJob            数据库 Job 实体
+     * @param currentClusterVo  当前集群信息
+     * @param relativeClusterVo 当前集群相关的集群信息
+     * @param tDlStageList      数据库 Stage 实体列表
+     * @param tDlTaskList       数据库 Task 实体列表
+     * @param tDlStepList       数据库 Step 实体列表
+     * @return JobMeta Job 元数据信息
+     */
     private JobMeta recoverJobMeta(TDlJob tDlJob,
                                    AbstractClusterVo.ClusterVo currentClusterVo,
                                    AbstractClusterVo.ClusterVo relativeClusterVo,
-                                   HashMap<String, TDlService> nameAndTDlServiceMap,
                                    List<TDlStage> tDlStageList,
                                    List<TDlTask> tDlTaskList,
                                    List<TDlStep> tDlStepList) {
@@ -962,7 +964,6 @@ public class MasterJobService {
                     final StageMeta stageMeta = this.recoverStageMeta(
                             jobMeta,
                             tDlStage,
-                            nameAndTDlServiceMap,
                             tDlTaskList,
                             tDlStepList
                     );
@@ -973,49 +974,156 @@ public class MasterJobService {
         return jobMeta;
     }
 
+    /**
+     * Description: 从数据库中恢复 StageMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobMeta     当前新建的 JobMeta
+     * @param tDlStage    当前数据库 Stage 实体
+     * @param tDlTaskList 数据库 Task 实体列表
+     * @param tDlStepList 数据库 Step 实体列表
+     * @return StageMeta Stage 元数据信息
+     */
     private StageMeta recoverStageMeta(JobMeta jobMeta,
                                        TDlStage tDlStage,
-                                       HashMap<String, TDlService> nameAndTDlServiceMap,
                                        List<TDlTask> tDlTaskList,
                                        List<TDlStep> tDlStepList) {
 
-        TDlService tDlService = nameAndTDlServiceMap.get(tDlStage.getServiceName());
-        StageMeta stageMeta = new StageMeta();
+        StageMeta stageMeta = new StageMeta()
+                .setJobMeta(jobMeta)
+                .setId(tDlStage.getId())
+                .setName(tDlStage.getStageName())
+                .setServiceName(tDlStage.getServiceName())
+                .setCurrentState(tDlStage.getServiceState())
+                .setPriority(tDlStage.getPriority())
+                .setStageResult(new StageMeta.StageResult(tDlStage.getStageState() == ExecStateEnum.OK))
+                .setStageStateEnum(tDlStage.getStageState())
+                .setTaskMetaMap(new LinkedHashMap<>());
+
+
         stageMeta.setStartTime(tDlStage.getStartTime());
         stageMeta.setEndTime(tDlStage.getEndTime());
 
-        stageMeta.setJobMeta(jobMeta);
-        stageMeta.setId(tDlStage.getId());
-        stageMeta.setName(tDlStage.getStageName());
-        stageMeta.setServiceName(tDlStage.getServiceName());
-        stageMeta.setCurrentState(tDlService.getServiceState());
-        stageMeta.setPriority(tDlService.getPriority());
-        stageMeta.setStageResult(new StageMeta.StageResult(tDlStage.getStageState() == ExecStateEnum.OK));
-        stageMeta.setStageStateEnum(tDlStage.getStageState());
-        stageMeta.setTaskMetaMap(new LinkedHashMap<>());
+        tDlTaskList.stream()
+                .filter(i -> i.getStageId() == stageMeta.getId())
+                .forEach(tDlTask -> {
+                            final TaskMeta taskMeta = this.recoverTaskMeta(
+                                    tDlTask,
+                                    stageMeta,
+                                    tDlStepList
+                            );
 
-        tDlTaskList.forEach(tDlTask -> {
-            final TaskMeta taskMeta = this.recoverTaskMeta(
-                    tDlTask,
-                    stageMeta,
-                    tDlStepList
-            );
-            stageMeta.getTaskMetaMap().put(taskMeta.getId(), taskMeta);
-        });
+                            stageMeta.getTaskMetaMap().put(taskMeta.getId(), taskMeta);
+                        }
+                );
 
         return stageMeta;
     }
 
+    /**
+     * Description: 从数据库中恢复 TaskMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlTask     当前数据库 Task 实体
+     * @param stageMeta   当前创建的 StageMeta 信息
+     * @param tDlStepList 数据库 Step 实体列表
+     * @return TaskMeta Task 元数据信息
+     */
     private TaskMeta recoverTaskMeta(TDlTask tDlTask,
                                      StageMeta stageMeta,
                                      List<TDlStep> tDlStepList) {
-        return null;
+
+        TaskMeta taskMeta = new TaskMeta()
+                .setStageMeta(stageMeta)
+                .setId(tDlTask.getId())
+                .setCurrentState(tDlTask.getCurrentState())
+                .setStartState(tDlTask.getStartState())
+                .setFailState(tDlTask.getFailState())
+                .setSuccessState(tDlTask.getSuccessState())
+                .setWait(tDlTask.getIsWait())
+                .setBlock(tDlTask.getIsBlock())
+                .setName(tDlTask.getTaskName())
+                .setPriority(tDlTask.getPriority())
+                .setHostname(tDlTask.getHostname())
+                .setNodeIp(tDlTask.getNodeIp())
+                .setNodeId(tDlTask.getNodeId())
+                .setRam(tDlTask.getRam())
+                .setServiceName(tDlTask.getServiceName())
+                .setComponentName(tDlTask.getComponentName())
+                .setFirstDeployInNode(tDlTask.getIsFirstDeploy())
+                .setTaskStateEnum(tDlTask.getTaskState())
+                .setActionTypeEnum(tDlTask.getActionType())
+                .setStepMetaMap(new LinkedHashMap<>());
+
+
+        taskMeta.setStartTime(tDlTask.getStartTime());
+        taskMeta.setEndTime(tDlTask.getEndTime());
+
+
+        tDlStepList.stream()
+                .filter(i -> i.getTaskId() == taskMeta.getId())
+                .forEach(tDlStep -> {
+                            final StepMeta stepMeta = this.recoverStepMeta(
+                                    tDlStep,
+                                    taskMeta
+                            );
+
+                            taskMeta.getStepMetaMap().put(stepMeta.getId(), stepMeta);
+                        }
+                );
+
+        return taskMeta;
     }
 
 
-    private TaskMeta recoverStepMeta(TDlStep tDlStep,
+    /**
+     * Description: 从数据库中恢复 StepMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlStep  数据库 Step 实体列表
+     * @param taskMeta 新建的 TaskMeta 信息
+     * @return StepMeta Step 元数据信息
+     */
+    private StepMeta recoverStepMeta(TDlStep tDlStep,
                                      TaskMeta taskMeta) {
-        return null;
+
+        StepMeta stepMeta = new StepMeta()
+                .setTaskMeta(taskMeta)
+                .setId(tDlStep.getId())
+                .setType(tDlStep.getStepType())
+                .setName(tDlStep.getStepName())
+                .setJar(tDlStep.getJar())
+                .setClazz(tDlStep.getClazz())
+                .setShell(tDlStep.getShell())
+                .setArgs(StepMeta.str2List(tDlStep.getArgs()))
+                .setInteractions(StepMeta.str2List(tDlStep.getInteractions()))
+                .setExits(Integer.valueOf(tDlStep.getExits()))
+                .setTimeout(tDlStep.getTimeout())
+                .setSleep(tDlStep.getSleep())
+                .setExecStateEnum(tDlStep.getStepState());
+
+        taskMeta.setStartTime(stepMeta.getStartTime());
+        taskMeta.setEndTime(stepMeta.getEndTime());
+
+        return stepMeta;
     }
 
 }

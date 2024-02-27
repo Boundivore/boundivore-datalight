@@ -17,9 +17,7 @@
 package cn.boundivore.dl.service.master.manage.service.job;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.MasterWorkerEnum;
-import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.*;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
@@ -45,6 +43,8 @@ import cn.boundivore.dl.service.master.resolver.ResolverYamlDirectory;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlDirectory;
 import cn.boundivore.dl.service.master.service.*;
 import cn.hutool.core.lang.Assert;
+import com.baomidou.mybatisplus.annotation.TableField;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -297,12 +297,15 @@ public class JobService {
             tDlStage.setVersion(0L).setId(stageMeta.getId());
         }
 
-        tDlStage.setTag(jobMeta.getTag())
-                .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+
+        tDlStage.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+                .setTag(jobMeta.getTag())
                 .setJobId(jobMeta.getId())
                 .setStageName(stageMeta.getName())
                 .setStageState(stageMeta.getStageStateEnum())
                 .setServiceName(stageMeta.getServiceName())
+                .setServiceState(stageMeta.getCurrentState())
+                .setPriority(stageMeta.getPriority())
                 .setStartTime(stageMeta.getStartTime())
                 .setEndTime(stageMeta.getEndTime())
                 .setDuration(stageMeta.getDuration());
@@ -359,8 +362,8 @@ public class JobService {
             tDlTask.setVersion(0L).setId(taskMeta.getId());
         }
 
-        tDlTask.setTag(jobMeta.getTag())
-                .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+        tDlTask.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+                .setTag(jobMeta.getTag())
                 .setJobId(jobMeta.getId())
                 .setStageId(stageMeta.getId())
                 .setNodeId(taskMeta.getNodeId())
@@ -371,6 +374,15 @@ public class JobService {
                 .setActionType(taskMeta.getActionTypeEnum())
                 .setServiceName(taskMeta.getServiceName())
                 .setComponentName(taskMeta.getComponentName())
+                .setCurrentState(taskMeta.getCurrentState())
+                .setStartState(taskMeta.getStartState())
+                .setFailState(taskMeta.getFailState())
+                .setSuccessState(taskMeta.getSuccessState())
+                .setIsWait(taskMeta.isWait())
+                .setIsBlock(taskMeta.isBlock())
+                .setPriority(taskMeta.getPriority())
+                .setRam(taskMeta.getRam())
+                .setIsFirstDeploy(taskMeta.isFirstDeployInNode())
                 .setStartTime(taskMeta.getStartTime())
                 .setEndTime(taskMeta.getEndTime())
                 .setDuration(taskMeta.getDuration());
@@ -428,14 +440,22 @@ public class JobService {
             tDlStep.setVersion(0L).setId(stepMeta.getId());
         }
 
-        tDlStep.setTag(jobMeta.getTag())
-                .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+        tDlStep.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+                .setTag(jobMeta.getTag())
                 .setJobId(jobMeta.getId())
                 .setStageId(stageMeta.getId())
                 .setTaskId(taskMeta.getId())
                 .setStepName(stepMeta.getName())
                 .setStepState(stepMeta.getExecStateEnum())
                 .setStepType(stepMeta.getType())
+                .setJar(stepMeta.getJar())
+                .setClazz(stepMeta.getClazz())
+                .setShell(stepMeta.getShell())
+                .setArgs(StepMeta.list2Str(stepMeta.getArgs()))
+                .setInteractions(StepMeta.list2Str(stepMeta.getInteractions()))
+                .setExits(String.valueOf(stepMeta.getExits()))
+                .setTimeout(stepMeta.getTimeout())
+                .setSleep(stepMeta.getSleep())
                 .setStartTime(stepMeta.getStartTime())
                 .setEndTime(stepMeta.getEndTime())
                 .setDuration(stepMeta.getDuration());

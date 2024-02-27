@@ -62,8 +62,8 @@ public class JobMeta extends TimeMeta {
     @AllArgsConstructor
     @NoArgsConstructor
     public final static class JobResult implements Serializable {
-        private static final long serialVersionUID = 2211348172168285854L
-                ;
+        private static final long serialVersionUID = 2211348172168285854L;
+
         private boolean isSuccess;
     }
 }

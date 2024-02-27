@@ -30,7 +30,7 @@ import java.util.Map;
  * Version: V1.0
  */
 public class Constants {
-    public static final int CACHE_CAPACITY = 5;
+    public static final int CACHE_CAPACITY = 7;
     //HeartBeat timeout in mills
     // 如有必要，可通过配置文件或接口灵活控制
     public static final long HEART_BEAT_TIMEOUT = 60 * 1000L;
