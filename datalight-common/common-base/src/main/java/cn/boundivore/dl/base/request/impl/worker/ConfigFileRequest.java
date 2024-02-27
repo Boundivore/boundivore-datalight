@@ -44,6 +44,8 @@ import lombok.experimental.Accessors;
 @Schema(name = "ConfigFileRequest", description = "ConfigFileRequest: 修改配置文件请求体")
 public class ConfigFileRequest implements IRequest {
 
+    private static final long serialVersionUID = 8083098193378451754L;
+
     @Schema(name = "Path", title = "配置文件路径", required = true)
     @JsonProperty("Path")
     private String path;

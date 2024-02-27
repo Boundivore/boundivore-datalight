@@ -32,7 +32,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Modification time:
  * Version: V1.0
  */
-public interface IStage extends Callable<StageMeta> {
+public interface IStage extends Callable<StageMeta>{
 
     /**
      * Description: 向当前 Stage 中添加 Task

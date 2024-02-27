@@ -40,6 +40,8 @@ public abstract class AbstractInitProcedureVo {
     )
     public static class InitProcedureVo implements IVo {
 
+        private static final long serialVersionUID = -5492093532192483710L;
+
         @Schema(name = "ProcedureId", title = "步骤 ID", required = true)
         @JsonProperty(value = "ProcedureId", required = true)
         @NotNull
@@ -86,6 +88,8 @@ public abstract class AbstractInitProcedureVo {
             description = "NodeInfoListVo 节点信息列表响应体"
     )
     public static class NodeInfoListVo implements IVo {
+        private static final long serialVersionUID = 578368111091866818L;
+
         @Schema(name = "NodeId", title = "节点 Id", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull

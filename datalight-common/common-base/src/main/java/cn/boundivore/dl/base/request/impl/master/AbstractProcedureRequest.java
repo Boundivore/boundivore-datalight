@@ -49,6 +49,8 @@ public abstract class AbstractProcedureRequest {
     )
     public static class PersistProcedureRequest implements IRequest {
 
+        private static final long serialVersionUID = 8214366771831874644L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -83,6 +85,8 @@ public abstract class AbstractProcedureRequest {
             description = "AbstractProcedureRequest.NodeInfoListRequest 操作的节点信息列表请求体"
     )
     public static class NodeInfoListRequest implements IRequest {
+        private static final long serialVersionUID = -3465666743170750316L;
+
         @Schema(name = "NodeId", title = "节点 Id", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull

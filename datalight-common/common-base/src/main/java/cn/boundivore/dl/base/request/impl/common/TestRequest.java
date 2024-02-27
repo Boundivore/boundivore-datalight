@@ -40,6 +40,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Schema(name = "TestRequest: 测试")
 public class TestRequest implements IRequest {
+    private static final long serialVersionUID = -8299071133808288071L;
 
     @Schema(name = "Name", title = "Task 名称", required = true)
     @JsonProperty("Name")

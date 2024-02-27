@@ -42,6 +42,8 @@ import lombok.experimental.Accessors;
 @Schema(name = "ExecRequest", description = "ExecRequest: 执行脚本请求体")
 @NoArgsConstructor
 public class ExecRequest implements IRequest {
+    private static final long serialVersionUID = 8551756344307586011L;
+
     @Schema(name = "ScriptType", title = "执行操作的类型", required = true)
     @JsonProperty(value = "ScriptType", required = true)
     private ExecTypeEnum execTypeEnum;

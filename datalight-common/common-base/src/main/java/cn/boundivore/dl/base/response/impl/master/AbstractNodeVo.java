@@ -42,6 +42,8 @@ public abstract class AbstractNodeVo {
     )
     public static class NodeVo implements IVo {
 
+        private static final long serialVersionUID = 6644089617550259009L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -63,6 +65,8 @@ public abstract class AbstractNodeVo {
             description = "AbstractNodeVo.NodeDetailVo NodeDetailVo 节点信息详情"
     )
     public static class NodeDetailVo implements IVo {
+
+        private static final long serialVersionUID = -6327460533692159906L;
 
         @Schema(name = "NodeId", title = "节点主键 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
@@ -121,6 +125,8 @@ public abstract class AbstractNodeVo {
     )
     public static class NodeWithComponentListVo implements IVo {
 
+        private static final long serialVersionUID = 3235981754623810962L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -142,6 +148,8 @@ public abstract class AbstractNodeVo {
             description = "AbstractNodeVo.NodeWithComponentVo 节点信息详情与组件分布信息"
     )
     public static class NodeWithComponentVo implements IVo {
+
+        private static final long serialVersionUID = 3480044359965267635L;
 
         @Schema(name = "NodeDetail", title = "节点信息详情", required = true)
         @JsonProperty(value = "NodeDetail", required = true)

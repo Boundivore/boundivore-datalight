@@ -45,6 +45,8 @@ public abstract class AbstractClusterVo {
             description = "AbstractClusterVo.ClusterListVo 集群信息列表"
     )
     public static class ClusterListVo implements IVo {
+        private static final long serialVersionUID = -2237685706202922155L;
+
         @Schema(name = "ClusterList", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterList", required = true)
         @NotNull
@@ -61,6 +63,8 @@ public abstract class AbstractClusterVo {
             description = "AbstractClusterVo.ClusterVo 集群信息"
     )
     public static class ClusterVo implements IVo {
+
+        private static final long serialVersionUID = 2391231942097797211L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)

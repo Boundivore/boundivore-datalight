@@ -45,6 +45,8 @@ public abstract class AbstractJobVo {
     )
     public static class JobIdVo implements IVo {
 
+        private static final long serialVersionUID = -1459649941804997037L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -67,6 +69,8 @@ public abstract class AbstractJobVo {
             description = "AbstractJobVo.JobProgressVo Job 计划进度信息"
     )
     public static class JobProgressVo implements IVo {
+
+        private static final long serialVersionUID = -4747551249058300755L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -99,6 +103,8 @@ public abstract class AbstractJobVo {
             description = "AbstractJobVo.JobPlanProgressVo Job 计划进度信息"
     )
     public static class JobPlanProgressVo implements IVo {
+
+        private static final long serialVersionUID = -2433441598608608057L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -147,6 +153,8 @@ public abstract class AbstractJobVo {
     )
     public static class JobExecProgressVo implements IVo {
 
+        private static final long serialVersionUID = 1266764108606715474L;
+
         @Schema(name = "JobExecStateEnum", title = "当前 Job 执行状态", required = true)
         @JsonProperty(value = "JobExecStateEnum", required = true)
         @NotNull
@@ -194,6 +202,8 @@ public abstract class AbstractJobVo {
     )
     public static class ExecProgressPerNodeVo implements IVo {
 
+        private static final long serialVersionUID = 5072221687843686347L;
+
         @Schema(name = "NodeId", title = "ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull
@@ -240,6 +250,8 @@ public abstract class AbstractJobVo {
     )
     public static class ExecProgressStepVo implements IVo {
 
+        private static final long serialVersionUID = -5999126810762859704L;
+
         @Schema(name = "StepType", title = "Step 类型", required = true)
         @JsonProperty(value = "StepType", required = true)
         @NotNull
@@ -272,6 +284,8 @@ public abstract class AbstractJobVo {
     )
     public static class JobLogListVo implements IVo {
 
+        private static final long serialVersionUID = -1628428755012619176L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -298,6 +312,8 @@ public abstract class AbstractJobVo {
             description = "AbstractJobVo.JobLogVo Job 的日志信息"
     )
     public static class JobLogVo implements IVo {
+
+        private static final long serialVersionUID = 7470475610362473548L;
 
         @Schema(name = "JobId", title = "作业 ID", required = true)
         @JsonProperty(value = "JobId", required = true)

@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
@@ -45,6 +46,7 @@ import java.util.LinkedHashMap;
         }
 )
 public class TaskMeta extends TimeMeta {
+    private static final long serialVersionUID = -1866566917209637695L;
 
     private StageMeta stageMeta;
 
@@ -111,7 +113,9 @@ public class TaskMeta extends TimeMeta {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public final static class TaskResult {
+    public final static class TaskResult implements Serializable {
+        private static final long serialVersionUID = -2855289955227614864L;
+
         private boolean isSuccess;
     }
 

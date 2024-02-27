@@ -53,6 +53,8 @@ public abstract class AbstractUserRequest {
     )
     public static class UserAuthRequest implements IRequest {
 
+        private static final long serialVersionUID = -5419230796023882560L;
+
         @Schema(name = "IdentityType", title = "认证类型", required = true, example = "枚举：EMAIL, PHONE, USERNAME")
         @JsonProperty(value = "IdentityType", required = true)
         @NotNull
@@ -81,6 +83,8 @@ public abstract class AbstractUserRequest {
     )
     public static class UserBaseRequest implements IRequest {
 
+        private static final long serialVersionUID = -6668480729370264603L;
+
         @Schema(name = "Nickname", title = "用户昵称", required = true)
         @JsonProperty(value = "Nickname", required = true)
         private String nickname;
@@ -104,6 +108,8 @@ public abstract class AbstractUserRequest {
     )
     public static class UserRegisterRequest implements IRequest {
 
+        private static final long serialVersionUID = 5637268095666465945L;
+
         @Schema(name = "UserAuth", title = "平台用户登录、认证", required = true)
         @JsonProperty(value = "UserAuth", required = true)
         @Valid
@@ -125,6 +131,8 @@ public abstract class AbstractUserRequest {
             description = "AbstractUserRequest.UserChangePasswordRequest 用户修改密码 请求体"
     )
     public static class UserChangePasswordRequest implements IRequest {
+
+        private static final long serialVersionUID = -6472232143086042947L;
 
         @Schema(name = "Principal", title = "认证主体", required = true)
         @JsonProperty(value = "Principal", required = true)

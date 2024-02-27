@@ -44,6 +44,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class NodeJobIdVo implements IVo {
 
+        private static final long serialVersionUID = 1223510016587568711L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -65,6 +67,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.NodeJobProgressVo NodeJob 计划进度信息"
     )
     public static class NodeJobProgressVo implements IVo {
+
+        private static final long serialVersionUID = -2443725614249055263L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -97,6 +101,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.NodeJobPlanProgressVo NodeJob 计划进度信息"
     )
     public static class NodeJobPlanProgressVo implements IVo {
+
+        private static final long serialVersionUID = -2258629793417500070L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -145,6 +151,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class NodeJobExecProgressVo implements IVo {
 
+        private static final long serialVersionUID = 2127824439592467970L;
+
         @Schema(name = "JobExecStateEnum", title = "当前 Job 执行状态", required = true)
         @JsonProperty(value = "JobExecStateEnum", required = true)
         @NotNull
@@ -191,6 +199,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.ExecProgressPerNodeVo NodeJob 中每个节点的执行进度信息"
     )
     public static class ExecProgressPerNodeVo implements IVo {
+        private static final long serialVersionUID = -5499377908636936099L;
+
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull
@@ -247,6 +257,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class ExecProgressStepVo implements IVo {
 
+        private static final long serialVersionUID = 5636305511788842781L;
+
         @Schema(name = "NodeStepType", title = "节点 Step 类型", required = true)
         @JsonProperty(value = "NodeStepType", required = true)
         @NotNull
@@ -280,6 +292,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class AllNodeJobTransferProgressVo implements IVo {
 
+        private static final long serialVersionUID = 8696459314610698552L;
+
         @Schema(name = "ClusterId", title = "集群 Id", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -308,6 +322,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class NodeJobTransferProgressVo implements IVo {
 
+
+        private static final long serialVersionUID = -3774747664383635117L;
 
         @Schema(name = "NodeTaskId", title = "节点任务 ID", required = true)
         @JsonProperty(value = "NodeTaskId", required = true)
@@ -361,6 +377,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.FileBytesProgressVo NodeJob 当前正在传输的文件字节进度信息"
     )
     public static class FileBytesProgressVo implements IVo {
+        private static final long serialVersionUID = 3325464560292649168L;
+
         @Schema(name = "TotalBytes", title = "所有文件总字节数", required = true)
         @JsonProperty(value = "TotalBytes", required = true)
         @NotNull
@@ -386,6 +404,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.FileCountProgressVo NodeJob 当前正在传输的文件个数进度信息"
     )
     public static class FileCountProgressVo implements IVo {
+        private static final long serialVersionUID = -9008580940406093020L;
+
         @Schema(name = "TotalFileCount", title = "所有文件个数", required = true)
         @JsonProperty(value = "TotalFileCount", required = true)
         @NotNull
@@ -411,6 +431,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.CurrentFileProgressVo NodeJob 当前正在传输的文件进度信息"
     )
     public static class CurrentFileProgressVo implements IVo {
+        private static final long serialVersionUID = -2249015296321251070L;
+
         @Schema(name = "CurrentFilename", title = "当前正在传输的文件", required = true)
         @JsonProperty(value = "CurrentFilename", required = true)
         @NotNull
@@ -447,6 +469,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class NodeJobTransferProgressDetailVo implements IVo {
 
+        private static final long serialVersionUID = 3204399358667728155L;
+
         @Schema(name = "ClusterId", title = "集群 Id", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -479,6 +503,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.FileProgressVo NodeJob 单个文件分发进度"
     )
     public static class FileProgressVo implements IVo {
+
+        private static final long serialVersionUID = 9183408650338454419L;
 
         @Schema(name = "FileDir", title = "文件目录", required = true)
         @JsonProperty(value = "FileDir", required = true)
@@ -521,6 +547,8 @@ public abstract class AbstractNodeJobVo {
     )
     public static class NodeJobLogListVo implements IVo {
 
+        private static final long serialVersionUID = -4599511172293991016L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -547,6 +575,8 @@ public abstract class AbstractNodeJobVo {
             description = "AbstractNodeJobVo.NodeJobLogVo NodeJob 的日志信息"
     )
     public static class NodeJobLogVo implements IVo {
+
+        private static final long serialVersionUID = -2965487754012576891L;
 
         @Schema(name = "NodeJobId", title = "节点作业 ID", required = true)
         @JsonProperty(value = "NodeJobId", required = true)

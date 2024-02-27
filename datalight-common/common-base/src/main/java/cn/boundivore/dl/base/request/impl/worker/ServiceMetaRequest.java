@@ -46,6 +46,8 @@ import java.util.List;
 @Schema(name = "ServiceMetaRequest", description = "ServiceMetaRequest: Service 服务元数据信息")
 public class ServiceMetaRequest implements IRequest {
 
+    private static final long serialVersionUID = 765365166477094549L;
+
     @Schema(name = "NodeId", title = "Worker 当前节点 ID", required = true)
     @JsonProperty("NodeId")
     @NotNull

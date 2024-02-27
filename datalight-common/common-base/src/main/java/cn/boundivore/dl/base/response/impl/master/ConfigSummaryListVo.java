@@ -47,6 +47,8 @@ import java.util.List;
 )
 public class ConfigSummaryListVo implements IVo {
 
+    private static final long serialVersionUID = 2763409103951580553L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     private Long clusterId;
@@ -74,6 +76,8 @@ public class ConfigSummaryListVo implements IVo {
             description = "ConfigPreVo.ConfigSummaryVo 当前配置信息概览"
     )
     public static class ConfigSummaryVo implements IVo {
+
+        private static final long serialVersionUID = 2091508959559431601L;
 
         @Schema(name = "FileName", title = "配置文件名称", required = true)
         @JsonProperty(value = "FileName", required = true)

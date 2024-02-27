@@ -44,6 +44,8 @@ import lombok.experimental.Accessors;
 @Schema(name = "MasterMetaRequest", description = "MasterMetaRequest: Master 进程的元数据信息")
 public class MasterMetaRequest implements IRequest {
 
+    private static final long serialVersionUID = -8447407582926000714L;
+
     @Schema(name = "Ip", title = "Master 所在节点的 IP 地址", required = true)
     @JsonProperty("Ip")
     private String ip;

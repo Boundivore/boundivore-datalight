@@ -45,6 +45,8 @@ public abstract class AbstractNodeInitVo {
     )
     public static class NodeInitVo implements IVo {
 
+        private static final long serialVersionUID = -4334847763259971644L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -70,6 +72,8 @@ public abstract class AbstractNodeInitVo {
             description = "AbstractNodeInitVo.NodeInitDetailVo 节点初始化信息详情"
     )
     public static class NodeInitDetailVo implements IVo {
+
+        private static final long serialVersionUID = 8383735282652908959L;
 
         @Schema(name = "NodeId", title = "节点初始化主键 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)

@@ -41,6 +41,8 @@ public abstract class AbstractDlcVo {
     )
     public final static class DlcServiceVo implements IVo {
 
+        private static final long serialVersionUID = -4209390642210761844L;
+
         @Schema(name = "DlcVersion", title = "服务组件包版本", required = true)
         @JsonProperty(value = "DlcVersion", required = true)
         private String dlcVersion;
@@ -59,6 +61,8 @@ public abstract class AbstractDlcVo {
             description = "AbstractDlcVo.DlcServiceSummaryVo 服务信息"
     )
     public final static class DlcServiceSummaryVo implements IVo {
+
+        private static final long serialVersionUID = -8082344712648991371L;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -103,6 +107,8 @@ public abstract class AbstractDlcVo {
     )
     public final static class DlcComponentVo implements IVo {
 
+        private static final long serialVersionUID = -8999516993419828930L;
+
         @Schema(name = "DlcVersion", title = "服务组件包版本", required = true)
         @JsonProperty(value = "DlcVersion", required = true)
         private String dlcVersion;
@@ -122,6 +128,8 @@ public abstract class AbstractDlcVo {
             description = "AbstractDlcVo.DlcServiceComponentSummaryVo 服务组件信息"
     )
     public final static class DlcServiceComponentSummaryVo implements IVo {
+
+        private static final long serialVersionUID = 878031474807382019L;
 
         @Schema(name = "DlcServiceSummary", title = "服务名称", required = true)
         @JsonProperty(value = "DlcServiceSummary", required = true)
@@ -143,6 +151,8 @@ public abstract class AbstractDlcVo {
             description = "AbstractDlcVo.DlcComponentSummaryVo 组件信息"
     )
     public final static class DlcComponentSummaryVo implements IVo {
+
+        private static final long serialVersionUID = -1377752974885297412L;
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)

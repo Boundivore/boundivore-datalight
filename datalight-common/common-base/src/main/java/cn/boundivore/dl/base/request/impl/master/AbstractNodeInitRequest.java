@@ -48,6 +48,8 @@ public abstract class AbstractNodeInitRequest {
     )
     public static class NodeInitInfoListRequest implements IRequest {
 
+        private static final long serialVersionUID = 3136149892190661647L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull

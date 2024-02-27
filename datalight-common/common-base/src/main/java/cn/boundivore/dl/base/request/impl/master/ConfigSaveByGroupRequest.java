@@ -49,6 +49,8 @@ import java.util.List;
 public class ConfigSaveByGroupRequest implements IRequest {
 
 
+    private static final long serialVersionUID = 6614228700362676592L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
@@ -81,6 +83,8 @@ public class ConfigSaveByGroupRequest implements IRequest {
             description = "ConfigSaveByGroupRequest.ConfigGroupRequest 当前配置信息"
     )
     public static class ConfigGroupRequest implements IRequest {
+
+        private static final long serialVersionUID = -5397003452304307031L;
 
         @Schema(name = "Sha256", title = "配置文件唯一信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)
@@ -118,6 +122,8 @@ public class ConfigSaveByGroupRequest implements IRequest {
             description = "ConfigSaveByGroupRequest.ConfigNodeRequest 节点信息"
     )
     public static class ConfigNodeRequest implements IRequest {
+
+        private static final long serialVersionUID = 7081759548983908721L;
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)

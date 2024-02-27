@@ -38,6 +38,8 @@ import lombok.NoArgsConstructor;
 )
 public class UserInfoVo implements IVo {
 
+    private static final long serialVersionUID = -1090882634638620004L;
+
     @Schema(name = "UserId", title = "用户 ID", required = true)
     @JsonProperty(value = "UserId", required = true)
     private Long userId;

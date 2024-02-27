@@ -25,10 +25,7 @@ import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.service.master.converter.IStepConverter;
 import cn.boundivore.dl.service.master.handler.RemoteInvokeGrafanaHandler;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
-import cn.boundivore.dl.service.master.manage.service.bean.JobMeta;
-import cn.boundivore.dl.service.master.manage.service.bean.StageMeta;
-import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
-import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
+import cn.boundivore.dl.service.master.manage.service.bean.*;
 import cn.boundivore.dl.service.master.manage.service.stage.IStage;
 import cn.boundivore.dl.service.master.manage.service.stage.impl.Stage;
 import cn.boundivore.dl.service.master.manage.service.task.ITask;
@@ -107,12 +104,19 @@ public class Job extends Thread {
             this.plan(this.jobMeta);
 
             this.jobService.updateJobDatabase(this.jobMeta);
-            JobCache.getInstance().cache(this);
+
+            // 缓存 Job 相关信息
+            JobCacheUtil.getInstance().cache(
+                    new JobCacheBean(
+                            this.jobMeta,
+                            this.plan
+                    )
+            );
 
             this.plan.initExecTotal(this.jobMeta);
             this.isInit = true;
         } catch (Exception e) {
-            JobCache.getInstance().releaseActiveJobId();
+            JobCacheUtil.getInstance().releaseActiveJobId();
             log.error(ExceptionUtil.stacktraceToString(e));
             throw new BException(
                     String.format(
@@ -138,11 +142,11 @@ public class Job extends Thread {
         long jobMetaId = IdWorker.getId();
 
         Assert.isTrue(
-                JobCache.getInstance().setActiveJobId(jobMetaId),
+                JobCacheUtil.getInstance().setActiveJobId(jobMetaId),
                 () -> new BException(
                         String.format(
                                 "安全起见，不允许同时启动多个作业对集群服务组件进行变更，已有其他活跃的任务正在运行: %s",
-                                JobCache.getInstance().getActiveJobId()
+                                JobCacheUtil.getInstance().getActiveJobId()
                         )
                 )
         );
@@ -151,12 +155,12 @@ public class Job extends Thread {
                 .setTag(IdUtil.fastSimpleUUID())
                 .setId(jobMetaId)
                 .setName(intention.getActionTypeEnum().name())
-                .setStageMetaMap(new LinkedHashMap<>())
                 .setExecStateEnum(ExecStateEnum.SUSPEND)
                 .setJobResult(new JobMeta.JobResult(false))
                 // 当前集群以及所依赖的集群信息（如果为 MIXED 集群，则所依赖集群信息为 null）
                 .setClusterMeta(intention.getClusterMeta())
-                .setActionTypeEnum(intention.getActionTypeEnum());
+                .setActionTypeEnum(intention.getActionTypeEnum())
+                .setStageMetaMap(new LinkedHashMap<>());
 
         intention.getServiceList()
                 .forEach(i -> {
@@ -560,7 +564,7 @@ public class Job extends Thread {
         try {
             this.execute();
         } finally {
-            JobCache.getInstance().releaseActiveJobId();
+            JobCacheUtil.getInstance().releaseActiveJobId();
         }
     }
 

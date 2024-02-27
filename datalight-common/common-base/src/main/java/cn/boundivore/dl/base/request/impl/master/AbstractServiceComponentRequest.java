@@ -50,7 +50,9 @@ public abstract class AbstractServiceComponentRequest {
             name = "AbstractServiceComponentRequest.ComponentIdListRequest",
             description = "AbstractServiceComponentRequest.ComponentIdListRequest: 组件 ID 列表请求体"
     )
-    public final static class ComponentIdListRequest {
+    public final static class ComponentIdListRequest implements IRequest{
+
+        private static final long serialVersionUID = -3758052660074676120L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -78,6 +80,8 @@ public abstract class AbstractServiceComponentRequest {
     )
     public final static class ComponentIdRequest implements IRequest {
 
+        private static final long serialVersionUID = 6871733675492103531L;
+
         @Schema(name = "ComponentId", title = "组件 ID", required = true)
         @JsonProperty(value = "ComponentId", required = true)
         @NotNull
@@ -95,6 +99,8 @@ public abstract class AbstractServiceComponentRequest {
             description = "AbstractServiceComponentRequest.ServiceSelectRequest 部署前，选择服务(需传递全部服务名称，以及服务选中或未选中状态) 请求体"
     )
     public static class ServiceSelectRequest implements IRequest {
+
+        private static final long serialVersionUID = 4338825806579322642L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -118,6 +124,8 @@ public abstract class AbstractServiceComponentRequest {
     )
     public static class ServiceRequest implements IRequest {
 
+        private static final long serialVersionUID = -2841145628841691164L;
+
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
         @NotNull
@@ -140,6 +148,8 @@ public abstract class AbstractServiceComponentRequest {
     )
     public static class ComponentSelectRequest implements IRequest {
 
+        private static final long serialVersionUID = -5566602790833948797L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -161,6 +171,8 @@ public abstract class AbstractServiceComponentRequest {
             description = "AbstractServiceComponentRequest.ComponentRequest组件信息 请求体"
     )
     public static class ComponentRequest implements IRequest {
+
+        private static final long serialVersionUID = -4647990920130441597L;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -193,6 +205,8 @@ public abstract class AbstractServiceComponentRequest {
             description = "AbstractServiceComponentRequest.更新组件重启标记 请求体"
     )
     public static class UpdateNeedRestartRequest implements IRequest {
+
+        private static final long serialVersionUID = 321314736276175417L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)

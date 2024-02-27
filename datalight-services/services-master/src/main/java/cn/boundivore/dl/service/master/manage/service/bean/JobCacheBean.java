@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.manage.service.bean;
 
+import cn.boundivore.dl.service.master.manage.service.job.Plan;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,29 +24,22 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * Description: 记录异步任务执行的起始时间，结束时间，耗时
+ * Description: JobCacheBean
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/6/8
+ * Creation time: 2024/2/26
  * Modification description:
- * Modified by: 
- * Modification time: 
+ * Modified by:
+ * Modification time:
  * Version: V1.0
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TimeMeta implements Serializable {
-    private static final long serialVersionUID = 8113149905924187253L;
+public class JobCacheBean implements Serializable {
+    private static final long serialVersionUID = -4367173687251228644L;
 
-    protected long startTime;
+    private JobMeta jobMeta;
 
-    protected long endTime;
-
-    protected long duration;
-
-    public long setEndTime(long endTime) {
-        this.endTime = endTime;
-        return this.duration = this.endTime - this.startTime;
-    }
+    private Plan plan;
 }

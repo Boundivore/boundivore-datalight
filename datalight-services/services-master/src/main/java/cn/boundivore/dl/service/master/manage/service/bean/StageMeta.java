@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
@@ -44,6 +45,8 @@ import java.util.LinkedHashMap;
         }
 )
 public class StageMeta extends TimeMeta {
+    private static final long serialVersionUID = -3531007069256178385L;
+
     private JobMeta jobMeta;
 
     private long id;
@@ -59,10 +62,10 @@ public class StageMeta extends TimeMeta {
 
     private StageResult stageResult;
 
+    private ExecStateEnum stageStateEnum;
+
     //<TaskId, TaskMeta>
     private LinkedHashMap<Long, TaskMeta> taskMetaMap;
-
-    private ExecStateEnum stageStateEnum;
 
     /**
      * Description: 异步 Stage 执行结果信息
@@ -77,7 +80,9 @@ public class StageMeta extends TimeMeta {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public final static class StageResult {
+    public final static class StageResult implements Serializable {
+        private static final long serialVersionUID = -7532545325216862478L;
+
         private boolean isSuccess;
     }
 

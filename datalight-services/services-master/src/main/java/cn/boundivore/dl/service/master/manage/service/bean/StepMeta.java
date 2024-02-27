@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -45,6 +46,8 @@ import java.util.List;
         }
 )
 public class StepMeta extends TimeMeta {
+    private static final long serialVersionUID = -5826422108477860623L;
+
     private StepTypeEnum type;
 
     private String name;
@@ -87,7 +90,9 @@ public class StepMeta extends TimeMeta {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public final static class StepResult {
+    public final static class StepResult implements Serializable {
+        private static final long serialVersionUID = 3530275912314998697L;
+
         private boolean isSuccess;
     }
 }

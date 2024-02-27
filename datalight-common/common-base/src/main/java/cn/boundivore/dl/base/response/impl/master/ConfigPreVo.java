@@ -50,6 +50,8 @@ import java.util.List;
 )
 public class ConfigPreVo implements IVo {
 
+    private static final long serialVersionUID = -3118390184994426808L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     private Long clusterId;
@@ -69,6 +71,8 @@ public class ConfigPreVo implements IVo {
             description = "ConfigPreVo.ConfigPreServiceVo 当前服务"
     )
     public static class ConfigPreServiceVo implements IVo {
+
+        private static final long serialVersionUID = -1050111147491176680L;
 
         @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -90,6 +94,8 @@ public class ConfigPreVo implements IVo {
     )
     public static class PlaceholderInfoVo implements IVo {
 
+        private static final long serialVersionUID = 3564216032657643548L;
+
         @Schema(name = "TemplatedFilePath", title = "模板配置文件路径", required = true)
         @JsonProperty(value = "TemplatedFilePath", required = true)
         private String templatedFilePath;
@@ -109,6 +115,8 @@ public class ConfigPreVo implements IVo {
             description = "ConfigPreVo.ConfigPrePropertyVo 预配置属性信息"
     )
     public static class ConfigPrePropertyVo implements IVo {
+
+        private static final long serialVersionUID = -1662751294179480208L;
 
         @Schema(name = "Placeholder", title = "占位符", required = true)
         @JsonProperty(value = "Placeholder", required = true)

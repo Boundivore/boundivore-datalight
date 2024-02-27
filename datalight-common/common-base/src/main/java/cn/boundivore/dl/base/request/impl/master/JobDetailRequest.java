@@ -49,6 +49,8 @@ import java.util.List;
 )
 public class JobDetailRequest implements IRequest {
 
+    private static final long serialVersionUID = -6920520866491139326L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
@@ -79,6 +81,8 @@ public class JobDetailRequest implements IRequest {
     )
     public static class JobDetailServiceRequest implements IRequest {
 
+        private static final long serialVersionUID = 8024606218863558979L;
+
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
         @NotNull
@@ -100,6 +104,8 @@ public class JobDetailRequest implements IRequest {
             description = "JobDetailRequest.JobDetailComponentRequest: Job 详细执行组件请求体"
     )
     public static class JobDetailComponentRequest implements IRequest {
+        private static final long serialVersionUID = -1031797646399714400L;
+
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)
         @NotNull
@@ -121,6 +127,8 @@ public class JobDetailRequest implements IRequest {
             description = "JobDetailRequest.JobDetailNodeRequest: Job 详细执行节点请求体"
     )
     public static class JobDetailNodeRequest implements IRequest {
+        private static final long serialVersionUID = 1067282774088299896L;
+
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         @NotNull

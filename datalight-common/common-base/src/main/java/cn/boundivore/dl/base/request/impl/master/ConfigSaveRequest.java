@@ -50,6 +50,8 @@ import java.util.List;
 )
 public class ConfigSaveRequest implements IRequest {
 
+    private static final long serialVersionUID = -1145116108488458969L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
@@ -75,6 +77,8 @@ public class ConfigSaveRequest implements IRequest {
             description = "ConfigSaveRequest.ConfigRequest: 单个配置 请求体"
     )
     public static class ConfigRequest implements IRequest {
+
+        private static final long serialVersionUID = 6082010984843914959L;
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)

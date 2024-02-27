@@ -50,6 +50,8 @@ import java.util.List;
 )
 public class HeartBeatRequest implements IRequest {
 
+    private static final long serialVersionUID = 4032050046405228278L;
+
     @Schema(name = "Ip", title = "Worker 所在节点 IP", required = true)
     @JsonProperty(value = "Ip", required = true)
     @NotNull

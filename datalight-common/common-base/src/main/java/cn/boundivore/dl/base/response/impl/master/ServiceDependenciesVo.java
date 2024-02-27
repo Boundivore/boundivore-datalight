@@ -53,6 +53,7 @@ import java.util.List;
 )
 public class ServiceDependenciesVo implements IVo {
 
+    private static final long serialVersionUID = 7461309760401339834L;
     @Schema(name = "CurrentServiceName", title = "当前服务主体的名称", required = true)
     @JsonProperty(value = "CurrentServiceName", required = true)
     private String currentServiceName;
@@ -72,6 +73,8 @@ public class ServiceDependenciesVo implements IVo {
             description = "ServiceDependenciesVo.RelativeDetailVo 当前服务"
     )
     public static class ServiceDetailVo implements IVo {
+        private static final long serialVersionUID = -4438668866603288845L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         private Long clusterId;
@@ -116,6 +119,8 @@ public class ServiceDependenciesVo implements IVo {
     )
     public static class ComponentDetailVo implements IVo {
 
+        private static final long serialVersionUID = -5036275311199199984L;
+
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)
         private String componentName;
@@ -154,6 +159,8 @@ public class ServiceDependenciesVo implements IVo {
             description = "ServiceDependenciesVo.ConfDirVo 服务配置目录与模板目录信息"
     )
     public static class ConfDirVo implements Serializable {
+        private static final long serialVersionUID = 2099227612374759824L;
+
         @Schema(name = "ServiceConfDir", title = "服务配置文件目录", required = true)
         @JsonProperty(value = "ServiceConfDir", required = true)
         private String serviceConfDir;
@@ -173,6 +180,8 @@ public class ServiceDependenciesVo implements IVo {
             description = "ServiceDependenciesVo.PropertyVo 预配置属性信息"
     )
     public static class PropertyVo implements Serializable {
+
+        private static final long serialVersionUID = 3031218416361571352L;
 
         @Schema(name = "TemplatedFilePath", title = "配置文件模板路径", required = true)
         @JsonProperty(value = "TemplatedFilePath", required = true)

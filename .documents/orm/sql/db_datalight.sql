@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 21/02/2024 11:49:18
+ Date: 26/02/2024 18:36:03
 */
 
 SET NAMES utf8mb4;
@@ -152,6 +152,7 @@ CREATE TABLE `t_dl_job`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `job_action_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Job 行为类型',
   `job_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Job 名称',
   `job_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Job 状态 枚举值：见代码',
   `start_time` bigint(20) NULL DEFAULT NULL COMMENT '执行起始时间 毫秒时间戳',

@@ -47,7 +47,9 @@ public class AbstractNodeRequest {
             name = "AbstractNodeRequest.NodeIdListRequest",
             description = "AbstractNodeRequest.NodeIdListRequest: 节点 ID 列表请求体"
     )
-    public final static class NodeIdListRequest {
+    public final static class NodeIdListRequest implements IRequest{
+
+        private static final long serialVersionUID = -6076022897180781653L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
@@ -69,6 +71,8 @@ public class AbstractNodeRequest {
             description = "AbstractNodeRequest.NodeIdRequest: 节点 ID 请求体"
     )
     public final static class NodeIdRequest implements IRequest {
+
+        private static final long serialVersionUID = -2614333915667046320L;
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
@@ -95,6 +99,8 @@ public class AbstractNodeRequest {
             description = "AbstractNodeRequest.NodeInfoRequest: 节点信息 请求体"
     )
     public final static class NodeInfoRequest implements IRequest {
+
+        private static final long serialVersionUID = 1728819516337583002L;
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)

@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 
 /**
@@ -37,6 +38,7 @@ import java.util.LinkedHashMap;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class JobMeta extends TimeMeta {
+    private static final long serialVersionUID = 2377853761262481016L;
 
     private String tag;
 
@@ -48,19 +50,20 @@ public class JobMeta extends TimeMeta {
 
     private String name;
 
+    private JobResult jobResult;
+
     private ExecStateEnum execStateEnum;
 
     //<StageId, StageMeta>
     private LinkedHashMap<Long, StageMeta> stageMetaMap;
 
-    private JobResult jobResult;
-
-
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public final static class JobResult {
+    public final static class JobResult implements Serializable {
+        private static final long serialVersionUID = 2211348172168285854L
+                ;
         private boolean isSuccess;
     }
 }

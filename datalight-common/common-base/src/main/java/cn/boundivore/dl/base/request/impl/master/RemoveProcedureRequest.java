@@ -46,6 +46,7 @@ import javax.validation.constraints.NotNull;
 )
 public class RemoveProcedureRequest implements IRequest {
 
+    private static final long serialVersionUID = 5532244786796904794L;
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull

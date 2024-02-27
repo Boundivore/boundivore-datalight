@@ -48,6 +48,7 @@ import javax.validation.constraints.NotNull;
 )
 public class NodeInfoVo implements IVo {
 
+    private static final long serialVersionUID = 4040678227325952572L;
     @Schema(name = "NodeId", title = "节点 ID", required = true)
     @JsonProperty(value = "NodeId", required = true)
     @NotNull

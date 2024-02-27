@@ -48,6 +48,8 @@ import java.util.List;
 )
 public class ConfigPreSaveRequest implements IRequest {
 
+    private static final long serialVersionUID = -932484154313414386L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull
@@ -67,6 +69,8 @@ public class ConfigPreSaveRequest implements IRequest {
             description = "ConfigPreSaveRequest.ConfigPreServiceRequest 当前服务"
     )
     public static class ConfigPreServiceRequest implements IRequest {
+
+        private static final long serialVersionUID = -2749303944488670844L;
 
         @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -88,6 +92,8 @@ public class ConfigPreSaveRequest implements IRequest {
     )
     public static class PlaceholderInfoRequest implements IRequest {
 
+        private static final long serialVersionUID = 1325220924745945824L;
+
         @Schema(name = "TemplatedFilePath", title = "模板配置文件路径", required = true)
         @JsonProperty(value = "TemplatedFilePath", required = true)
         private String templatedFilePath;
@@ -106,6 +112,8 @@ public class ConfigPreSaveRequest implements IRequest {
             description = "ConfigPreSaveRequest.PropertyRequest 预配置属性信息"
     )
     public static class PropertyRequest implements IRequest {
+
+        private static final long serialVersionUID = 423545603560489432L;
 
         @Schema(name = "Placeholder", title = "占位符", required = true)
         @JsonProperty(value = "Placeholder", required = true)

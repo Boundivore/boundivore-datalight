@@ -19,6 +19,7 @@ package cn.boundivore.dl.service.master.manage.service.job;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.manage.service.bean.JobCacheBean;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.CacheObj;
@@ -44,20 +45,20 @@ import java.util.concurrent.locks.ReentrantLock;
  * Version: V1.0
  */
 @Slf4j
-public class JobCache {
+public class JobCacheUtil {
 
-    private static volatile JobCache instance;
+    private static volatile JobCacheUtil instance;
     private static final Object lock = new Object();
 
     //<JobId, Job>
-    private final Cache<Long, Job> cache;
+    private final Cache<Long, JobCacheBean> cache;
 
     private final ReentrantLock activeJobLock;
 
     @Getter
     private final AtomicLong activeJobId = new AtomicLong(0L);
 
-    private JobCache() {
+    private JobCacheUtil() {
         this.activeJobLock = new ReentrantLock();
 
         // 内存中缓存若干 Job
@@ -70,11 +71,11 @@ public class JobCache {
         );
     }
 
-    public static JobCache getInstance() {
+    public static JobCacheUtil getInstance() {
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {
-                    instance = new JobCache();
+                    instance = new JobCacheUtil();
                 }
             }
         }
@@ -91,15 +92,15 @@ public class JobCache {
      * Modification time:
      * Throws:
      *
-     * @param job 执行操作的异步 Job
+     * @param jobCacheBean 执行异步操作的 JobMeta & Plan
      * @return boolean 如果符合缓存逻辑，则缓存并返回 true，否则返回 false
      */
-    public boolean cache(Job job) {
+    public boolean cache(JobCacheBean jobCacheBean) {
         if (!cache.isFull()) {
-            cache.put(job.getJobMeta().getId(), job);
+            cache.put(jobCacheBean.getJobMeta().getId(), jobCacheBean);
             return true;
         } else if (this.clearExpiration()) {
-            cache.put(job.getJobMeta().getId(), job);
+            cache.put(jobCacheBean.getJobMeta().getId(), jobCacheBean);
             return true;
         }
 
@@ -124,12 +125,7 @@ public class JobCache {
      * @param jobId 全局唯一的 JobId
      * @return Job
      */
-    public Job get(Long jobId) {
-        Job job = cache.get(jobId);
-        Assert.notNull(
-                job,
-                () -> new BException("NodeJobId 错误或缓存信息已失效")
-        );
+    public JobCacheBean get(Long jobId) {
         return cache.get(jobId);
     }
 
@@ -148,9 +144,9 @@ public class JobCache {
     private boolean clearExpiration() {
         List<Long> onRemoveJobIdList = new ArrayList<>();
 
-        Iterator<CacheObj<Long, Job>> iterator = cache.cacheObjIterator();
+        Iterator<CacheObj<Long, JobCacheBean>> iterator = cache.cacheObjIterator();
         while (iterator.hasNext()) {
-            CacheObj<Long, Job> next = iterator.next();
+            CacheObj<Long, JobCacheBean> next = iterator.next();
             if (next.getValue().getJobMeta().getExecStateEnum() != ExecStateEnum.RUNNING) {
                 onRemoveJobIdList.add(next.getKey());
             }

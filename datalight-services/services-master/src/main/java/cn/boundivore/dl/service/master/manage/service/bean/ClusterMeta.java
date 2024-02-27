@@ -22,6 +22,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * Description: 当前集群的元数据信息
  * Created by: Boundivore
@@ -36,7 +38,9 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-public class ClusterMeta {
+public class ClusterMeta implements Serializable {
+    private static final long serialVersionUID = 7413343865993508169L;
+
     private Long currentClusterId;
 
     private String currentClusterName;

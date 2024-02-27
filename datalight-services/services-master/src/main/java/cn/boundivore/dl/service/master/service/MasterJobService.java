@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
@@ -27,13 +28,12 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
-import cn.boundivore.dl.orm.po.single.TDlJobLog;
-import cn.boundivore.dl.orm.po.single.TDlService;
-import cn.boundivore.dl.orm.service.single.impl.TDlJobLogServiceImpl;
+import cn.boundivore.dl.orm.po.single.*;
+import cn.boundivore.dl.orm.service.single.impl.*;
 import cn.boundivore.dl.service.master.manage.service.bean.*;
 import cn.boundivore.dl.service.master.manage.service.job.Intention;
 import cn.boundivore.dl.service.master.manage.service.job.Job;
-import cn.boundivore.dl.service.master.manage.service.job.JobCache;
+import cn.boundivore.dl.service.master.manage.service.job.JobCacheUtil;
 import cn.boundivore.dl.service.master.manage.service.job.Plan;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.hutool.core.collection.CollUtil;
@@ -44,6 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -69,6 +70,11 @@ public class MasterJobService {
     private final ComponentNodeMapper componentNodeMapper;
 
     private final TDlJobLogServiceImpl tDlJobLogService;
+
+    private final TDlJobServiceImpl tDlJobService;
+    private final TDlStageServiceImpl tDlStageService;
+    private final TDlTaskServiceImpl tDlTaskService;
+    private final TDlStepServiceImpl tDlStepService;
 
     /**
      * Description: 根据操作的行为类型，以确定后续应该获取对应的组件状态
@@ -524,20 +530,36 @@ public class MasterJobService {
      * @return Result<AbstractJobVo.JobProgressVo> 进度信息
      */
     public Result<AbstractJobVo.JobProgressVo> getJobProgress(Long jobId) {
-        Job job = JobCache.getInstance().get(jobId);
+        JobCacheBean jobCacheBean = JobCacheUtil.getInstance().get(jobId);
+        if (jobCacheBean == null) {
+            // 内存缓存已失效，从数据库中读取
+            jobCacheBean = this.getJobCacheBeanFromDb(jobId);
+        }
 
         Assert.notNull(
-                job,
-                () -> new BException("JobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
+                jobCacheBean,
+                () -> new BException("JobId 不存在")
         );
 
         // 获取 Job 的元数据信息
-        JobMeta jobMeta = job.getJobMeta();
+        JobMeta jobMeta = jobCacheBean.getJobMeta();
         // 获取 Job 的计划信息
-        Plan plan = job.getPlan();
+        Plan plan = jobCacheBean.getPlan();
 
-        // 获取集群 ID
+        // 获取 Job 相关信息
         Long clusterId = jobMeta.getClusterMeta().getCurrentClusterId();
+        ActionTypeEnum jobActionTypeEnum = jobMeta.getActionTypeEnum();
+        ExecStateEnum jobExecStateEnum = jobMeta.getExecStateEnum();
+
+        // 获取 Plan 相关信息
+        String planName = plan.getPlanName();
+        int planTotal = plan.getPlanTotal();
+        int planCurrent = plan.getPlanCurrent();
+        int planProgress = plan.getPlanProgress();
+
+        int execTotal = plan.getExecTotal().get();
+        int execCurrent = plan.getExecCurrent().get();
+        int execProgress = plan.getExecProgress().get();
 
         // 创建结果对象
         AbstractJobVo.JobProgressVo jobProgressVo = new AbstractJobVo.JobProgressVo()
@@ -545,19 +567,26 @@ public class MasterJobService {
                 .setClusterId(clusterId);
 
         // 组装计划进度信息
-        AbstractJobVo.JobPlanProgressVo jobPlanProgressVo = this.createJobPlanProgressVo(
+        AbstractJobVo.JobPlanProgressVo jobPlanProgressVo = new AbstractJobVo.JobPlanProgressVo(
                 clusterId,
                 jobId,
-                jobMeta,
-                plan
+                jobActionTypeEnum,
+                planTotal,
+                planCurrent,
+                planProgress,
+                planName
         );
         jobProgressVo.setJobPlanProgressVo(jobPlanProgressVo);
 
         // 组装执行进度信息
-        AbstractJobVo.JobExecProgressVo jobExecProgressVo = this.createJobExecProgressVo(
-                jobId,
+        AbstractJobVo.JobExecProgressVo jobExecProgressVo = new AbstractJobVo.JobExecProgressVo(
+                jobExecStateEnum,
                 clusterId,
-                plan
+                jobId,
+                execTotal,
+                execCurrent,
+                execProgress,
+                new ArrayList<>()
         );
         jobProgressVo.setJobExecProgressVo(jobExecProgressVo);
 
@@ -566,76 +595,6 @@ public class MasterJobService {
         jobExecProgressVo.setExecProgressPerNodeList(execProgressPerNodeList);
 
         return Result.success(jobProgressVo);
-    }
-
-    /**
-     * Description: 创建 Job 计划制定进度 Vo
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/1/10
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param clusterId 集群 ID
-     * @param jobId     Job ID
-     * @param jobMeta   Job 元数据信息
-     * @param plan      计划信息
-     * @return AbstractJobVo.JobPlanProgressVo 计划制定进度
-     */
-    private AbstractJobVo.JobPlanProgressVo createJobPlanProgressVo(Long clusterId,
-                                                                    Long jobId,
-                                                                    JobMeta jobMeta,
-                                                                    Plan plan) {
-
-        int planTotal = plan.getPlanTotal();
-        int planCurrent = plan.getPlanCurrent();
-        int planProgress = plan.getPlanProgress();
-
-        return new AbstractJobVo.JobPlanProgressVo(
-                clusterId,
-                jobId,
-                jobMeta.getActionTypeEnum(),
-                planTotal,
-                planCurrent,
-                planProgress,
-                plan.getPlanName()
-        );
-
-    }
-
-    /**
-     * Description: 创建当前 Job 执行进度 Vo
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/1/10
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param jobId     Job ID
-     * @param clusterId 集群 ID
-     * @param plan      计划信息
-     * @return AbstractJobVo.JobExecProgressVo Job 执行进度
-     */
-    private AbstractJobVo.JobExecProgressVo createJobExecProgressVo(Long jobId,
-                                                                    Long clusterId,
-                                                                    Plan plan) {
-
-        int execTotal = plan.getExecTotal().get();
-        int execCurrent = plan.getExecCurrent().get();
-        int execProgress = plan.getExecProgress().get();
-
-        return new AbstractJobVo.JobExecProgressVo()
-                .setJobExecStateEnum(JobCache.getInstance().get(jobId).getJobMeta().getExecStateEnum())
-                .setJobId(jobId)
-                .setClusterId(clusterId)
-                .setExecTotal(execTotal)
-                .setExecCurrent(execCurrent)
-                .setExecProgress(execProgress)
-                .setExecProgressPerNodeList(new ArrayList<>());
     }
 
 
@@ -877,6 +836,186 @@ public class MasterJobService {
         );
 
         return Result.success(jobLogListVo);
+    }
+
+    /**
+     * Description: 从数据库缓存中获取信息并组装 JobCacheBean
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobId 服务与组件操作（包含部署）的任务 ID
+     * @return JobCacheBean
+     */
+    private JobCacheBean getJobCacheBeanFromDb(Long jobId) {
+
+        TDlJob tDlJob = this.tDlJobService.getById(jobId);
+
+        AbstractClusterVo.ClusterVo currentClusterVo = this.masterClusterService.getClusterById(tDlJob.getClusterId()).getData();
+        AbstractClusterVo.ClusterVo relativeClusterVo = this.masterClusterService.getClusterById(currentClusterVo.getRelativeClusterId()).getData();
+
+        // 获取服务状态
+        HashMap<String, TDlService> nameAndTDlServiceMap = this.masterServiceService.getTDlServiceList(tDlJob.getClusterId())
+                .stream()
+                .collect(Collectors.toMap(
+                                TDlService::getServiceName,
+                                Function.identity(),
+                                (existing, replacement) -> existing,
+                                HashMap::new
+                        )
+                );
+
+        List<TDlStage> tDlStageList = this.tDlStageService.lambdaQuery()
+                .select()
+                .eq(TDlStage::getJobId, jobId)
+                .list();
+
+        List<TDlTask> tDlTaskList = this.tDlTaskService.lambdaQuery()
+                .select()
+                .eq(TDlTask::getJobId, jobId)
+                .list();
+
+
+        List<TDlStep> tDlStepList = this.tDlStepService.lambdaQuery()
+                .select()
+                .eq(TDlStep::getJobId, jobId)
+                .list();
+
+        // 获取 JobMeta 相关信息
+        final JobMeta jobMeta = this.recoverJobMeta(
+                tDlJob,
+                currentClusterVo,
+                relativeClusterVo,
+                nameAndTDlServiceMap,
+                tDlStageList,
+                tDlTaskList,
+                tDlStepList
+        );
+
+
+        // 获取 Plan 相关信息
+        String planName = CollUtil.getLast(tDlStepList).getStepName();
+        int planTotal = tDlStepList.size();
+        int planCurrent = tDlStepList.size();
+        int planProgress = 100;
+
+        int execTotal = tDlStepList.size();
+        int execCurrent = (int) tDlStepList.stream().filter(i -> i.getStepState() == ExecStateEnum.OK).count();
+        int execProgress = execCurrent * 100 / execTotal;
+
+        final Plan plan = new Plan(
+                planName,
+                planTotal,
+                planCurrent,
+                planProgress,
+                execTotal,
+                execCurrent,
+                execProgress
+        );
+
+
+        return new JobCacheBean(
+                jobMeta,
+                plan
+        );
+    }
+
+    private JobMeta recoverJobMeta(TDlJob tDlJob,
+                                   AbstractClusterVo.ClusterVo currentClusterVo,
+                                   AbstractClusterVo.ClusterVo relativeClusterVo,
+                                   HashMap<String, TDlService> nameAndTDlServiceMap,
+                                   List<TDlStage> tDlStageList,
+                                   List<TDlTask> tDlTaskList,
+                                   List<TDlStep> tDlStepList) {
+        final JobMeta jobMeta = new JobMeta();
+        jobMeta.setStartTime(tDlJob.getStartTime());
+        jobMeta.setEndTime(tDlJob.getEndTime());
+
+        jobMeta.setId(tDlJob.getId());
+        jobMeta.setTag(tDlJob.getTag());
+        jobMeta.setClusterMeta(
+                new ClusterMeta(
+                        currentClusterVo.getClusterId(),
+                        currentClusterVo.getClusterName(),
+                        currentClusterVo.getClusterTypeEnum(),
+                        currentClusterVo.getRelativeClusterId(),
+                        relativeClusterVo.getClusterName(),
+                        relativeClusterVo.getClusterTypeEnum()
+                )
+        );
+        jobMeta.setActionTypeEnum(tDlJob.getJobActionType());
+        jobMeta.setName(tDlJob.getJobName());
+        jobMeta.setExecStateEnum(tDlJob.getJobState());
+        jobMeta.setJobResult(
+                new JobMeta.JobResult(
+                        tDlJob.getJobState() == ExecStateEnum.OK
+                )
+        );
+        // <StageId, StageMeta>
+        jobMeta.setStageMetaMap(new LinkedHashMap<>());
+
+        tDlStageList.forEach(tDlStage -> {
+                    final StageMeta stageMeta = this.recoverStageMeta(
+                            jobMeta,
+                            tDlStage,
+                            nameAndTDlServiceMap,
+                            tDlTaskList,
+                            tDlStepList
+                    );
+                    jobMeta.getStageMetaMap().put(stageMeta.getId(), stageMeta);
+                }
+        );
+
+        return jobMeta;
+    }
+
+    private StageMeta recoverStageMeta(JobMeta jobMeta,
+                                       TDlStage tDlStage,
+                                       HashMap<String, TDlService> nameAndTDlServiceMap,
+                                       List<TDlTask> tDlTaskList,
+                                       List<TDlStep> tDlStepList) {
+
+        TDlService tDlService = nameAndTDlServiceMap.get(tDlStage.getServiceName());
+        StageMeta stageMeta = new StageMeta();
+        stageMeta.setStartTime(tDlStage.getStartTime());
+        stageMeta.setEndTime(tDlStage.getEndTime());
+
+        stageMeta.setJobMeta(jobMeta);
+        stageMeta.setId(tDlStage.getId());
+        stageMeta.setName(tDlStage.getStageName());
+        stageMeta.setServiceName(tDlStage.getServiceName());
+        stageMeta.setCurrentState(tDlService.getServiceState());
+        stageMeta.setPriority(tDlService.getPriority());
+        stageMeta.setStageResult(new StageMeta.StageResult(tDlStage.getStageState() == ExecStateEnum.OK));
+        stageMeta.setStageStateEnum(tDlStage.getStageState());
+        stageMeta.setTaskMetaMap(new LinkedHashMap<>());
+
+        tDlTaskList.forEach(tDlTask -> {
+            final TaskMeta taskMeta = this.recoverTaskMeta(
+                    tDlTask,
+                    stageMeta,
+                    tDlStepList
+            );
+            stageMeta.getTaskMetaMap().put(taskMeta.getId(), taskMeta);
+        });
+
+        return stageMeta;
+    }
+
+    private TaskMeta recoverTaskMeta(TDlTask tDlTask,
+                                     StageMeta stageMeta,
+                                     List<TDlStep> tDlStepList) {
+        return null;
+    }
+
+
+    private TaskMeta recoverStepMeta(TDlStep tDlStep,
+                                     TaskMeta taskMeta) {
+        return null;
     }
 
 }

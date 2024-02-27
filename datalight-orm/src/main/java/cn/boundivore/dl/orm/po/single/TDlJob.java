@@ -1,5 +1,6 @@
 package cn.boundivore.dl.orm.po.single;
 
+import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -35,6 +36,10 @@ public class TDlJob extends TBasePo<TDlJob> {
     @Schema(name = "集群 ID")
     @TableField("cluster_id")
     private Long clusterId;
+
+    @Schema(name = "Job 行为类型")
+    @TableField("job_action_type")
+    private ActionTypeEnum jobActionType;
 
     @Schema(name = "Job 名称")
     @TableField("job_name")

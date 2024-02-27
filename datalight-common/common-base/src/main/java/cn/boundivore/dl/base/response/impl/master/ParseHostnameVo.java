@@ -49,6 +49,7 @@ import java.util.List;
 )
 public class ParseHostnameVo implements IVo {
 
+    private static final long serialVersionUID = 3938701059683711284L;
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull

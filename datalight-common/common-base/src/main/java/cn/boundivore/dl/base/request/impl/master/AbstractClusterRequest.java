@@ -49,6 +49,8 @@ public abstract class AbstractClusterRequest {
             description = "AbstractClusterRequest.ClusterIdRequest 集群 ID 请求体"
     )
     public static class ClusterIdRequest implements IRequest {
+        private static final long serialVersionUID = 1536975563357226084L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         @NotNull
@@ -64,6 +66,8 @@ public abstract class AbstractClusterRequest {
             description = "AbstractClusterRequest.NewClusterRequest 新建集群 请求体"
     )
     public static class NewClusterRequest implements IRequest {
+
+        private static final long serialVersionUID = -1574151757754502450L;
 
         @Schema(name = "DlcVersion", title = "DataLight 服务组件包版本", required = true)
         @JsonProperty(value = "DlcVersion", required = true)

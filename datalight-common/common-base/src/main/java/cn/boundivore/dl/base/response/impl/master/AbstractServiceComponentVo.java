@@ -46,6 +46,8 @@ public abstract class AbstractServiceComponentVo {
     )
     public final static class ServiceVo implements IVo {
 
+        private static final long serialVersionUID = -2077512468148456577L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         private Long clusterId;
@@ -69,6 +71,8 @@ public abstract class AbstractServiceComponentVo {
             description = "AbstractServiceComponentVo.ServiceSummaryVo 服务信息"
     )
     public final static class ServiceSummaryVo implements IVo {
+
+        private static final long serialVersionUID = -219581883909273127L;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
@@ -113,6 +117,8 @@ public abstract class AbstractServiceComponentVo {
     )
     public final static class ComponentVo implements IVo {
 
+        private static final long serialVersionUID = -7112925877667717290L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
         private Long clusterId;
@@ -137,6 +143,8 @@ public abstract class AbstractServiceComponentVo {
     )
     public final static class ServiceComponentSummaryVo implements IVo {
 
+        private static final long serialVersionUID = -7789504741756382996L;
+
         @Schema(name = "ServiceSummary", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceSummary", required = true)
         private ServiceSummaryVo serviceSummaryVo;
@@ -158,6 +166,8 @@ public abstract class AbstractServiceComponentVo {
             description = "AbstractServiceComponentVo.ComponentSummaryVo 组件信息"
     )
     public final static class ComponentSummaryVo implements IVo {
+
+        private static final long serialVersionUID = -6652343079793095021L;
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)
@@ -194,6 +204,8 @@ public abstract class AbstractServiceComponentVo {
             description = "AbstractServiceComponentVo.ComponentNodeVo 组件在节点的分布信息"
     )
     public final static class ComponentNodeVo implements IVo {
+
+        private static final long serialVersionUID = 1181407997884767287L;
 
         @Schema(name = "ComponentId", title = "组件 ID", required = true)
         @JsonProperty(value = "ComponentId", required = true)

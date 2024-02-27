@@ -23,6 +23,7 @@ import cn.hutool.core.lang.Assert;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
@@ -38,15 +39,16 @@ import java.util.concurrent.locks.ReentrantLock;
  * Version: V1.0
  */
 @Slf4j
-public class Plan {
+public class Plan implements Serializable {
+    private static final long serialVersionUID = 6310575816335634033L;
 
     /**
      * 计划进度
      */
-    //当前计划 Task 任务总数
+    //当前计划 Step 任务总数
     @Getter
     private final int planTotal;
-    //当前计划已经组装的 Task 任务数
+    //当前计划已经组装的 Step 任务数
     @Getter
     private int planCurrent = 0;
     @Getter
@@ -58,23 +60,41 @@ public class Plan {
     /**
      * 执行进度
      */
-    private final ReentrantLock lock = new ReentrantLock();
-    //当前计划 Task 任务总数
+    private transient final ReentrantLock lock = new ReentrantLock();
+
+    //当前计划 Step 任务总数
     @Getter
     private final AtomicInteger execTotal = new AtomicInteger(0);
-    //当前计划已经执行的 Task 任务数
+    //当前计划已经执行的 Step 任务数
     @Getter
     private final AtomicInteger execCurrent = new AtomicInteger(0);
     @Getter
     private final AtomicInteger execProgress = new AtomicInteger(0);
 
     @Getter
-    private final LinkedBlockingQueue<IStage> stages = new LinkedBlockingQueue<>();
+    private transient final LinkedBlockingQueue<IStage> stages = new LinkedBlockingQueue<>();
 
     public Plan(Intention intention) {
         //考虑到组装逻辑和创建任务实例为两个独立的过程，因此，总进度乘以 2 可以控制的更精确
         this.planTotal = this.initPlanTotal(intention) * 2;
         log.info("计划总数: {}", this.planTotal);
+    }
+
+    public Plan(String planName,
+                int planTotal,
+                int planCurrent,
+                int planProgress,
+                int execTotal,
+                int execCurrent,
+                int execProgress) {
+        this.planName = planName;
+        this.planTotal = planTotal;
+        this.planCurrent = planCurrent;
+        this.planProgress = planProgress;
+
+        this.execTotal.set(execTotal);
+        this.execCurrent.set(execCurrent);
+        this.execProgress.set(execProgress);
     }
 
     /**

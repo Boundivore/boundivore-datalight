@@ -48,6 +48,8 @@ import javax.validation.constraints.NotNull;
 )
 public class ParseHostnameRequest implements IRequest {
 
+    private static final long serialVersionUID = -1506315720406768292L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull

@@ -48,6 +48,8 @@ import java.util.List;
 )
 public class NodeJobRequest implements IRequest {
 
+    private static final long serialVersionUID = 2100478736900830314L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     @NotNull

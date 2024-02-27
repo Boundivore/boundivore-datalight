@@ -20,7 +20,7 @@ import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
-import cn.boundivore.dl.service.master.manage.service.job.JobCache;
+import cn.boundivore.dl.service.master.manage.service.job.JobCacheUtil;
 import cn.boundivore.dl.service.master.manage.service.task.AbstractTask;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
@@ -98,10 +98,15 @@ public class Task extends AbstractTask {
                     ThreadUtil.safeSleep(stepMeta.getSleep());
                 }
 
-                //获取 JobCache 缓存键
+                //获取 JobCacheUtil 缓存键
                 Long jobId = taskMeta.getStageMeta().getJobMeta().getId();
+
+                /*
+                    TODO 如果对部署效率有更高的追求，可以此处不通过锁更新进度，单独实现一个函数，
+                    TODO 在每次获取进度时，通过遍历当前每个 Step 状态实现动态计算进度。
+                */
                 //更新执行进度到内存
-                JobCache.getInstance()
+                JobCacheUtil.getInstance()
                         .get(jobId)
                         .getPlan()
                         .execProcess(stepMeta.getName());

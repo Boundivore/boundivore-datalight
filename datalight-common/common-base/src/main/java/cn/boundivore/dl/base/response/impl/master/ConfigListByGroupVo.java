@@ -47,6 +47,8 @@ import java.util.List;
 )
 public class ConfigListByGroupVo implements IVo {
 
+    private static final long serialVersionUID = 7632750073596074189L;
+
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
     private Long clusterId;
@@ -77,6 +79,8 @@ public class ConfigListByGroupVo implements IVo {
             description = "ConfigListByGroupVo.ConfigGroupVo 当前配置信息"
     )
     public static class ConfigGroupVo implements IVo {
+
+        private static final long serialVersionUID = -5455839280391421687L;
 
         @Schema(name = "Sha256", title = "配置文件唯一信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)
@@ -114,6 +118,8 @@ public class ConfigListByGroupVo implements IVo {
             }
     )
     public static class ConfigNodeVo implements IVo {
+
+        private static final long serialVersionUID = -2145913595267420179L;
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)

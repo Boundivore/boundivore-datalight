@@ -235,7 +235,8 @@ public class JobService {
             tDlJob.setVersion(0L).setId(jobMeta.getId());
         }
 
-        tDlJob.setTag(jobMeta.getTag())
+        tDlJob.setJobActionType(jobMeta.getActionTypeEnum())
+                .setTag(jobMeta.getTag())
                 .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setJobName(jobMeta.getName())
                 .setJobState(jobMeta.getExecStateEnum())
