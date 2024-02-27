@@ -355,6 +355,7 @@ public class Job extends Thread {
                                     .setStartState(finalStartState)
                                     .setFailState(finalFailState)
                                     .setSuccessState(finalSuccessState)
+                                    .setCurrentState(finalStartState)
 
                                     .setTaskStateEnum(ExecStateEnum.SUSPEND)
                                     .setTaskResult(new TaskMeta.TaskResult(false))

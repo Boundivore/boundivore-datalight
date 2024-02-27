@@ -234,6 +234,7 @@ public class NodeJob extends Thread {
                 .setStartState(finalStartState)
                 .setFailState(finalFailState)
                 .setSuccessState(finalSuccessState)
+                .setCurrentState(finalStartState)
 
                 .setNodeTaskStateEnum(ExecStateEnum.SUSPEND)
                 .setNodeTaskResult(new NodeTaskMeta.NodeTaskResult(false))
