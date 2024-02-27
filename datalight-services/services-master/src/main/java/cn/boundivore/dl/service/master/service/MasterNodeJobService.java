@@ -24,7 +24,6 @@ import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -37,12 +36,13 @@ import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobLogServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
+import cn.boundivore.dl.service.master.manage.node.bean.NodeJobCacheBean;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeTaskMeta;
 import cn.boundivore.dl.service.master.manage.node.job.NodeIntention;
 import cn.boundivore.dl.service.master.manage.node.job.NodeJob;
-import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
+import cn.boundivore.dl.service.master.manage.node.job.NodeJobCacheUtil;
 import cn.boundivore.dl.service.master.manage.node.job.NodePlan;
 import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.hutool.core.lang.Assert;
@@ -450,13 +450,13 @@ public class MasterNodeJobService {
      * @return NodeJobIdVo 活跃的  NodeJobId 信息
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> getActiveNodeJobId() {
-        long activeJobId = NodeJobCache.getInstance().getActiveJobId().get();
+        long activeJobId = NodeJobCacheUtil.getInstance().getActiveJobId().get();
         Assert.isTrue(
                 activeJobId != 0L,
                 () -> new BException("当前没有活跃的任务")
         );
 
-        Long clusterId = NodeJobCache.getInstance()
+        Long clusterId = NodeJobCacheUtil.getInstance()
                 .get(activeJobId)
                 .getNodeJobMeta()
                 .getClusterId();
@@ -485,17 +485,16 @@ public class MasterNodeJobService {
      */
     public Result<AbstractNodeJobVo.NodeJobProgressVo> getNodeJobProgress(Long nodeJobId) {
         // 从缓存中获取 NodeJob 对象
-        NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
+        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
-        Assert.notNull(
-                nodeJob,
-                () -> new BException("NodeJobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
-        );
+        if (nodeJobCacheBean == null) {
+            nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
+        }
 
         // 获取节点 NodeJob 的元数据信息
-        NodeJobMeta nodeJobMeta = nodeJob.getNodeJobMeta();
+        NodeJobMeta nodeJobMeta = nodeJobCacheBean.getNodeJobMeta();
         // 获取节点 NodeJob 的计划信息
-        NodePlan nodePlan = nodeJob.getNodePlan();
+        NodePlan nodePlan = nodeJobCacheBean.getNodePlan();
 
         // 获取集群 ID
         Long clusterId = nodeJobMeta.getClusterId();
@@ -543,11 +542,11 @@ public class MasterNodeJobService {
      * @return 节点作业进度信息的结果对象
      */
     public Result<ExecStateEnum> getNodeJobState(Long nodeJobId) {
-        NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
+        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
-        if (nodeJob != null) {
+        if (nodeJobCacheBean != null) {
             return Result.success(
-                    NodeJobCache.getInstance()
+                    NodeJobCacheUtil.getInstance()
                             .get(nodeJobId)
                             .getNodeJobMeta()
                             .getExecStateEnum()
@@ -621,7 +620,7 @@ public class MasterNodeJobService {
         int execProgress = nodePlan.getExecProgress().get();
 
         return new AbstractNodeJobVo.NodeJobExecProgressVo()
-                .setJobExecStateEnum(NodeJobCache.getInstance().get(nodeJobId).getNodeJobMeta().getExecStateEnum())
+                .setJobExecStateEnum(NodeJobCacheUtil.getInstance().get(nodeJobId).getNodeJobMeta().getExecStateEnum())
                 .setNodeJobId(nodeJobId)
                 .setClusterId(clusterId)
                 .setExecTotal(execTotal)
@@ -765,19 +764,19 @@ public class MasterNodeJobService {
      * @return 返回获取所有节点文件分发进度概览
      */
     public Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(Long nodeJobId) {
-        NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
+        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
         Assert.notNull(
-                nodeJob,
+                nodeJobCacheBean,
                 () -> new BException("NodeJobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
         );
 
         // 创建 AllNodeJobTransferProgressVo 对象
         AbstractNodeJobVo.AllNodeJobTransferProgressVo allNodeJobTransferProgressVo = new AbstractNodeJobVo.AllNodeJobTransferProgressVo();
         allNodeJobTransferProgressVo.setNodeJobId(nodeJobId);
-        allNodeJobTransferProgressVo.setClusterId(nodeJob.getNodeJobMeta().getClusterId());
+        allNodeJobTransferProgressVo.setClusterId(nodeJobCacheBean.getNodeJobMeta().getClusterId());
         allNodeJobTransferProgressVo.setNodeJobTransferProgressList(
-                nodeJob.getNodeJobMeta().getNodeTaskMetaMap().values().stream()
+                nodeJobCacheBean.getNodeJobMeta().getNodeTaskMetaMap().values().stream()
                         .flatMap(nodeTaskMeta -> nodeTaskMeta.getNodeStepMetaMap().values().stream())
                         .filter(nodeStepMeta -> nodeStepMeta.getTransferProgress() != null)
                         .map(nodeStepMeta -> {
@@ -790,7 +789,7 @@ public class MasterNodeJobService {
                                     .setNodeStepId(nodeStepMeta.getId())
                                     .setNodeId(nodeStepMeta.getNodeTaskMeta().getNodeId())
                                     .setHostname(nodeStepMeta.getNodeTaskMeta().getHostname())
-                                    .setExecState(nodeJob.getNodeJobMeta().getExecStateEnum())
+                                    .setExecState(nodeJobCacheBean.getNodeJobMeta().getExecStateEnum())
                                     // 字节进度
                                     .setFileBytesProgressVo(new AbstractNodeJobVo.FileBytesProgressVo(
                                             transferProgress.getTotalBytes(),
@@ -839,12 +838,12 @@ public class MasterNodeJobService {
                                                                                                       Long nodeStepId) {
 
         // 从缓存中获取 NodeJob 对象
-        NodeJob nodeJob = NodeJobCache.getInstance().get(nodeJobId);
+        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
-        Assert.notNull(nodeJob, () -> new BException("NodeJobId 错误或缓存信息已失效"));
+        Assert.notNull(nodeJobCacheBean, () -> new BException("NodeJobId 错误或缓存信息已失效"));
 
         // 获取节点 Job 的元数据信息
-        NodeJobMeta nodeJobMeta = nodeJob.getNodeJobMeta();
+        NodeJobMeta nodeJobMeta = nodeJobCacheBean.getNodeJobMeta();
 
         Assert.isTrue(
                 nodeJobMeta.getNodeActionTypeEnum() == NodeActionTypeEnum.DISPATCH,
@@ -947,9 +946,9 @@ public class MasterNodeJobService {
      * @return Result<AbstractJobVo.JobLogListVo> 日志信息列表
      */
     public Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(Long clusterId,
-                                                                    Long nodeJobId,
-                                                                    Long nodeTaskId,
-                                                                    Long nodeStepId) {
+                                                                        Long nodeJobId,
+                                                                        Long nodeTaskId,
+                                                                        Long nodeStepId) {
 
         LambdaQueryChainWrapper<TDlNodeJobLog> tDlNodeJobLogWrapper = this.tDlNodeJobLogService.lambdaQuery()
                 .select()
@@ -988,6 +987,23 @@ public class MasterNodeJobService {
         return Result.success(nodeJobLogListVo);
     }
 
+    /**
+     * Description: 从数据库中恢复 NodeJobCacheBean
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeJobId 节点任务 ID
+     * @return NodeJobCacheBean
+     */
+    private NodeJobCacheBean getJobCacheBeanFromDb(Long nodeJobId) {
+        NodeJobCacheBean nodeJobCacheBean = new NodeJobCacheBean();
+        return nodeJobCacheBean;
+    }
 
     /**
      * Description: 检查是否存在异常状态的 NodeJob，若存在，则恢复

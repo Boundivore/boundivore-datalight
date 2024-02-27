@@ -46,7 +46,9 @@ import java.util.LinkedHashMap;
 )
 public class NodeTaskMeta extends NodeTimeMeta {
 
-    private NodeJobMeta nodeJobMeta;
+    private static final long serialVersionUID = -2547776650798374514L;
+
+    private transient NodeJobMeta nodeJobMeta;
 
     //NodeTask 执行时，节点状态
     private NodeStateEnum startState;

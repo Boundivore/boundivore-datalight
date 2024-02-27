@@ -48,7 +48,7 @@ import java.util.LinkedHashMap;
 public class TaskMeta extends TimeMeta {
     private static final long serialVersionUID = -1866566917209637695L;
 
-    private StageMeta stageMeta;
+    private transient StageMeta stageMeta;
 
     private long id;
 

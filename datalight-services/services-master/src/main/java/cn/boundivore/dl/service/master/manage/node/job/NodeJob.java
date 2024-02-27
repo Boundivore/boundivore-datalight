@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.converter.INodeStepConverter;
+import cn.boundivore.dl.service.master.manage.node.bean.NodeJobCacheBean;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeTaskMeta;
@@ -95,13 +96,18 @@ public class NodeJob extends Thread {
             this.plan(this.nodeJobMeta);
 
             this.nodeJobService.updateNodeJobDatabase(this.nodeJobMeta);
-            NodeJobCache.getInstance().cache(this);
+            NodeJobCacheUtil.getInstance()
+                    .cache(new NodeJobCacheBean(
+                                    this.nodeJobMeta,
+                                    this.nodePlan
+                            )
+                    );
 
             this.nodePlan.initExecTotal(this.nodeJobMeta);
             this.isInit = true;
 
         } catch (Exception e) {
-            NodeJobCache.getInstance().releaseActiveNodeJobId();
+            NodeJobCacheUtil.getInstance().releaseActiveNodeJobId();
             throw new BException(
                     String.format(
                             "初始化 NodeJob 异常: %s",
@@ -127,11 +133,11 @@ public class NodeJob extends Thread {
         long nodeJobMetaId = IdWorker.getId();
 
         Assert.isTrue(
-                NodeJobCache.getInstance().setActiveJobId(nodeJobMetaId),
+                NodeJobCacheUtil.getInstance().setActiveJobId(nodeJobMetaId),
                 () -> new BException(
                         String.format(
                                 "安全起见，不允许同时对集群节点进行变更，已有其他活跃的任务正在运行: %s",
-                                NodeJobCache.getInstance().getActiveJobId()
+                                NodeJobCacheUtil.getInstance().getActiveJobId()
                         )
                 )
         );
@@ -416,7 +422,7 @@ public class NodeJob extends Thread {
         try {
             this.execute();
         } finally {
-            NodeJobCache.getInstance().releaseActiveNodeJobId();
+            NodeJobCacheUtil.getInstance().releaseActiveNodeJobId();
         }
     }
 

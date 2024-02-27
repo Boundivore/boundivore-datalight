@@ -20,6 +20,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * Description: 记录异步任务执行的起始时间，结束时间，耗时
  * Created by: Boundivore
@@ -33,7 +35,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NodeTimeMeta {
+public class NodeTimeMeta implements Serializable {
+    private static final long serialVersionUID = 5914009663193766773L;
+
     protected long startTime;
 
     protected long endTime;

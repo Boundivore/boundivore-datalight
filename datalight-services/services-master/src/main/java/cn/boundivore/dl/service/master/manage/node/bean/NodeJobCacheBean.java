@@ -16,54 +16,30 @@
  */
 package cn.boundivore.dl.service.master.manage.node.bean;
 
-import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
+import cn.boundivore.dl.service.master.manage.node.job.NodePlan;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
 
-import java.util.LinkedHashMap;
+import java.io.Serializable;
 
 /**
- * Description: 用于记录当前异步 NodeJob 的配置信息
+ * Description: NodeJobCacheBean
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/4/23
+ * Creation time: 2024/2/26
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-public class NodeJobMeta extends NodeTimeMeta {
+@AllArgsConstructor
+@NoArgsConstructor
+public class NodeJobCacheBean implements Serializable {
+    private static final long serialVersionUID = -7623916028791007804L;
 
-    private static final long serialVersionUID = 1983068079084372197L;
+    private NodeJobMeta nodeJobMeta;
 
-    private String tag;
-
-    private long id;
-
-    private long clusterId;
-
-    private NodeActionTypeEnum nodeActionTypeEnum;
-
-    private String name;
-
-    private ExecStateEnum execStateEnum;
-
-    //<NodeTaskId, NodeTaskMeta>
-    private LinkedHashMap<Long, NodeTaskMeta>  nodeTaskMetaMap;
-
-    private NodeJobResult nodeJobResult;
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public final static class NodeJobResult {
-        private boolean isSuccess;
-    }
+    private NodePlan nodePlan;
 }

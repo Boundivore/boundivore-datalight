@@ -46,6 +46,12 @@ import java.util.List;
         }
 )
 public class NodeStepMeta extends NodeTimeMeta {
+    private static final long serialVersionUID = -8476057122131325007L;
+
+    private transient NodeTaskMeta nodeTaskMeta;
+
+    private Long id;
+
     private NodeStepTypeEnum type;
 
     private String name;
@@ -61,11 +67,6 @@ public class NodeStepMeta extends NodeTimeMeta {
     private Long timeout;
 
     private Long sleep;
-
-
-    private NodeTaskMeta nodeTaskMeta;
-
-    private Long id;
 
     private ExecStateEnum execStateEnum;
 

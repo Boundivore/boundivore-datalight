@@ -19,6 +19,7 @@ package cn.boundivore.dl.service.master.manage.node.job;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.manage.node.bean.NodeJobCacheBean;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.CacheObj;
@@ -44,37 +45,37 @@ import java.util.concurrent.locks.ReentrantLock;
  * Version: V1.0
  */
 @Slf4j
-public class NodeJobCache {
+public class NodeJobCacheUtil {
 
-    private static volatile NodeJobCache instance;
+    private static volatile NodeJobCacheUtil instance;
     private static final Object lock = new Object();
 
     //<JobId, Job>
-    private final Cache<Long, NodeJob> cache;
+    private final Cache<Long, NodeJobCacheBean> cache;
 
     private final ReentrantLock activeJobLock;
 
     @Getter
     private final AtomicLong activeJobId = new AtomicLong(0L);
 
-    private NodeJobCache() {
+    private NodeJobCacheUtil() {
         this.activeJobLock = new ReentrantLock();
 
         // 内存中缓存若干 NodeJob
         this.cache = CacheUtil.newFIFOCache(Constants.CACHE_CAPACITY);
-        this.cache.setListener((key, nodeJob) ->
-                log.info("NodeJob 缓存清除: {}({})",
-                        nodeJob.getNodeJobMeta().getName(),
-                        nodeJob.getNodeJobMeta().getId()
+        this.cache.setListener((key, nodeJobCacheBean) ->
+                log.info("NodeJobCacheBean 缓存清除: {}({})",
+                        nodeJobCacheBean.getNodeJobMeta().getName(),
+                        nodeJobCacheBean.getNodeJobMeta().getId()
                 )
         );
     }
 
-    public static NodeJobCache getInstance() {
+    public static NodeJobCacheUtil getInstance() {
         if (instance == null) {
             synchronized (lock) {
                 if (instance == null) {
-                    instance = new NodeJobCache();
+                    instance = new NodeJobCacheUtil();
                 }
             }
         }
@@ -91,15 +92,15 @@ public class NodeJobCache {
      * Modification time:
      * Throws:
      *
-     * @param nodeJob 执行操作的异步 Job
+     * @param nodeJobCacheBean 执行异步操作的 NodeJob 缓存
      * @return boolean 如果符合缓存逻辑，则缓存并返回 true ，否则返回 false
      */
-    public boolean cache(NodeJob nodeJob) {
+    public boolean cache(NodeJobCacheBean nodeJobCacheBean) {
         if (!cache.isFull()) {
-            cache.put(nodeJob.getNodeJobMeta().getId(), nodeJob);
+            cache.put(nodeJobCacheBean.getNodeJobMeta().getId(), nodeJobCacheBean);
             return true;
         } else if (this.clearExpiration()) {
-            cache.put(nodeJob.getNodeJobMeta().getId(), nodeJob);
+            cache.put(nodeJobCacheBean.getNodeJobMeta().getId(), nodeJobCacheBean);
             return true;
         }
 
@@ -122,15 +123,10 @@ public class NodeJobCache {
      * Throws:
      *
      * @param nodeJobId 全局唯一的 nodeJobId
-     * @return Job
+     * @return NodeJobCacheBean
      */
-    public NodeJob get(Long nodeJobId) {
-        NodeJob nodeJob = cache.get(nodeJobId);
-        Assert.notNull(
-                nodeJob,
-                () -> new BException("查询任务已过期，请通过历史查询接口查询")
-        );
-        return nodeJob;
+    public NodeJobCacheBean get(Long nodeJobId) {
+        return cache.get(nodeJobId);
     }
 
     /**
@@ -148,9 +144,9 @@ public class NodeJobCache {
     private boolean clearExpiration() {
         List<Long> onRemoveJobIdList = new ArrayList<>();
 
-        Iterator<CacheObj<Long, NodeJob>> iterator = cache.cacheObjIterator();
+        Iterator<CacheObj<Long, NodeJobCacheBean>> iterator = cache.cacheObjIterator();
         while (iterator.hasNext()) {
-            CacheObj<Long, NodeJob> next = iterator.next();
+            CacheObj<Long, NodeJobCacheBean> next = iterator.next();
             ExecStateEnum execStateEnum = next.getValue().getNodeJobMeta().getExecStateEnum();
             if (execStateEnum != ExecStateEnum.RUNNING && execStateEnum != ExecStateEnum.SUSPEND) {
                 onRemoveJobIdList.add(next.getKey());

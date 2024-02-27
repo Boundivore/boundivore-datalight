@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 public class StepMeta extends TimeMeta {
     private static final long serialVersionUID = -5826422108477860623L;
 
-    private TaskMeta taskMeta;
+    private transient TaskMeta taskMeta;
 
     private Long id;
 

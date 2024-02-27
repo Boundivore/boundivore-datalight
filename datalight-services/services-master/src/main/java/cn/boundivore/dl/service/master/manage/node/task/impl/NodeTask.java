@@ -20,7 +20,7 @@ import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeStepMeta;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeTaskMeta;
-import cn.boundivore.dl.service.master.manage.node.job.NodeJobCache;
+import cn.boundivore.dl.service.master.manage.node.job.NodeJobCacheUtil;
 import cn.boundivore.dl.service.master.manage.node.task.AbstractNodeTask;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
@@ -105,11 +105,11 @@ public class NodeTask extends AbstractNodeTask {
                     ThreadUtil.safeSleep(nodeStepMeta.getSleep());
                 }
 
-                //获取 NodeJobCache 缓存键
+                //获取 NodeJobCacheUtil 缓存键
                 Long nodeJobId = nodeTaskMeta.getNodeJobMeta().getId();
 
                 //更新执行进度到内存
-                NodeJobCache.getInstance()
+                NodeJobCacheUtil.getInstance()
                         .get(nodeJobId)
                         .getNodePlan()
                         .execProgress(nodeStepMeta.getName());
