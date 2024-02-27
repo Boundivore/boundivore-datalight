@@ -85,7 +85,7 @@ public abstract class AbstractNodeTask implements INodeTask {
             this.nodeTaskMeta.setStartTime(System.currentTimeMillis());
 
             //设置 NodeTask 开始执行时，当前组件状态到 NodeTaskMeta 内存缓存中
-            this.nodeTaskMeta.setCurrentState(this.nodeTaskMeta.getStartState());
+            this.nodeTaskMeta.setCurrentNodeState(this.nodeTaskMeta.getStartState());
 
             //执行前：变更当前组件起始状态到数据库
             this.nodeJobService.switchNodeState(this.nodeTaskMeta);
@@ -141,14 +141,14 @@ public abstract class AbstractNodeTask implements INodeTask {
     @Override
     public NodeTaskMeta.NodeTaskResult success() {
         this.nodeTaskMeta.getNodeTaskResult().setSuccess(true);
-        this.nodeTaskMeta.setCurrentState(nodeTaskMeta.getSuccessState());
+        this.nodeTaskMeta.setCurrentNodeState(nodeTaskMeta.getSuccessState());
         return this.nodeTaskMeta.getNodeTaskResult();
     }
 
     @Override
     public NodeTaskMeta.NodeTaskResult fail() {
         this.nodeTaskMeta.getNodeTaskResult().setSuccess(false);
-        this.nodeTaskMeta.setCurrentState(nodeTaskMeta.getFailState());
+        this.nodeTaskMeta.setCurrentNodeState(nodeTaskMeta.getFailState());
         return this.nodeTaskMeta.getNodeTaskResult();
     }
 

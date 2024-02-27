@@ -213,7 +213,7 @@ public class ReactiveAddressUtil {
                 NetworkInterface networkInterface = interfaces.nextElement();
 
                 // Check if the interface name starts with 'en'
-                if (networkInterface.getName().startsWith("en")) {
+                if (networkInterface.getName().startsWith("en") || networkInterface.getName().startsWith("eth")) {
                     Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
                     while (addresses.hasMoreElements()) {
                         InetAddress address = addresses.nextElement();

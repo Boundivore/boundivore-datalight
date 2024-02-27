@@ -29,7 +29,6 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
@@ -72,7 +71,7 @@ public abstract class AbstractStage implements IStage {
 
             //执行前：变更当前服务起始状态到数据库
             //TODO 考虑如果执行的不是部署任务，则成功或失败状态该如何变更
-            this.stageMeta.setCurrentState(SCStateEnum.CHANGING);
+            this.stageMeta.setCurrentServiceState(SCStateEnum.CHANGING);
             this.jobService.switchServiceState(this.stageMeta);
 
             this.runTaskBatch();
@@ -107,7 +106,7 @@ public abstract class AbstractStage implements IStage {
     @Override
     public StageMeta.StageResult success() {
         this.stageMeta.getStageResult().setSuccess(true);
-        this.stageMeta.setCurrentState(SCStateEnum.DEPLOYED);
+        this.stageMeta.setCurrentServiceState(SCStateEnum.DEPLOYED);
         return this.stageMeta.getStageResult();
     }
 
@@ -115,7 +114,7 @@ public abstract class AbstractStage implements IStage {
     public StageMeta.StageResult fail() {
         this.stageMeta.getStageResult().setSuccess(false);
 
-        this.stageMeta.setCurrentState(
+        this.stageMeta.setCurrentServiceState(
                 this.jobService.determineServiceStateViaComponent(
                         this.stageMeta.getJobMeta().getClusterMeta().getCurrentClusterId(),
                         this.stageMeta.getServiceName()

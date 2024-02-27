@@ -56,7 +56,7 @@ public class StageMeta extends TimeMeta {
     private String serviceName;
 
     // 执行时服务当前状态
-    private SCStateEnum currentState;
+    private SCStateEnum currentServiceState;
 
     private Long priority;
 

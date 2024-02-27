@@ -122,7 +122,7 @@ public class Job extends Thread {
             throw new BException(
                     String.format(
                             "初始化 Job 异常: %s",
-                            ExceptionUtil.getSimpleMessage(e)
+                            ExceptionUtil.stacktraceToString(e)
                     )
             );
         }
@@ -215,6 +215,7 @@ public class Job extends Thread {
                         )
                 )
                 .setServiceName(serviceName)
+                .setCurrentServiceState(SCStateEnum.CHANGING)
                 .setPriority(priority)
                 .setStageStateEnum(ExecStateEnum.SUSPEND)
                 .setStageResult(new StageMeta.StageResult(false))
@@ -526,6 +527,11 @@ public class Job extends Thread {
             // 如果之前任务全部成功，则重载 Prometheus 并初始化 Grafana
             if (this.jobMeta.getJobResult().isSuccess()) {
                 this.reloadAndInitMonitor();
+
+                // 如果是部署服务或组件，则完成后，清除 Procedure 信息
+                if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) {
+                    this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
+                }
             }
 
             // 记录 Job 结束时间(自动计算耗时)
@@ -555,10 +561,6 @@ public class Job extends Thread {
         //清除所有可能残留的异步任务
         this.plan.clear();
 
-        // 如果是部署服务或组件，则完成后，清除 Procedure 信息
-        if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) {
-            this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
-        }
 
         // 如果是重启组件，则更新组件 "重启标记 needRestart" 为 false
         if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.RESTART

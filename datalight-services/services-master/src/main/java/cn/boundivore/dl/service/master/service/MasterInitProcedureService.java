@@ -168,6 +168,7 @@ public class MasterInitProcedureService {
         tDlInitProcedure.setProcedureName(request.getProcedureStateEnum().getMessage());
         tDlInitProcedure.setProcedureState(request.getProcedureStateEnum());
         tDlInitProcedure.setNodeJobId(request.getNodeJobId());
+        tDlInitProcedure.setJobId(request.getJobId());
         if (CollUtil.isNotEmpty(request.getNodeInfoList())) {
             tDlInitProcedure.setNodeInfoListBase64(this.nodeInfoList2Base64(request.getNodeInfoList()));
         } else {

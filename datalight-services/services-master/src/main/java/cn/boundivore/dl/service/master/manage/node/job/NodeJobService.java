@@ -131,7 +131,7 @@ public class NodeJobService {
                 this.masterNodeService.switchNodeState(
                         nodeJobMeta.getClusterId(),
                         nodeTaskMeta.getNodeId(),
-                        nodeTaskMeta.getCurrentState()
+                        nodeTaskMeta.getCurrentNodeState()
                 );
                 break;
             case DETECT:
@@ -141,7 +141,7 @@ public class NodeJobService {
                 this.masterNodeInitService.switchNodeInitState(
                         nodeJobMeta.getClusterId(),
                         nodeTaskMeta.getNodeId(),
-                        nodeTaskMeta.getCurrentState()
+                        nodeTaskMeta.getCurrentNodeState()
                 );
                 break;
             default:
@@ -268,7 +268,7 @@ public class NodeJobService {
                 .setNodeStartState(nodeTaskMeta.getStartState())
                 .setNodeFailState(nodeTaskMeta.getFailState())
                 .setNodeSuccessState(nodeTaskMeta.getSuccessState())
-                .setNodeCurrentState(nodeTaskMeta.getCurrentState())
+                .setNodeCurrentState(nodeTaskMeta.getCurrentNodeState())
                 .setIsWait(nodeTaskMeta.isWait())
                 .setSshPort(String.valueOf(nodeTaskMeta.getSshPort()))
                 .setPrivateKeyPath(nodeTaskMeta.getPrivateKeyPath())
@@ -342,18 +342,20 @@ public class NodeJobService {
                 .setTimeout(nodeStepMeta.getTimeout())
                 .setSleep(nodeStepMeta.getSleep())
 
-                .setTotalBytes(nodeStepMeta.getTransferProgress().getTotalBytes())
-                .setTotalProgress(nodeStepMeta.getTransferProgress().getTotalProgress())
-                .setTotalTransferBytes(nodeStepMeta.getTransferProgress().getTotalTransferBytes().get())
-
-                .setTotalFileCount(nodeStepMeta.getTransferProgress().getTotalFileCount())
-                .setTotalFileCountProgress(nodeStepMeta.getTransferProgress().getTotalFileCountProgress())
-                .setTotalTransferFileCount(nodeStepMeta.getTransferProgress().getTotalTransferFileCount().get())
-                .setCurrentTransferFileName(nodeStepMeta.getTransferProgress().getCurrentFileProgress().getFilename())
-
                 .setStartTime(nodeStepMeta.getStartTime())
                 .setEndTime(nodeStepMeta.getEndTime())
                 .setDuration(nodeStepMeta.getDuration());
+
+        if (nodeStepMeta.getTransferProgress() != null) {
+            tDlNodeStep.setTotalBytes(nodeStepMeta.getTransferProgress().getTotalBytes())
+                    .setTotalProgress(nodeStepMeta.getTransferProgress().getTotalProgress())
+                    .setTotalTransferBytes(nodeStepMeta.getTransferProgress().getTotalTransferBytes().get())
+
+                    .setTotalFileCount(nodeStepMeta.getTransferProgress().getTotalFileCount())
+                    .setTotalFileCountProgress(nodeStepMeta.getTransferProgress().getTotalFileCountProgress())
+                    .setTotalTransferFileCount(nodeStepMeta.getTransferProgress().getTotalTransferFileCount().get())
+                    .setCurrentTransferFileName(nodeStepMeta.getTransferProgress().getCurrentFileProgress().getFilename());
+        }
 
         Assert.isTrue(
                 this.tDlStepNodeService.saveOrUpdate(tDlNodeStep),

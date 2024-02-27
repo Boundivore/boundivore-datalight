@@ -62,7 +62,7 @@ public class NodeTaskMeta extends NodeTimeMeta {
     private NodeStateEnum successState;
 
     //当前节点状态
-    private NodeStateEnum currentState;
+    private NodeStateEnum currentNodeState;
 
     // 标记：用于判断开始执行当前 NodeTask 之前，是否需要阻塞等待之前 NodeTask 执行完毕，true（需要），false（不需要）
     // 例如利用与滚动重启，或低功耗部署等（Task runs One by one）

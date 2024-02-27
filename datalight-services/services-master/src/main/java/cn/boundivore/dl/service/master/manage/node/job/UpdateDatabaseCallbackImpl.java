@@ -47,7 +47,8 @@ public class UpdateDatabaseCallbackImpl implements UpdateDatabaseCallback {
     public void update(TransferProgress transferProgress) {
         if (transferProgress.getTotalTransferBytes().get() > 0
                 && transferProgress.getTotalProgress() > 0
-                && transferProgress.getTotalProgress() % 10 == 0) {
+                // 控制进度每增加 2% 更新一次数据库，降低数据库压力
+                && transferProgress.getTotalProgress() % 2 == 0) {
             this.nodeJobService.updateNodeStepDatabase(this.nodeStepMeta);
         }
     }

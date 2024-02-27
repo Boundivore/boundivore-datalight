@@ -20,7 +20,6 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.NodeStepTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
@@ -1130,7 +1129,7 @@ public class MasterNodeJobService {
                 .setStartState(tDlNodeTask.getNodeStartState())
                 .setFailState(tDlNodeTask.getNodeFailState())
                 .setSuccessState(tDlNodeTask.getNodeSuccessState())
-                .setCurrentState(tDlNodeTask.getNodeCurrentState())
+                .setCurrentNodeState(tDlNodeTask.getNodeCurrentState())
                 .setWait(tDlNodeTask.getIsWait())
                 .setName(tDlNodeTask.getNodeTaskName())
                 .setHostname(tDlNodeTask.getHostname())

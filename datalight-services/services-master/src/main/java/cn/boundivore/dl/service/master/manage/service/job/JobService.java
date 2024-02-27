@@ -22,7 +22,6 @@ import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
-import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.cloud.config.async.executors.CustomThreadPoolTaskExecutor;
 import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
@@ -43,8 +42,6 @@ import cn.boundivore.dl.service.master.resolver.ResolverYamlDirectory;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlDirectory;
 import cn.boundivore.dl.service.master.service.*;
 import cn.hutool.core.lang.Assert;
-import com.baomidou.mybatisplus.annotation.TableField;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
@@ -168,7 +165,7 @@ public class JobService {
         this.masterServiceService.switchServiceState(
                 jobMeta.getClusterMeta().getCurrentClusterId(),
                 stageMeta.getServiceName(),
-                stageMeta.getCurrentState()
+                stageMeta.getCurrentServiceState()
         );
     }
 
@@ -305,7 +302,7 @@ public class JobService {
                 .setStageName(stageMeta.getName())
                 .setStageState(stageMeta.getStageStateEnum())
                 .setServiceName(stageMeta.getServiceName())
-                .setServiceState(stageMeta.getCurrentState())
+                .setServiceState(stageMeta.getCurrentServiceState())
                 .setPriority(stageMeta.getPriority())
                 .setStartTime(stageMeta.getStartTime())
                 .setEndTime(stageMeta.getEndTime())
@@ -731,7 +728,7 @@ public class JobService {
         List<MasterWorkerMeta> masterWorkerMetaList = nodeVo.getNodeDetailList()
                 .stream()
                 .map(i -> {
-                            if (i.getHostname().equals(DataLightEnv.MASTER_IP)) {
+                            if (i.getNodeIp().equals(DataLightEnv.MASTER_IP)) {
                                 masterMeta.setNodeId(i.getNodeId());
                                 masterMeta.setHostname(i.getHostname());
                                 masterMeta.setNodeIp(i.getNodeIp());

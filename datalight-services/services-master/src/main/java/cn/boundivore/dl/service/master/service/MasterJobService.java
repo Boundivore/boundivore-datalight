@@ -1012,7 +1012,7 @@ public class MasterJobService {
                 .setId(tDlStage.getId())
                 .setName(tDlStage.getStageName())
                 .setServiceName(tDlStage.getServiceName())
-                .setCurrentState(tDlStage.getServiceState())
+                .setCurrentServiceState(tDlStage.getServiceState())
                 .setPriority(tDlStage.getPriority())
                 .setStageResult(new StageMeta.StageResult(tDlStage.getStageState() == ExecStateEnum.OK))
                 .setStageStateEnum(tDlStage.getStageState())

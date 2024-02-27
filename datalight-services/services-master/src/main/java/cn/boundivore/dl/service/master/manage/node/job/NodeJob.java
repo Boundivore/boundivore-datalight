@@ -112,7 +112,7 @@ public class NodeJob extends Thread {
             throw new BException(
                     String.format(
                             "初始化 NodeJob 异常: %s",
-                            ExceptionUtil.getSimpleMessage(e)
+                            ExceptionUtil.stacktraceToString(e)
                     )
             );
         }
@@ -234,7 +234,7 @@ public class NodeJob extends Thread {
                 .setStartState(finalStartState)
                 .setFailState(finalFailState)
                 .setSuccessState(finalSuccessState)
-                .setCurrentState(finalStartState)
+                .setCurrentNodeState(finalStartState)
 
                 .setNodeTaskStateEnum(ExecStateEnum.SUSPEND)
                 .setNodeTaskResult(new NodeTaskMeta.NodeTaskResult(false))
