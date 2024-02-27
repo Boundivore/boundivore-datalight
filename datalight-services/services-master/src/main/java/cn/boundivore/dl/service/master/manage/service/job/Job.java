@@ -561,7 +561,6 @@ public class Job extends Thread {
         //清除所有可能残留的异步任务
         this.plan.clear();
 
-
         // 如果是重启组件，则更新组件 "重启标记 needRestart" 为 false
         if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.RESTART
                 || this.jobMeta.getActionTypeEnum() == ActionTypeEnum.START
