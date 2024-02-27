@@ -762,12 +762,13 @@ public class MasterNodeJobService {
      * @return 返回获取所有节点文件分发进度概览
      */
     public Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(Long nodeJobId) {
+        // 从缓存中获取 NodeJobCacheBean 对象
         NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
-        Assert.notNull(
-                nodeJobCacheBean,
-                () -> new BException("NodeJobId 错误或内存缓存信息已失效，如有必要后续将支持从数据库中读取")
-        );
+        if (nodeJobCacheBean == null) {
+            // 内存缓存已失效，从数据库中读取
+            nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
+        }
 
         // 创建 AllNodeJobTransferProgressVo 对象
         AbstractNodeJobVo.AllNodeJobTransferProgressVo allNodeJobTransferProgressVo = new AbstractNodeJobVo.AllNodeJobTransferProgressVo();
@@ -834,11 +835,13 @@ public class MasterNodeJobService {
     public Result<AbstractNodeJobVo.NodeJobTransferProgressDetailVo> getNodeJobDispatchProgressDetail(Long nodeJobId,
                                                                                                       Long nodeTaskId,
                                                                                                       Long nodeStepId) {
-
-        // 从缓存中获取 NodeJob 对象
+        // 从缓存中获取 NodeJobCacheBean 对象
         NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
-        Assert.notNull(nodeJobCacheBean, () -> new BException("NodeJobId 错误或缓存信息已失效"));
+        if (nodeJobCacheBean == null) {
+            // 内存缓存已失效，从数据库中读取
+            nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
+        }
 
         // 获取节点 Job 的元数据信息
         NodeJobMeta nodeJobMeta = nodeJobCacheBean.getNodeJobMeta();
@@ -1187,19 +1190,22 @@ public class MasterNodeJobService {
                 .setTimeout(tDlNodeStep.getTimeout())
                 .setSleep(tDlNodeStep.getSleep())
                 .setExecStateEnum(tDlNodeStep.getNodeStepState())
-                .setNodeStepResult(new NodeStepMeta.NodeStepResult(tDlNodeStep.getNodeStepState() == ExecStateEnum.OK))
-                .setTransferProgress(
-                        new TransferProgress()
-                                .setTotalBytes(tDlNodeStep.getTotalBytes())
-                                .setTotalProgress(tDlNodeStep.getTotalProgress())
-                                .setTotalTransferBytes(new AtomicLong(tDlNodeStep.getTotalTransferBytes()))
+                .setNodeStepResult(new NodeStepMeta.NodeStepResult(tDlNodeStep.getNodeStepState() == ExecStateEnum.OK));
 
-                                .setTotalFileCount(tDlNodeStep.getTotalFileCount())
-                                .setTotalFileCountProgress(tDlNodeStep.getTotalFileCountProgress())
-                                .setTotalTransferFileCount(new AtomicLong(tDlNodeStep.getTotalTransferFileCount()))
+        if (tDlNodeStep.getTotalBytes() != null && tDlNodeStep.getTotalBytes() != 0L) {
+            nodeStepMeta.setTransferProgress(
+                    new TransferProgress()
+                            .setTotalBytes(tDlNodeStep.getTotalBytes())
+                            .setTotalProgress(tDlNodeStep.getTotalProgress())
+                            .setTotalTransferBytes(new AtomicLong(tDlNodeStep.getTotalTransferBytes()))
 
-                                .setCurrentFileProgress(new TransferProgress.FileProgress().setFilename(tDlNodeStep.getCurrentTransferFileName()))
-                );
+                            .setTotalFileCount(tDlNodeStep.getTotalFileCount())
+                            .setTotalFileCountProgress(tDlNodeStep.getTotalFileCountProgress())
+                            .setTotalTransferFileCount(new AtomicLong(tDlNodeStep.getTotalTransferFileCount()))
+
+                            .setCurrentFileProgress(new TransferProgress.FileProgress().setFilename(tDlNodeStep.getCurrentTransferFileName()))
+            );
+        }
 
         nodeStepMeta.setNum(tDlNodeStep.getNum());
         nodeStepMeta.setStartTime(tDlNodeStep.getStartTime());
