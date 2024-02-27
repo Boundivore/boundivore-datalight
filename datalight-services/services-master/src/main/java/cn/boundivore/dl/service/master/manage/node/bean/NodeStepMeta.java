@@ -23,7 +23,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description: NodeStepMeta
@@ -85,11 +87,51 @@ public class NodeStepMeta extends NodeTimeMeta {
      * Modification time:
      * Version: V1.0
      */
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     public final static class NodeStepResult {
         private boolean isSuccess;
+    }
+
+    /**
+     * Description: 获取字符串形式的参数列表，以英文逗号分割
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param list 参数列表
+     * @return 字符串形式的参数列表，以英文逗号分割
+     */
+    public static String list2Str(List<String> list) {
+        if (list == null) {
+            return null;
+        }
+        return String.join(",", list);
+    }
+
+    /**
+     * Description: 获取参数列表的字符串形式
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param str 参数列表的字符串形式，以英文逗号分割存储于数据库中
+     * @return List 列表
+     */
+    public static List<String> str2List(String str) {
+        if (str == null || str.isEmpty()) {
+            return null;
+        }
+        return Arrays.stream(str.split(","))
+                .collect(Collectors.toList());
     }
 }

@@ -30,6 +30,10 @@ public class TDlTask extends TBasePo<TDlTask> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("生成序号")
+    @TableField("num")
+    private Long num;
+
     @ApiModelProperty("集群 ID")
     @TableField("cluster_id")
     private Long clusterId;

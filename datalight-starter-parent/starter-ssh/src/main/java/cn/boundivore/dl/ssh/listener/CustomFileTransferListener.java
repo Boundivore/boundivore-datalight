@@ -205,6 +205,8 @@ public class CustomFileTransferListener implements TransferListener {
             this.transferProgress.updateTotalProgress(deltaTransferBytes);
             this.transferProgress.setCurrentFileProgress(fileProgress);
 
+            transferProgress.updateDatabase(this.transferProgress);
+
             return fileProgress;
         }
 
@@ -232,6 +234,8 @@ public class CustomFileTransferListener implements TransferListener {
             TransferProgress.FileProgress fileProgress = this.transferProgress.get(filePath);
 
             this.transferProgress.updateTotalTransferFileCount();
+
+            transferProgress.updateDatabase(this.transferProgress);
 
             return fileProgress;
         }

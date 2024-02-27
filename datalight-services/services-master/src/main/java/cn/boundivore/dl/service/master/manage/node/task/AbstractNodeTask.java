@@ -17,9 +17,7 @@
 package cn.boundivore.dl.service.master.manage.node.task;
 
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
-import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
-import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeResources;
@@ -443,6 +441,7 @@ public abstract class AbstractNodeTask implements INodeTask {
         String privateKeyPath = nodeTaskMeta.getPrivateKeyPath();
 
         TransferProgress transferProgress = this.nodeJobService.initNodeTransferProgress(
+                nodeStepMeta,
                 hostname,
                 sshPort,
                 privateKeyPath,

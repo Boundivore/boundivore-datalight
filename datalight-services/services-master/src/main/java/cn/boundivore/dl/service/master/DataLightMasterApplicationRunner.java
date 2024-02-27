@@ -78,13 +78,15 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         log.info("NODE_CONF_DIR: {}", DataLightEnv.NODE_CONF_DIR);
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
-        // 更新 Master 所在节点的元数据信息，TODO 如果后续开启 Master 高可用功能，则此处需要根据持有活跃锁的状态来执行下面的函数
+        // 更新 Master 所在节点的元数据信息
+        // TODO 如果后续开启 Master 高可用功能，则此处需要根据持有活跃锁的状态来执行下面的函数
         this.masterManageService.updateMasterMeta();
 
         // 检查超级用户是否注入到数据库
         this.masterUserService.checkInitSuperUser();
 
         // 检查是否存在 Master 异常终止导致数据库状态异常，若存在，则使其恢复到正常状态
+        // TODO 如果后续开启 Master 高可用功能，此处功能需要移动到 “切换为活跃锁时，检查状态异常”
         this.masterNodeJobService.checkNodeJobState();
         this.masterJobService.checkJobState();
         this.masterServiceService.checkServiceState();

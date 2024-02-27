@@ -77,6 +77,23 @@ public class NodePlan {
         log.info("计划总数: {}", this.planTotal);
     }
 
+    public NodePlan(String planName,
+                int planTotal,
+                int planCurrent,
+                int planProgress,
+                int execTotal,
+                int execCurrent,
+                int execProgress) {
+        this.planName = planName;
+        this.planTotal = planTotal;
+        this.planCurrent = planCurrent;
+        this.planProgress = planProgress;
+
+        this.execTotal.set(execTotal);
+        this.execCurrent.set(execCurrent);
+        this.execProgress.set(execProgress);
+    }
+
     /**
      * Description: 获取当前待生成的计划总数
      * Created by: Boundivore

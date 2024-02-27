@@ -16,8 +16,7 @@
  */
 package cn.boundivore.dl.ssh.bean;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.util.CharsetUtil;
+import cn.boundivore.dl.ssh.listener.UpdateDatabaseCallback;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -44,7 +44,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Slf4j
-public class TransferProgress {
+public class TransferProgress implements Serializable {
+
+    private static final long serialVersionUID = -1233597235169035159L;
+
+    private UpdateDatabaseCallback updateDatabaseCallback;
 
     /**
      * 文件字节数
@@ -62,7 +66,7 @@ public class TransferProgress {
      * 文件个数
      */
     // 当前节点总待传输文件数
-    private long totalFileCount;
+    private long totalFileCount = 0L;
 
     // 当前节点传输文件个数总进度
     private long totalFileCountProgress = 0L;
@@ -95,15 +99,17 @@ public class TransferProgress {
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
-    public static class FileProgress {
+    public static class FileProgress implements Serializable {
+
+        private static final long serialVersionUID = -7659059436032348207L;
 
         private String filename;
 
-        private long fileBytes;
+        private long fileBytes = 0L;
 
         private AtomicLong fileTransferBytes = new AtomicLong(0L);
 
-        private long fileProgress;
+        private long fileProgress = 0L;
 
         private String printSpeed = "0 b/s";
 
@@ -247,5 +253,25 @@ public class TransferProgress {
                 100 :
                 (this.totalTransferFileCount.incrementAndGet() * 100) / this.totalFileCount;
         return this;
+    }
+
+    /**
+     * Description: 将传输进度更新到数据库
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param transferProgress 当前文件传输进度
+     * @return TransferProgress
+     */
+    public TransferProgress updateDatabase(TransferProgress transferProgress) {
+        if (updateDatabaseCallback != null) {
+            updateDatabaseCallback.update(transferProgress);
+        }
+        return transferProgress;
     }
 }

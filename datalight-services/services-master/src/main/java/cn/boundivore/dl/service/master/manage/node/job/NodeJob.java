@@ -42,6 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -152,9 +153,15 @@ public class NodeJob extends Thread {
                 .setClusterId(nodeIntention.getClusterId())
                 .setNodeActionTypeEnum(nodeIntention.getNodeActionTypeEnum());
 
+        // 生成序号，用于表明当前实例的生成顺序
+        AtomicLong nodeTaskNum = new AtomicLong(0L);
         this.nodeIntention.getNodeList()
-                .forEach(i -> {
-                            final NodeTaskMeta nodeTaskMeta = this.initTaskMeta(this.nodeJobMeta, i);
+                .forEach(node -> {
+                            final NodeTaskMeta nodeTaskMeta = this.initTaskMeta(
+                                    this.nodeJobMeta,
+                                    node,
+                                    nodeTaskNum.incrementAndGet()
+                            );
 
                             this.nodeJobMeta.getNodeTaskMetaMap().put(
                                     nodeTaskMeta.getId(),
@@ -176,9 +183,12 @@ public class NodeJob extends Thread {
      *
      * @param nodeJobMeta Job 元数据信息
      * @param node        节点意图信息
+     * @param nodeTaskNum NodeTask 序号
      * @return NodeTaskMeta
      */
-    private NodeTaskMeta initTaskMeta(NodeJobMeta nodeJobMeta, NodeIntention.Node node) {
+    private NodeTaskMeta initTaskMeta(NodeJobMeta nodeJobMeta,
+                                      NodeIntention.Node node,
+                                      long nodeTaskNum) {
 
         YamlNodeAction.DataLight dataLight = ResolverYamlNode.NODE_INIT_YAML.getDataLight();
 
@@ -229,6 +239,8 @@ public class NodeJob extends Thread {
                 .setNodeTaskResult(new NodeTaskMeta.NodeTaskResult(false))
                 .setNodeStepMetaMap(new LinkedHashMap<>());
 
+        nodeTaskMeta.setNum(nodeTaskNum);
+
         //同一个 NodeTaskMeta 中，会根据 NodeActionTypeEnum，封装一组 NodeStepMeta
         List<NodeStepMeta> nodeStepMetaList = this.initNodeStepMeta(nodeTaskMeta);
         nodeStepMetaList.forEach(
@@ -261,22 +273,30 @@ public class NodeJob extends Thread {
                 i -> i.getType() == nodeTaskMeta.getNodeActionTypeEnum()
         );
 
-
+        // 生成序号，用于表明当前实例的生成顺序
+        AtomicLong nodeStepNum = new AtomicLong(0L);
         return action.getSteps()
                 .stream()
                 //转换器转换部分属性值，其余属性值通过 set 方法设定
-                .map(i -> this.iNodeStepConverter.convert2NodeStepMeta(i)
-                        .setNodeTaskMeta(nodeTaskMeta)
+                .map(i -> {
+                            NodeStepMeta nodeStepMeta = this.iNodeStepConverter.convert2NodeStepMeta(i)
+                                    .setNodeTaskMeta(nodeTaskMeta)
 
-                        .setId(IdWorker.getId())
-                        .setName(String.format(
-                                        "%s:%s",
-                                        nodeTaskMeta.getName(),
-                                        i.getName()
-                                )
-                        )
-                        .setExecStateEnum(ExecStateEnum.SUSPEND)
-                        .setNodeStepResult(new NodeStepMeta.NodeStepResult(false)))
+                                    .setId(IdWorker.getId())
+                                    .setName(String.format(
+                                                    "%s:%s",
+                                                    nodeTaskMeta.getName(),
+                                                    i.getName()
+                                            )
+                                    )
+                                    .setExecStateEnum(ExecStateEnum.SUSPEND)
+                                    .setNodeStepResult(new NodeStepMeta.NodeStepResult(false));
+                            nodeStepMeta.setNum(nodeStepNum.incrementAndGet());
+
+                            return nodeStepMeta;
+                        }
+
+                )
                 .collect(Collectors.toList());
     }
 

@@ -529,7 +529,9 @@ public class MasterJobService {
      * @return Result<AbstractJobVo.JobProgressVo> 进度信息
      */
     public Result<AbstractJobVo.JobProgressVo> getJobProgress(Long jobId) {
+        // 从缓存中获取 JobCacheBean 对象
         JobCacheBean jobCacheBean = JobCacheUtil.getInstance().get(jobId);
+
         if (jobCacheBean == null) {
             // 内存缓存已失效，从数据库中读取
             jobCacheBean = this.getJobCacheBeanFromDb(jobId);
@@ -853,6 +855,10 @@ public class MasterJobService {
     private JobCacheBean getJobCacheBeanFromDb(Long jobId) {
 
         TDlJob tDlJob = this.tDlJobService.getById(jobId);
+        Assert.notNull(
+                tDlJob,
+                () -> new BException("不存在的 JobId")
+        );
 
         AbstractClusterVo.ClusterVo currentClusterVo = this.masterClusterService.getClusterById(tDlJob.getClusterId()).getData();
         AbstractClusterVo.ClusterVo relativeClusterVo = this.masterClusterService.getClusterById(currentClusterVo.getRelativeClusterId()).getData();
@@ -860,17 +866,20 @@ public class MasterJobService {
         List<TDlStage> tDlStageList = this.tDlStageService.lambdaQuery()
                 .select()
                 .eq(TDlStage::getJobId, jobId)
+                .orderByAsc(TDlStage::getNum)
                 .list();
 
         List<TDlTask> tDlTaskList = this.tDlTaskService.lambdaQuery()
                 .select()
                 .eq(TDlTask::getJobId, jobId)
+                .orderByAsc(TDlTask::getNum)
                 .list();
 
 
         List<TDlStep> tDlStepList = this.tDlStepService.lambdaQuery()
                 .select()
                 .eq(TDlStep::getJobId, jobId)
+                .orderByAsc(TDlStep::getNum)
                 .list();
 
         // 获取 JobMeta 相关信息
@@ -1010,6 +1019,7 @@ public class MasterJobService {
                 .setTaskMetaMap(new LinkedHashMap<>());
 
 
+        stageMeta.setNum(tDlStage.getNum());
         stageMeta.setStartTime(tDlStage.getStartTime());
         stageMeta.setEndTime(tDlStage.getEndTime());
 
@@ -1071,6 +1081,7 @@ public class MasterJobService {
                 .setStepMetaMap(new LinkedHashMap<>());
 
 
+        taskMeta.setNum(tDlTask.getNum());
         taskMeta.setStartTime(tDlTask.getStartTime());
         taskMeta.setEndTime(tDlTask.getEndTime());
 
@@ -1123,6 +1134,7 @@ public class MasterJobService {
                 .setSleep(tDlStep.getSleep())
                 .setExecStateEnum(tDlStep.getStepState());
 
+        taskMeta.setNum(tDlStep.getNum());
         taskMeta.setStartTime(stepMeta.getStartTime());
         taskMeta.setEndTime(stepMeta.getEndTime());
 

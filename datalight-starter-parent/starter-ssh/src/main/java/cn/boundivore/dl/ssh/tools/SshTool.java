@@ -18,6 +18,7 @@ package cn.boundivore.dl.ssh.tools;
 
 import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.boundivore.dl.ssh.listener.CustomFileTransferListener;
+import cn.boundivore.dl.ssh.listener.UpdateDatabaseCallback;
 import cn.boundivore.dl.ssh.verifier.NoneHostKeyVerifier;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
@@ -390,7 +391,6 @@ public class SshTool {
                         transferProgress.getFileProgressMap().values()
                 )
         );
-
 
         return transferProgress;
     }

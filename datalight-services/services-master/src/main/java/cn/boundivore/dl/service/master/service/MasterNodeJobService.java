@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.NodeStepTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
@@ -27,14 +28,8 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
-import cn.boundivore.dl.orm.po.single.TDlNode;
-import cn.boundivore.dl.orm.po.single.TDlNodeInit;
-import cn.boundivore.dl.orm.po.single.TDlNodeJob;
-import cn.boundivore.dl.orm.po.single.TDlNodeJobLog;
-import cn.boundivore.dl.orm.service.single.impl.TDlNodeInitServiceImpl;
-import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobLogServiceImpl;
-import cn.boundivore.dl.orm.service.single.impl.TDlNodeJobServiceImpl;
-import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
+import cn.boundivore.dl.orm.po.single.*;
+import cn.boundivore.dl.orm.service.single.impl.*;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobCacheBean;
 import cn.boundivore.dl.service.master.manage.node.bean.NodeJobMeta;
@@ -45,6 +40,7 @@ import cn.boundivore.dl.service.master.manage.node.job.NodeJob;
 import cn.boundivore.dl.service.master.manage.node.job.NodeJobCacheUtil;
 import cn.boundivore.dl.service.master.manage.node.job.NodePlan;
 import cn.boundivore.dl.ssh.bean.TransferProgress;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.RequiredArgsConstructor;
@@ -52,10 +48,8 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -77,6 +71,10 @@ public class MasterNodeJobService {
     private final TDlNodeServiceImpl tDlNodeService;
 
     private final TDlNodeJobServiceImpl tDlNodeJobService;
+
+    private final TDlNodeTaskServiceImpl tDlNodeTaskService;
+
+    private final TDlNodeStepServiceImpl tDlNodeStepService;
 
     private final TDlNodeJobLogServiceImpl tDlNodeJobLogService;
 
@@ -484,10 +482,11 @@ public class MasterNodeJobService {
      * @return 节点作业进度信息的结果对象
      */
     public Result<AbstractNodeJobVo.NodeJobProgressVo> getNodeJobProgress(Long nodeJobId) {
-        // 从缓存中获取 NodeJob 对象
+        // 从缓存中获取 NodeJobCacheBean 对象
         NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
 
         if (nodeJobCacheBean == null) {
+            // 内存缓存已失效，从数据库中读取
             nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
         }
 
@@ -1001,8 +1000,213 @@ public class MasterNodeJobService {
      * @return NodeJobCacheBean
      */
     private NodeJobCacheBean getJobCacheBeanFromDb(Long nodeJobId) {
-        NodeJobCacheBean nodeJobCacheBean = new NodeJobCacheBean();
+
+        TDlNodeJob tDlNodeJob = this.tDlNodeJobService.getById(nodeJobId);
+        Assert.notNull(
+                tDlNodeJob,
+                () -> new BException("不存在的 NodeJobId")
+        );
+
+        List<TDlNodeTask> tDlNodeTaskList = this.tDlNodeTaskService.lambdaQuery()
+                .select()
+                .eq(TDlNodeTask::getNodeJobId, nodeJobId)
+                .orderByAsc(TDlNodeTask::getNum)
+                .list();
+
+        List<TDlNodeStep> tDlNodeStepList = this.tDlNodeStepService.lambdaQuery()
+                .select()
+                .eq(TDlNodeStep::getNodeJobId, nodeJobId)
+                .orderByAsc(TDlNodeStep::getNum)
+                .list();
+
+        // 获取 NodeJobMeta 相关信息
+        final NodeJobMeta nodeJobMeta = this.recoverNodeJobMeta(
+                tDlNodeJob,
+                tDlNodeTaskList,
+                tDlNodeStepList
+        );
+
+        // 获取 NodePlan 相关信息
+        String planName = CollUtil.getLast(tDlNodeStepList).getNodeStepName();
+        int planTotal = tDlNodeStepList.size();
+        int planCurrent = tDlNodeStepList.size();
+        int planProgress = 100;
+
+        int execTotal = tDlNodeStepList.size();
+        int execCurrent = (int) tDlNodeStepList.stream().filter(i -> i.getNodeStepState() == ExecStateEnum.OK).count();
+        int execProgress = execCurrent * 100 / execTotal;
+
+        final NodePlan nodePlan = new NodePlan(
+                planName,
+                planTotal,
+                planCurrent,
+                planProgress,
+                execTotal,
+                execCurrent,
+                execProgress
+        );
+
+        NodeJobCacheBean nodeJobCacheBean = new NodeJobCacheBean(nodeJobMeta, nodePlan);
+
+        // 重新加载到内存
+        NodeJobCacheUtil.getInstance().cache(nodeJobCacheBean);
+
         return nodeJobCacheBean;
+    }
+
+
+    /**
+     * Description: 从数据库中恢复 NodeJobMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlNodeJob      数据库 NodeJob 实体
+     * @param tDlNodeTaskList 数据库 NodeTask 实体列表
+     * @param tDlNodeStepList 数据库 NodeStep 实体列表
+     * @return JobMeta Job 元数据信息
+     */
+    private NodeJobMeta recoverNodeJobMeta(TDlNodeJob tDlNodeJob,
+                                           List<TDlNodeTask> tDlNodeTaskList,
+                                           List<TDlNodeStep> tDlNodeStepList) {
+
+        NodeJobMeta nodeJobMeta = new NodeJobMeta()
+                .setId(tDlNodeJob.getId())
+                .setClusterId(tDlNodeJob.getClusterId())
+                .setTag(tDlNodeJob.getTag())
+                .setNodeActionTypeEnum(tDlNodeJob.getNodeActionType())
+                .setName(tDlNodeJob.getNodeJobName())
+                .setExecStateEnum(tDlNodeJob.getNodeJobState())
+                .setNodeJobResult(new NodeJobMeta.NodeJobResult(tDlNodeJob.getNodeJobState() == ExecStateEnum.OK))
+                .setNodeTaskMetaMap(new LinkedHashMap<>());
+
+        nodeJobMeta.setStartTime(tDlNodeJob.getStartTime());
+        nodeJobMeta.setEndTime(tDlNodeJob.getEndTime());
+
+        tDlNodeTaskList.stream()
+                .filter(i -> i.getNodeJobId() == nodeJobMeta.getId())
+                .forEach(tDlNodeTask -> {
+                            NodeTaskMeta nodeTaskMeta = this.recoverNodeTaskMeta(
+                                    nodeJobMeta,
+                                    tDlNodeTask,
+                                    tDlNodeStepList
+                            );
+
+                            nodeJobMeta.getNodeTaskMetaMap().put(nodeTaskMeta.getNodeId(), nodeTaskMeta);
+
+                        }
+                );
+
+
+        return nodeJobMeta;
+    }
+
+    /**
+     * Description: 从数据库中恢复 NodeJobMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeJobMeta     NodeJob 元数据信息
+     * @param tDlNodeTask     数据库 NodeTask 实体
+     * @param tDlNodeStepList 数据库 NodeStep 实体列表
+     * @return JobMeta Job 元数据信息
+     */
+    private NodeTaskMeta recoverNodeTaskMeta(NodeJobMeta nodeJobMeta,
+                                             TDlNodeTask tDlNodeTask,
+                                             List<TDlNodeStep> tDlNodeStepList) {
+
+        NodeTaskMeta nodeTaskMeta = new NodeTaskMeta()
+                .setNodeJobMeta(nodeJobMeta)
+                .setId(tDlNodeTask.getId())
+                .setStartState(tDlNodeTask.getNodeStartState())
+                .setFailState(tDlNodeTask.getNodeFailState())
+                .setSuccessState(tDlNodeTask.getNodeSuccessState())
+                .setCurrentState(tDlNodeTask.getNodeCurrentState())
+                .setWait(tDlNodeTask.getIsWait())
+                .setName(tDlNodeTask.getNodeTaskName())
+                .setHostname(tDlNodeTask.getHostname())
+                .setSshPort(Integer.valueOf(tDlNodeTask.getSshPort()))
+                .setPrivateKeyPath(tDlNodeTask.getPrivateKeyPath())
+                .setNodeIp(tDlNodeTask.getNodeIp())
+                .setNodeId(tDlNodeTask.getNodeId())
+                .setNodeTaskStateEnum(tDlNodeTask.getNodeTaskState())
+                .setNodeActionTypeEnum(tDlNodeTask.getNodeActionType())
+                .setNodeTaskResult(new NodeTaskMeta.NodeTaskResult(tDlNodeTask.getNodeTaskState() == ExecStateEnum.OK))
+                .setNodeStepMetaMap(new LinkedHashMap<>());
+
+        nodeTaskMeta.setNum(tDlNodeTask.getNum());
+        nodeTaskMeta.setStartTime(tDlNodeTask.getStartTime());
+        nodeTaskMeta.setEndTime(tDlNodeTask.getEndTime());
+
+        tDlNodeStepList.forEach(tDlNodeStep -> {
+                    NodeStepMeta nodeStepMeta = this.recoverNodeStepMeta(
+                            nodeTaskMeta,
+                            tDlNodeStep
+                    );
+                    nodeTaskMeta.getNodeStepMetaMap().put(nodeStepMeta.getId(), nodeStepMeta);
+                }
+        );
+
+        return nodeTaskMeta;
+    }
+
+    /**
+     * Description: 从数据库中恢复 NodeStepMeta 信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeTaskMeta NodeTask 元数据信息
+     * @param tDlNodeStep  数据库 NodeStep 实体
+     * @return JobMeta Job 元数据信息
+     */
+    private NodeStepMeta recoverNodeStepMeta(NodeTaskMeta nodeTaskMeta,
+                                             TDlNodeStep tDlNodeStep) {
+
+        NodeStepMeta nodeStepMeta = new NodeStepMeta()
+                .setNodeTaskMeta(nodeTaskMeta)
+                .setId(tDlNodeStep.getId())
+                .setType(tDlNodeStep.getNodeStepType())
+                .setName(tDlNodeStep.getNodeStepName())
+                .setShell(tDlNodeStep.getShell())
+                .setArgs(NodeStepMeta.str2List(tDlNodeStep.getArgs()))
+                .setInteractions(NodeStepMeta.str2List(tDlNodeStep.getInteractions()))
+                .setExits(Integer.valueOf(tDlNodeStep.getExits()))
+                .setTimeout(tDlNodeStep.getTimeout())
+                .setSleep(tDlNodeStep.getSleep())
+                .setExecStateEnum(tDlNodeStep.getNodeStepState())
+                .setNodeStepResult(new NodeStepMeta.NodeStepResult(tDlNodeStep.getNodeStepState() == ExecStateEnum.OK))
+                .setTransferProgress(
+                        new TransferProgress()
+                                .setTotalBytes(tDlNodeStep.getTotalBytes())
+                                .setTotalProgress(tDlNodeStep.getTotalProgress())
+                                .setTotalTransferBytes(new AtomicLong(tDlNodeStep.getTotalTransferBytes()))
+
+                                .setTotalFileCount(tDlNodeStep.getTotalFileCount())
+                                .setTotalFileCountProgress(tDlNodeStep.getTotalFileCountProgress())
+                                .setTotalTransferFileCount(new AtomicLong(tDlNodeStep.getTotalTransferFileCount()))
+
+                                .setCurrentFileProgress(new TransferProgress.FileProgress().setFilename(tDlNodeStep.getCurrentTransferFileName()))
+                );
+
+        nodeStepMeta.setNum(tDlNodeStep.getNum());
+        nodeStepMeta.setStartTime(tDlNodeStep.getStartTime());
+        nodeStepMeta.setEndTime(nodeStepMeta.getEndTime());
+
+        return nodeStepMeta;
     }
 
     /**

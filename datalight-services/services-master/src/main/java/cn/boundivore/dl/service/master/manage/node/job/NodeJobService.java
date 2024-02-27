@@ -196,10 +196,11 @@ public class NodeJobService {
             tDlNodeJob.setVersion(0L).setId(nodeJobMeta.getId());
         }
 
-        tDlNodeJob.setTag(nodeJobMeta.getTag())
-                .setClusterId(nodeJobMeta.getClusterId())
+        tDlNodeJob.setClusterId(nodeJobMeta.getClusterId())
+                .setTag(nodeJobMeta.getTag())
                 .setNodeJobName(nodeJobMeta.getName())
                 .setNodeJobState(nodeJobMeta.getExecStateEnum())
+                .setNodeActionType(nodeJobMeta.getNodeActionTypeEnum())
                 .setStartTime(nodeJobMeta.getStartTime())
                 .setEndTime(nodeJobMeta.getEndTime())
                 .setDuration(nodeJobMeta.getDuration());
@@ -254,8 +255,8 @@ public class NodeJobService {
             tDlNodeTask.setVersion(0L).setId(nodeTaskMeta.getId());
         }
 
-        tDlNodeTask.setTag(nodeJobMeta.getTag())
-                .setClusterId(nodeJobMeta.getClusterId())
+        tDlNodeTask.setClusterId(nodeJobMeta.getClusterId())
+                .setTag(nodeJobMeta.getTag())
                 .setNodeJobId(nodeJobMeta.getId())
                 .setNodeId(nodeTaskMeta.getNodeId())
                 .setHostname(nodeTaskMeta.getHostname())
@@ -263,6 +264,13 @@ public class NodeJobService {
                 .setNodeTaskName(nodeTaskMeta.getName())
                 .setNodeTaskState(nodeTaskMeta.getNodeTaskStateEnum())
                 .setNodeActionType(nodeTaskMeta.getNodeActionTypeEnum())
+                .setNodeStartState(nodeTaskMeta.getStartState())
+                .setNodeFailState(nodeTaskMeta.getFailState())
+                .setNodeSuccessState(nodeTaskMeta.getSuccessState())
+                .setNodeCurrentState(nodeTaskMeta.getCurrentState())
+                .setIsWait(nodeTaskMeta.isWait())
+                .setSshPort(String.valueOf(nodeTaskMeta.getSshPort()))
+                .setPrivateKeyPath(nodeTaskMeta.getPrivateKeyPath())
                 .setStartTime(nodeTaskMeta.getStartTime())
                 .setEndTime(nodeTaskMeta.getEndTime())
                 .setDuration(nodeTaskMeta.getDuration());
@@ -318,13 +326,29 @@ public class NodeJobService {
             tDlNodeStep.setVersion(0L).setId(nodeStepMeta.getId());
         }
 
-        tDlNodeStep.setTag(nodeJobMeta.getTag())
-                .setClusterId(nodeJobMeta.getClusterId())
+        tDlNodeStep.setClusterId(nodeJobMeta.getClusterId())
+                .setTag(nodeJobMeta.getTag())
                 .setNodeJobId(nodeJobMeta.getId())
                 .setNodeTaskId(nodeTaskMeta.getId())
                 .setNodeStepName(nodeStepMeta.getName())
                 .setNodeStepState(nodeStepMeta.getExecStateEnum())
                 .setNodeStepType(nodeStepMeta.getType())
+                .setShell(nodeStepMeta.getShell())
+                .setArgs(NodeStepMeta.list2Str(nodeStepMeta.getArgs()))
+                .setInteractions(NodeStepMeta.list2Str(nodeStepMeta.getInteractions()))
+                .setExits(String.valueOf(nodeStepMeta.getExits()))
+                .setTimeout(nodeStepMeta.getTimeout())
+                .setSleep(nodeStepMeta.getSleep())
+
+                .setTotalBytes(nodeStepMeta.getTransferProgress().getTotalBytes())
+                .setTotalProgress(nodeStepMeta.getTransferProgress().getTotalProgress())
+                .setTotalTransferBytes(nodeStepMeta.getTransferProgress().getTotalTransferBytes().get())
+
+                .setTotalFileCount(nodeStepMeta.getTransferProgress().getTotalFileCount())
+                .setTotalFileCountProgress(nodeStepMeta.getTransferProgress().getTotalFileCountProgress())
+                .setTotalTransferFileCount(nodeStepMeta.getTransferProgress().getTotalTransferFileCount().get())
+                .setCurrentTransferFileName(nodeStepMeta.getTransferProgress().getCurrentFileProgress().getFilename())
+
                 .setStartTime(nodeStepMeta.getStartTime())
                 .setEndTime(nodeStepMeta.getEndTime())
                 .setDuration(nodeStepMeta.getDuration());
@@ -496,7 +520,8 @@ public class NodeJobService {
      * @param transferPath   传输路径
      * @return TransferProgress - 初始化的传输进度对象
      */
-    public TransferProgress initNodeTransferProgress(String hostname,
+    public TransferProgress initNodeTransferProgress(NodeStepMeta nodeStepMeta,
+                                                     String hostname,
                                                      int sshPort,
                                                      String privateKeyPath,
                                                      String transferPath) throws IOException {
@@ -513,6 +538,14 @@ public class NodeJobService {
                 transferPath,
                 sshClient,
                 true
+        );
+
+        // 设置数据库更新回调
+        transferProgress.setUpdateDatabaseCallback(
+                new UpdateDatabaseCallbackImpl(
+                        this,
+                        nodeStepMeta
+                )
         );
 
         sshClient.disconnect();

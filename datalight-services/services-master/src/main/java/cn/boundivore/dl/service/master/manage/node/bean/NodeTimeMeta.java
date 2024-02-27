@@ -38,11 +38,12 @@ import java.io.Serializable;
 public class NodeTimeMeta implements Serializable {
     private static final long serialVersionUID = 5914009663193766773L;
 
-    protected long startTime;
+    // 生成序号，用于表明当前实例的生成顺序
+    protected Long num = 0L;
 
-    protected long endTime;
-
-    protected long duration;
+    protected long startTime = 0L;
+    protected long endTime = 0L;
+    protected long duration = 0L;
 
     public long setEndTime(long endTime) {
         this.endTime = endTime;

@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 27/02/2024 11:37:27
+ Date: 27/02/2024 16:14:27
 */
 
 SET NAMES utf8mb4;
@@ -250,15 +250,16 @@ CREATE TABLE `t_dl_node_job`  (
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
-  `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
-  `node_job_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Job 名称',
-  `node_job_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Job 状态 枚举值：见代码',
+  `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '同批任务唯一标识',
+  `node_job_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Job 名称',
+  `node_job_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Job 状态 枚举值：见代码',
+  `node_action_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '节点操作类型 枚举值：见代码',
   `start_time` bigint(20) NULL DEFAULT NULL COMMENT '执行起始时间 毫秒时间戳',
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Job 节点工作信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Job 节点工作信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_node_job_log
@@ -288,18 +289,32 @@ CREATE TABLE `t_dl_node_step`  (
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
-  `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
+  `num` bigint(20) NOT NULL COMMENT '生成序号',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `node_job_id` bigint(20) NOT NULL COMMENT 'Job ID',
   `node_task_id` bigint(20) NOT NULL COMMENT 'Task ID',
-  `node_step_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Step 名称',
-  `node_step_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Step 状态 枚举值：见代码',
-  `node_step_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Step 类型 枚举值：见代码',
+  `node_step_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Step 名称',
+  `node_step_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Step 状态 枚举值：见代码',
+  `node_step_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Step 类型 枚举值：见代码',
+  `shell` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '执行脚本',
+  `args` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '执行脚本参数',
+  `interactions` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '执行脚本交互参数',
+  `exits` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '期望退出码',
+  `timeout` bigint(20) NULL DEFAULT NULL COMMENT '超时时间 单位：毫秒',
+  `sleep` bigint(20) NULL DEFAULT NULL COMMENT '执行后等待时间 单位：毫秒',
+  `total_bytes` bigint(20) NULL DEFAULT NULL COMMENT '总待传输字节数',
+  `total_progress` bigint(20) NULL DEFAULT NULL COMMENT '传输字节总进度',
+  `total_transfer_bytes` bigint(20) NULL DEFAULT NULL COMMENT '已传输字节数',
+  `total_file_count` bigint(20) NULL DEFAULT NULL COMMENT '总待传输文件数',
+  `total_file_count_progress` bigint(20) NULL DEFAULT NULL COMMENT '传输文件个数总进度',
+  `total_transfer_file_count` bigint(20) NULL DEFAULT NULL COMMENT '已传输文件数',
+  `current_transfer_file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '当前正在传输的文件名',
   `start_time` bigint(20) NULL DEFAULT NULL COMMENT '执行起始时间 毫秒时间戳',
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Step 节点步骤信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Step 节点步骤信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_node_task
@@ -310,20 +325,28 @@ CREATE TABLE `t_dl_node_task`  (
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `num` bigint(20) NOT NULL COMMENT '生成序号',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
-  `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '同批任务唯一标识',
+  `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `node_job_id` bigint(20) NOT NULL COMMENT 'Job ID',
   `node_id` bigint(20) NOT NULL COMMENT '节点 ID',
-  `hostname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点主机名',
-  `node_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IPV4 地址 内网地址',
-  `node_task_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Task 名称',
-  `node_task_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'Task 状态 枚举值：见代码',
-  `node_action_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '操作类型 枚举值：见代码',
+  `hostname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '节点主机名',
+  `node_ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'IPV4 地址 内网地址',
+  `node_task_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Task 名称',
+  `node_task_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'Task 状态 枚举值：见代码',
+  `node_action_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '操作类型 枚举值：见代码',
+  `node_start_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '执行开始时节点状态 枚举值：见代码',
+  `node_fail_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '执行失败时节点状态 枚举值：见代码',
+  `node_success_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '执行成功时节点状态 枚举值：见代码',
+  `node_current_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '执行前节点状态 枚举值：见代码',
+  `is_wait` tinyint(1) NOT NULL COMMENT '是否滚动执行',
+  `ssh_port` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'SSH 端口号',
+  `private_key_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '私钥文件路径',
   `start_time` bigint(20) NULL DEFAULT NULL COMMENT '执行起始时间 毫秒时间戳',
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'Task 节点任务信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Task 节点任务信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_service
@@ -349,6 +372,7 @@ CREATE TABLE `t_dl_stage`  (
   `id` bigint(20) NOT NULL COMMENT '分布式 ID',
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `num` bigint(20) NOT NULL COMMENT '生成序号',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '同批任务唯一标识',
@@ -373,6 +397,7 @@ CREATE TABLE `t_dl_step`  (
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `num` bigint(20) NOT NULL COMMENT '生成序号',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `job_id` bigint(20) NOT NULL COMMENT 'Job ID',
@@ -404,6 +429,7 @@ CREATE TABLE `t_dl_task`  (
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `num` bigint(20) NOT NULL COMMENT '生成序号',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `tag` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '同批任务唯一标识',
   `job_id` bigint(20) NOT NULL COMMENT 'Job ID',

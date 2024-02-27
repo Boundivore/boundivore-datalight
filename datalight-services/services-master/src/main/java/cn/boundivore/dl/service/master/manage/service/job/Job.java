@@ -42,6 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 /**
@@ -162,9 +163,15 @@ public class Job extends Thread {
                 .setActionTypeEnum(intention.getActionTypeEnum())
                 .setStageMetaMap(new LinkedHashMap<>());
 
+        // 生成序号，用于表明当前实例的生成顺序
+        AtomicLong stageNum = new AtomicLong(0L);
         intention.getServiceList()
-                .forEach(i -> {
-                            final StageMeta stageMeta = this.initStageMeta(this.jobMeta, i);
+                .forEach(service -> {
+                            final StageMeta stageMeta = this.initStageMeta(
+                                    this.jobMeta,
+                                    service,
+                                    stageNum.incrementAndGet()
+                            );
                             this.jobMeta.getStageMetaMap().put(stageMeta.getId(), stageMeta);
                         }
                 );
@@ -186,14 +193,15 @@ public class Job extends Thread {
      *
      * @param jobMeta          Job 元数据
      * @param intentionService 操作意图封装的 Service
+     * @param stageNum         Stage 生成序号
      * @return StageMeta
      */
     private StageMeta initStageMeta(final JobMeta jobMeta,
-                                    final Intention.Service intentionService) {
+                                    final Intention.Service intentionService,
+                                    final long stageNum) {
         String serviceName = intentionService.getServiceName();
         Long priority = intentionService.getPriority();
         List<Intention.Component> componentList = intentionService.getComponentList();
-
 
         //初始化 StageMeta
         final StageMeta stageMeta = new StageMeta()
@@ -212,8 +220,7 @@ public class Job extends Thread {
                 .setStageResult(new StageMeta.StageResult(false))
                 .setTaskMetaMap(new LinkedHashMap<>());
 
-
-
+        stageMeta.setNum(stageNum);
 
         /* 如果满足以下条件，则需要为当前异步 Job 中的每一个节点的、每一个服务的 第一个 Task 添加一个 通用的 Step 操作：
             1、当前为部署操作；
@@ -243,12 +250,14 @@ public class Job extends Thread {
             );
         }
 
+
         componentList.forEach(i -> {
             //根据意图中待部署的组件列表，初始化若干 TaskMeta（同一个组件，在不同节点上的部署，属于不同 TaskMeta 实例）
             List<TaskMeta> taskMetaList = this.initTaskMeta(
                     stageMeta,
                     i,
-                    haveInitServiceSet // 用于记录该服务目前在哪些节点执行过初始化步骤
+                    // 用于记录该服务目前在哪些节点执行过初始化步骤
+                    haveInitServiceSet
             );
 
             taskMetaList.forEach(
@@ -312,6 +321,8 @@ public class Job extends Thread {
          */
         AtomicBoolean isFirstTaskMeta = new AtomicBoolean(true);
 
+        // 生成序号，用于表明当前实例的生成顺序
+        AtomicLong taskNum = new AtomicLong(0L);
         //实例化组装每一个 TaskMeta
         return nodeList.stream()
                 .map(i -> {
@@ -348,6 +359,8 @@ public class Job extends Thread {
                                     .setTaskStateEnum(ExecStateEnum.SUSPEND)
                                     .setTaskResult(new TaskMeta.TaskResult(false))
                                     .setStepMetaMap(new LinkedHashMap<>());
+
+                            taskMeta.setNum(taskNum.incrementAndGet());
 
                             // 当前服务、当前组件、当前节点，判断服务是否执行过初始化，如果没有，则必将执行初始化，且将其添加到已初始化记录中
                             haveInitServiceSet.add(i.getNodeId());
@@ -400,20 +413,30 @@ public class Job extends Thread {
             finalSteps.addAll(0, initialize.getSteps());
         }
 
+        // 生成序号，用于表明当前实例的生成顺序
+        AtomicLong stepNum = new AtomicLong(0L);
+
         return finalSteps
                 .stream()
                 //转换器转换部分属性值，其余属性值通过 set 方法设定
-                .map(i -> iStepConverter.convert2StepMeta(i)
-                        .setTaskMeta(taskMeta)
-                        .setId(IdWorker.getId())
-                        .setName(String.format(
-                                        "%s:%s",
-                                        taskMeta.getName(),
-                                        i.getName()
-                                )
-                        )
-                        .setExecStateEnum(ExecStateEnum.SUSPEND)
-                        .setStepResult(new StepMeta.StepResult(false)))
+                .map(i -> {
+                            StepMeta stepMeta = iStepConverter.convert2StepMeta(i)
+                                    .setTaskMeta(taskMeta)
+                                    .setId(IdWorker.getId())
+                                    .setName(String.format(
+                                                    "%s:%s",
+                                                    taskMeta.getName(),
+                                                    i.getName()
+                                            )
+                                    )
+                                    .setExecStateEnum(ExecStateEnum.SUSPEND)
+                                    .setStepResult(new StepMeta.StepResult(false));
+
+                            stepMeta.setNum(stepNum.incrementAndGet());
+
+                            return stepMeta;
+                        }
+                )
                 .collect(Collectors.toList());
     }
 

@@ -50,6 +50,8 @@ public class NodeTaskMeta extends NodeTimeMeta {
 
     private transient NodeJobMeta nodeJobMeta;
 
+    private long id;
+
     //NodeTask 执行时，节点状态
     private NodeStateEnum startState;
 
@@ -65,8 +67,6 @@ public class NodeTaskMeta extends NodeTimeMeta {
     // 标记：用于判断开始执行当前 NodeTask 之前，是否需要阻塞等待之前 NodeTask 执行完毕，true（需要），false（不需要）
     // 例如利用与滚动重启，或低功耗部署等（Task runs One by one）
     protected boolean wait;
-
-    private long id;
 
     private String name;
 
