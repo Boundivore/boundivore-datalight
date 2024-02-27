@@ -255,7 +255,8 @@ public class NodeJobService {
             tDlNodeTask.setVersion(0L).setId(nodeTaskMeta.getId());
         }
 
-        tDlNodeTask.setClusterId(nodeJobMeta.getClusterId())
+        tDlNodeTask.setNum(nodeTaskMeta.getNum())
+                .setClusterId(nodeJobMeta.getClusterId())
                 .setTag(nodeJobMeta.getTag())
                 .setNodeJobId(nodeJobMeta.getId())
                 .setNodeId(nodeTaskMeta.getNodeId())
@@ -326,7 +327,8 @@ public class NodeJobService {
             tDlNodeStep.setVersion(0L).setId(nodeStepMeta.getId());
         }
 
-        tDlNodeStep.setClusterId(nodeJobMeta.getClusterId())
+        tDlNodeStep.setNum(nodeStepMeta.getNum())
+                .setClusterId(nodeJobMeta.getClusterId())
                 .setTag(nodeJobMeta.getTag())
                 .setNodeJobId(nodeJobMeta.getId())
                 .setNodeTaskId(nodeTaskMeta.getId())

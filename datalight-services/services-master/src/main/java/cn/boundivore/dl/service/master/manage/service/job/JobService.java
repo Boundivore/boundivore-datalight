@@ -298,7 +298,8 @@ public class JobService {
         }
 
 
-        tDlStage.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+        tDlStage.setNum(stageMeta.getNum())
+                .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setTag(jobMeta.getTag())
                 .setJobId(jobMeta.getId())
                 .setStageName(stageMeta.getName())
@@ -362,7 +363,8 @@ public class JobService {
             tDlTask.setVersion(0L).setId(taskMeta.getId());
         }
 
-        tDlTask.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+        tDlTask.setNum(taskMeta.getNum())
+                .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setTag(jobMeta.getTag())
                 .setJobId(jobMeta.getId())
                 .setStageId(stageMeta.getId())
@@ -440,7 +442,8 @@ public class JobService {
             tDlStep.setVersion(0L).setId(stepMeta.getId());
         }
 
-        tDlStep.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
+        tDlStep.setNum(stepMeta.getNum())
+                .setClusterId(jobMeta.getClusterMeta().getCurrentClusterId())
                 .setTag(jobMeta.getTag())
                 .setJobId(jobMeta.getId())
                 .setStageId(stageMeta.getId())
