@@ -770,46 +770,57 @@ public class MasterNodeJobService {
             nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
         }
 
+        final NodeJobCacheBean finalNodeJobCacheBean = nodeJobCacheBean;
+
         // 创建 AllNodeJobTransferProgressVo 对象
         AbstractNodeJobVo.AllNodeJobTransferProgressVo allNodeJobTransferProgressVo = new AbstractNodeJobVo.AllNodeJobTransferProgressVo();
         allNodeJobTransferProgressVo.setNodeJobId(nodeJobId);
         allNodeJobTransferProgressVo.setClusterId(nodeJobCacheBean.getNodeJobMeta().getClusterId());
+
         allNodeJobTransferProgressVo.setNodeJobTransferProgressList(
-                nodeJobCacheBean.getNodeJobMeta().getNodeTaskMetaMap().values().stream()
-                        .flatMap(nodeTaskMeta -> nodeTaskMeta.getNodeStepMetaMap().values().stream())
+                nodeJobCacheBean.getNodeJobMeta()
+                        .getNodeTaskMetaMap()
+                        .values()
+                        .stream()
+                        .flatMap(nodeTaskMeta -> nodeTaskMeta
+                                .getNodeStepMetaMap()
+                                .values()
+                                .stream()
+                        )
                         .filter(nodeStepMeta -> nodeStepMeta.getTransferProgress() != null)
                         .map(nodeStepMeta -> {
-                            TransferProgress transferProgress = nodeStepMeta.getTransferProgress();
-                            TransferProgress.FileProgress currentFileProgress = transferProgress.getCurrentFileProgress();
+                                    TransferProgress transferProgress = nodeStepMeta.getTransferProgress();
+                                    TransferProgress.FileProgress currentFileProgress = transferProgress.getCurrentFileProgress();
 
-                            // 创建 NodeJobTransferProgressVo 对象
-                            return new AbstractNodeJobVo.NodeJobTransferProgressVo()
-                                    .setNodeTaskId(nodeStepMeta.getNodeTaskMeta().getId())
-                                    .setNodeStepId(nodeStepMeta.getId())
-                                    .setNodeId(nodeStepMeta.getNodeTaskMeta().getNodeId())
-                                    .setHostname(nodeStepMeta.getNodeTaskMeta().getHostname())
-                                    .setExecState(nodeJobCacheBean.getNodeJobMeta().getExecStateEnum())
-                                    // 字节进度
-                                    .setFileBytesProgressVo(new AbstractNodeJobVo.FileBytesProgressVo(
-                                            transferProgress.getTotalBytes(),
-                                            transferProgress.getTotalProgress(),
-                                            transferProgress.getTotalTransferBytes().get()
-                                    ))
-                                    // 文件个数进度
-                                    .setFileCountProgressVo(new AbstractNodeJobVo.FileCountProgressVo(
-                                            transferProgress.getTotalFileCount(),
-                                            transferProgress.getTotalFileCountProgress(),
-                                            transferProgress.getTotalTransferFileCount().get()
-                                    ))
-                                    // 正在传输的文件信息
-                                    .setCurrentFileProgressVo(new AbstractNodeJobVo.CurrentFileProgressVo(
-                                            currentFileProgress.getFilename(),
-                                            currentFileProgress.getFileBytes(),
-                                            currentFileProgress.getFileTransferBytes().get(),
-                                            currentFileProgress.getFileProgress(),
-                                            currentFileProgress.getPrintSpeed()
-                                    ));
-                        })
+                                    // 创建 NodeJobTransferProgressVo 对象
+                                    return new AbstractNodeJobVo.NodeJobTransferProgressVo()
+                                            .setNodeTaskId(nodeStepMeta.getNodeTaskMeta().getId())
+                                            .setNodeStepId(nodeStepMeta.getId())
+                                            .setNodeId(nodeStepMeta.getNodeTaskMeta().getNodeId())
+                                            .setHostname(nodeStepMeta.getNodeTaskMeta().getHostname())
+                                            .setExecState(finalNodeJobCacheBean.getNodeJobMeta().getExecStateEnum())
+                                            // 字节进度
+                                            .setFileBytesProgressVo(new AbstractNodeJobVo.FileBytesProgressVo(
+                                                    transferProgress.getTotalBytes(),
+                                                    transferProgress.getTotalProgress(),
+                                                    transferProgress.getTotalTransferBytes().get()
+                                            ))
+                                            // 文件个数进度
+                                            .setFileCountProgressVo(new AbstractNodeJobVo.FileCountProgressVo(
+                                                    transferProgress.getTotalFileCount(),
+                                                    transferProgress.getTotalFileCountProgress(),
+                                                    transferProgress.getTotalTransferFileCount().get()
+                                            ))
+                                            // 正在传输的文件信息
+                                            .setCurrentFileProgressVo(new AbstractNodeJobVo.CurrentFileProgressVo(
+                                                    currentFileProgress.getFilename(),
+                                                    currentFileProgress.getFileBytes(),
+                                                    currentFileProgress.getFileTransferBytes().get(),
+                                                    currentFileProgress.getFileProgress(),
+                                                    currentFileProgress.getPrintSpeed()
+                                            ));
+                                }
+                        )
                         .collect(Collectors.toList())
         );
 
