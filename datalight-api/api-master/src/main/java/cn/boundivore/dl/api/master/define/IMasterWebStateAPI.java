@@ -63,11 +63,11 @@ public interface IMasterWebStateAPI {
     @ApiOperation(notes = "查询 Web 缓存状态信息", value = "查询 Web 缓存状态信息")
     Result<AbstractWebStateVo.WebStateMapVo> getWebStateMap(
             @ApiParam(name = "ClusterId", value = "集群 ID")
-            @RequestParam(value = "ClusterId", required = true)
+            @RequestParam(value = "ClusterId", required = false)
             Long clusterId,
 
             @ApiParam(name = "UserId", value = "用户 ID")
-            @RequestParam(value = "UserId", required = true)
+            @RequestParam(value = "UserId", required = false)
             Long userId,
 
             @ApiParam(name = "WebKey", value = "缓存键")
