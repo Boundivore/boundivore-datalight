@@ -48,8 +48,8 @@ public abstract class AbstractWebStateVo {
         @NotNull
         private Long clusterId;
 
-        @Schema(name = "ClusterId", title = "用户 ID", required = true)
-        @JsonProperty(value = "ClusterId", required = true)
+        @Schema(name = "UserId", title = "用户 ID", required = true)
+        @JsonProperty(value = "UserId", required = true)
         @NotNull
         private Long userId;
 
