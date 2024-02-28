@@ -101,12 +101,6 @@ desired_hostname="$2"
     exit 1
 }
 
-# 调用 check-yum-install.sh
-"$script_dir/check-and-add-user-profile.sh" || {
-    echo "Failed to check-yum-install."
-    exit 1
-}
-
 # 所有检查成功通过
 echo "$0 done."
 exit 0
