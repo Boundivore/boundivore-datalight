@@ -66,8 +66,8 @@ public interface IMasterWebStateAPI {
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
-            @ApiParam(name = "ClusterId", value = "集群 ID")
-            @RequestParam(value = "ClusterId", required = true)
+            @ApiParam(name = "UserId", value = "用户 ID")
+            @RequestParam(value = "UserId", required = true)
             Long userId,
 
             @ApiParam(name = "WebKey", value = "缓存键")
