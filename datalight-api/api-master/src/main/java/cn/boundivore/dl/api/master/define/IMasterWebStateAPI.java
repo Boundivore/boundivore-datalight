@@ -76,7 +76,7 @@ public interface IMasterWebStateAPI {
     ) throws Exception;
 
     @PostMapping(value = "/web/state/removeByKey")
-    @ApiOperation(notes = "缓存状态信息", value = "缓存状态信息")
+    @ApiOperation(notes = "移除指定 Key 缓存状态信息", value = "移除指定 Key 缓存状态信息")
     Result<String> removeByKey(
             @RequestBody
             @Valid
@@ -85,7 +85,7 @@ public interface IMasterWebStateAPI {
 
 
     @PostMapping(value = "/web/state/clearByClusterId")
-    @ApiOperation(notes = "缓存状态信息", value = "缓存状态信息")
+    @ApiOperation(notes = "清空指定集群下的缓存状态信息", value = "清空指定集群下的缓存状态信息")
     Result<String> clearByClusterId(
             @RequestBody
             @Valid
