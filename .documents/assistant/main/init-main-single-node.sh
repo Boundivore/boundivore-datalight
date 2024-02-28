@@ -18,7 +18,7 @@ serial=$1
 ip=$2
 ssh_port=$3
 hostname=$4
-masterIp=$5
+master_ip=$5
 
 # 进度条显示宽度
 display_width=50
@@ -111,13 +111,13 @@ grep -v '^$' "$settings_file" | while IFS= read -r script_name; do
     execute_remote_script "${script_path}" "${hostname}"
     ;;
   init-chrony-server-config.sh)
-    if [ "${masterIp}" == "${ip}" ]; then
+    if [ "${master_ip}" == "${ip}" ]; then
       execute_remote_script "${script_path}"
     fi
     ;;
   init-chrony-client-config.sh)
-    if [ "${masterIp}" != "${ip}" ]; then
-      execute_remote_script "${script_path}" "${masterIp}"
+    if [ "${master_ip}" != "${ip}" ]; then
+      execute_remote_script "${script_path}" "${master_ip}"
     fi
     ;;
   *)
