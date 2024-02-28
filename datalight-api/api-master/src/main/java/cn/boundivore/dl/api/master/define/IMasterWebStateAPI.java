@@ -71,7 +71,7 @@ public interface IMasterWebStateAPI {
             Long userId,
 
             @ApiParam(name = "WebKey", value = "缓存键")
-            @RequestParam(value = "WebKey", required = true)
+            @RequestParam(value = "WebKey", required = false)
             String webKey
     ) throws Exception;
 
