@@ -150,4 +150,74 @@ public class MasterWebStateService {
 
         return Result.success(webStateMapVo);
     }
+
+    /**
+     * Description: 根据 Key 移除指定前端缓存状态 KV
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 移除指定前端缓存状态 KV 请求体
+     * @return Result<String> 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<String> removeByKey(AbstractWebStateRequest.RemoveStateRequest request) {
+        TDlWebState tDlWebState = this.tDlWebStateService.lambdaQuery()
+                .select()
+                .eq(TDlWebState::getWebKey, request.getWebKey())
+                .one();
+
+        if (tDlWebState == null) {
+            return Result.success();
+        }
+
+        Assert.isTrue(
+                this.tDlWebStateService.removeById(tDlWebState),
+                () -> new DatabaseException("移除指定前端缓存 KV 失败")
+        );
+
+        return Result.success();
+    }
+
+    /**
+     * Description: 根据 ClusterId 清空所有关联的状态缓存信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/2/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 移除指定前端缓存状态 KV 请求体
+     * @return Result<String> 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<String> clearByClusterId(AbstractWebStateRequest.ClearStateRequest request) {
+        List<TDlWebState> tDlWebStateList = this.tDlWebStateService.lambdaQuery()
+                .select()
+                .eq(TDlWebState::getClusterId, request.getClusterId())
+                .list();
+
+        if (tDlWebStateList.isEmpty()) {
+            return Result.success();
+        }
+
+        Assert.isTrue(
+                this.tDlWebStateService.removeBatchByIds(tDlWebStateList),
+                () -> new DatabaseException("清空指定集群前端缓存信息失败")
+        );
+
+        return Result.success();
+    }
 }

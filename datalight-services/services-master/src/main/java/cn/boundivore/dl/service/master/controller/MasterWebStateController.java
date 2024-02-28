@@ -54,4 +54,14 @@ public class MasterWebStateController implements IMasterWebStateAPI {
                                                                 String webKey) throws Exception {
         return this.masterWebStateService.getWebStateMap(clusterId, userId, webKey);
     }
+
+    @Override
+    public Result<String> removeByKey(AbstractWebStateRequest.RemoveStateRequest request) throws Exception {
+        return this.masterWebStateService.removeByKey(request);
+    }
+
+    @Override
+    public Result<String> clearByClusterId(AbstractWebStateRequest.ClearStateRequest request) throws Exception {
+        return this.masterWebStateService.clearByClusterId(request);
+    }
 }

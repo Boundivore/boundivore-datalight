@@ -70,4 +70,39 @@ public abstract class AbstractWebStateRequest {
         @JsonProperty(value = "WebValue", required = true)
         private String webValue;
     }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractWebStateRequest.RemoveStateRequest",
+            description = "AbstractWebStateRequest.RemoveStateRequest 删除指定 Key 的前端状态缓存 请求体"
+    )
+    public static class RemoveStateRequest implements IRequest {
+        private static final long serialVersionUID = 3018237436003358163L;
+
+        @Schema(name = "WebKey", title = "缓存键", required = true)
+        @JsonProperty(value = "WebKey", required = true)
+        @NotNull
+        private String webKey;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractWebStateRequest.ClearStateRequest",
+            description = "AbstractWebStateRequest.ClearStateRequest 清空指定集群下的前端状态缓存 请求体"
+    )
+    public static class ClearStateRequest implements IRequest {
+
+        private static final long serialVersionUID = 3018237436003358163L;
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+    }
 }

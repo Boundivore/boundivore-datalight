@@ -75,5 +75,21 @@ public interface IMasterWebStateAPI {
             String webKey
     ) throws Exception;
 
+    @PostMapping(value = "/web/state/removeByKey")
+    @ApiOperation(notes = "缓存状态信息", value = "缓存状态信息")
+    Result<String> removeByKey(
+            @RequestBody
+            @Valid
+            AbstractWebStateRequest.RemoveStateRequest request
+    ) throws Exception;
+
+
+    @PostMapping(value = "/web/state/clearByClusterId")
+    @ApiOperation(notes = "缓存状态信息", value = "缓存状态信息")
+    Result<String> clearByClusterId(
+            @RequestBody
+            @Valid
+            AbstractWebStateRequest.ClearStateRequest request
+    ) throws Exception;
 
 }
