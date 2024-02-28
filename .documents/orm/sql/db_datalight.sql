@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 27/02/2024 16:14:27
+ Date: 28/02/2024 17:16:25
 */
 
 SET NAMES utf8mb4;
@@ -159,7 +159,7 @@ CREATE TABLE `t_dl_job`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Job 信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Job 信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_job_log
@@ -259,7 +259,7 @@ CREATE TABLE `t_dl_node_job`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Job 节点工作信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Job 节点工作信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_node_job_log
@@ -314,7 +314,7 @@ CREATE TABLE `t_dl_node_step`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Step 节点步骤信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Step 节点步骤信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_node_task
@@ -346,7 +346,7 @@ CREATE TABLE `t_dl_node_task`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Task 节点任务信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Task 节点任务信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_service
@@ -386,7 +386,7 @@ CREATE TABLE `t_dl_stage`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Stage 信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Stage 信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_step
@@ -418,7 +418,7 @@ CREATE TABLE `t_dl_step`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Step 信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Step 信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_task
@@ -455,7 +455,7 @@ CREATE TABLE `t_dl_task`  (
   `end_time` bigint(20) NULL DEFAULT NULL COMMENT '执行结束时间 毫秒时间戳',
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Task 信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Task 信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_user
@@ -487,5 +487,21 @@ CREATE TABLE `t_dl_user_auth`  (
   `credential` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '认证凭证 认证凭证，密码 或 Token',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户认证信息表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_dl_web_state
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_web_state`;
+CREATE TABLE `t_dl_web_state`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
+  `web_key` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '缓存键 Base64',
+  `web_value` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '缓存值 Base64',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '前端状态信息缓存表' ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

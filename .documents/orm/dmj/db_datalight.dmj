@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543335",
-  "TableCount": 22,
+  "TableCount": 23,
   "Count": 1,
   "items": [{
     "ID": 9,
@@ -11,7 +11,7 @@
     "DefDbEngine": "MYSQL",
     "DbConnectStr": "TCtMetaMysqlDb",
     "Tables": {
-      "Count": 22,
+      "Count": 23,
       "items": [
         {
           "ID": 1,
@@ -3073,6 +3073,98 @@
                 "DisplayName": "文件内容摘要",
                 "DataType": 1,
                 "Not_Nullable": true,
+                "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_web_state",
+          "Caption": "前端状态信息缓存表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 23,
+          "GraphDesc": "Left=308.00\r\nTop=4.00",
+          "MetaFields": {
+            "Count": 8,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 6,
+                "Name": "user_id",
+                "OrderNo": 6,
+                "DisplayName": "用户 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "web_key",
+                "Memo": "Base64",
+                "OrderNo": 7,
+                "DisplayName": "缓存键",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "web_value",
+                "Memo": "Base64",
+                "OrderNo": 8,
+                "DisplayName": "缓存值",
+                "DataType": 1,
                 "DataLength": 255
               }
             ]
