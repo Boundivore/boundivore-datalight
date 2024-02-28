@@ -64,7 +64,8 @@ checkIp() {
 copyKeyConfig() {
   local sshDir="${HOME}/.ssh"
   local ip=$1
-  local pwd=$2
+  local ssh_port=$2
+  local pwd=$3
 
   echo "sshDir: ${sshDir}"
   echo "ip: ${ip}"
@@ -72,7 +73,7 @@ copyKeyConfig() {
 
   /usr/bin/expect <<-EOF
     set timeout -1
-    spawn scp -o "StrictHostKeyChecking no" -r ${sshDir}/ "${CURRENT_USER}@${ip}:${HOME}"
+    spawn scp -P "${ssh_port}" -o "StrictHostKeyChecking no" -r ${sshDir}/ "${CURRENT_USER}@${ip}:${HOME}"
     expect {
         "password:" { send "$pwd\r"; exp_continue }
         "Are you sure you want to continue connecting (yes/no)?" { send "yes\r"; exp_continue }
@@ -96,6 +97,7 @@ validateIPsAndPasswords() {
       # 获取节点配置信息
       serial=${prefix}
       ip=${data_array["${prefix}.node.ip"]}
+      ssh_port=${data_array["${prefix}.node.ssh.port"]}
       hostname=${data_array["${prefix}.node.hostname"]}
 
       user_root=${data_array["${prefix}.node.user.root"]}
@@ -106,6 +108,7 @@ validateIPsAndPasswords() {
       # 输出节点信息
       echo "serial: ${serial}"
       echo "ip: ${ip}"
+      echo "ssh_port: ${ssh_port}"
       echo "hostname: ${hostname}"
       echo "user_root: ${user_root}"
       echo "pwd_root: ${pwd_root}"
@@ -125,7 +128,7 @@ validateIPsAndPasswords() {
       fi
 
       # 分发秘钥
-      copyKeyConfig "${ip}" "${pwd}"
+      copyKeyConfig "${ip}" "${ssh_port}" "${pwd}"
     fi
 
   done

@@ -87,6 +87,7 @@ for prefix_prop in "${sorted_keys[@]}"; do
     # 获取节点配置信息
     serial=${prefix}
     ip=${data_array["${prefix}.node.ip"]}
+    ssh_port=${data_array["${prefix}.node.ssh.port"]}
     hostname=${data_array["${prefix}.node.hostname"]}
 
     user_root=${data_array["${prefix}.node.user.root"]}
@@ -116,14 +117,14 @@ for prefix_prop in "${sorted_keys[@]}"; do
     # 检查目标节点是否是当前节点自己，如果是则跳过当前循环
     if [[ "${trimmed_target_ip}" != "${trimmed_current_ip}" ]]; then
       # 远程创建文件夹
-      ssh "${user_root}@${ip}" "bash -s" <<<"mkdir -p ${datalight_dir}"
+      ssh -p "${ssh_port}" "${user_root}@${ip}" "bash -s" <<<"mkdir -p ${datalight_dir}"
       # 使用SCP将文件夹推送到远程节点
-      scp -rq "${assistant_dir}"/ "${user_root}@${ip}:${datalight_dir}"/
+      scp -P "${ssh_port}" -rq "${assistant_dir}"/ "${user_root}@${ip}:${datalight_dir}"/
     fi
 
     # 执行脚本init-main-single-node.sh，并传递节点信息作为参数
     echo "-------------------------------------${hostname}-------------------------------------"
-    sh "${main_script_dir}/init-main-single-node.sh" "${serial}" "${ip}" "${hostname} ${master_ip}"
+    sh "${main_script_dir}/init-main-single-node.sh" "${serial}" "${ip}" "${ssh_port}" "${hostname} ${master_ip}"
 
     echo ""
   fi

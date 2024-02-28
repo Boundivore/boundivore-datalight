@@ -16,8 +16,9 @@ fi
 
 serial=$1
 ip=$2
-hostname=$3
-masterIp=$4
+ssh_port=$3
+hostname=$4
+masterIp=$5
 
 # 进度条显示宽度
 display_width=50
@@ -67,7 +68,7 @@ echo -e "Serial: ${serial} Hostname: ${hostname} IP: ${ip}" >>"${log_file}"
 execute_remote_script() {
   local script_path="$1"
   shift  # 移除 script_path，剩下的所有参数都是要传递给脚本的
-  ssh "${CURRENT_USER}@${ip}" "cd ${script_dir};" "bash -s" -- "$@" < "${script_path}" >> "${log_file}"
+  ssh -p "${ssh_port}" "${CURRENT_USER}@${ip}" "cd ${script_dir};" "bash -s" -- "$@" < "${script_path}" >> "${log_file}"
 }
 
 # 输出进度条字符串
