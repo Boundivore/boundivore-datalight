@@ -701,15 +701,18 @@ public class MasterNodeInitService {
                 () -> new BException("节点信息列表不能为空")
         );
 
-        return this.getNodeInitVoResult(clusterId, tDlNodeInitService.lambdaQuery()
-                .select()
-                .eq(TDlNodeInit::getClusterId, clusterId)
-                .in(TBasePo::getId, request.getNodeInfoList()
-                        .stream()
-                        .map(AbstractNodeRequest.NodeInfoRequest::getNodeId).collect(Collectors.toList())
-                )
-                .orderByAsc(TDlNodeInit::getHostname)
-                .list());
+        return this.getNodeInitVoResult(
+                clusterId,
+                tDlNodeInitService.lambdaQuery()
+                        .select()
+                        .eq(TDlNodeInit::getClusterId, clusterId)
+                        .in(TBasePo::getId, request.getNodeInfoList()
+                                .stream()
+                                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId).collect(Collectors.toList())
+                        )
+                        .orderByAsc(TDlNodeInit::getHostname)
+                        .list()
+        );
     }
 
 
