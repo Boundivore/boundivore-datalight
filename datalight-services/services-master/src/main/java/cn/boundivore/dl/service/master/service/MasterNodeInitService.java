@@ -706,9 +706,11 @@ public class MasterNodeInitService {
                 tDlNodeInitService.lambdaQuery()
                         .select()
                         .eq(TDlNodeInit::getClusterId, clusterId)
-                        .in(TBasePo::getId, request.getNodeInfoList()
-                                .stream()
-                                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId).collect(Collectors.toList())
+                        .in(
+                                TBasePo::getId,
+                                request.getNodeInfoList()
+                                        .stream()
+                                        .map(AbstractNodeRequest.NodeInfoRequest::getNodeId).collect(Collectors.toList())
                         )
                         .orderByAsc(TDlNodeInit::getHostname)
                         .list()
