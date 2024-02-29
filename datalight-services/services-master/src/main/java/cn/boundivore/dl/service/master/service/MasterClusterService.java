@@ -137,8 +137,9 @@ public class MasterClusterService {
         // 新增集群
         TDlCluster tDlCluster = iClusterConverter.convert2TDlCluster(request);
         tDlCluster.setVersion(0L);
-        // TODO 部署完成后，切换集群状态到 STARTED
-        tDlCluster.setClusterState(ClusterStateEnum.MAINTENANCE);
+        // TODO 部署完成后，切换集群状态到 STARTED，同时考虑集群 3 种状态都会在何时切换
+//        tDlCluster.setClusterState(ClusterStateEnum.MAINTENANCE);
+        tDlCluster.setClusterState(ClusterStateEnum.STARTED);
         // 当前集群是否为首页预览集群
         tDlCluster.setIsCurrentView(false);
 
