@@ -21,6 +21,7 @@ import cn.boundivore.dl.base.enumeration.impl.IdentityTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
 import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.exception.LoginFailException;

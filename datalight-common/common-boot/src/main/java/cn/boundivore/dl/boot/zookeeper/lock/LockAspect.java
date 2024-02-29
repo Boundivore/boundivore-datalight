@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.locks.Lock;
 
 /**
- * Description: Lock 单机锁切面
+ * Description: LocalLock 单机锁切面
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/20
