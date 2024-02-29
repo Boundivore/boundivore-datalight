@@ -89,7 +89,7 @@ public class MasterInitProcedureService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(AbstractProcedureRequest.PersistProcedureRequest request) {
+    public synchronized Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(AbstractProcedureRequest.PersistProcedureRequest request) {
 
         // 检查进度保存合法性
         TDlInitProcedure tDlInitProcedure = this.checkProcedureIllegal(request);
