@@ -33,6 +33,7 @@ import cn.boundivore.dl.orm.service.single.impl.TDlUserAuthServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserServiceImpl;
 import cn.boundivore.dl.service.master.converter.IUserConverter;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
+import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -217,8 +218,8 @@ public class MasterUserService {
             tDlLoginEvent.setLastLogin(-1L);
         }
 
-        // 登录
-        StpUtil.login(tDlUserAuth.getUserId());
+        // 登录 TODO
+        StpUtil.login(tDlUserAuth.getUserId(), SaLoginConfig.setExtra("", ""));
 
         // 组装返回实体
         UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
