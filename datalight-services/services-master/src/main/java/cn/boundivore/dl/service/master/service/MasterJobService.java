@@ -23,6 +23,7 @@ import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
@@ -169,6 +170,7 @@ public class MasterJobService {
      *                      例如先启动的服务，在执行关闭相关操作的计划时，可能最后关闭
      * @return Long 任务构建成功且开始运行，返回 JobId
      */
+    @LocalLock
     public Long initJob(JobRequest request, boolean isPriorityAsc) throws Exception {
 
         // 之前必须经过检查，以确保下面的数据的严谨性和操作的严谨性
@@ -222,6 +224,7 @@ public class MasterJobService {
      *                      例如先启动的服务，在执行关闭相关操作的计划时，可能最后关闭
      * @return Long 任务构建成功且开始运行，返回 JobId
      */
+    @LocalLock
     public Long initJob(JobDetailRequest request, boolean isPriorityAsc) throws Exception {
 
         // 之前必须经过检查，以确保下面的数据的严谨性和操作的严谨性

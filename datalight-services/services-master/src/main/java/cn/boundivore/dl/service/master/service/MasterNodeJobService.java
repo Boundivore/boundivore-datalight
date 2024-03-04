@@ -24,6 +24,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractNodeRequest;
 import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -91,6 +92,7 @@ public class MasterNodeJobService {
      * @param isAsc   是否按照节点主机名正序执行，true：正序，false：逆序
      * @return NodeJobId
      */
+    @LocalLock
     public Long initNodeJob(NodeJobRequest request, boolean isAsc) throws Exception {
 
         // 检查 NodeJob 合法性
