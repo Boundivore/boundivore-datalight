@@ -125,7 +125,7 @@ public class MasterWebStateService {
             tDlWebStateWrapper = tDlWebStateWrapper.eq(TDlWebState::getUserId, userId);
         }
 
-        if (userId != null) {
+        if (webKey != null) {
             tDlWebStateWrapper = tDlWebStateWrapper.eq(TDlWebState::getWebKey, webKey);
         }
 
