@@ -23,6 +23,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractProcedureRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractInitProcedureVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -89,6 +90,7 @@ public class MasterInitProcedureService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public synchronized Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(AbstractProcedureRequest.PersistProcedureRequest request) {
 
         // 检查进度保存合法性
@@ -336,6 +338,7 @@ public class MasterInitProcedureService {
      * @param request 包含集群 ID 的请求体
      * @return Result<String> 成功或失败
      */
+    @LocalLock
     public Result<String> removeInitProcedure(RemoveProcedureRequest request) {
         TDlInitProcedure tDlInitProcedure = this.tDlInitProcedureService.lambdaQuery()
                 .select()

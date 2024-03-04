@@ -1,6 +1,7 @@
 package cn.boundivore.dl.boot.lock;
 
 import cn.boundivore.dl.exception.LockException;
+import cn.dev33.satoken.stp.StpUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -48,8 +49,8 @@ public class LocalLockAspect {
         Method method = methodSignature.getMethod();
 
         LocalLock localLockAnnotation = method.getAnnotation(LocalLock.class);
-        long clusterId = localLockAnnotation.withClusterId();
-        String principal = localLockAnnotation.withPrincipal();
+        String clusterId = StpUtil.getSession().get("clusterId", "0");
+        String principal = StpUtil.getSession().get("principal", "defaultPrincipal");
 
         long timeout = localLockAnnotation.timeout();
         TimeUnit timeUnit = localLockAnnotation.unit();
@@ -85,7 +86,7 @@ public class LocalLockAspect {
      * @param principal 用户主体
      * @return 锁键
      */
-    private String generateKey(long clusterId, String principal) {
+    private String generateKey(String clusterId, String principal) {
         return "LockKey::ClusterId:" + clusterId + "::Principal:" + principal;
     }
 

@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.request.impl.master.AbstractWebStateRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractWebStateVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlWebState;
@@ -70,6 +71,7 @@ public class MasterWebStateService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> saveWebState(AbstractWebStateRequest.SaveStateRequest request) {
         TDlWebState tDlWebState = this.tDlWebStateService.lambdaQuery()
                 .select()
@@ -168,6 +170,7 @@ public class MasterWebStateService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> removeByKey(AbstractWebStateRequest.RemoveStateRequest request) {
         TDlWebState tDlWebState = this.tDlWebStateService.lambdaQuery()
                 .select()

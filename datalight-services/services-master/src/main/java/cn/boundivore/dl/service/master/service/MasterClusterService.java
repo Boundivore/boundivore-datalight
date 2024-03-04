@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractClusterRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -74,7 +75,7 @@ public class MasterClusterService {
      * @param request 新建集群请求体
      * @return Result<AbstractClusterVo.ClusterVo> 创建后的集群信息
      */
-
+    @LocalLock
     public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.NewClusterRequest request) {
 
         // 检查 DLC 合法性

@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Description: 当前服务本地锁
+ * Description: 当前服务本地锁 TODO 可以考虑使用 SPEL 注解实现动态参数控制并发锁，实现多集群多用户安全并发操作
  * Created by: Boundivore
  * Creation time: 2024/2/29
  * Modification description:
@@ -18,10 +18,6 @@ import java.util.concurrent.TimeUnit;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface LocalLock {
-
-    long withClusterId() default 0L;
-
-    String withPrincipal() default "";
 
     long timeout() default Constants.LOCK_TIMEOUT_DEFAULT;
 

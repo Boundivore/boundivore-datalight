@@ -73,6 +73,7 @@ public class MasterUserService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request, boolean isInit) throws Exception {
         AbstractUserRequest.UserAuthRequest userAuthRequest = request.getUserAuth();
         AbstractUserRequest.UserBaseRequest userBaseRequest = request.getUserBase();
@@ -218,8 +219,17 @@ public class MasterUserService {
             tDlLoginEvent.setLastLogin(-1L);
         }
 
-        // 登录 TODO EASY-FIX 可保存额外参数
-        StpUtil.login(tDlUserAuth.getUserId(), SaLoginConfig.setExtra("", ""));
+
+        // 登录
+        StpUtil.login(
+                tDlUserAuth.getUserId(),
+                SaLoginConfig.setExtra("principal", tDlUserAuth.getPrincipal())
+        );
+
+        // 用户登录
+        StpUtil.login(tDlUserAuth.getUserId());
+        // 设置Extra值
+        StpUtil.getSession().set("principal", tDlUserAuth.getPrincipal());
 
         // 组装返回实体
         UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
@@ -339,6 +349,7 @@ public class MasterUserService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> changePassword(AbstractUserRequest.UserChangePasswordRequest request) {
         // 获取当前已登录的账户信息
         TDlUserAuth loginTDlUserAuth = this.tDlUserAuthService.lambdaQuery()
