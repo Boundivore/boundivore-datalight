@@ -218,7 +218,7 @@ public class MasterUserService {
             tDlLoginEvent.setLastLogin(-1L);
         }
 
-        // 登录 TODO
+        // 登录 TODO EASY-FIX 可保存额外参数
         StpUtil.login(tDlUserAuth.getUserId(), SaLoginConfig.setExtra("", ""));
 
         // 组装返回实体
