@@ -171,7 +171,8 @@ public class MasterNodeJobService {
      * @param nodeInfoList  节点信息列表
      * @param nodeStateEnum 将要切换到的状态
      */
-    public void switchNodeInitStateFromAction(List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList, NodeStateEnum nodeStateEnum) {
+    public void switchNodeInitStateFromAction(List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList,
+                                              NodeStateEnum nodeStateEnum) {
 
         List<Long> nodeIdList = nodeInfoList
                 .stream()
