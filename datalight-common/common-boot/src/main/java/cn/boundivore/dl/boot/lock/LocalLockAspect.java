@@ -55,7 +55,12 @@ public class LocalLockAspect {
         String findParameterName = localLockAnnotation.findParameterName();
 
         String findParameterValue = "0";
-        String principal = StpUtil.getSession().get("principal", "defaultPrincipal");
+        String principal = "defaultPrincipal";
+        try {
+            principal = StpUtil.getSession().get("principal", "defaultPrincipal");
+        } catch (Exception e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+        }
 
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
