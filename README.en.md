@@ -199,3 +199,21 @@ http://x.com
 ~~~http
 http://x.com
 ~~~
+
+## Contributing to Open Source
+
+If you are interested in this project and want to provide positive feedback and help make the project better, please join our QQ group:
+
+~~~text
+
+~~~
+
+## Open Source License
+
+This project is licensed under the Apache 2.0 License. For more details, please see the [Apache 2.0 LICENSE](http://www.apache.org/licenses/).
+
+## Donations
+
+If you find this project helpful and would like to support our work, your donations are welcome:
+
+![Donation QR Code][] Your support is our motivation to continue improving!
