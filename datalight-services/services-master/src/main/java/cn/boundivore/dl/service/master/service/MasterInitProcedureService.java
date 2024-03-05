@@ -338,20 +338,14 @@ public class MasterInitProcedureService {
      * @param request 包含集群 ID 的请求体
      * @return Result<String> 成功或失败
      */
-    @LocalLock
     public Result<String> removeInitProcedure(RemoveProcedureRequest request) {
-        TDlInitProcedure tDlInitProcedure = this.tDlInitProcedureService.lambdaQuery()
+        List<TDlInitProcedure> tDlInitProcedureList = this.tDlInitProcedureService.lambdaQuery()
                 .select()
                 .eq(TDlInitProcedure::getClusterId, request.getClusterId())
-                .one();
-
-        Assert.notNull(
-                tDlInitProcedure,
-                () -> new DatabaseException("无对应记录")
-        );
+                .list();
 
         Assert.isTrue(
-                this.tDlInitProcedureService.removeById(tDlInitProcedure),
+                this.tDlInitProcedureService.removeBatchByIds(tDlInitProcedureList),
                 () -> new DatabaseException("操作失败")
         );
 
