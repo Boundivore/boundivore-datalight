@@ -54,7 +54,7 @@ public interface IMasterClusterAPI {
 
     @PostMapping(value = "/cluster/new")
     @ApiOperation(notes = "新增集群", value = "新增集群")
-    Result<AbstractClusterVo.ClusterVo> clusterNew(
+    Result<AbstractClusterVo.ClusterVo> newCluster(
             @RequestBody
             @Valid
             AbstractClusterRequest.NewClusterRequest request

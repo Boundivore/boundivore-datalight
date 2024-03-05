@@ -52,13 +52,14 @@ public class LocalLockAspect {
         Method method = methodSignature.getMethod();
 
         LocalLock localLockAnnotation = method.getAnnotation(LocalLock.class);
+        String findParameterName = localLockAnnotation.findParameterName();
         String clusterId = StpUtil.getSession().get("clusterId", "0");
         String principal = StpUtil.getSession().get("principal", "defaultPrincipal");
 
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
             try {
-                String findClusterId = this.findClusterId(arg);
+                String findClusterId = this.findTargetParameter(findParameterName, arg);
                 if (findClusterId != null) {
                     clusterId = findClusterId;
                     break;
@@ -118,15 +119,16 @@ public class LocalLockAspect {
      * Modification time:
      * Throws:
      *
-     * @param obj 被反射函数的参数对象
+     * @param parameterName 待查找的属性名称
+     * @param obj           被反射函数的参数对象
      * @return clusterId 查找 clusterId 属性
      */
-    private String findClusterId(Object obj) throws IllegalAccessException {
+    private String findTargetParameter(String parameterName, Object obj) throws IllegalAccessException {
         if (obj == null) {
             return null;
         }
 
-        if(!(obj instanceof IRequest)){
+        if (!(obj instanceof IRequest)) {
             return null;
         }
 
@@ -136,7 +138,7 @@ public class LocalLockAspect {
         for (Field field : objClass.getDeclaredFields()) {
             field.setAccessible(true);
             // 如果是我们想找的字段
-            if ("clusterId".equals(field.getName())) {
+            if (parameterName.equals(field.getName())) {
                 // 获取该字段的值
                 return field.get(obj).toString();
             } else if (IRequest.class.isAssignableFrom(field.getType())) {
@@ -144,7 +146,7 @@ public class LocalLockAspect {
                 Object nestedObj = field.get(obj); // 获取字段的实例对象
                 if (nestedObj != null) {
                     // 递归调用 findClusterId 方法
-                    String nestedClusterId = this.findClusterId(nestedObj);
+                    String nestedClusterId = this.findTargetParameter(parameterName, nestedObj);
                     if (nestedClusterId != null) {
                         // 如果在嵌套对象中找到了 clusterId 字段，则返回它的值
                         return nestedClusterId;
@@ -155,7 +157,7 @@ public class LocalLockAspect {
 
         // 如果当前类没有找到，递归检查父类（如果需要）
 //        if (objClass.getSuperclass() != null) {
-//            return this.findClusterId(objClass.getSuperclass().newInstance());
+//            return this.findClusterId(parameterName, objClass.getSuperclass().newInstance());
 //        }
         return null;
     }

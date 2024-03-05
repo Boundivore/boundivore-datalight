@@ -75,8 +75,12 @@ public class MasterClusterService {
      * @param request 新建集群请求体
      * @return Result<AbstractClusterVo.ClusterVo> 创建后的集群信息
      */
-    @LocalLock
-    public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.NewClusterRequest request) {
+    @LocalLock(findParameterName = "clusterName")
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<AbstractClusterVo.ClusterVo> newCluster(AbstractClusterRequest.NewClusterRequest request) {
 
         // 检查 DLC 合法性
         String dlcVersion = request.getDlcVersion();

@@ -45,8 +45,8 @@ public class MasterClusterController implements IMasterClusterAPI {
 
 
     @Override
-    public Result<AbstractClusterVo.ClusterVo> clusterNew(AbstractClusterRequest.NewClusterRequest request) throws Exception {
-        return this.masterClusterServices.clusterNew(request);
+    public Result<AbstractClusterVo.ClusterVo> newCluster(AbstractClusterRequest.NewClusterRequest request) throws Exception {
+        return this.masterClusterServices.newCluster(request);
     }
 
     @Override
