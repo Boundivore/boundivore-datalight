@@ -53,15 +53,16 @@ public class LocalLockAspect {
 
         LocalLock localLockAnnotation = method.getAnnotation(LocalLock.class);
         String findParameterName = localLockAnnotation.findParameterName();
-        String clusterId = StpUtil.getSession().get("clusterId", "0");
+
+        String findParameterValue = "0";
         String principal = StpUtil.getSession().get("principal", "defaultPrincipal");
 
         Object[] args = joinPoint.getArgs();
         for (Object arg : args) {
             try {
-                String findClusterId = this.findTargetParameter(findParameterName, arg);
-                if (findClusterId != null) {
-                    clusterId = findClusterId;
+                String targetParameter = this.findTargetParameter(findParameterName, arg);
+                if (targetParameter != null) {
+                    findParameterValue = targetParameter;
                     break;
                 }
             } catch (IllegalAccessException e) {
@@ -69,13 +70,17 @@ public class LocalLockAspect {
             }
         }
 
-        log.info("AOP ClusterId: {}, Principal: {}", clusterId, principal);
+        log.info("AOP FindParameterName: {}, FindParameterValue: {}, Principal: {}",
+                findParameterName,
+                findParameterValue,
+                principal
+        );
 
         long timeout = localLockAnnotation.timeout();
         TimeUnit timeUnit = localLockAnnotation.unit();
 
         // 构造锁的键
-        String key = generateKey(clusterId, principal);
+        String key = generateKey(findParameterValue, principal);
         ReentrantLock lock = lockMap.computeIfAbsent(key, k -> new ReentrantLock());
 
         try {
@@ -101,12 +106,12 @@ public class LocalLockAspect {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群 ID
-     * @param principal 用户主体
+     * @param findParameterValue 自定义参与互斥锁的参数对应的值
+     * @param principal          用户主体
      * @return 锁键
      */
-    private String generateKey(String clusterId, String principal) {
-        return "LockKey::ClusterId:" + clusterId + "::Principal:" + principal;
+    private String generateKey(String findParameterValue, String principal) {
+        return "LockKey::ParameterValue:" + findParameterValue + "::Principal:" + principal;
     }
 
     /**
