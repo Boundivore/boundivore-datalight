@@ -68,6 +68,8 @@ public class LocalLockAspect {
             }
         }
 
+        log.info("AOP ClusterId: {}, Principal: {}", clusterId, principal);
+
         long timeout = localLockAnnotation.timeout();
         TimeUnit timeUnit = localLockAnnotation.unit();
 
