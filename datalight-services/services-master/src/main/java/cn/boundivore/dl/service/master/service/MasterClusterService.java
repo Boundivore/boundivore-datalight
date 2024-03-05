@@ -75,11 +75,11 @@ public class MasterClusterService {
      * @param request 新建集群请求体
      * @return Result<AbstractClusterVo.ClusterVo> 创建后的集群信息
      */
-    @LocalLock(findParameterName = "clusterName")
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock(findParameterName = "clusterName")
     public Result<AbstractClusterVo.ClusterVo> newCluster(AbstractClusterRequest.NewClusterRequest request) {
 
         // 检查 DLC 合法性
