@@ -1,6 +1,6 @@
 # Boundivore-DataLight
 
-## Introduction
+## I. Introduction
 
 DataLight is an open-source big data operations management platform, designed to simplify and automate the deployment, management, and monitoring of big data services. It provides a comprehensive set of tools to manage your big data ecosystem, aiming to help businesses build big data platforms efficiently and swiftly.
 
@@ -10,18 +10,18 @@ For more details, visit
 http://boundivore.datalight.com
 ~~~
 
-## Software Architecture
+## II. Software Architecture
 
 <img src=".documents/docs/assets/arch.jpg" alt="arch" style="zoom:20%;" />
 
-## Concepts and Definitions
+## III. Concepts and Definitions
 
 * Service: Big data services such as HDFS, YARN, HIVE are referred to as services, and they are standardly named in uppercase in this project.
 * Component: Independent processes within HDFS, such as NameNode, DataNode, are referred to as components, and they follow the PascalCase naming convention in this project.
 * Master Process: The DataLight Master process is referred to as the master process.
 * Worker Process: The DataLight Worker process is referred to as the worker process.
 
-## Main Features
+## IV. Main Features
 
 The table below lists the main features supported by the DataLight platform and their current support status:
 
@@ -43,7 +43,7 @@ The table below lists the main features supported by the DataLight platform and 
 | 14  | Permission Management       | Yes       |      |
 
 
-**V. Deployment Instructions**
+## V. Deployment Instructions
 Before deploying this project, please ensure that you have prepared the necessary physical resources, operating system, and understand the deployment process of this project.
 
 **5.1 Prepare Physical Resources**
@@ -155,7 +155,7 @@ After downloading, extract the package and place the corresponding .tar.gz files
 
 ### 5.12 Complete Deployment
 
-## Six, Services Planned to Support
+## VI. Services Planned to Support
 
 | Service         | Version | Supported | Completion Date |
 |-----------------|---------|-----------|-----------------|
@@ -184,9 +184,9 @@ After downloading, extract the package and place the corresponding .tar.gz files
 | KUDU            | TBD     |           |                 |
 | IMPALA          | TBD     |           |                 |
 
-## Seven, Functions Planned to be Improved
+## VII. Functions Planned to be Improved
 
-## Eight, Summary of Resource Downloads
+## VIII. Summary of Resource Downloads
 
 ### 8.1 DataLight Platform Deployment Package Download
 
