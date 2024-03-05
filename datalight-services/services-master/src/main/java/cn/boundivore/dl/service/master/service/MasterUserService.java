@@ -221,10 +221,7 @@ public class MasterUserService {
 
 
         // 登录
-        StpUtil.login(
-                tDlUserAuth.getUserId(),
-                SaLoginConfig.setExtra("principal", tDlUserAuth.getPrincipal())
-        );
+        StpUtil.login(tDlUserAuth.getUserId());
 
         // 用户登录
         StpUtil.login(tDlUserAuth.getUserId());
