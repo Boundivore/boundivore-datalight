@@ -264,19 +264,19 @@ public class MasterInitProcedureService {
                 .eq(TDlInitProcedure::getClusterId, clusterId)
                 .one();
 
-        Assert.notNull(
-                tDlInitProcedure,
-                () -> new DatabaseException("无对应记录")
-        );
 
-        AbstractInitProcedureVo.InitProcedureVo initProcedureVo = iInitProcedureConverter.convert2InitProcedureVo(
-                tDlInitProcedure
-        );
-        initProcedureVo.setNodeInfoList(
-                this.base642NodeInfoList(
-                        tDlInitProcedure.getNodeInfoListBase64()
-                )
-        );
+        AbstractInitProcedureVo.InitProcedureVo initProcedureVo = null;
+
+        if (tDlInitProcedure != null) {
+            initProcedureVo = iInitProcedureConverter.convert2InitProcedureVo(
+                    tDlInitProcedure
+            );
+            initProcedureVo.setNodeInfoList(
+                    this.base642NodeInfoList(
+                            tDlInitProcedure.getNodeInfoListBase64()
+                    )
+            );
+        }
 
         return Result.success(
                 initProcedureVo

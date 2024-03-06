@@ -132,10 +132,6 @@ public class MasterWebStateService {
         }
 
         List<TDlWebState> tDlWebStateList = tDlWebStateWrapper.list();
-        Assert.notEmpty(
-                tDlWebStateList,
-                () -> new BException("未找到缓存信息")
-        );
 
         Map<String, String> kvMap = tDlWebStateList.stream()
                 .collect(
