@@ -73,7 +73,7 @@ public class Result<T> implements Serializable {
 
     @Schema(name = "Data", title = "返回数据", required = true)
     @JsonProperty("Data")
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+//    @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 
 
