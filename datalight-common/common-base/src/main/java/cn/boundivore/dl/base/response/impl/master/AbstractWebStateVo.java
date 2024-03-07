@@ -55,7 +55,6 @@ public abstract class AbstractWebStateVo {
 
         @Schema(name = "KVMap", title = "Web 缓存键值对信息", required = true)
         @JsonProperty(value = "KVMap", required = true)
-        @NotNull
         private Map<String, String> kvMap;
     }
 
