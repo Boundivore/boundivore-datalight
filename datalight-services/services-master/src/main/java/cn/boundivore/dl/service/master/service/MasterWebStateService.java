@@ -21,10 +21,10 @@ import cn.boundivore.dl.base.request.impl.master.AbstractWebStateRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractWebStateVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
-import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlWebState;
 import cn.boundivore.dl.orm.service.single.impl.TDlWebStateServiceImpl;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.RequiredArgsConstructor;
@@ -132,14 +132,18 @@ public class MasterWebStateService {
         }
 
         List<TDlWebState> tDlWebStateList = tDlWebStateWrapper.list();
+        Map<String, String> kvMap = null;
 
-        Map<String, String> kvMap = tDlWebStateList.stream()
-                .collect(
-                        Collectors.toMap(
-                                TDlWebState::getWebKey,
-                                TDlWebState::getWebValue
-                        )
-                );
+        if (CollUtil.isNotEmpty(tDlWebStateList)) {
+            kvMap = tDlWebStateList.stream()
+                    .collect(
+                            Collectors.toMap(
+                                    TDlWebState::getWebKey,
+                                    TDlWebState::getWebValue
+                            )
+                    );
+        }
+
 
         AbstractWebStateVo.WebStateMapVo webStateMapVo = new AbstractWebStateVo.WebStateMapVo();
         webStateMapVo.setClusterId(clusterId);
