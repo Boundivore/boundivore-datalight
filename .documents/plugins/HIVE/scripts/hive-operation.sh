@@ -86,3 +86,7 @@ case "${COMPONENT_NAME}" in
 esac
 
 exit 0
+
+
+# su -s /bin/bash datalight -c "/srv/datalight/HIVE/tez/tomcat/bin/startup.sh"
+# su -s /bin/bash datalight -c "/srv/datalight/HIVE/tez/tomcat/bin/shutdown.sh"

@@ -186,6 +186,68 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
+      - name: TezUI
+        priority: 2
+        max: 1
+        min: 1
+        mutexes: [ 'TezUI' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 TezUI'
+                shell: 'hive-operation.sh'
+                args: [ 'TezUI', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 TezUI'
+                shell: 'hive-operation.sh'
+                args: [ 'TezUI', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 TezUI'
+                shell: 'hive-operation.sh'
+                args: [ 'TezUI', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 TezUI'
+                shell: 'hive-operation.sh'
+                args: [ 'TezUI', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
       - name: HIVEClient
         priority: 6
         max: -1
