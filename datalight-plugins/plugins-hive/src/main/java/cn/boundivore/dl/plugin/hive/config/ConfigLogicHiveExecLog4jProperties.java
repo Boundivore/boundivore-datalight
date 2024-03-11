@@ -45,12 +45,35 @@ public class ConfigLogicHiveExecLog4jProperties extends AbstractConfigLogic {
                 file
         );
 
+        String propertyHiveLogDir = this.propertyHiveLogDir();
+
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{property.hive.log.dir}}",
+                        propertyHiveLogDir
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 Hive 日志存放目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Hive 日志存放目录
+     */
+    private String propertyHiveLogDir() {
+        String logDir = super.logDir();
+        // EXAMPLE: /data/datalight/logs/HIVE
+        return String.format(
+                "%s/HIVE",
+                logDir
+        );
     }
 
 }

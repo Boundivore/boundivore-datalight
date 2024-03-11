@@ -18,6 +18,7 @@ package cn.boundivore.dl.plugin.hive.config;
 
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
+import cn.hutool.core.lang.Assert;
 
 import java.io.File;
 
@@ -45,12 +46,35 @@ public class ConfigLogicHiveLog4j2Properties extends AbstractConfigLogic {
                 file
         );
 
+        String propertyHiveLogDir = this.propertyHiveLogDir();
+
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{property.hive.log.dir}}",
+                        propertyHiveLogDir
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 Hive 日志存放目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Hive 日志存放目录
+     */
+    private String propertyHiveLogDir() {
+        String logDir = super.logDir();
+        // EXAMPLE: /data/datalight/logs/HIVE
+        return String.format(
+                "%s/HIVE",
+                logDir
+        );
     }
 
 }

@@ -130,23 +130,8 @@
     </property>
 
     <property>
-        <name>spark.eventLog.dir</name>
-        <value>{{spark.eventLog.dir}}</value>
-    </property>
-
-    <property>
-        <name>hbase.zookeeper.quorum</name>
-        <value>{{haZookeeperQuorum}}</value>
-    </property>
-
-    <property>
         <name>hive.execution.engine</name>
         <value>{{hive.execution.engine}}</value>
-    </property>
-
-    <property>
-        <name>hbase.zookeeper.quorum</name>
-        <value>{{hbase.zookeeper.quorum}}</value>
     </property>
 
     <property>
@@ -195,6 +180,16 @@
     </property>
 
     <property>
+        <name>hive.zookeeper.quorum</name>
+        <value>{{hive.zookeeper.quorum}}</value>
+    </property>
+
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>{{hbase.zookeeper.quorum}}</value>
+    </property>
+
+    <property>
         <name>hive.mapjoin.localtask.max.memory.usage</name>
         <value>0.99</value>
     </property>
@@ -206,7 +201,7 @@
 
     <property>
         <name>hive.users.in.admin.role</name>
-        <value>hadoop</value>
+        <value>datalight</value>
     </property>
 
 

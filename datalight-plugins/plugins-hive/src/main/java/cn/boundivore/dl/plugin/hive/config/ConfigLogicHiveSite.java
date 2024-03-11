@@ -45,13 +45,179 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                 file
         );
 
+        // 获取 {{property.hive.log.dir}}
+        String propertyHiveLogDir = this.propertyHiveLogDir();
+
+        // 获取 {{hive.server2.thrift.bind.host}}
+        String hiveServer2ThriftBindHost = this.hiveServer2ThriftBindHost();
+
+        // 获取 {{hive.metastore.warehouse.dir}}
+        String hiveMetaStoreWarehouseDir = this.hiveMetaStoreWarehouseDir();
+
+        // 获取 {{hive.metastore.uris}}
+        String hiveMetastoreUris = this.hiveMetastoreUris();
+
+        // 获取 {{javax.jdo.option.ConnectionURL.host}}
+        String javaxJdoOptionConnectionHost = this.javaxJdoOptionConnectionHost();
+
+        // 获取 {{javax.jdo.option.ConnectionURL.port}}
+        String javaxJdoOptionConnectionPort = this.javaxJdoOptionConnectionPort();
+
+        // 获取 {{javax.jdo.option.ConnectionUserName}}
+        String javaxJdoOptionConnectionUserName = this.javaxJdoOptionConnectionUserName();
+
+        // 获取 {{javax.jdo.option.ConnectionPassword}}
+        String javaxJdoOptionConnectionPassword = this.javaxJdoOptionConnectionPassword();
+
+        // 获取 {{hive.execution.engine}}
+        String hiveExecutionEngine = this.hiveExecutionEngine();
+
+        // 获取 {{hive.exec.scratchdir}}
+        String hiveExecScratchdir = this.hiveExecScratchdir();
+
+        // 获取 {{hadoop.zk.address}}、{{hbase.zookeeper.quorum}}、{{hive.zookeeper.quorum}}
+        String zookeeperQuorum = this.zookeeperQuorum();
+
+        // 获取 {{tez.lib.uris}}
+        String tezLibUris = this.tezLibUris();
+
+        // 获取 {{tez.tez-ui.history-url.base}}
+        String tezUIHistoryUrlBase = this.tezUIHistoryUrlBase();
+
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{property.hive.log.dir}}",
+                        propertyHiveLogDir
+                )
+                .replace(
+                        "{{hive.server2.thrift.bind.host}}",
+                        hiveServer2ThriftBindHost
+                )
+                .replace(
+                        "{{hive.metastore.warehouse.dir}}",
+                        hiveMetaStoreWarehouseDir
+                )
+                .replace(
+                        "{{hive.metastore.uris}}",
+                        hiveMetastoreUris
+                )
+                .replace(
+                        "{{javax.jdo.option.ConnectionURL.host}}",
+                        javaxJdoOptionConnectionHost
+                )
+                .replace(
+                        "{{javax.jdo.option.ConnectionURL.port}}",
+                        javaxJdoOptionConnectionPort
+                )
+                .replace(
+                        "{{javax.jdo.option.ConnectionUserName}}",
+                        javaxJdoOptionConnectionUserName
+                )
+                .replace(
+                        "{{javax.jdo.option.ConnectionPassword}}",
+                        javaxJdoOptionConnectionPassword
+                )
+
+                .replace(
+                        "{{hive.execution.engine}}",
+                        hiveExecutionEngine
+                )
+                .replace(
+                        "{{hive.exec.scratchdir}}",
+                        hiveExecScratchdir
+                )
+                .replace(
+                        "{{hbase.zookeeper.quorum}}",
+                        zookeeperQuorum
+                )
+                .replace(
+                        "{{hadoop.zk.address}}",
+                        zookeeperQuorum
+                )
+                .replace(
+                        "{{hive.zookeeper.quorum}}",
+                        zookeeperQuorum
+                )
+                .replace(
+                        "{{tez.lib.uris}}",
+                        tezLibUris
+                )
+                .replace(
+                        "{{tez.tez-ui.history-url.base}}",
+                        tezUIHistoryUrlBase
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 Hive 日志存放目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Hive 日志存放目录
+     */
+    private String propertyHiveLogDir() {
+        String logDir = super.logDir();
+        // EXAMPLE: /data/datalight/logs/HIVE
+        return String.format(
+                "%s/HIVE",
+                logDir
+        );
+    }
+
+    private String hiveServer2ThriftBindHost() {
+        return null;
+    }
+
+    private String hiveMetaStoreWarehouseDir() {
+        return null;
+    }
+
+    private String hiveMetastoreUris() {
+        return null;
+    }
+
+    private String javaxJdoOptionConnectionHost() {
+        return null;
+    }
+
+    private String javaxJdoOptionConnectionPort() {
+        return null;
+    }
+
+    private String javaxJdoOptionConnectionUserName() {
+        return null;
+    }
+
+    private String javaxJdoOptionConnectionPassword() {
+        return null;
+    }
+
+    private String hiveExecutionEngine() {
+        return null;
+    }
+
+    private String hiveExecScratchdir() {
+        return null;
+    }
+
+    private String zookeeperQuorum() {
+        return null;
+    }
+
+
+    private String tezLibUris() {
+        return null;
+    }
+
+    private String tezUIHistoryUrlBase() {
+        return null;
     }
 
 }
