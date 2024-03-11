@@ -16,8 +16,14 @@
  */
 package cn.boundivore.dl.service.master.test;
 
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,6 +38,7 @@ import java.util.List;
  * Modification time:
  * Version: V1.0
  */
+@Slf4j
 public class CoreJavaTest {
 
     @Test
@@ -51,5 +58,25 @@ public class CoreJavaTest {
 
         System.out.println(resultList);
 
+    }
+
+    @SneakyThrows
+    @Test
+    public void testMetaStoreDB() {
+        String dbUrl = "jdbc:mysql://node01:3306/db_hive_metastore?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8&useSSL=false";
+        String user = "root";
+        String password = "1qaz!QAZ";
+        Class.forName("com.mysql.jdbc.Driver");
+
+
+        log.info(String.format("MetaStore DB URL: %s", dbUrl));
+        log.info(String.format("MetaStore DB User: %s", user));
+
+        Connection conn = DriverManager.getConnection(dbUrl, user, password);
+        DatabaseMetaData meta = conn.getMetaData();
+
+        ResultSet tables = meta.getTables(null, null, null, null);
+
+        log.info(String.format("MaxTablesInSelect: %s", tables.next()));
     }
 }

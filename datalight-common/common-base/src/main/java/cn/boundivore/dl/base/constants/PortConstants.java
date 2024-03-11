@@ -54,6 +54,7 @@ public class PortConstants {
 
             put("HIVE-MetaStore", "17011");
             put("HIVE-HiveServer2", "17012");
+            put("HIVE-TezUI", "17013");
 
         }
     };
@@ -76,6 +77,7 @@ public class PortConstants {
 
             put("HIVE-MetaStore", "16011");
             put("HIVE-HiveServer2", "16012");
+            put("HIVE-TezUI", "16013");
         }
     };
 

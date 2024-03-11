@@ -22,7 +22,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import java.io.File;
 
 /**
- * Description: 配置 hive-site.xml 文件
+ * Description: 配置 hive-exec-log4j2.properties 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/3/11
@@ -31,10 +31,10 @@ import java.io.File;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicHiveSite extends AbstractConfigLogic {
+public class ConfigLogicHiveExecLog4jProperties extends AbstractConfigLogic {
 
 
-    public ConfigLogicHiveSite(PluginConfig pluginConfig) {
+    public ConfigLogicHiveExecLog4jProperties(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 
@@ -44,7 +44,6 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                 pluginConfig.getCurrentMetaComponent().getHostname(),
                 file
         );
-
 
         return replacedTemplated
                 .replace(

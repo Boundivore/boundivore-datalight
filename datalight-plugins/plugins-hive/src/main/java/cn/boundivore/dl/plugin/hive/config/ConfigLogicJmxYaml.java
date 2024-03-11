@@ -27,7 +27,7 @@ import java.io.File;
  * Description: 配置 jmx_config_*.yaml 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/6/14
+ * Creation time: 2024/3/11
  * Modification description:
  * Modified by:
  * Modification time:
@@ -38,8 +38,9 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
 
     public static final String JMX_CONFIG_FILE_MetaStore = "jmx_config_MetaStore.yaml";
     public static final String JMX_CONFIG_FILE_HiveServer2 = "jmx_config_HiveServer2.yaml";
+    public static final String JMX_CONFIG_FILE_TezUI = "jmx_config_TezUI.yaml";
 
-    public static final String SERVICE_NAME_HDFS = "HIVE";
+    public static final String SERVICE_NAME_HIVE = "HIVE";
 
 
     public ConfigLogicJmxYaml(PluginConfig pluginConfig) {
@@ -57,14 +58,20 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
         switch (file.getName()) {
             case JMX_CONFIG_FILE_MetaStore:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                        SERVICE_NAME_HIVE,
                         "MetaStore"
                 );
                 break;
             case JMX_CONFIG_FILE_HiveServer2:
                 jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                        SERVICE_NAME_HIVE,
                         "HiveServer2"
+                );
+                break;
+            case JMX_CONFIG_FILE_TezUI:
+                jmxRemotePort = PortConstants.getMonitorRemotePort(
+                        SERVICE_NAME_HIVE,
+                        "TezUI"
                 );
                 break;
             default:

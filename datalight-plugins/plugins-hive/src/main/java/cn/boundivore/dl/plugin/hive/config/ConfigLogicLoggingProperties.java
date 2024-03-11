@@ -22,7 +22,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import java.io.File;
 
 /**
- * Description: 配置 hive-site.xml 文件
+ * Description: 配置 logging.properties 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/3/11
@@ -31,10 +31,10 @@ import java.io.File;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicHiveSite extends AbstractConfigLogic {
+public class ConfigLogicLoggingProperties extends AbstractConfigLogic {
 
 
-    public ConfigLogicHiveSite(PluginConfig pluginConfig) {
+    public ConfigLogicLoggingProperties(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 

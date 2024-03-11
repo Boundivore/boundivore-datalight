@@ -50,12 +50,25 @@ public class ConfigHIVE extends AbstractConfig {
     @Override
     public String configLogic(File file, String replacedTemplate) {
         switch (file.getName()) {
+            case "hive-log4j2.properties":
+                return new ConfigLogicHiveLog4j2Properties(super.pluginConfig).config(file, replacedTemplate);
+            case "hive-exec-log4j2.properties":
+                return new ConfigLogicHiveExecLog4jProperties(super.pluginConfig).config(file, replacedTemplate);
             case "hive-site.xml":
                 return new ConfigLogicHiveSite(super.pluginConfig).config(file, replacedTemplate);
-            case "hadoop-env.sh":
-                return new ConfigLogicHiveConfigSh(super.pluginConfig).config(file, replacedTemplate);
+            case "hive-env.sh":
+                return new ConfigLogicHiveEnv(super.pluginConfig).config(file, replacedTemplate);
+            case "catalina.sh":
+                return new ConfigLogicCatalinaSh(super.pluginConfig).config(file, replacedTemplate);
+            case "configs.env":
+                return new ConfigLogicConfigsEnv(super.pluginConfig).config(file, replacedTemplate);
+            case "server.xml":
+                return new ConfigLogicServerXml(super.pluginConfig).config(file, replacedTemplate);
+            case "logging.properties":
+                return new ConfigLogicLoggingProperties(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_MetaStore:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HiveServer2:
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_TezUI:
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {

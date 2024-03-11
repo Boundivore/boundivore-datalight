@@ -2,8 +2,20 @@ datalight:
   service:
     name: HDFS
     placeholder-infos:
-      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/HDFS/templated/etc/hadoop/hdfs-site.xml'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/HIVE/templated/conf/hive-site.xml'
         properties:
-          - placeholder: '{{dfs.datanode.data.dir}}'
-            describe: 'DataNode 中数据的存储目录'
-            default: '/data/datalight/data/HDFS'
+          - placeholder: '{{javax.jdo.option.ConnectionURL.host}}'
+            describe: 'MetaStore 元数据库主机名'
+            default: 'localhost'
+
+          - placeholder: '{{javax.jdo.option.ConnectionURL.port}}'
+            describe: 'MetaStore 元数据库端口号'
+            default: '3306'
+
+          - placeholder: '{{javax.jdo.option.ConnectionUserName}}'
+            describe: 'MetaStore 元数据库用户名'
+            default: 'root'
+
+          - placeholder: '{{javax.jdo.option.ConnectionPassword}}'
+            describe: 'MetaStore 元数据库密码'
+            default: '1qaz!QAZ'
