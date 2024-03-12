@@ -180,7 +180,7 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
     }
 
     /**
-     * Description: TODO
+     * Description: 设置 HiveServer2 主机名
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
