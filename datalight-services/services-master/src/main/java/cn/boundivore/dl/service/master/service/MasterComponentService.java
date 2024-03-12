@@ -282,7 +282,7 @@ public class MasterComponentService {
 
 
     /**
-     * Description: 选择准备部署的组件以及组件在节点中的分布情况，本接口多次操作为幂等性操作
+     * Description: 选择准备部署的组件以及组件在节点中的分布情况，本接口多次操作为幂等性操作，同服务、通组件、同状态，对应一组 NodeIdList
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/17
