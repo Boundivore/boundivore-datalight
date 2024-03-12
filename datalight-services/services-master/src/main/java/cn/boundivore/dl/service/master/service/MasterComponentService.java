@@ -788,7 +788,6 @@ public class MasterComponentService {
                 .collect(Collectors.toSet());
 
         // 如果组件状态枚举集合中只有一种类型的状态（Set 集合已去重）
-        // TODO 考虑 SELECTED_ADDITION
         if (scStateEnumSet.size() == 1) {
             // 如果状态枚举集合包含 REMOVED 状态
             if (scStateEnumSet.contains(REMOVED)) {
@@ -804,6 +803,8 @@ public class MasterComponentService {
             if (scStateEnumSet.contains(UNSELECTED)) {
                 return UNSELECTED;
             }
+        } else if (scStateEnumSet.size() > 1 && scStateEnumSet.contains(SELECTED) && !scStateEnumSet.contains(REMOVED)){
+            return SELECTED_ADDITION;
         }
 
         // 默认返回 DEPLOYED 状态
