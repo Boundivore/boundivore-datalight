@@ -199,16 +199,6 @@ public enum SCStateEnum implements IBaseEnum {
                 )
         );
 
-        Assert.isTrue(
-                this == SELECTED || this == UNSELECTED || this == REMOVED,
-                () -> new IllegalArgumentException(
-                        String.format(
-                                "%s 状态下的组件不可进行重新选择操作",
-                                this
-                        )
-                )
-        );
-
         SCStateEnum resultSCSStateEnum;
         switch (this) {
 
