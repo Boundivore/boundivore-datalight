@@ -443,16 +443,6 @@ public class MasterComponentService {
 
                 });
 
-        // 检查单次请求中是否重复传递了相同的组件名
-        Assert.isTrue(
-                request.getComponentList()
-                        .stream()
-                        .map(AbstractServiceComponentRequest.ComponentRequest::getComponentName)
-                        .distinct()
-                        .count() == request.getComponentList().size(),
-                () -> new BException("单次请求中, 重复传递了相同的组件名称")
-        );
-
         // 检查组件名称是否合法
         request.getComponentList().forEach(
                 i -> Assert.notNull(
@@ -586,7 +576,7 @@ public class MasterComponentService {
         componentNameNewTDlComponentListMap.forEach(
                 (componentName, tdlComponentList) -> {
                     // 从数据库获取当前 “已服役+准备部署” 的组件在节点中的分布情况
-                    Set<Long> nodeIdList = this.getComponentDistributionList(
+                    Set<Long> newNodeIdList = this.getComponentDistributionList(
                             clusterId,
                             componentName,
                             tdlComponentList
@@ -596,26 +586,26 @@ public class MasterComponentService {
 
                     // 检查每个服务下的组件 最小 部署数量是否合理
                     Assert.isTrue(
-                            nodeIdList.size() >= yamlComponent.getMin(),
+                            newNodeIdList.size() >= yamlComponent.getMin(),
                             () -> new BException(
                                     String.format(
                                             "组件 %s 不满足最小部署数量: %s, 当前值: %s",
                                             componentName,
                                             yamlComponent.getMin(),
-                                            nodeIdList.size()
+                                            newNodeIdList.size()
                                     )
                             )
                     );
 
                     // 检查每个服务下的组件 最大 部署数量是否合理
                     Assert.isTrue(
-                            yamlComponent.getMax() == -1 || nodeIdList.size() <= yamlComponent.getMax(),
+                            yamlComponent.getMax() == -1 || newNodeIdList.size() <= yamlComponent.getMax(),
                             () -> new BException(
                                     String.format(
                                             "组件 %s 不满足最大部署数量: %s, 当前值: %s",
                                             componentName,
                                             yamlComponent.getMax(),
-                                            nodeIdList.size()
+                                            newNodeIdList.size()
                                     )
                             )
                     );
@@ -632,7 +622,7 @@ public class MasterComponentService {
                                         )
                                 );
                                 Assert.isFalse(
-                                        mutexNodeIdList.stream().anyMatch(nodeIdList::contains),
+                                        mutexNodeIdList.stream().anyMatch(newNodeIdList::contains),
                                         () -> new BException(
                                                 String.format(
                                                         "组件 %s 与组件 %s 存在部署互斥",
@@ -664,7 +654,14 @@ public class MasterComponentService {
     private Set<Long> getComponentDistributionList(Long clusterId,
                                                    String componentName,
                                                    List<TDlComponent> newTDlComponentList) {
-        // 从数据库获取当前已服役组件在节点中的分布情况
+        // 本次请求中涉及到变更的组件，在各个节点中的分布情况
+        Set<Long> newNodeIdList = newTDlComponentList
+                .stream()
+                .map(TDlComponent::getNodeId)
+                .collect(Collectors.toSet());
+
+
+        // 从数据库获取当前已服役组件在节点中的分布情况，并排除本次最新传递进来的分布情况，等待稍后与最新数据合并
         Set<Long> nodeIdList = this.tDlComponentService
                 .lambdaQuery()
                 .select()
@@ -674,7 +671,9 @@ public class MasterComponentService {
                 .list()
                 .stream()
                 .map(TDlComponent::getNodeId)
+                .filter(i -> !newNodeIdList.contains(i))
                 .collect(Collectors.toSet());
+
 
         // 将本次操作的节点加入到数据库列表中
         nodeIdList.addAll(

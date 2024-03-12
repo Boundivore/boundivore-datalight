@@ -20,6 +20,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Description: 配置 hive-site.xml 文件
@@ -49,7 +50,7 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
         String propertyHiveLogDir = this.propertyHiveLogDir();
 
         // 获取 {{hive.server2.thrift.bind.host}}
-        String hiveServer2ThriftBindHost = this.hiveServer2ThriftBindHost();
+//        String hiveServer2ThriftBindHost = this.hiveServer2ThriftBindHost();
 
         // 获取 {{hive.metastore.warehouse.dir}}
         String hiveMetaStoreWarehouseDir = this.hiveMetaStoreWarehouseDir();
@@ -93,10 +94,10 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                         "{{property.hive.log.dir}}",
                         propertyHiveLogDir
                 )
-                .replace(
-                        "{{hive.server2.thrift.bind.host}}",
-                        hiveServer2ThriftBindHost
-                )
+//                .replace(
+//                        "{{hive.server2.thrift.bind.host}}",
+//                        hiveServer2ThriftBindHost
+//                )
                 .replace(
                         "{{hive.metastore.warehouse.dir}}",
                         hiveMetaStoreWarehouseDir
@@ -192,6 +193,7 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveServer2ThriftBindHost() {
+
         return null;
     }
 

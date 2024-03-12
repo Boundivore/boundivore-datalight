@@ -22,10 +22,10 @@
         <value>10000</value>
     </property>
 
-    <property>
-        <name>hive.server2.thrift.bind.host</name>
-        <value>{{hive.server2.thrift.bind.host}}</value>
-    </property>
+<!--    <property>-->
+<!--        <name>hive.server2.thrift.bind.host</name>-->
+<!--        <value>{{hive.server2.thrift.bind.host}}</value>-->
+<!--    </property>-->
 
     <property>
         <name>hive.server2.long.polling.timeout</name>
