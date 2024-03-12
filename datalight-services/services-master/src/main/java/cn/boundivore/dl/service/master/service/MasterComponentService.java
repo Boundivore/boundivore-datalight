@@ -365,6 +365,17 @@ public class MasterComponentService {
             this.tDlComponentService.removeBatchByIds(toRemoveTDlComponentIds);
         }
 
+        // 根据本次组件状态，变更服务状态
+        request.getComponentList()
+                .stream()
+                .map(AbstractServiceComponentRequest.ComponentRequest::getServiceName)
+                .distinct()
+                .forEach(serviceName -> {
+                            SCStateEnum serviceState = this.determineServiceStateViaComponent(request.getClusterId(), serviceName);
+                            this.masterServiceService.switchServiceState(request.getClusterId(), serviceName, serviceState);
+                        }
+                );
+
         // 记录组件 Procedure
         this.masterInitProcedureService.persistServiceComponentProcedure(
                 request.getClusterId(),
