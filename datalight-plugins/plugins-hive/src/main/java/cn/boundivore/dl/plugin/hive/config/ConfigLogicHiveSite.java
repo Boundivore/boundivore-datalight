@@ -78,6 +78,9 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
         // 获取 {{hadoop.zk.address}}、{{hbase.zookeeper.quorum}}、{{hive.zookeeper.quorum}}
         String zookeeperQuorum = this.zookeeperQuorum();
 
+        // 获取 {{hive.zookeeper.namespace}}
+        String hiveZookeeperNamespace = this.hiveZookeeperNamespace();
+
         // 获取 {{tez.lib.uris}}
         String tezLibUris = this.tezLibUris();
 
@@ -140,6 +143,10 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                         zookeeperQuorum
                 )
                 .replace(
+                        "{{hive.zookeeper.namespace}}",
+                        hiveZookeeperNamespace
+                )
+                .replace(
                         "{{tez.lib.uris}}",
                         tezLibUris
                 )
@@ -149,6 +156,7 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                 )
                 ;
     }
+
 
     /**
      * Description: 获取 Hive 日志存放目录
@@ -171,51 +179,219 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
         );
     }
 
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String hiveServer2ThriftBindHost() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String hiveMetaStoreWarehouseDir() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String hiveMetastoreUris() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String javaxJdoOptionConnectionHost() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String javaxJdoOptionConnectionPort() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String javaxJdoOptionConnectionUserName() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String javaxJdoOptionConnectionPassword() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String hiveExecutionEngine() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String hiveExecScratchdir() {
         return null;
     }
 
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String zookeeperQuorum() {
         return null;
     }
 
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String hiveZookeeperNamespace() {
+        return null;
+    }
 
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String tezLibUris() {
         return null;
     }
 
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
     private String tezUIHistoryUrlBase() {
         return null;
     }
