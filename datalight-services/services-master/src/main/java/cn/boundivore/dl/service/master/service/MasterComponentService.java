@@ -314,32 +314,34 @@ public class MasterComponentService {
                         i.getNodeIdList()
                                 .stream()
                                 .map(nodeId -> {
-                                    TDlComponent tDlComponent = tdlComponentMap.getOrDefault(
-                                            i.getComponentName() + nodeId,
-                                            new TDlComponent()
-                                    );
-                                    SCStateEnum currentSCStateEnum = tDlComponent.getComponentState() == null ?
-                                            UNSELECTED :
-                                            tDlComponent.getComponentState();
+                                            TDlComponent tDlComponent = tdlComponentMap.getOrDefault(
+                                                    i.getComponentName() + nodeId,
+                                                    new TDlComponent()
+                                            );
+                                            SCStateEnum currentSCStateEnum = tDlComponent.getComponentState() == null ?
+                                                    UNSELECTED :
+                                                    tDlComponent.getComponentState();
 
-                                    // 使用组件状态机切换状态
-                                    SCStateEnum newSCStateEnum = currentSCStateEnum.transitionSelectedComponentState(
-                                            i.getScStateEnum()
-                                    );
+                                            // 使用组件状态机切换状态
+                                            SCStateEnum newSCStateEnum = currentSCStateEnum.transitionSelectedComponentState(
+                                                    i.getScStateEnum()
+                                            );
 
-                                    tDlComponent.setClusterId(request.getClusterId());
-                                    tDlComponent.setNodeId(nodeId);
-                                    tDlComponent.setServiceName(i.getServiceName());
-                                    tDlComponent.setComponentName(i.getComponentName());
-                                    tDlComponent.setComponentState(newSCStateEnum);
-                                    tDlComponent.setPriority(
-                                            ResolverYamlServiceDetail.COMPONENT_MAP
-                                                    .get(i.getComponentName())
-                                                    .getPriority()
-                                    );
+                                            tDlComponent.setClusterId(request.getClusterId());
+                                            tDlComponent.setNodeId(nodeId);
+                                            tDlComponent.setServiceName(i.getServiceName());
+                                            tDlComponent.setComponentName(i.getComponentName());
+                                            tDlComponent.setComponentState(newSCStateEnum);
+                                            tDlComponent.setPriority(
+                                                    ResolverYamlServiceDetail.COMPONENT_MAP
+                                                            .get(i.getComponentName())
+                                                            .getPriority()
+                                            );
 
-                                    return tDlComponent;
-                                }))
+                                            return tDlComponent;
+                                        }
+                                )
+                )
                 .collect(Collectors.toList());
 
         // 检查组件在节点的分布是否合理
