@@ -16,11 +16,14 @@
  */
 package cn.boundivore.dl.plugin.hive.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
-import java.util.Map;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Description: 配置 hive-site.xml 文件
@@ -193,13 +196,12 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveServer2ThriftBindHost() {
-
-        return null;
+        return "";
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 HIVE 在 HDFS 中的数据仓库地址
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -211,12 +213,17 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveMetaStoreWarehouseDir() {
-        return null;
+        return String.format(
+                "/%s/user/hive/warehouse",
+                super.pluginConfig.getCurrentMetaService()
+                        .getPluginClusterMeta()
+                        .getClusterName()
+        );
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 Metastore 地址
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -228,12 +235,23 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveMetastoreUris() {
-        return null;
+        List<PluginConfig.MetaComponent> metaStoreList = super.pluginConfig
+                .getCurrentMetaService()
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("MetaStore"))
+                .collect(Collectors.toList());
+
+        return metaStoreList.stream()
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .map(metaComponent -> String.format("thrift://%s:9083", metaComponent.getHostname()))
+                .collect(Collectors.joining(","));
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 MetaStore 元数据存储库的主机名
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -245,12 +263,12 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String javaxJdoOptionConnectionHost() {
-        return null;
+        return super.pluginConfig.getMysqlEnv().getDbHost();
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 MetaStore 元数据存储库的端口号
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -262,12 +280,12 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String javaxJdoOptionConnectionPort() {
-        return null;
+        return super.pluginConfig.getMysqlEnv().getDbPort();
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 MetaStore 元数据存储库的用户名
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -279,12 +297,12 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String javaxJdoOptionConnectionUserName() {
-        return null;
+        return super.pluginConfig.getMysqlEnv().getDbUser();
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 MetaStore 元数据存储库的密码
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -296,12 +314,13 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String javaxJdoOptionConnectionPassword() {
-        return null;
+        return super.pluginConfig.getMysqlEnv().getDbPassword();
+        ;
     }
 
 
     /**
-     * Description: TODO
+     * Description: 返回 Hive 默认执行引擎
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -313,12 +332,12 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveExecutionEngine() {
-        return null;
+        return "tez";
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取执行 MapReduce 任务时的临时存储空间
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -330,12 +349,17 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveExecScratchdir() {
-        return null;
+        return String.format(
+                "/%s/tmp/hive",
+                super.pluginConfig.getCurrentMetaService()
+                        .getPluginClusterMeta()
+                        .getClusterName()
+        );
     }
 
 
     /**
-     * Description: TODO
+     * Description: 获取 Zookeeper 集群地址
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -347,11 +371,19 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String zookeeperQuorum() {
-        return null;
+        return super.pluginConfig
+                .getMetaServiceMap()
+                .get("ZOOKEEPER")
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("QuarumPeermain"))
+                .map(i -> String.format("%s:2181", i.getHostname()))
+                .collect(Collectors.joining(","));
     }
 
     /**
-     * Description: TODO
+     * Description: 获取 Hive 在 Zookeeper 中的命名空间挂载点
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -363,11 +395,11 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String hiveZookeeperNamespace() {
-        return null;
+        return "hive";
     }
 
     /**
-     * Description: TODO
+     * Description: 获取 tez 依赖包在 HDFS 上的存储位置
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -379,11 +411,21 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String tezLibUris() {
-        return null;
+        String hdfsClusterName = super.pluginConfig
+                .getMetaServiceMap()
+                .get("HDFS")
+                .getPluginClusterMeta()
+                .getClusterName();
+
+        return String.format(
+                "hdfs://%s/%s/tez/tez.tar.gz",
+                hdfsClusterName,
+                hdfsClusterName
+        );
     }
 
     /**
-     * Description: TODO
+     * Description: 获取 tez UI 的 url 地址
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/12
@@ -395,7 +437,19 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      * @return String
      */
     private String tezUIHistoryUrlBase() {
-        return null;
+        List<PluginConfig.MetaComponent> tezUIList = super.pluginConfig
+                .getCurrentMetaService()
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("TezUI"))
+                .collect(Collectors.toList());
+
+        return String.format(
+                "http://%s:%s/tez/",
+                tezUIList.get(0).getHostname(),
+                PortConstants.TEZ_UI_PORT
+        );
     }
 
 }

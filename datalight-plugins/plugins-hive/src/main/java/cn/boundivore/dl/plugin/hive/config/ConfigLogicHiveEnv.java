@@ -45,13 +45,123 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
                 file
         );
 
+        // {{HADOOP_HOME}}
+        String hadoopHome = this.hadoopHome();
+
+        // {{HIVE_CONF_DIR}}
+        String hiveConfDir = this.hiveConfDir();
+
+        // {{HIVE_PID_DIR}}
+        String hivePidDir = this.hivePidDir();
+
+        // {{jmxExporterPort_MetaStore}}
+        String jmxExporterPortMetaStore = this.jmxExporterPortMetaStore();
+
+        // {{jmxExporterPort_HiveServer2}}
+        String jmxExporterPortHiveServer2 = this.jmxExporterPortHiveServer2();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
+                        "{{HADOOP_HOME}}",
+                        ""
+                )
+                .replace(
+                        "{{HIVE_CONF_DIR}}",
+                        ""
+                )
+                .replace(
+                        "{{HIVE_PID_DIR}}",
+                        ""
+                )
+                .replace(
+                        "{{jmxExporterPort_MetaStore}}",
+                        ""
+                )
+                .replace(
+                        "{{jmxExporterPort_HiveServer2}}",
                         ""
                 )
                 ;
+    }
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String hadoopHome() {
+        return null;
+    }
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String hiveConfDir() {
+        return null;
+    }
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String hivePidDir() {
+        return null;
+    }
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String jmxExporterPortMetaStore() {
+        return null;
+    }
+
+    /**
+     * Description: TODO
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String jmxExporterPortHiveServer2() {
+        return null;
     }
 
 }

@@ -36,6 +36,6 @@ datalight:
         type: COMPUTE
         desc: 'HQL 任务生成与计算框架'
         priority: 6
-        dependencies: [ 'HDFS', 'YARN' ]
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
         relatives: [ 'MONITOR' ]
 

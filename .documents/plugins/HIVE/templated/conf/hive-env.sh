@@ -54,7 +54,7 @@
 # export HIVE_AUX_JARS_PATH=
 # Set HADOOP_HOME to point to a specific hadoop install directory
 HADOOP_HOME={{HADOOP_HOME}}
-export SPARK_HOME={{SPARK_HOME}}
+#export SPARK_HOME={{SPARK_HOME}}
 # Hive Configuration Directory can be controlled by:
 export HIVE_CONF_DIR={{HIVE_CONF_DIR}}
 
@@ -63,6 +63,6 @@ export HIVE_PID_DIR={{HIVE_PID_DIR}}
 # export HIVE_AUX_JARS_PATH=
 
 
-export HIVE_METASTORE_JMX_OPTS={{HIVE_METASTORE_JMX_OPTS}}
+export HIVE_METASTORE_JMX_OPTS={{jmxExporterPort_MetaStore}}
 
-export HIVE_SERVER2_JMX_OPTS={{HIVE_SERVER2_JMX_OPTS}}
+export HIVE_SERVER2_JMX_OPTS={{jmxExporterPort_HiveServer2}}

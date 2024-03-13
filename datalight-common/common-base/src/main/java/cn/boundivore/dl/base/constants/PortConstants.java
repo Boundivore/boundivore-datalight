@@ -30,6 +30,9 @@ import java.util.Map;
  * Version: V1.0
  */
 public class PortConstants {
+
+    public static final String TEZ_UI_PORT = "9999";
+
     // <ServiceName-ComponentName, ExporterPort>
     public final static Map<String, String> MONITOR_EXPORTER_PORT_MAP = new LinkedHashMap<String, String>() {
         {
