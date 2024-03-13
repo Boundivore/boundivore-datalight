@@ -315,7 +315,6 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
      */
     private String javaxJdoOptionConnectionPassword() {
         return super.pluginConfig.getMysqlEnv().getDbPassword();
-        ;
     }
 
 
@@ -418,8 +417,7 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                 .getClusterName();
 
         return String.format(
-                "hdfs://%s/%s/tez/tez.tar.gz",
-                hdfsClusterName,
+                "hdfs://%s/tez/tez.tar.gz",
                 hdfsClusterName
         );
     }
