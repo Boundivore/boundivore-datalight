@@ -38,7 +38,7 @@ if ! su -s /bin/bash datalight -c "hadoop fs -put -f ${TEZ_TAR_LOCAL_PATH} ${TEZ
     exit 1
 fi
 
-su -s /bin/bash hadoop -c "${HDFS_HOME}/bin/hadoop fs -chmod g+w ${TEZ_HDFS_DIR}"
-su -s /bin/bash hadoop -c "${HDFS_HOME}/bin/hadoop fs -chmod g+w ${TEZ_TAR_HDFS_PATH}"
+su -s /bin/bash datalight -c "${HDFS_HOME}/bin/hadoop fs -chmod g+w ${TEZ_HDFS_DIR}"
+su -s /bin/bash datalight -c "${HDFS_HOME}/bin/hadoop fs -chmod g+w ${TEZ_TAR_HDFS_PATH}"
 
 echo "tez.tar.gz has been successfully uploaded to HDFS at ${TEZ_HDFS_DIR}"
