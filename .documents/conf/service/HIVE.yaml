@@ -73,7 +73,7 @@ datalight:
         priority: 1
         max: 1
         min: 1
-        mutexes: [ 'MetaStore' ]
+        mutexes: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -153,7 +153,7 @@ datalight:
         priority: 2
         max: 2
         min: 1
-        mutexes: [ 'HiveServer2' ]
+        mutexes: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -215,7 +215,7 @@ datalight:
         priority: 3
         max: 1
         min: 1
-        mutexes: [ 'TezUI' ]
+        mutexes: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
