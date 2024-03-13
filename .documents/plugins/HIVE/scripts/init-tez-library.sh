@@ -27,7 +27,7 @@ if [ ! -f "${TEZ_TAR_LOCAL_PATH}" ]; then
 fi
 
 # 使用 datalight 用户创建 HDFS 目标目录
-if ! su -s /bin/bash datalight -c "hadoop fs -mkdir -p ${TEZ_HDFS_PATH}"; then
+if ! su -s /bin/bash datalight -c "hadoop fs -mkdir -p ${TEZ_HDFS_DIR}"; then
     echo "Error: Failed to create HDFS directory: ${TEZ_HDFS_DIR}"
     exit 1
 fi
