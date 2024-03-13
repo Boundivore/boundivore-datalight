@@ -96,7 +96,7 @@ public class ConfigLogicCatalinaSh extends AbstractConfigLogic {
      */
     private String catalinaPid() {
         return String.format(
-                "%s/HIVE",
+                "%s/HIVE/catalina.pid",
                 super.pidDir()
         );
     }
@@ -115,7 +115,7 @@ public class ConfigLogicCatalinaSh extends AbstractConfigLogic {
      */
     private String catalinaOut() {
         return String.format(
-                "%s/HIVE",
+                "%s/HIVE/catalina.out",
                 super.logDir()
         );
     }
