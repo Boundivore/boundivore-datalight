@@ -12,7 +12,7 @@ TEZ_HDFS_DIR="/tez"
 TEZ_TAR_HDFS_PATH="${TEZ_HDFS_DIR}/tez.tar.gz"
 
 # tez.tar.gz 的本地路径
-TEZ_TAR_LOCAL_PATH="${SERVICE_DIR}/HIVE/tez/path/tez.tar.gz"
+TEZ_TAR_LOCAL_PATH="${SERVICE_DIR}/HIVE/tez/tez.tar.gz"
 
 # 如果 HDFS (TEZ_HDFS_DIR) 的目录中存在 tez.tar.gz，则直接 exit 0 退出，不再执行后续的操作
 if su -s /bin/bash datalight -c "hadoop fs -test -e ${TEZ_TAR_HDFS_PATH}"; then
