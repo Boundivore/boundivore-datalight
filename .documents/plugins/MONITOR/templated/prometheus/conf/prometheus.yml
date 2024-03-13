@@ -111,6 +111,18 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'HIVE-MetaStore'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HIVE-HiveServer2'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'HIVE-TezUI'
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'HBASE-HMaster'
     static_configs:
       - targets: [ ]
@@ -119,11 +131,7 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
-  - job_name: 'HIVE-MetaStore'
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'HIVE-HiveServer2'
+  - job_name: 'KAFKA-KafkaBroker'
     static_configs:
       - targets: [ ]
 
@@ -135,19 +143,11 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
-  - job_name: 'TEZ-TezUI'
-    static_configs:
-      - targets: [ ]
-
   - job_name: 'SPARK-SparkHistoryServer'
     static_configs:
       - targets: [ ]
 
   - job_name: 'FLINK-FlinkHistoryServer'
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'KAFKA-KafkaBroker'
     static_configs:
       - targets: [ ]
 

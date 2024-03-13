@@ -63,6 +63,16 @@ export HIVE_PID_DIR={{HIVE_PID_DIR}}
 # export HIVE_AUX_JARS_PATH=
 
 
-export HIVE_METASTORE_JMX_OPTS={{jmxExporterPort_MetaStore}}
+export HIVE_METASTORE_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_MetaStore}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_MetaStore}}:${SERVICE_DIR}/HIVE/exporter/conf/jmx_config_MetaStore.yaml"
 
-export HIVE_SERVER2_JMX_OPTS={{jmxExporterPort_HiveServer2}}
+export HIVE_SERVER2_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HiveServer2}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HiveServer2}}:${SERVICE_DIR}/HIVE/exporter/conf/jmx_config_HiveServer2.yaml"

@@ -67,9 +67,11 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
 
     @Override
     public PluginConfigResult configByEvent(PluginConfigSelf pluginConfigSelf) {
+
         PluginConfigResult pluginConfigResult = super.configByEvent(pluginConfigSelf);
 
         final LinkedHashMap<PluginConfigResult.ConfigKey, PluginConfigResult.ConfigValue> resultMap = pluginConfigResult.getConfigMap();
+
         pluginConfigSelf.getConfigSelfDataList()
                 .forEach(i -> {
                             if (i.getConfigPath().contains(PROMETHEUS_CONFIG_PATH)) {
@@ -210,7 +212,7 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                             );
 
                             // 获取当前组件的 Exporter 端口号
-                            String curComponentExporterPort = PortConstants.getMonitorExporterPort(
+                            String curComponentExporterPort = PortConstants.getExporterPort(
                                     pluginConfigEvent.getServiceName(),
                                     componentName
                             );

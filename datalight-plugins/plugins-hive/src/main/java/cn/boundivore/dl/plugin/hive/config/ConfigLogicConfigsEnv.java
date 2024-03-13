@@ -20,6 +20,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+import java.util.stream.Collectors;
 
 /**
  * Description: 配置 configs.env 文件
@@ -45,13 +46,106 @@ public class ConfigLogicConfigsEnv extends AbstractConfigLogic {
                 file
         );
 
+        // {{timeline}}
+        String timeline = this.timeline();
+
+        // {{rm}}
+        String rm = this.rm();
+
+        // {{timeZone}}
+        String timeZone = this.timeZone();
+
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{timeline}}",
+                        timeline
+                )
+                .replace(
+                        "{{rm}}",
+                        rm
+                )
+                .replace(
+                        "{{timeZone}}",
+                        timeZone
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 YARN TimelineServer 地址
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String timeline() {
+        String timelineServerHostname = super.pluginConfig
+                .getMetaServiceMap()
+                .get("YARN")
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("TimelineServer"))
+                .collect(Collectors.toList())
+                .get(0)
+                .getHostname();
+
+        return String.format(
+                "http://%s:8188",
+                timelineServerHostname
+        );
+    }
+
+    /**
+     * Description: 获取 YARN TimelineServer 地址
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String rm() {
+        String resourceManager1Hostname = super.pluginConfig
+                .getMetaServiceMap()
+                .get("YARN")
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("ResourceManager1"))
+                .collect(Collectors.toList())
+                .get(0)
+                .getHostname();
+
+        return String.format(
+                "http://%s:8088",
+                resourceManager1Hostname
+        );
+    }
+
+    /**
+     * Description: 获取中国大陆时区
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String timeZone() {
+        return "Asia/Shanghai";
     }
 
 }

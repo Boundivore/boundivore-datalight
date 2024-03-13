@@ -206,7 +206,7 @@ public class ConfigLogicPrometheusYml extends AbstractConfigLogic {
                 .map(i -> String.format(
                         "%s:%s",
                         i.getHostname(),
-                        PortConstants.getMonitorExporterPort(
+                        PortConstants.getExporterPort(
                                 super.pluginConfig
                                         .getCurrentMetaService()
                                         .getServiceName(),

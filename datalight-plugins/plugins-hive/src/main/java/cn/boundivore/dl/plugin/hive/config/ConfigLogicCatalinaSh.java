@@ -16,10 +16,13 @@
  */
 package cn.boundivore.dl.plugin.hive.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+
+import static cn.boundivore.dl.plugin.hive.config.ConfigLogicJmxYaml.SERVICE_NAME;
 
 /**
  * Description: 配置 catalina.sh 文件
@@ -45,13 +48,76 @@ public class ConfigLogicCatalinaSh extends AbstractConfigLogic {
                 file
         );
 
+        // {{CATALINA_PID}}
+        String catalinaPid = this.catalinaPid();
+
+        // {{CATALINA_OUT}}
+        String catalinaOut = this.catalinaOut();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{CATALINA_PID}}",
+                        catalinaPid
+                )
+                .replace(
+                        "{{CATALINA_OUT}}",
+                        catalinaOut
+                )
+
+                // TezUI
+                .replace(
+                        "{{jmxRemotePort_TezUI}}",
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
+                                "TezUI"
+                        )
+                )
+                .replace(
+                        "{{jmxExporterPort_TezUI}}",
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
+                                "TezUI"
+                        )
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 TezUI 所在容器（Tomcat）的进程 ID 文件所在目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String catalinaPid() {
+        return String.format(
+                "%s/HIVE",
+                super.pidDir()
+        );
+    }
+
+    /**
+     * Description: 获取 Catalina 标准输出路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String catalinaOut() {
+        return String.format(
+                "%s/HIVE",
+                super.logDir()
+        );
     }
 
 }

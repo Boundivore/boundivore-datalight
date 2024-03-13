@@ -22,6 +22,8 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 
+import static cn.boundivore.dl.plugin.yarn.config.ConfigLogicJmxYaml.SERVICE_NAME;
+
 /**
  * Description: 配置 hadoop-env.sh 文件
  * Created by: Boundivore
@@ -33,8 +35,6 @@ import java.io.File;
  * Version: V1.0
  */
 public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
-
-    private static final String SERVICE_NAME_YARN = "YARN";
 
     public ConfigLogicHadoopEnvSh(PluginConfig pluginConfig) {
         super(pluginConfig);
@@ -51,60 +51,60 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 // ResourceManager
                 .replace(
                         "{{jmxRemotePort_ResourceManager}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "ResourceManager"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_ResourceManager}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "ResourceManager"
                         )
                 )
                 // NodeManager
                 .replace(
                         "{{jmxRemotePort_NodeManager}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "NodeManager"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_NodeManager}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "NodeManager"
                         )
                 )
                 // TimelineServer
                 .replace(
                         "{{jmxRemotePort_TimelineServer}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "TimelineServer"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_TimelineServer}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "TimelineServer"
                         )
                 )
                 // HistoryServer
                 .replace(
                         "{{jmxRemotePort_HistoryServer}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "HistoryServer"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_HistoryServer}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_YARN,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "HistoryServer"
                         )
                 )

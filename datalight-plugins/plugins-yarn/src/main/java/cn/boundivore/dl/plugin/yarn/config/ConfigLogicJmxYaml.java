@@ -40,7 +40,7 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
     public static final String JMX_CONFIG_FILE_NodeManager = "jmx_config_NodeManager.yaml";
     public static final String JMX_CONFIG_FILE_TimelineServer = "jmx_config_TimelineServer.yaml";
     public static final String JMX_CONFIG_FILE_HistoryServer = "jmx_config_HistoryServer.yaml";
-    public static final String SERVICE_NAME_YARN = "YARN";
+    public static final String SERVICE_NAME = "YARN";
 
 
     public ConfigLogicJmxYaml(PluginConfig pluginConfig) {
@@ -57,26 +57,26 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
         String jmxRemotePort = "{{jmxRemotePort}}";
         switch (file.getName()) {
             case JMX_CONFIG_FILE_ResourceManager:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_YARN,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "ResourceManager"
                 );
                 break;
             case JMX_CONFIG_FILE_NodeManager:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_YARN,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "NodeManager"
                 );
                 break;
             case JMX_CONFIG_FILE_TimelineServer:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_YARN,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "TimelineServer"
                 );
                 break;
             case JMX_CONFIG_FILE_HistoryServer:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_YARN,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "HistoryServer"
                 );
                 break;

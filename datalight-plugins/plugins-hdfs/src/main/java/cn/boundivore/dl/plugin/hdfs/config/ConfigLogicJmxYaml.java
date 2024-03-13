@@ -41,7 +41,7 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
     public static final String JMX_CONFIG_FILE_ZKFailoverController = "jmx_config_ZKFailoverController.yaml";
     public static final String JMX_CONFIG_FILE_DataNode = "jmx_config_DataNode.yaml";
     public static final String JMX_CONFIG_FILE_HttpFS = "jmx_config_HttpFS.yaml";
-    public static final String SERVICE_NAME_HDFS = "HDFS";
+    public static final String SERVICE_NAME = "HDFS";
 
 
     public ConfigLogicJmxYaml(PluginConfig pluginConfig) {
@@ -58,32 +58,32 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
         String jmxRemotePort = "{{jmxRemotePort}}";
         switch (file.getName()) {
             case JMX_CONFIG_FILE_JournalNode:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "JournalNode"
                 );
                 break;
             case JMX_CONFIG_FILE_NameNode:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "NameNode"
                 );
                 break;
             case JMX_CONFIG_FILE_ZKFailoverController:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "ZKFailoverController"
                 );
                 break;
             case JMX_CONFIG_FILE_DataNode:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "DataNode"
                 );
                 break;
             case JMX_CONFIG_FILE_HttpFS:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HDFS,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "HttpFS"
                 );
                 break;

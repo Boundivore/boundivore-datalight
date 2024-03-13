@@ -111,6 +111,9 @@
 #                   case the default is "true"
 # -----------------------------------------------------------------------------
 
+export CATALINA_PID={{CATALINA_PID}}
+export CATALINA_OUT={{CATALINA_OUT}}
+
 # OS specific support.  $var _must_ be set to either true or false.
 cygwin=false
 darwin=false
@@ -391,6 +394,13 @@ elif [ "$1" = "run" ]; then
 
 elif [ "$1" = "start" ] ; then
 
+  export HIVE_TEZ_UI_OPTS="-Djava.net.preferIPv4Stack=true \
+                          -Dcom.sun.management.jmxremote.authenticate=false \
+                          -Dcom.sun.management.jmxremote.ssl=false \
+                          -Dcom.sun.management.jmxremote.local.only=false \
+                          -Dcom.sun.management.jmxremote.port={{jmxRemotePort_TezUI}} \
+                          -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_TezUI}}:${SERVICE_DIR}/HIVE/exporter/conf/jmx_config_TezUI.yaml"
+
   if [ ! -z "$CATALINA_PID" ]; then
     if [ -f "$CATALINA_PID" ]; then
       if [ -s "$CATALINA_PID" ]; then
@@ -457,7 +467,7 @@ elif [ "$1" = "start" ] ; then
       -Djava.security.policy=="\"$CATALINA_BASE/conf/catalina.policy\"" \
       -Dcatalina.base="\"$CATALINA_BASE\"" \
       -Dcatalina.home="\"$CATALINA_HOME\"" \
-      -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" \
+      -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" "$HIVE_TEZ_UI_OPTS" \
       org.apache.catalina.startup.Bootstrap "$@" start \
       >> "$CATALINA_OUT" 2>&1 "&"
 
@@ -466,7 +476,7 @@ elif [ "$1" = "start" ] ; then
       -classpath "\"$CLASSPATH\"" \
       -Dcatalina.base="\"$CATALINA_BASE\"" \
       -Dcatalina.home="\"$CATALINA_HOME\"" \
-      -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" \
+      -Djava.io.tmpdir="\"$CATALINA_TMPDIR\"" "$HIVE_TEZ_UI_OPTS" \
       org.apache.catalina.startup.Bootstrap "$@" start \
       >> "$CATALINA_OUT" 2>&1 "&"
 

@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.plugin.hive.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
@@ -45,13 +46,31 @@ public class ConfigLogicServerXml extends AbstractConfigLogic {
                 file
         );
 
+        // {{tez.ui.port}}
+        String tezUIPort = this.tezUIPort();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{tez.ui.port}}",
+                        tezUIPort
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 TezUI 所在容器（Tomcat）的端口号
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String tezUIPort() {
+        return PortConstants.TEZ_UI_PORT;
     }
 
 }

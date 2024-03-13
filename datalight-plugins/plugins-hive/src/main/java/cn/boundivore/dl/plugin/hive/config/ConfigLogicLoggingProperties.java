@@ -45,13 +45,34 @@ public class ConfigLogicLoggingProperties extends AbstractConfigLogic {
                 file
         );
 
+        // {{catalina.log.dir}}
+        String catalinaLogDir = this.catalinaLogDir();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{catalina.log.dir}}",
+                        catalinaLogDir
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 TezUI 所在容器（Tomcat）日志存储路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String catalinaLogDir() {
+        return String.format(
+                "%s/HIVE",
+                super.logDir()
+        );
     }
 
 }

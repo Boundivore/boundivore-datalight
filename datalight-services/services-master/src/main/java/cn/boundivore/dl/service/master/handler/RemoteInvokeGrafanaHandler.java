@@ -22,7 +22,6 @@ import cn.boundivore.dl.base.enumeration.impl.GrafanaUserTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.utils.JsonUtil;
-import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
@@ -166,7 +165,7 @@ public class RemoteInvokeGrafanaHandler {
                         clusterId,
                         grafanaUserMap,
                         tDlNodeGrafana.getIpv4(),
-                        PortConstants.getMonitorExporterPort(
+                        PortConstants.getExporterPort(
                                 grafanaServerTDlComponent.getServiceName(),
                                 grafanaServerTDlComponent.getComponentName()
                         )
@@ -351,7 +350,7 @@ public class RemoteInvokeGrafanaHandler {
                     orgId,
                     "MONITOR-Prometheus",
                     tDlNode.getHostname(),
-                    PortConstants.MONITOR_EXPORTER_PORT_MAP.get("MONITOR-Prometheus"),
+                    PortConstants.EXPORTER_PORT_MAP.get("MONITOR-Prometheus"),
                     grafanaUser2.getLoginName(),
                     grafanaUser2.getNewLoginPassword()
             );

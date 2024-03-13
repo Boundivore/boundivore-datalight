@@ -86,7 +86,7 @@ public class ConfigLogicZooCfg extends AbstractConfigLogic {
                 )
                 .replace(
                         "{{exporterPort}}",
-                        PortConstants.MONITOR_EXPORTER_PORT_MAP.get("ZOOKEEPER-QuarumPeermain")
+                        PortConstants.EXPORTER_PORT_MAP.get("ZOOKEEPER-QuarumPeermain")
 
                 );
     }

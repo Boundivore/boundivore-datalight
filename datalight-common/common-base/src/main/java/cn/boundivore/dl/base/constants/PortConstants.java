@@ -34,7 +34,10 @@ public class PortConstants {
     public static final String TEZ_UI_PORT = "9999";
 
     // <ServiceName-ComponentName, ExporterPort>
-    public final static Map<String, String> MONITOR_EXPORTER_PORT_MAP = new LinkedHashMap<String, String>() {
+    public final static Map<String, String> EXPORTER_PORT_MAP = new LinkedHashMap<String, String>() {
+        private static final long serialVersionUID = -8990084112729979456L;
+
+
         {
             put("MONITOR-AlertManager", "9093");
             put("MONITOR-Prometheus", "9090");
@@ -63,7 +66,9 @@ public class PortConstants {
     };
 
     // <ServiceName-ComponentName, RemotePort>
-    public final static Map<String, String> MONITOR_REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
+    public final static Map<String, String> REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
+        private static final long serialVersionUID = -6792272135600528315L;
+
         {
             put("ZOOKEEPER-QuarumPeermain", "16001");
 
@@ -98,8 +103,8 @@ public class PortConstants {
      * @param componentName 组件名称
      * @return Exporter 端口号
      */
-    public static String getMonitorExporterPort(String serviceName, String componentName) {
-        return MONITOR_EXPORTER_PORT_MAP.get(
+    public static String getExporterPort(String serviceName, String componentName) {
+        return EXPORTER_PORT_MAP.get(
                 String.format(
                         "%s-%s",
                         serviceName,
@@ -122,8 +127,8 @@ public class PortConstants {
      * @param componentName 组件名称
      * @return Remote 端口号
      */
-    public static String getMonitorRemotePort(String serviceName, String componentName) {
-        return MONITOR_REMOTE_PORT_MAP.get(
+    public static String getRemotePort(String serviceName, String componentName) {
+        return REMOTE_PORT_MAP.get(
                 String.format(
                         "%s-%s",
                         serviceName,

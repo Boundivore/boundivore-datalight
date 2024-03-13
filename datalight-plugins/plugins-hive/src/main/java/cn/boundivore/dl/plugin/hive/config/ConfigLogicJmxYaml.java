@@ -40,7 +40,7 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
     public static final String JMX_CONFIG_FILE_HiveServer2 = "jmx_config_HiveServer2.yaml";
     public static final String JMX_CONFIG_FILE_TezUI = "jmx_config_TezUI.yaml";
 
-    public static final String SERVICE_NAME_HIVE = "HIVE";
+    public static final String SERVICE_NAME = "HIVE";
 
 
     public ConfigLogicJmxYaml(PluginConfig pluginConfig) {
@@ -56,21 +56,26 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
 
         String jmxRemotePort = "{{jmxRemotePort}}";
         switch (file.getName()) {
+            // MetaStore
             case JMX_CONFIG_FILE_MetaStore:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HIVE,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "MetaStore"
                 );
                 break;
+
+            // HiveServer2
             case JMX_CONFIG_FILE_HiveServer2:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HIVE,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "HiveServer2"
                 );
                 break;
+
+            // TezUI
             case JMX_CONFIG_FILE_TezUI:
-                jmxRemotePort = PortConstants.getMonitorRemotePort(
-                        SERVICE_NAME_HIVE,
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
                         "TezUI"
                 );
                 break;

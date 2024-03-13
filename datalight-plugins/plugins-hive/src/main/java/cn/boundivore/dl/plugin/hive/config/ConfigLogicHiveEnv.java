@@ -16,10 +16,13 @@
  */
 package cn.boundivore.dl.plugin.hive.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+
+import static cn.boundivore.dl.plugin.hive.config.ConfigLogicJmxYaml.SERVICE_NAME;
 
 /**
  * Description: 配置 hive-env.sh 文件
@@ -54,38 +57,55 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
         // {{HIVE_PID_DIR}}
         String hivePidDir = this.hivePidDir();
 
-        // {{jmxExporterPort_MetaStore}}
-        String jmxExporterPortMetaStore = this.jmxExporterPortMetaStore();
-
-        // {{jmxExporterPort_HiveServer2}}
-        String jmxExporterPortHiveServer2 = this.jmxExporterPortHiveServer2();
-
         return replacedTemplated
                 .replace(
                         "{{HADOOP_HOME}}",
-                        ""
+                        hadoopHome
                 )
                 .replace(
                         "{{HIVE_CONF_DIR}}",
-                        ""
+                        hiveConfDir
                 )
                 .replace(
                         "{{HIVE_PID_DIR}}",
-                        ""
+                        hivePidDir
+                )
+                // MetaStore
+                .replace(
+                        "{{jmxRemotePort_MetaStore}}",
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
+                                "MetaStore"
+                        )
                 )
                 .replace(
                         "{{jmxExporterPort_MetaStore}}",
-                        ""
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
+                                "MetaStore"
+                        )
+                )
+
+                // HiveServer2
+                .replace(
+                        "{{jmxRemotePort_MetaStore}}",
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
+                                "HiveServer2"
+                        )
                 )
                 .replace(
                         "{{jmxExporterPort_HiveServer2}}",
-                        ""
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
+                                "HiveServer2"
+                        )
                 )
                 ;
     }
 
     /**
-     * Description: TODO
+     * Description: 获取 YARN 根目录
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/13
@@ -97,11 +117,14 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
      * @return String
      */
     private String hadoopHome() {
-        return null;
+        return String.format(
+                "%s/YARN",
+                super.serviceDir()
+        );
     }
 
     /**
-     * Description: TODO
+     * Description: 获取 HIVE 配置文件存放路径
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/13
@@ -113,11 +136,14 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
      * @return String
      */
     private String hiveConfDir() {
-        return null;
+        return String.format(
+                "%s/HIVE/conf",
+                super.serviceDir()
+        );
     }
 
     /**
-     * Description: TODO
+     * Description: 获取 HIVE 下组件进程 ID 的存放位置
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/13
@@ -129,39 +155,10 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
      * @return String
      */
     private String hivePidDir() {
-        return null;
-    }
-
-    /**
-     * Description: TODO
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/3/13
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return String
-     */
-    private String jmxExporterPortMetaStore() {
-        return null;
-    }
-
-    /**
-     * Description: TODO
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/3/13
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return String
-     */
-    private String jmxExporterPortHiveServer2() {
-        return null;
+        return String.format(
+                "%s/HIVE",
+                super.pidDir()
+        );
     }
 
 }

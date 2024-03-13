@@ -22,6 +22,8 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 
+import static cn.boundivore.dl.plugin.hdfs.config.ConfigLogicJmxYaml.SERVICE_NAME;
+
 /**
  * Description: 配置 hadoop-env.sh 文件
  * Created by: Boundivore
@@ -33,8 +35,6 @@ import java.io.File;
  * Version: V1.0
  */
 public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
-
-    private static final String SERVICE_NAME_HDFS = "HDFS";
 
     public ConfigLogicHadoopEnvSh(PluginConfig pluginConfig) {
         super(pluginConfig);
@@ -56,75 +56,75 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 // JournalNode
                 .replace(
                         "{{jmxRemotePort_JournalNode}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "JournalNode"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_JournalNode}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "JournalNode"
                         )
                 )
                 // NameNode
                 .replace(
                         "{{jmxRemotePort_NameNode}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "NameNode"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_NameNode}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "NameNode"
                         )
                 )
                 // ZKFailoverController
                 .replace(
                         "{{jmxRemotePort_ZKFailoverController}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "ZKFailoverController"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_ZKFailoverController}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "ZKFailoverController"
                         )
                 )
                 // DataNode
                 .replace(
                         "{{jmxRemotePort_DataNode}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "DataNode"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_DataNode}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "DataNode"
                         )
                 )
                 // HttpFS
                 .replace(
                         "{{jmxRemotePort_HttpFS}}",
-                        PortConstants.getMonitorRemotePort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
                                 "HttpFS"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_HttpFS}}",
-                        PortConstants.getMonitorExporterPort(
-                                SERVICE_NAME_HDFS,
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
                                 "HttpFS"
                         )
                 )
