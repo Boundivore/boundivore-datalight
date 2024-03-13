@@ -29,7 +29,7 @@ initMetaStore() {
     exit 0
   else
     echo "Failed to initialize MetaStore." | tee -a "${LOG_FILE}"
-    exit 1
+    exit 0
   fi
 }
 
