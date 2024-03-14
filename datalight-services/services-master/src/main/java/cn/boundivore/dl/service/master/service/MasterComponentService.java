@@ -577,7 +577,7 @@ public class MasterComponentService {
                     List<TDlComponent> tDlComponentList = componentNameAllTDlComponentListMap.get(componentName);
 
                     // 如果当前集群中某个组件没有部署且不准备部署，则检查该组件最小部署个数是否满足 <= 0，不满足，则抛出异常
-                    if (CollUtil.isEmpty(tDlComponentList)) {
+                    if (tDlComponentList == null) {
                         Assert.isTrue(
                                 yamlComponent.getMin() <= 0,
                                 () -> new BException(
