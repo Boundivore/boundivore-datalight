@@ -137,6 +137,9 @@ sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop; 
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh AlertManager stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh NodeExporter stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh MySQLExporter stop; \
+sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh MetaStore stop; \
+sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh HiveServer2 stop; \
+sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh TezUI stop; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh ResourceManager stop; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh NodeManager stop; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh TimelineServer stop; \
@@ -158,6 +161,22 @@ sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh ResourceManager restart
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh NodeManager restart; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh TimelineServer restart; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh HistoryServer restart
+
+
+scp -r /opt/datalight/plugins/HDFS/jars/ node02:/opt/datalight/plugins/HDFS/
+scp -r /opt/datalight/plugins/HIVE/jars/ node02:/opt/datalight/plugins/HIVE/
+scp -r /opt/datalight/plugins/KUBESPHERE/jars/ node02:/opt/datalight/plugins/KUBESPHERE/
+scp -r /opt/datalight/plugins/MONITOR/jars/ node02:/opt/datalight/plugins/MONITOR/
+scp -r /opt/datalight/plugins/YARN/jars/ node02:/opt/datalight/plugins/YARN/
+scp -r /opt/datalight/plugins/ZOOKEEPER/jars/ node02:/opt/datalight/plugins/ZOOKEEPER/
+
+scp -r /opt/datalight/plugins/HDFS/jars/ node03:/opt/datalight/plugins/HDFS/
+scp -r /opt/datalight/plugins/HIVE/jars/ node03:/opt/datalight/plugins/HIVE/
+scp -r /opt/datalight/plugins/KUBESPHERE/jars/ node03:/opt/datalight/plugins/KUBESPHERE/
+scp -r /opt/datalight/plugins/MONITOR/jars/ node03:/opt/datalight/plugins/MONITOR/
+scp -r /opt/datalight/plugins/YARN/jars/ node03:/opt/datalight/plugins/YARN/
+scp -r /opt/datalight/plugins/ZOOKEEPER/jars/ node03:/opt/datalight/plugins/ZOOKEEPER/
+
 
 
 cat >> /etc/hosts << EOF

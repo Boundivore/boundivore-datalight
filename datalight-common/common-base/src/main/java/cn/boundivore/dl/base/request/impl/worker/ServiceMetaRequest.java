@@ -78,6 +78,8 @@ public class ServiceMetaRequest implements IRequest {
     )
     public static class MetaServiceRequest implements IRequest {
 
+        private static final long serialVersionUID = -5797825661179835513L;
+
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty("ClusterId")
         @NotNull
@@ -109,6 +111,8 @@ public class ServiceMetaRequest implements IRequest {
             description = "ServiceMetaRequest.MetaComponentRequest: 组件信息"
     )
     public static class MetaComponentRequest implements IRequest {
+
+        private static final long serialVersionUID = -2837314074750994802L;
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty("ComponentName")
