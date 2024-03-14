@@ -106,14 +106,6 @@ public class Job extends Thread {
 
             this.jobService.updateJobDatabase(this.jobMeta);
 
-            // 缓存 Job 相关信息
-            JobCacheUtil.getInstance().cache(
-                    new JobCacheBean(
-                            this.jobMeta,
-                            this.plan
-                    )
-            );
-
             this.plan.initExecTotal(this.jobMeta);
             this.isInit = true;
         } catch (Exception e) {
@@ -139,7 +131,7 @@ public class Job extends Thread {
      * Modification time:
      * Throws:
      */
-    private JobMeta initJobMeta() throws InterruptedException {
+    private void initJobMeta() throws InterruptedException {
         long jobMetaId = IdWorker.getId();
 
         Assert.isTrue(
@@ -163,6 +155,14 @@ public class Job extends Thread {
                 .setActionTypeEnum(intention.getActionTypeEnum())
                 .setStageMetaMap(new LinkedHashMap<>());
 
+        // 缓存 Job 相关信息
+        JobCacheUtil.getInstance().cache(
+                new JobCacheBean(
+                        this.jobMeta,
+                        this.plan
+                )
+        );
+
         // 生成序号，用于表明当前实例的生成顺序
         AtomicLong stageNum = new AtomicLong(0L);
         intention.getServiceList()
@@ -175,9 +175,6 @@ public class Job extends Thread {
                             this.jobMeta.getStageMetaMap().put(stageMeta.getId(), stageMeta);
                         }
                 );
-
-        return this.jobMeta;
-
     }
 
 

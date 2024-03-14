@@ -97,12 +97,6 @@ public class NodeJob extends Thread {
             this.plan(this.nodeJobMeta);
 
             this.nodeJobService.updateNodeJobDatabase(this.nodeJobMeta);
-            NodeJobCacheUtil.getInstance()
-                    .cache(new NodeJobCacheBean(
-                                    this.nodeJobMeta,
-                                    this.nodePlan
-                            )
-                    );
 
             this.nodePlan.initExecTotal(this.nodeJobMeta);
             this.isInit = true;
@@ -147,11 +141,19 @@ public class NodeJob extends Thread {
                 .setTag(IdUtil.fastSimpleUUID())
                 .setId(nodeJobMetaId)
                 .setName(nodeIntention.getNodeActionTypeEnum().name())
-                .setNodeTaskMetaMap(new LinkedHashMap<>())
                 .setExecStateEnum(ExecStateEnum.SUSPEND)
                 .setNodeJobResult(new NodeJobMeta.NodeJobResult(false))
                 .setClusterId(nodeIntention.getClusterId())
-                .setNodeActionTypeEnum(nodeIntention.getNodeActionTypeEnum());
+                .setNodeActionTypeEnum(nodeIntention.getNodeActionTypeEnum())
+                .setNodeTaskMetaMap(new LinkedHashMap<>());
+
+        // 缓存 NodeJob 相关信息
+        NodeJobCacheUtil.getInstance()
+                .cache(new NodeJobCacheBean(
+                                this.nodeJobMeta,
+                                this.nodePlan
+                        )
+                );
 
         // 生成序号，用于表明当前实例的生成顺序
         AtomicLong nodeTaskNum = new AtomicLong(0L);
