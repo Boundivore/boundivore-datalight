@@ -508,7 +508,12 @@ public class MasterConfigService {
                                         )
                                 )
                         )
-                        .collect(Collectors.groupingBy(Pair::getKey, Collectors.mapping(Pair::getValue, Collectors.toList())));
+                        .collect(
+                                Collectors.groupingBy(
+                                        Pair::getKey,
+                                        Collectors.mapping(Pair::getValue, Collectors.toList())
+                                )
+                        );
 
 
         // 将映射中的所有键（ConfigEventData）添加到 PluginConfigEvent 的 ConfigEventDataList 中

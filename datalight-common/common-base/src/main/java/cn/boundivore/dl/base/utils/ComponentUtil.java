@@ -39,13 +39,20 @@ public class ComponentUtil {
      * Modification time:
      * Throws:
      *
-     * @param componentName 可能带有数字结尾的组件名，如：NameNode1 NameNode2
+     * @param componentName 可能带有数字结尾的组件名，如：NameNode1 NameNode2，
+     *                      但是 HiveServer2 这种组件名称末尾的数字不可去除，
+     *                      该数字并不表示同类型组件的逻辑区分，而是名字本身。
      * @return 返回修剪后的组件名：如：NameNode
      */
     public static String clipComponentName(String componentName) {
         if (componentName == null || componentName.trim().isEmpty()) {
             throw new IllegalArgumentException("组件名称不能为空");
         }
+
+        if (componentName.equals("HiveServer2")) {
+            return componentName;
+        }
+
         return componentName.replaceAll("\\d+$", "");
     }
 }
