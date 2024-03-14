@@ -639,27 +639,36 @@ public class MasterComponentService {
                     // 遍历当前组件对应的互斥组件名称
                     yamlComponent.getMutexes()
                             .forEach(mutexComponentName -> {
+                                        // 根据互斥的组件名称，获取该互斥组件在集群节点中的分布情况
+                                        List<Long> mutexNodeIdList = componentNameAllTDlComponentListMap.get(mutexComponentName)
+                                                .stream()
+                                                .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
+                                                .map(TDlComponent::getNodeId)
+                                                .collect(Collectors.toList());
 
-                                // 根据互斥的组件名称，获取该互斥组件在集群节点中的分布情况
-                                List<Long> mutexNodeIdList = componentNameAllTDlComponentListMap.get(mutexComponentName)
-                                        .stream()
-                                        .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
-                                        .map(TDlComponent::getNodeId)
-                                        .collect(Collectors.toList());
-
-                                // 遍历互斥组件所在的节点 ID，判断当前组件所分布的节点 ID 是否包含了互斥组件所在的节点 ID
-                                Assert.isFalse(
-                                        mutexNodeIdList.stream().anyMatch(newNodeIdList::contains),
-                                        () -> new BException(
-                                                String.format(
-                                                        "组件 %s 与组件 %s 存在部署互斥",
-                                                        componentName,
-                                                        mutexComponentName
+                                        // 遍历互斥组件所在的节点 ID，判断当前组件所分布的节点 ID 是否包含了互斥组件所在的节点 ID
+                                        Assert.isFalse(
+                                                mutexNodeIdList.stream().anyMatch(newNodeIdList::contains),
+                                                () -> new BException(
+                                                        String.format(
+                                                                "组件 %s 与组件 %s 存在部署互斥",
+                                                                componentName,
+                                                                mutexComponentName
+                                                        )
                                                 )
-                                        )
-                                );
-                            });
-                });
+                                        );
+                                    }
+                            );
+                }
+        );
+
+        // 检查本次是否存在可部署的组件
+        Assert.isTrue(
+                tdlComponentMap.values()
+                        .stream()
+                        .anyMatch(component -> component.getComponentState() == SELECTED),
+                () -> new BException("本次操作后，没有任何可部署的组件, 请重新检查部署")
+        );
 
     }
 
