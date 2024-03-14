@@ -18,7 +18,6 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterJobAPI;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
-import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterJobService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
@@ -44,16 +43,21 @@ public class MasterJobController implements IMasterJobAPI {
 
 
     @Override
-    public Result<AbstractJobVo.JobProgressVo> getNodeJobProgress(Long jobId) throws Exception {
+    public Result<AbstractJobVo.JobProgressVo> getJobProgress(Long jobId) throws Exception {
         return this.masterJobService.getJobProgress(jobId);
     }
 
     @Override
+    public Result<AbstractJobVo.JobPlanProgressVo> getActiveJobPlanProgress() throws Exception {
+        return this.masterJobService.getActiveJobPlanProgress();
+    }
+
+    @Override
     public Result<AbstractJobVo.JobLogListVo> getJobLogList(Long clusterId,
-                                                                    Long jobId,
-                                                                    Long stageId,
-                                                                    Long taskId,
-                                                                    Long stepId) throws Exception {
+                                                            Long jobId,
+                                                            Long stageId,
+                                                            Long taskId,
+                                                            Long stepId) throws Exception {
         return this.masterJobService.getJobLogList(
                 clusterId,
                 jobId,

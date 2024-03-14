@@ -451,7 +451,7 @@ public class MasterNodeJobService {
      * @return NodeJobIdVo 活跃的  NodeJobId 信息
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> getActiveNodeJobId() {
-        long activeJobId = NodeJobCacheUtil.getInstance().getActiveJobId().get();
+        long activeJobId = NodeJobCacheUtil.getInstance().getActiveNodeJobId().get();
         Assert.isTrue(
                 activeJobId != 0L,
                 () -> new BException("当前没有活跃的任务")
@@ -486,12 +486,11 @@ public class MasterNodeJobService {
      */
     public Result<AbstractNodeJobVo.NodeJobProgressVo> getNodeJobProgress(Long nodeJobId) {
         // 从缓存中获取 NodeJobCacheBean 对象
-        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
-
-        if (nodeJobCacheBean == null) {
-            // 内存缓存已失效，从数据库中读取
-            nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
-        }
+        NodeJobCacheBean nodeJobCacheBean = this.getNodeJobCacheBean(nodeJobId);
+        Assert.notNull(
+                nodeJobCacheBean,
+                () -> new BException("NodeJobId 不存在")
+        );
 
         // 获取节点 NodeJob 的元数据信息
         NodeJobMeta nodeJobMeta = nodeJobCacheBean.getNodeJobMeta();
@@ -528,6 +527,47 @@ public class MasterNodeJobService {
         nodeJobExecProgressVo.setExecProgressPerNodeList(execProgressPerNodeList);
 
         return Result.success(nodeJobProgressVo);
+    }
+
+    /**
+     * Description: 获取当前节点作业任务的计划生成进度
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/14
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractNodeJobVo.NodeJobPlanProgressVo> 节点作业计划生成进度
+     */
+    public Result<AbstractNodeJobVo.NodeJobPlanProgressVo> getActiveNodeJobPlanProgress() {
+        Long nodeJobId = NodeJobCacheUtil.getInstance().getActiveNodeJobId().get();
+
+        // 从缓存中获取 NodeJobCacheBean 对象
+        NodeJobCacheBean nodeJobCacheBean = this.getNodeJobCacheBean(nodeJobId);
+
+        if (nodeJobCacheBean == null) {
+            return Result.success(new AbstractNodeJobVo.NodeJobPlanProgressVo());
+        }
+
+        // 获取节点 NodeJob 的元数据信息
+        NodeJobMeta nodeJobMeta = nodeJobCacheBean.getNodeJobMeta();
+        // 获取节点 NodeJob 的计划信息
+        NodePlan nodePlan = nodeJobCacheBean.getNodePlan();
+
+        // 获取集群 ID
+        Long clusterId = nodeJobMeta.getClusterId();
+
+        // 组装计划进度信息
+        AbstractNodeJobVo.NodeJobPlanProgressVo nodeJobPlanProgressVo = this.createNodeJobPlanProgressVo(
+                clusterId,
+                nodeJobId,
+                nodeJobMeta,
+                nodePlan
+        );
+
+        return Result.success(nodeJobPlanProgressVo);
     }
 
     /**
@@ -767,12 +807,11 @@ public class MasterNodeJobService {
      */
     public Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(Long nodeJobId) {
         // 从缓存中获取 NodeJobCacheBean 对象
-        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
-
-        if (nodeJobCacheBean == null) {
-            // 内存缓存已失效，从数据库中读取
-            nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
-        }
+        NodeJobCacheBean nodeJobCacheBean = this.getNodeJobCacheBean(nodeJobId);
+        Assert.notNull(
+                nodeJobCacheBean,
+                () -> new BException("NodeJobId 不存在")
+        );
 
         final NodeJobCacheBean finalNodeJobCacheBean = nodeJobCacheBean;
 
@@ -851,12 +890,11 @@ public class MasterNodeJobService {
                                                                                                       Long nodeTaskId,
                                                                                                       Long nodeStepId) {
         // 从缓存中获取 NodeJobCacheBean 对象
-        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
-
-        if (nodeJobCacheBean == null) {
-            // 内存缓存已失效，从数据库中读取
-            nodeJobCacheBean = this.getJobCacheBeanFromDb(nodeJobId);
-        }
+        NodeJobCacheBean nodeJobCacheBean = this.getNodeJobCacheBean(nodeJobId);
+        Assert.notNull(
+                nodeJobCacheBean,
+                () -> new BException("NodeJobId 不存在")
+        );
 
         // 获取节点 Job 的元数据信息
         NodeJobMeta nodeJobMeta = nodeJobCacheBean.getNodeJobMeta();
@@ -1004,6 +1042,31 @@ public class MasterNodeJobService {
     }
 
     /**
+     * Description: 获取 NodeJob 缓存信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/14
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeJobId 节点作业 ID
+     * @return NodeJobCacheBean NodeJob 缓存实体
+     */
+    private NodeJobCacheBean getNodeJobCacheBean(Long nodeJobId) {
+        // 从缓存中获取 NodeJobCacheBean 实例
+        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(nodeJobId);
+
+        if (nodeJobCacheBean == null) {
+            // 内存缓存已失效，从数据库中读取
+            nodeJobCacheBean = this.getNodeJobCacheBeanFromDb(nodeJobId);
+        }
+
+        return nodeJobCacheBean;
+    }
+
+    /**
      * Description: 从数据库中恢复 NodeJobCacheBean
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -1016,13 +1079,13 @@ public class MasterNodeJobService {
      * @param nodeJobId 节点任务 ID
      * @return NodeJobCacheBean
      */
-    private NodeJobCacheBean getJobCacheBeanFromDb(Long nodeJobId) {
+    private NodeJobCacheBean getNodeJobCacheBeanFromDb(Long nodeJobId) {
 
         TDlNodeJob tDlNodeJob = this.tDlNodeJobService.getById(nodeJobId);
-        Assert.notNull(
-                tDlNodeJob,
-                () -> new BException("不存在的 NodeJobId")
-        );
+
+        if (tDlNodeJob == null) {
+            return null;
+        }
 
         List<TDlNodeTask> tDlNodeTaskList = this.tDlNodeTaskService.lambdaQuery()
                 .select()
@@ -1247,5 +1310,6 @@ public class MasterNodeJobService {
     public void checkNodeJobState() {
 
     }
+
 
 }

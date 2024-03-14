@@ -17,7 +17,6 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
-import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,11 +50,15 @@ public interface IMasterJobAPI {
 
     @GetMapping(value = "/job/progress")
     @ApiOperation(notes = "获取作业任务进度", value = "获取作业任务进度")
-    Result<AbstractJobVo.JobProgressVo> getNodeJobProgress(
+    Result<AbstractJobVo.JobProgressVo> getJobProgress(
             @ApiParam(name = "JobId", value = "JobId")
             @RequestParam(value = "JobId", required = true)
             Long jobId
     ) throws Exception;
+
+    @GetMapping(value = "/job/activeJobPlanProgress")
+    @ApiOperation(notes = "获取作业任务计划生成进度", value = "获取作业任务计划生成进度")
+    Result<AbstractJobVo.JobPlanProgressVo> getActiveJobPlanProgress() throws Exception;
 
 
     @GetMapping(value = "/job/getJobLogList")

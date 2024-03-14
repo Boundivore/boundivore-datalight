@@ -47,6 +47,11 @@ public class MasterNodeJobController implements IMasterNodeJobAPI {
     }
 
     @Override
+    public Result<AbstractNodeJobVo.NodeJobPlanProgressVo> getActiveNodeJobPlanProgress() throws Exception {
+        return this.masterNodeJobService.getActiveNodeJobPlanProgress();
+    }
+
+    @Override
     public Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(Long nodeJobId) throws Exception {
         return this.masterNodeJobService.getNodeJobDispatchProgress(nodeJobId);
     }

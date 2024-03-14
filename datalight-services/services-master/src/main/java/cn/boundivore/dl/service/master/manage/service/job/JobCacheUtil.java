@@ -211,10 +211,7 @@ public class JobCacheUtil {
      * Throws:
      */
     public void releaseActiveJobId() {
-        if (this.activeJobId.get() != 0L) {
-            this.activeJobId.set(0L);
-        }
+        this.activeJobId.set(0L);
     }
-
 
 }

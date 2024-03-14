@@ -17,7 +17,10 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.*;
+import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobDetailRequest;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
@@ -533,12 +536,7 @@ public class MasterJobService {
      */
     public Result<AbstractJobVo.JobProgressVo> getJobProgress(Long jobId) {
         // 从缓存中获取 JobCacheBean 对象
-        JobCacheBean jobCacheBean = JobCacheUtil.getInstance().get(jobId);
-
-        if (jobCacheBean == null) {
-            // 内存缓存已失效，从数据库中读取
-            jobCacheBean = this.getJobCacheBeanFromDb(jobId);
-        }
+        JobCacheBean jobCacheBean = this.getJobCacheBean(jobId);
 
         Assert.notNull(
                 jobCacheBean,
@@ -599,6 +597,56 @@ public class MasterJobService {
         jobExecProgressVo.setExecProgressPerNodeList(execProgressPerNodeList);
 
         return Result.success(jobProgressVo);
+    }
+
+
+    /**
+     * Description: 获取当前作业任务计划生成进度
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/14
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractJobVo.JobPlanProgressVo> 当前活跃的计划进度信息
+     */
+    public Result<AbstractJobVo.JobPlanProgressVo> getActiveJobPlanProgress() {
+        Long jobId = JobCacheUtil.getInstance().getActiveJobId().get();
+
+        JobCacheBean jobCacheBean = this.getJobCacheBean(jobId);
+
+        // 计划进度信息
+        AbstractJobVo.JobPlanProgressVo jobPlanProgressVo = new AbstractJobVo.JobPlanProgressVo();
+
+        if (jobCacheBean == null) {
+            return Result.success(jobPlanProgressVo);
+        }
+        // 获取 Job 的元数据信息
+        JobMeta jobMeta = jobCacheBean.getJobMeta();
+        // 获取 Job 的计划信息
+        Plan plan = jobCacheBean.getPlan();
+
+        // 获取 Job 相关信息
+        Long clusterId = jobMeta.getClusterMeta().getCurrentClusterId();
+        ActionTypeEnum jobActionTypeEnum = jobMeta.getActionTypeEnum();
+
+        // 获取 Plan 相关信息
+        String planName = plan.getPlanName();
+        int planTotal = plan.getPlanTotal();
+        int planCurrent = plan.getPlanCurrent();
+        int planProgress = plan.getPlanProgress();
+
+        jobPlanProgressVo.setClusterId(clusterId)
+                .setJobId(jobId)
+                .setActionTypeEnum(jobActionTypeEnum)
+                .setPlanTotal(planTotal)
+                .setPlanCurrent(planCurrent)
+                .setPlanProgress(planProgress)
+                .setPlanName(planName);
+
+        return Result.success(jobPlanProgressVo);
     }
 
 
@@ -843,6 +891,28 @@ public class MasterJobService {
     }
 
     /**
+     * Description: 获取 Job 缓存信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/14
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param jobId 作业 ID
+     * @return JobCacheBean Job 缓存实体
+     */
+    private JobCacheBean getJobCacheBean(Long jobId) {
+        JobCacheBean jobCacheBean = JobCacheUtil.getInstance().get(jobId);
+        if (jobCacheBean == null) {
+            jobCacheBean = this.getJobCacheBeanFromDb(jobId);
+        }
+
+        return jobCacheBean;
+    }
+
+    /**
      * Description: 从数据库缓存中获取信息并组装 JobCacheBean
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -856,12 +926,11 @@ public class MasterJobService {
      * @return JobCacheBean
      */
     private JobCacheBean getJobCacheBeanFromDb(Long jobId) {
-
         TDlJob tDlJob = this.tDlJobService.getById(jobId);
-        Assert.notNull(
-                tDlJob,
-                () -> new BException("不存在的 JobId")
-        );
+
+        if (tDlJob == null) {
+            return null;
+        }
 
         AbstractClusterVo.ClusterVo currentClusterVo = this.masterClusterService.getClusterById(tDlJob.getClusterId()).getData();
         AbstractClusterVo.ClusterVo relativeClusterVo = this.masterClusterService.getClusterById(currentClusterVo.getRelativeClusterId()).getData();
@@ -1161,5 +1230,6 @@ public class MasterJobService {
     public void checkJobState() {
 
     }
+
 
 }

@@ -56,6 +56,10 @@ public interface IMasterNodeJobAPI {
             Long nodeJobId
     ) throws Exception;
 
+    @GetMapping(value = "/job/activeNodeJobPlanProgress")
+    @ApiOperation(notes = "获取节点作业任务计划生成进度", value = "获取节点作业任务计划生成进度")
+    Result<AbstractNodeJobVo.NodeJobPlanProgressVo> getActiveNodeJobPlanProgress() throws Exception;
+
     @GetMapping(value = "/node/job/dispatch/progress")
     @ApiOperation(notes = "获取所有节点分发进度概览", value = "获取所有节点分发进度概览")
     Result<AbstractNodeJobVo.AllNodeJobTransferProgressVo> getNodeJobDispatchProgress(

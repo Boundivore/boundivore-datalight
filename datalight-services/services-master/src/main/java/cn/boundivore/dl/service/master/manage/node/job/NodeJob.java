@@ -134,11 +134,11 @@ public class NodeJob extends Thread {
         long nodeJobMetaId = IdWorker.getId();
 
         Assert.isTrue(
-                NodeJobCacheUtil.getInstance().setActiveJobId(nodeJobMetaId),
+                NodeJobCacheUtil.getInstance().setActiveNodeJobId(nodeJobMetaId),
                 () -> new BException(
                         String.format(
                                 "安全起见，不允许同时对集群节点进行变更，已有其他活跃的任务正在运行: %s",
-                                NodeJobCacheUtil.getInstance().getActiveJobId()
+                                NodeJobCacheUtil.getInstance().getActiveNodeJobId()
                         )
                 )
         );

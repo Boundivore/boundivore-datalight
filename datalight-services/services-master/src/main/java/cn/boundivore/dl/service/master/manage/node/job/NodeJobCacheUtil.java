@@ -56,7 +56,7 @@ public class NodeJobCacheUtil {
     private final ReentrantLock activeJobLock;
 
     @Getter
-    private final AtomicLong activeJobId = new AtomicLong(0L);
+    private final AtomicLong activeNodeJobId = new AtomicLong(0L);
 
     private NodeJobCacheUtil() {
         this.activeJobLock = new ReentrantLock();
@@ -172,14 +172,14 @@ public class NodeJobCacheUtil {
      * @param unit      超时时间单位
      * @return boolean 如果成功设置活跃的 Job ID，则返回 true，否则返回 false
      */
-    public boolean setActiveJobId(Long nodeJobId,
-                                  long timeout,
-                                  TimeUnit unit) throws InterruptedException {
+    public boolean setActiveNodeJobId(Long nodeJobId,
+                                      long timeout,
+                                      TimeUnit unit) throws InterruptedException {
 
         if (this.activeJobLock.tryLock(timeout, unit)) {
             try {
-                if (activeJobId.get() == 0L) {
-                    this.activeJobId.set(nodeJobId);
+                if (activeNodeJobId.get() == 0L) {
+                    this.activeNodeJobId.set(nodeJobId);
                     return true;
                 }
                 return false;
@@ -200,8 +200,8 @@ public class NodeJobCacheUtil {
      * @param nodeJobId Job ID
      * @return boolean 如果成功设置活跃的 nodeJobId，则返回 true，否则返回 false
      */
-    public boolean setActiveJobId(Long nodeJobId) throws InterruptedException {
-        return this.setActiveJobId(nodeJobId, 0, TimeUnit.MILLISECONDS);
+    public boolean setActiveNodeJobId(Long nodeJobId) throws InterruptedException {
+        return this.setActiveNodeJobId(nodeJobId, 0, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -213,8 +213,6 @@ public class NodeJobCacheUtil {
      *
      */
     public void releaseActiveNodeJobId() {
-        if(this.activeJobId.get() != 0L){
-            this.activeJobId.set(0L);
-        }
+        this.activeNodeJobId.set(0L);
     }
 }
