@@ -283,6 +283,8 @@ public class MasterComponentService {
 
     /**
      * Description: 选择准备部署的组件以及组件在节点中的分布情况，本接口多次操作为幂等性操作，同服务、通组件、同状态，对应一组 NodeIdList
+     * 前端传递参数为：本次操作涉及到的组件，未操作的组件，不传递（同时也兼容全量传递），传递的组件状态只能为 SELECTED 或 UNSELECTED，逻辑会
+     * 根据状态机，将组件置于应该处于的状态，并最终根据组件的状态，更新服务的状态。
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/17
@@ -303,19 +305,19 @@ public class MasterComponentService {
         // 组件公共检查项
         this.checkComponentCommon(request);
 
-        // 获取数据库中当前集群已存在的组件列表
-        // Map<String, TDlComponent> "<组件名称 + 节点 ID, TDlComponent>"与组件实体的映射关系
+        // 获取数据库中当前集群已存在的组件列表，即组件名称+节点与组件实体的映射关系
+        // Map<String, TDlComponent> == <组件名称 + 节点 ID, TDlComponent>"
         Map<String, TDlComponent> tdlComponentMap = this.getComponentListByCluster(request.getClusterId());
 
-        // 创建数据库条目实例
+        // 获取最终即将更新的数据库实例
         List<TDlComponent> newTDlComponentList = request.getComponentList()
                 .stream()
-                .flatMap(i ->
-                        i.getNodeIdList()
+                .flatMap(componentRequest ->
+                        componentRequest.getNodeIdList()
                                 .stream()
                                 .map(nodeId -> {
                                             TDlComponent tDlComponent = tdlComponentMap.getOrDefault(
-                                                    i.getComponentName() + nodeId,
+                                                    componentRequest.getComponentName() + nodeId,
                                                     new TDlComponent()
                                             );
                                             SCStateEnum currentSCStateEnum = tDlComponent.getComponentState() == null ?
@@ -324,17 +326,17 @@ public class MasterComponentService {
 
                                             // 使用组件状态机切换状态
                                             SCStateEnum newSCStateEnum = currentSCStateEnum.transitionSelectedComponentState(
-                                                    i.getScStateEnum()
+                                                    componentRequest.getScStateEnum()
                                             );
 
                                             tDlComponent.setClusterId(request.getClusterId());
                                             tDlComponent.setNodeId(nodeId);
-                                            tDlComponent.setServiceName(i.getServiceName());
-                                            tDlComponent.setComponentName(i.getComponentName());
+                                            tDlComponent.setServiceName(componentRequest.getServiceName());
+                                            tDlComponent.setComponentName(componentRequest.getComponentName());
                                             tDlComponent.setComponentState(newSCStateEnum);
                                             tDlComponent.setPriority(
                                                     ResolverYamlServiceDetail.COMPONENT_MAP
-                                                            .get(i.getComponentName())
+                                                            .get(componentRequest.getComponentName())
                                                             .getPriority()
                                             );
 
@@ -344,10 +346,18 @@ public class MasterComponentService {
                 )
                 .collect(Collectors.toList());
 
-        // 检查组件在节点的分布是否合理
+        // 根据本次前端传递的参数，组装最终预期分布情况，并更新覆盖 tdlComponentMap
+        newTDlComponentList.forEach(newTDlComponent ->
+                tdlComponentMap.put(
+                        newTDlComponent.getComponentName() + newTDlComponent.getNodeId(),
+                        newTDlComponent
+                )
+        );
+
+        // 更新前做最后检查：检查组件在节点的分布是否合理
         this.checkComponentDistribution(
-                request.getClusterId(),
-                newTDlComponentList
+                newTDlComponentList,
+                tdlComponentMap
         );
 
         Assert.isTrue(
@@ -415,7 +425,7 @@ public class MasterComponentService {
                                     contains,
                                     () -> new BException(
                                             String.format(
-                                                    "部署意图不合法: 传递了错误的服务、组件包含关系(%s 中不包含 %s)",
+                                                    "部署意图不合法: 传递了错误的服务与组件的包含关系(%s 中不包含 %s)",
                                                     i.getServiceName(),
                                                     i.getComponentName()
                                             )
@@ -502,18 +512,19 @@ public class MasterComponentService {
 
         request.getComponentList()
                 .forEach(i -> {
-                    // 检查每个组件中传递的节点 ID 是否存在重复
-                    Assert.isTrue(
-                            i.getNodeIdList().stream().distinct().count() == i.getNodeIdList().size(),
-                            () -> new BException(
-                                    String.format(
-                                            "%s-%s 传递的节点列表中存在重复的节点 ID",
-                                            i.getServiceName(),
-                                            i.getComponentName()
+                            // 检查每个组件中传递的节点 ID 是否存在重复
+                            Assert.isTrue(
+                                    i.getNodeIdList().stream().distinct().count() == i.getNodeIdList().size(),
+                                    () -> new BException(
+                                            String.format(
+                                                    "%s-%s 传递的节点列表中存在重复的节点 ID",
+                                                    i.getServiceName(),
+                                                    i.getComponentName()
+                                            )
                                     )
-                            )
-                    );
-                });
+                            );
+                        }
+                );
     }
 
     /**
@@ -526,23 +537,27 @@ public class MasterComponentService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId           集群 ID
-     * @param newTDlComponentList 根据用户选择结果，准备变更的组件
+     * @param newTDlComponentList 本次前端你传递进来的组件操作实体
+     * @param tdlComponentMap     结合本次参数传递的情况，集合了当前集群中所有组件的分布情况
      */
-    private void checkComponentDistribution(Long clusterId, List<TDlComponent> newTDlComponentList) {
+    private void checkComponentDistribution(List<TDlComponent> newTDlComponentList,
+                                            Map<String, TDlComponent> tdlComponentMap) {
 
-        //<ComponentName, List<TDlComponent>>
-        Map<String, List<TDlComponent>> componentNameNewTDlComponentListMap = newTDlComponentList.stream()
-                .collect(Collectors.groupingBy(TDlComponent::getComponentName));
-
-
-        // 已部署 + 准备部署 的服务
+        // 根据本次传递进来的组件选择情况，获取涉及到的服务列表
         List<String> prepareServiceNameList = newTDlComponentList.stream()
                 .map(TDlComponent::getServiceName)
                 .distinct()
                 .collect(Collectors.toList());
 
-        // 已部署 + 准备部署 的服务对应的一系列组件
+
+        // <ComponentName, List<TDlComponent>>
+        // 该集合整合了原有的组件情况 + 本次操作的组件分布情况
+        Map<String, List<TDlComponent>> componentNameAllTDlComponentListMap = tdlComponentMap.values()
+                .stream()
+                .collect(Collectors.groupingBy(TDlComponent::getComponentName));
+
+
+        // 获取上述服务中涉及到的组件静态配置信息
         Map<String, YamlServiceDetail.Component> componentConstantMap = ResolverYamlServiceDetail.SERVICE_MAP
                 .values()
                 .stream()
@@ -554,73 +569,85 @@ public class MasterComponentService {
                         )
                 );
 
-        // 检查未选择的每个服务下的组件最小部署是否合理
+        // 根据本次操作涉及到的服务，检查每个服务下的组件最小部署是否合理
         componentConstantMap.forEach(
-                (k, v) -> {
+                (componentName, yamlComponent) -> {
+
+                    // 获取指定组件在节点中的分布情况（包含本次传递尚未保存到数据库的内容）
+                    List<TDlComponent> tDlComponentList = componentNameAllTDlComponentListMap.get(componentName);
+
                     // 如果当前集群中某个组件没有部署且不准备部署，则检查该组件最小部署个数是否满足 <= 0，不满足，则抛出异常
-                    if (componentNameNewTDlComponentListMap.get(k) == null) {
+                    if (CollUtil.isEmpty(tDlComponentList)) {
                         Assert.isTrue(
-                                v.getMin() <= 0,
+                                yamlComponent.getMin() <= 0,
                                 () -> new BException(
                                         String.format(
                                                 "组件 %s 不满足最小部署个数",
-                                                k
+                                                componentName
                                         )
                                 )
                         );
+                    } else {
+                        // 组件在集群中部署的个数
+                        long prepareDeployCount = tDlComponentList.stream()
+                                .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
+                                .count();
+
+                        // 检查 最小 部署数量是否合理
+                        Assert.isTrue(
+                                prepareDeployCount >= yamlComponent.getMin(),
+                                () -> new BException(
+                                        String.format(
+                                                "组件 %s 不满足最小部署数量: %s, 当前值: %s",
+                                                componentName,
+                                                yamlComponent.getMin(),
+                                                prepareDeployCount
+                                        )
+                                )
+                        );
+
+                        // 检查 最大 部署数量是否合理
+                        Assert.isTrue(
+                                yamlComponent.getMax() == -1 || prepareDeployCount <= yamlComponent.getMax(),
+                                () -> new BException(
+                                        String.format(
+                                                "组件 %s 不满足最大部署数量: %s, 当前值: %s",
+                                                componentName,
+                                                yamlComponent.getMax(),
+                                                prepareDeployCount
+                                        )
+                                )
+                        );
+
                     }
                 }
         );
 
-
-        componentNameNewTDlComponentListMap.forEach(
+        // 检查组件是否在某些节点存在互斥
+        componentNameAllTDlComponentListMap.forEach(
                 (componentName, tdlComponentList) -> {
-                    // 从数据库获取当前 “已服役+准备部署” 的组件在节点中的分布情况
-                    Set<Long> newNodeIdList = this.getComponentDistributionList(
-                            clusterId,
-                            componentName,
-                            tdlComponentList
-                    );
 
+                    // 获取指定组件在节点中的分布情况（包含本次传递尚未保存到数据库的内容）
+                    List<Long> newNodeIdList = componentNameAllTDlComponentListMap.get(componentName)
+                            .stream()
+                            .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
+                            .map(TDlComponent::getNodeId)
+                            .collect(Collectors.toList());
+
+                    // 获取当前组件静态配置
                     YamlServiceDetail.Component yamlComponent = ResolverYamlServiceDetail.COMPONENT_MAP.get(componentName);
-
-                    // 检查每个服务下的组件 最小 部署数量是否合理
-                    Assert.isTrue(
-                            newNodeIdList.size() >= yamlComponent.getMin(),
-                            () -> new BException(
-                                    String.format(
-                                            "组件 %s 不满足最小部署数量: %s, 当前值: %s",
-                                            componentName,
-                                            yamlComponent.getMin(),
-                                            newNodeIdList.size()
-                                    )
-                            )
-                    );
-
-                    // 检查每个服务下的组件 最大 部署数量是否合理
-                    Assert.isTrue(
-                            yamlComponent.getMax() == -1 || newNodeIdList.size() <= yamlComponent.getMax(),
-                            () -> new BException(
-                                    String.format(
-                                            "组件 %s 不满足最大部署数量: %s, 当前值: %s",
-                                            componentName,
-                                            yamlComponent.getMax(),
-                                            newNodeIdList.size()
-                                    )
-                            )
-                    );
-
-                    // 检查组件是否在某些节点存在互斥
+                    // 遍历当前组件对应的互斥组件名称
                     yamlComponent.getMutexes()
                             .forEach(mutexComponentName -> {
-                                Set<Long> mutexNodeIdList = this.getComponentDistributionList(
-                                        clusterId,
-                                        mutexComponentName,
-                                        componentNameNewTDlComponentListMap.getOrDefault(
-                                                mutexComponentName,
-                                                new ArrayList<>()
-                                        )
-                                );
+
+                                // 根据互斥的组件名称，获取该互斥组件在集群节点中的分布情况
+                                List<Long> mutexNodeIdList = componentNameAllTDlComponentListMap.get(mutexComponentName)
+                                        .stream()
+                                        .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
+                                        .map(TDlComponent::getNodeId)
+                                        .collect(Collectors.toList());
+
+                                // 遍历互斥组件所在的节点 ID，判断当前组件所分布的节点 ID 是否包含了互斥组件所在的节点 ID
                                 Assert.isFalse(
                                         mutexNodeIdList.stream().anyMatch(newNodeIdList::contains),
                                         () -> new BException(
@@ -630,62 +657,12 @@ public class MasterComponentService {
                                                         mutexComponentName
                                                 )
                                         )
-
                                 );
                             });
-
-
                 });
 
     }
 
-    /**
-     * Description: 获得某个组件在集群内的分布情况，返回分布的节点 ID
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/18
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return Set<Long> 返回分布的节点 ID
-     */
-    private Set<Long> getComponentDistributionList(Long clusterId,
-                                                   String componentName,
-                                                   List<TDlComponent> newTDlComponentList) {
-        // 本次请求中涉及到变更的组件，在各个节点中的分布情况
-        Set<Long> newNodeIdList = newTDlComponentList
-                .stream()
-                .map(TDlComponent::getNodeId)
-                .collect(Collectors.toSet());
-
-
-        // 从数据库获取当前已服役组件在节点中的分布情况，并排除本次最新传递进来的分布情况，等待稍后与最新数据合并
-        Set<Long> nodeIdList = this.tDlComponentService
-                .lambdaQuery()
-                .select()
-                .eq(TDlComponent::getClusterId, clusterId)
-                .eq(TDlComponent::getComponentName, componentName)
-                .notIn(TDlComponent::getComponentState, UNSELECTED, REMOVED)
-                .list()
-                .stream()
-                .map(TDlComponent::getNodeId)
-                .filter(i -> !newNodeIdList.contains(i))
-                .collect(Collectors.toSet());
-
-
-        // 将本次操作的节点加入到数据库列表中
-        nodeIdList.addAll(
-                newTDlComponentList
-                        .stream()
-                        .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
-                        .map(TDlComponent::getNodeId)
-                        .collect(Collectors.toSet())
-        );
-
-        return nodeIdList;
-    }
 
     /**
      * Description: 获取数据库中当前集群已存在的组件列表
@@ -706,7 +683,11 @@ public class MasterComponentService {
                 .eq(TDlComponent::getClusterId, clusterId)
                 .list()
                 .stream()
-                .collect(Collectors.toMap(i -> i.getComponentName() + i.getNodeId(), i -> i));
+                .collect(
+                        Collectors.toMap(
+                                i -> i.getComponentName() + i.getNodeId(),
+                                tDlComponent -> tDlComponent)
+                );
     }
 
     /**
@@ -802,7 +783,7 @@ public class MasterComponentService {
             if (scStateEnumSet.contains(UNSELECTED)) {
                 return UNSELECTED;
             }
-        } else if (scStateEnumSet.size() > 1 && scStateEnumSet.contains(SELECTED) && !scStateEnumSet.contains(REMOVED)){
+        } else if (scStateEnumSet.size() > 1 && scStateEnumSet.contains(SELECTED) && !scStateEnumSet.contains(REMOVED)) {
             return SELECTED_ADDITION;
         }
 
