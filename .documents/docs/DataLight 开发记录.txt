@@ -189,6 +189,8 @@ su -s /bin/bash "datalight" -c "hive --service metastore > /data/datalight/logs/
 6、Worker 自动拉起开关
 7、plugin 的错误日志不够详细
 8、检查启停脚本的操作是否合理
+9、检查各类目录是否属于 datalight 用户
+10、检查 logs 日志消失问题
 
 cat >> /etc/hosts << EOF
 192.137.1.10 node001

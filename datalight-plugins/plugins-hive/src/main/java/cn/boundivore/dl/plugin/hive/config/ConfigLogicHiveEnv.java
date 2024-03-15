@@ -73,6 +73,10 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
                         "{{HIVE_PID_DIR}}",
                         hivePidDir
                 )
+                .replace(
+                        "{{HIVE_AUX_JARS_PATH}}",
+                        hiveAuxJarsPath
+                )
                 // MetaStore
                 .replace(
                         "{{jmxRemotePort_MetaStore}}",
