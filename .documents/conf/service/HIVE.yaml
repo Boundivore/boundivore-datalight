@@ -13,6 +13,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/HIVE/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/HIVE/templated/conf'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/HIVE/tez/tomcat/webapps/tez-ui/config'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HIVE/templated/tez/tomcat/tez-ui/config'
+
       - service-conf-dir: '{{SERVICE_DIR}}/HIVE/tez/tomcat/bin'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/HIVE/templated/tez/tomcat/bin'
 
