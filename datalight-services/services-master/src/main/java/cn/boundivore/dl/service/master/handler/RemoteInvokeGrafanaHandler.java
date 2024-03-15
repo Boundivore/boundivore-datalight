@@ -161,6 +161,7 @@ public class RemoteInvokeGrafanaHandler {
                         .get(0);
 
                 // 执行 Grafana 基础配置
+                // TODO 如果非第一次部署，则不执行  Grafana 基础配置（如修改密码，创建 org 等）
                 this.configGrafanaBase(
                         clusterId,
                         grafanaUserMap,
