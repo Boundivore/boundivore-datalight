@@ -177,9 +177,18 @@ scp -r /opt/datalight/plugins/HIVE/jars/ node03:/opt/datalight/plugins/HIVE/
 scp -r /opt/datalight/plugins/KUBESPHERE/jars/ node03:/opt/datalight/plugins/KUBESPHERE/
 scp -r /opt/datalight/plugins/MONITOR/jars/ node03:/opt/datalight/plugins/MONITOR/
 scp -r /opt/datalight/plugins/YARN/jars/ node03:/opt/datalight/plugins/YARN/
-scp -r /opt/datalight/plugins/ZOOKEEPER/jars/ node03:/opt/datalight/plugins/ZOOKEEPER/
+scp -r /opt/datalight/plugins/ZOOKEEPER/jars/ node03:/opt/datalight/plugins/ZOOKEEPER
 
+su -s /bin/bash "datalight" -c "hive --service metastore > /data/datalight/logs/HIVE/hive-metastore-2024-3-14.log 2>&1 & echo \$! > /data/datalight/pids/HIVE/hive-metastore.pid"
 
+1、增加组件亲和性配置
+2、解决 Hive 部署问题
+3、设置 Hive Grafana 模板
+4、组件进程自动拉起
+5、组件进程自动拉起开关
+6、Worker 自动拉起开关
+7、plugin 的错误日志不够详细
+8、检查启停脚本的操作是否合理
 
 cat >> /etc/hosts << EOF
 192.137.1.10 node001
