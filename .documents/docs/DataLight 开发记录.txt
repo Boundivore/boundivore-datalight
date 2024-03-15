@@ -192,6 +192,7 @@ su -s /bin/bash "datalight" -c "hive --service metastore > /data/datalight/logs/
 9、检查各类目录是否属于 datalight 用户
 10、检查 logs 日志消失问题
 11、 tez 重启有问题
+12、hadoop 依赖拷贝到 hive lib 中
 
 cat >> /etc/hosts << EOF
 192.137.1.10 node001
