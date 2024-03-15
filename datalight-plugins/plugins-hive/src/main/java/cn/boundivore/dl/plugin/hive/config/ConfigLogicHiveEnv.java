@@ -88,7 +88,7 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
 
                 // HiveServer2
                 .replace(
-                        "{{jmxRemotePort_MetaStore}}",
+                        "{{jmxRemotePort_HiveServer2}}",
                         PortConstants.getRemotePort(
                                 SERVICE_NAME,
                                 "HiveServer2"
