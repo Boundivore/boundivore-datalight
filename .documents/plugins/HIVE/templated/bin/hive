@@ -309,6 +309,16 @@ if [ "${AUX_PARAM}" != "" ]; then
   AUX_JARS_CMD_LINE="-libjars ${AUX_PARAM}"
 fi
 
+# JMX
+if [ "$SERVICE" = "metastore" ] ; then
+  export HADOOP_CLIENT_OPTS="$HADOOP_CLIENT_OPTS $HIVE_METASTORE_JMX_OPTS "
+fi
+
+if [ "$SERVICE" = "hiveserver2" ] ; then
+  export HADOOP_CLIENT_OPTS="$HADOOP_CLIENT_OPTS $HIVE_SERVER2_JMX_OPTS "
+fi
+
+
 SERVICE_LIST=""
 
 for i in "$bin"/ext/*.sh ; do
