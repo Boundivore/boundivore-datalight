@@ -169,9 +169,9 @@ case "${COMPONENT_NAME}" in
           stop_tezui
           ;;
         "restart")
-          start_tezui
-          sleep 2
           stop_tezui
+          sleep 2
+          start_tezui
           ;;
         *)
           echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
