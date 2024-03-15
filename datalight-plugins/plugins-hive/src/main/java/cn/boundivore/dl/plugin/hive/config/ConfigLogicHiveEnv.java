@@ -57,6 +57,9 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
         // {{HIVE_PID_DIR}}
         String hivePidDir = this.hivePidDir();
 
+        // {{HIVE_AUX_JARS_PATH}}
+        String hiveAuxJarsPath = this.hiveAuxJarsPath();
+
         return replacedTemplated
                 .replace(
                         "{{HADOOP_HOME}}",
@@ -102,6 +105,25 @@ public class ConfigLogicHiveEnv extends AbstractConfigLogic {
                         )
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 Hive 外部插件依赖路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String
+     */
+    private String hiveAuxJarsPath() {
+        return String.format(
+                "%s/HIVE/lib-aux",
+                super.serviceDir()
+        );
     }
 
     /**
