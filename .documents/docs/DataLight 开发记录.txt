@@ -156,6 +156,8 @@ rm -rf /data/logs/*; \
 rm -rf /srv/datalight/*; \
 rm -rf /tmp/hsperfdata_*
 
+su datalight -c "/srv/datalight/HIVE/tez/tomcat/bin/startup.sh"
+su datalight -c "/srv/datalight/HIVE/tez/tomcat/bin/shutdown.sh"
 
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh ResourceManager restart; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh NodeManager restart; \
