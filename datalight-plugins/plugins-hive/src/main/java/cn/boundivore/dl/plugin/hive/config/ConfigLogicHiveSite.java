@@ -444,7 +444,7 @@ public class ConfigLogicHiveSite extends AbstractConfigLogic {
                 .collect(Collectors.toList());
 
         return String.format(
-                "http://%s:%s/tez/",
+                "http://%s:%s/tez-ui/",
                 tezUIList.get(0).getHostname(),
                 PortConstants.TEZ_UI_PORT
         );
