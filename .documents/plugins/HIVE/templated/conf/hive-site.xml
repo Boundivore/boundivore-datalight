@@ -227,6 +227,11 @@
     </property>
 
     <property>
+        <name>tez.use.cluster.hadoop-libs</name>
+        <value>true</value>
+    </property>
+
+    <property>
         <name>tez.lib.uris</name>
         <value>{{tez.lib.uris}}</value>
     </property>
