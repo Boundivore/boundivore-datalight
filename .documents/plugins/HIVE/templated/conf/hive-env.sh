@@ -62,6 +62,9 @@ export HIVE_PID_DIR={{HIVE_PID_DIR}}
 # Folder containing extra libraries required for hive compilation/execution can be controlled by:
 export HIVE_AUX_JARS_PATH={{HIVE_AUX_JARS_PATH}}
 
+export HADOOP_CLASSPATH="${HIVE_CONF_DIR}:${HIVE_AUX_JARS_PATH}/*"
+
+
 
 export HIVE_METASTORE_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
 -Dcom.sun.management.jmxremote.authenticate=false \
