@@ -18,7 +18,10 @@ lscpu | sed -n '4p' | awk '{print $2}'
 free -m | awk 'NR==2{print int($2)}'
 
 # 获取磁盘大小（以单位 M 表示）
-df -m --total | tail -n 1 | awk '{print $2 "\n" $4}'
+df -m | grep -vE 'overlay|/var/lib/docker' | awk 'NR>1 {print $2}' | paste -sd+ - | bc
+
+# 获取磁盘可用大小
+df -m | grep -vE 'overlay|/var/lib/docker' | awk 'NR>1 {print $4}' | paste -sd+ - | bc
 
 cat /etc/centos-release
 
