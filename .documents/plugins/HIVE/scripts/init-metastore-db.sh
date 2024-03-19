@@ -31,6 +31,8 @@ initMetaStore() {
     echo "Failed to initialize MetaStore." | tee -a "${LOG_FILE}"
     exit 0
   fi
+
+  chown datalight:datalight "${LOG_FILE}"
 }
 
 # 调用初始化函数

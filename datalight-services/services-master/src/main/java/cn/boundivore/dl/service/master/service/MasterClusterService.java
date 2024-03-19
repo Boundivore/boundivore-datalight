@@ -30,12 +30,14 @@ import cn.boundivore.dl.orm.po.single.TDlCluster;
 import cn.boundivore.dl.orm.service.single.impl.TDlClusterServiceImpl;
 import cn.boundivore.dl.service.master.converter.IClusterConverter;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -373,17 +375,21 @@ public class MasterClusterService {
     public Result<AbstractClusterVo.ClusterVo> updateClusterCurrentView(AbstractClusterRequest.ClusterIdRequest request) {
 
         // 将集群列表中所有 is_current_view 字段设置为 false
-        if (this.tDlClusterService.lambdaQuery()
+        List<TDlCluster> tDlClusterListWithCurrentViewTrue = this.tDlClusterService.lambdaQuery()
                 .select()
                 .eq(TDlCluster::getIsCurrentView, true)
-                .exists()) {
+                .list()
+                .stream()
+                .peek(i -> i.setIsCurrentView(false))
+                .collect(Collectors.toList());
+
+        if (CollUtil.isNotEmpty(tDlClusterListWithCurrentViewTrue)) {
             Assert.isTrue(
-                    this.tDlClusterService.lambdaUpdate()
-                            .eq(TDlCluster::getIsCurrentView, true)
-                            .update(),
+                    this.tDlClusterService.updateBatchById(tDlClusterListWithCurrentViewTrue),
                     () -> new DatabaseException("集群当前视图初始化失败")
             );
         }
+
 
         // 将当前传递的集群 ID 对应的 is_current_view 字段设置为 true
         TDlCluster tDlCluster = this.tDlClusterService.getById(request.getClusterId());
