@@ -180,32 +180,58 @@ under the License.
      | server for that repository.
      |-->
     <mirrors>
-        <!-- 阿里云中央仓库镜像，用于加速中央仓库的访问 -->
+
+        <!--         <mirror>
+                  <id>nexus-hmm1</id>
+                  <mirrorOf>maven-releases</mirrorOf>
+                  <name>Nexus</name>
+                  <url>http://192.168.2.229:8081/repository/maven-releases/</url>
+                </mirror> -->
+
+        <!--         <mirror>
+                  <id>nexus-hmm2</id>
+                  <mirrorOf>central</mirrorOf>
+                  <name>Nexus</name>
+                  <url>http://192.168.2.229:8081/repository/maven-public/</url>
+                </mirror> -->
+
+        <mirror>
+            <id>aliyunmaven</id>
+            <mirrorOf>*</mirrorOf>
+            <name>Alibaba Maven Mirror</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </mirror>
+        <mirror>
+            <id>google-maven-central</id>
+            <name>Google Maven Central</name>
+            <url>https://maven-central.storage.googleapis.com</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+
+        <!-- <mirror>
+            <id>aliyunmaven</id>
+            <mirrorOf>*</mirrorOf>
+            <name>spring-plugin</name>
+            <url>https://maven.aliyun.com/repository/spring-plugin</url>
+        </mirror>
         <mirror>
             <id>alimaven</id>
             <mirrorOf>central</mirrorOf>
-            <name>Aliyun Central Repository</name>
+            <name>aliyun maven</name>
             <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
         </mirror>
-
-        <!-- 阿里云Spring插件仓库镜像 -->
         <mirror>
-            <id>aliyun-spring-plugin</id>
-            <mirrorOf>spring-plugin</mirrorOf>
-            <name>Aliyun Spring Plugin Repository</name>
-            <url>https://maven.aliyun.com/repository/spring-plugin</url>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <mirrorOf>central</mirrorOf>
         </mirror>
-
-        <!-- 官方中央仓库镜像，作为最后的备选 -->
         <mirror>
             <id>central</id>
             <name>Maven Repository Switchboard</name>
-            <url>https://repo1.maven.org/maven2/</url>
-            <!-- 这里使用https而非http以提高安全性 -->
+            <url>http://repo1.maven.org/maven2/</url>
+            <mirrorOf>central</mirrorOf>
         </mirror>
-
-        <!-- 其他镜像，根据需要启用 -->
-        <!--
         <mirror>
             <id>repo2</id>
             <mirrorOf>central</mirrorOf>
@@ -226,17 +252,16 @@ under the License.
         </mirror>
         <mirror>
             <id>google-maven-central</id>
-            <mirrorOf>central</mirrorOf>
             <name>Google Maven Central</name>
             <url>https://maven-central.storage.googleapis.com/</url>
+            <mirrorOf>central</mirrorOf>
         </mirror>
         <mirror>
             <id>maven.net.cn</id>
-            <mirrorOf>central</mirrorOf>
             <name>oneof the central mirrors in china</name>
             <url>http://maven.net.cn/content/groups/public/</url>
-        </mirror>
-        -->
+            <mirrorOf>central</mirrorOf>
+        </mirror> -->
     </mirrors>
 
     <!-- profiles
