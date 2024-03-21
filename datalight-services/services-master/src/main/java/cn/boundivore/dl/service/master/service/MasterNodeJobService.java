@@ -1113,7 +1113,10 @@ public class MasterNodeJobService {
         int planProgress = 100;
 
         int execTotal = tDlNodeStepList.size();
-        int execCurrent = (int) tDlNodeStepList.stream().filter(i -> i.getNodeStepState() == ExecStateEnum.OK).count();
+        int execCurrent = (int) tDlNodeStepList.stream()
+                .filter(i -> i.getNodeStepState() == ExecStateEnum.OK)
+                .count();
+
         int execProgress = execCurrent * 100 / execTotal;
 
         final NodePlan nodePlan = new NodePlan(
