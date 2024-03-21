@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.service.master.bean;
+package cn.boundivore.dl.base.constants;
 
 /**
  * Description: 自动拉起开关状态
@@ -29,4 +29,5 @@ package cn.boundivore.dl.service.master.bean;
 public class AutoPullSwitchState {
     public static boolean AUTO_PULL_WORKER = true;
     public static boolean AUTO_PULL_COMPONENT = true;
+    public static long AUTO_CLOSE_DURATION = 10 * 60 * 1000L;
 }

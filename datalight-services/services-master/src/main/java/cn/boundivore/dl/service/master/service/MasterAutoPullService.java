@@ -16,13 +16,21 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.constants.AutoPullSwitchState;
+import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.request.impl.common.AutoPullProcessRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.service.master.bean.AutoPullSwitchState;
+import cn.boundivore.dl.orm.po.single.TDlNode;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
 
 /**
  * Description: 进程自动拉起开关状态切换
@@ -39,7 +47,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MasterAutoPullService {
 
+    private final MasterNodeService masterNodeService;
 
+    private final RemoteInvokeWorkerService remoteInvokeWorkerService;
+
+    // 多线程拉起 Worker 线程池
+    private final ForkJoinPool forkJoinPool = new ForkJoinPool(4);
 
     /**
      * Description: 将自动拉起进程的开关切换至目标状态
@@ -57,6 +70,11 @@ public class MasterAutoPullService {
     public Result<String> switchAutoPull(AutoPullProcessRequest request) {
         AutoPullSwitchState.AUTO_PULL_WORKER = request.getAutoPullWorker();
         AutoPullSwitchState.AUTO_PULL_COMPONENT = request.getAutoPullComponent();
+        AutoPullSwitchState.AUTO_CLOSE_DURATION = request.getCloseDuration();
+
+        // 更新开光状态到 Worker 进程
+        this.updateAutoPullStateToWorker();
+
         return Result.success();
     }
 
@@ -79,6 +97,49 @@ public class MasterAutoPullService {
                         AutoPullSwitchState.AUTO_PULL_COMPONENT
                 )
         );
+    }
+
+    /**
+     * Description: 更新拉起进程开关的状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    public void updateAutoPullStateToWorker() {
+        // <ip, WorkerMeta> 获取全部状态为 STARTED 的节点
+        List<String> startedNodeIpV4List = this.masterNodeService.getNodeListByState(
+                        CollUtil.newArrayList(
+                                NodeStateEnum.STARTED
+                        )
+                )
+                .stream()
+                .map(TDlNode::getIpv4)
+                .collect(Collectors.toList());
+
+        this.forkJoinPool.submit(() -> {
+                            startedNodeIpV4List.parallelStream()
+                                    .forEach(ip -> {
+                                                try {
+                                                    // 更新组件拉起开关状态到 Worker 进程
+                                                    this.remoteInvokeWorkerService.iWorkerAutoPullAPI(ip)
+                                                            .switchAutoPull(
+                                                                    new AutoPullProcessRequest(
+                                                                            AutoPullSwitchState.AUTO_PULL_WORKER,
+                                                                            AutoPullSwitchState.AUTO_PULL_COMPONENT,
+                                                                            AutoPullSwitchState.AUTO_CLOSE_DURATION
+                                                                    )
+                                                            );
+                                                } catch (Exception e) {
+                                                    log.error(ExceptionUtil.stacktraceToString(e));
+                                                }
+                                            }
+                                    );
+                        }
+                );
     }
 
 }

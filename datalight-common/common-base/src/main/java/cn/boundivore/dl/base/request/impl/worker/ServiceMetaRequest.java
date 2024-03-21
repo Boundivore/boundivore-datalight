@@ -81,22 +81,27 @@ public class ServiceMetaRequest implements IRequest {
         private static final long serialVersionUID = -5797825661179835513L;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
-        @JsonProperty("ClusterId")
+        @JsonProperty(value = "ClusterId", required = true)
         @NotNull
         private Long clusterId;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
-        @JsonProperty("ServiceName")
+        @JsonProperty(value = "ServiceName", required = true)
         @NotNull
         private String serviceName;
 
+        @Schema(name = "Priority", title = "服务部署时优先级", required = true)
+        @JsonProperty(value = "Priority", required = true)
+        @NotNull
+        private Long priority;
+
         @Schema(name = "SCStateEnum", title = "服务状态", required = true)
-        @JsonProperty("SCStateEnum")
+        @JsonProperty(value = "SCStateEnum", required = true)
         @NotNull
         private SCStateEnum scStateEnum;
 
         @Schema(name = "MetaComponentList", title = "服务名称", required = true)
-        @JsonProperty("MetaComponentList")
+        @JsonProperty(value = "MetaComponentList", required = true)
         @NotNull
         private List<MetaComponentRequest> metaComponentList;
 
@@ -119,15 +124,20 @@ public class ServiceMetaRequest implements IRequest {
         @NotNull
         private String componentName;
 
+        @Schema(name = "Priority", title = "组件部署时优先级", required = true)
+        @JsonProperty(value = "Priority", required = true)
+        @NotNull
+        private Long priority;
+
         @Schema(name = "SCStateEnum", title = "组件状态", required = true)
         @JsonProperty("SCStateEnum")
         @NotNull
         private SCStateEnum scStateEnum;
 
-        @Schema(name = "StartShell", title = "可执行脚本：组件启动", required = true)
-        @JsonProperty("StartShell")
+        @Schema(name = "CheckAndStartShell", title = "可执行脚本：检查并启动组件", required = true)
+        @JsonProperty("CheckAndStartShell")
         @NotNull
-        private String startShell;
+        private String checkAndStartShell;
 
         @Schema(name = "StopShell", title = "可执行脚本：组件停止", required = true)
         @JsonProperty("StopShell")

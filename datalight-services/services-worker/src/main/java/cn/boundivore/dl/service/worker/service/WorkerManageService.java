@@ -16,8 +16,10 @@
  */
 package cn.boundivore.dl.service.worker.service;
 
+import cn.boundivore.dl.base.constants.AutoPullSwitchState;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
+import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.base.request.impl.worker.ServiceMetaRequest;
 import cn.boundivore.dl.base.result.Result;
@@ -55,6 +57,9 @@ public class WorkerManageService {
     private final IServiceMetaConverter iServiceMetaConverter;
 
     private final RemoteInvokeMasterService remoteInvokeMasterService;
+
+    private final WorkerExecService workerExecService;
+
 
     /**
      * Description: 更新 Master 位置信息
@@ -153,12 +158,30 @@ public class WorkerManageService {
             fixedDelay = 30 * 1000
     )
     private void checkAndPullComponent() {
-        MetaCache.ServiceMeta serviceMeta = this.metaCache.getServiceMeta();
-        if (serviceMeta != null) {
-            log.info("检查并拉起服务");
+        if (AutoPullSwitchState.AUTO_PULL_COMPONENT) {
+            MetaCache.ServiceMeta serviceMeta = this.metaCache.getServiceMeta();
+            if (serviceMeta != null) {
+                log.info("检查并拉起服务");
+                serviceMeta.getServiceList()
+                        .forEach(service -> {
+                            service.getComponentList()
+                                    .forEach(component -> {
+                                        // TODO 检查并启动组件进程
+                                        String checkAndStartShell = component.getCheckAndStartShell();
 
+                                        Result<String> execResult = this.workerExecService.exec(
+                                                new ExecRequest(
+
+
+                                                )
+                                        );
+                                        ;
+                                    });
+                        });
+
+
+            }
         }
-
     }
 
 }

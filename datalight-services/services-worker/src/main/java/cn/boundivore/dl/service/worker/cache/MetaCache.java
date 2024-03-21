@@ -160,6 +160,8 @@ public class MetaCache {
 
         private String serviceName;
 
+        private Long priority;
+
         private SCStateEnum scStateEnum;
 
         private List<Component> componentList;
@@ -174,9 +176,11 @@ public class MetaCache {
 
         private String componentName;
 
+        private Long priority;
+
         private SCStateEnum scStateEnum;
 
-        private String startShell;
+        private String checkAndStartShell;
 
         private String stopShell;
 

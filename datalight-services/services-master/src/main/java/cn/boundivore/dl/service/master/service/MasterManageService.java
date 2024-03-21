@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.constants.AutoPullSwitchState;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
@@ -23,7 +24,6 @@ import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlNode;
-import cn.boundivore.dl.service.master.bean.AutoPullSwitchState;
 import cn.boundivore.dl.service.master.cache.HeartBeatCache;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.job.NodeJobService;
@@ -69,6 +69,11 @@ public class MasterManageService {
     private final RemoteInvokeWorkerService remoteInvokeWorkerService;
 
     private final NodeJobService nodeJobService;
+
+    private final MasterAutoPullService masterAutoPullService;
+
+    // 多线程拉起 Worker 线程池
+    private final ForkJoinPool forkJoinPool = new ForkJoinPool(4);
 
     /**
      * Description: 接收来自 Worker 端的心跳包
@@ -117,6 +122,9 @@ public class MasterManageService {
         } else {
             log.info("Worker 自动拉起已关闭");
         }
+
+        // 更新开关状态到 Worker
+        this.masterAutoPullService.updateAutoPullStateToWorker();
     }
 
     /**
@@ -279,49 +287,49 @@ public class MasterManageService {
                     this.workerPort
             );
 
-            new ForkJoinPool(4)
-                    .submit(() -> {
-                        // SSH 启动 Worker，并推送 Master 位置
-                        allInvalidWorkerTDlNodeList.parallelStream()
-                                .forEach(i -> {
-                                    try {
-                                        // 首先尝试主动再次推送 Master 元数据信息，获取心跳，如失败，则尝试拉起
-                                        this.publishMasterMeta(masterRealIp, i.getIpv4());
-                                        log.info("拉起前最后一次尝试更新 Master({}) 元数据成功: Worker({})", masterRealIp, i.getIpv4());
-                                    } catch (Exception e) {
-                                        try {
-                                            log.info("尝试推送 Master 元数据到心跳超时节点({})失败，准备拉起",
-                                                    i.getIpv4()
-                                            );
 
-                                            log.info(
-                                                    "准备拉起 Worker({}:{}) {}",
-                                                    i.getIpv4(),
-                                                    this.workerPort,
-                                                    cmd
-                                            );
+            this.forkJoinPool.submit(() -> {
+                // SSH 启动 Worker，并推送 Master 位置
+                allInvalidWorkerTDlNodeList.parallelStream()
+                        .forEach(i -> {
+                            try {
+                                // 首先尝试主动再次推送 Master 元数据信息，获取心跳，如失败，则尝试拉起
+                                this.publishMasterMeta(masterRealIp, i.getIpv4());
+                                log.info("拉起前最后一次尝试更新 Master({}) 元数据成功: Worker({})", masterRealIp, i.getIpv4());
+                            } catch (Exception e) {
+                                try {
+                                    log.info("尝试推送 Master 元数据到心跳超时节点({})失败，准备拉起",
+                                            i.getIpv4()
+                                    );
 
-                                            this.nodeJobService.exec(
-                                                    i.getIpv4(),
-                                                    Integer.parseInt(i.getSshPort().toString()),
-                                                    DataLightEnv.PRIVATE_KEY_PATH,
-                                                    cmd,
-                                                    30 * 1000L,
-                                                    TimeUnit.MILLISECONDS
-                                            );
+                                    log.info(
+                                            "准备拉起 Worker({}:{}) {}",
+                                            i.getIpv4(),
+                                            this.workerPort,
+                                            cmd
+                                    );
 
-                                            // 拉起后推送 MasterMeta
-                                            this.publishMasterMeta(masterRealIp, i.getIpv4());
-                                        } catch (Exception ex) {
-                                            log.error(
-                                                    "Worker({}) 远程启动失败: {}",
-                                                    i.getIpv4(),
-                                                    ExceptionUtil.stacktraceToString(e)
-                                            );
-                                        }
-                                    }
-                                });
-                    }).get();
+                                    this.nodeJobService.exec(
+                                            i.getIpv4(),
+                                            Integer.parseInt(i.getSshPort().toString()),
+                                            DataLightEnv.PRIVATE_KEY_PATH,
+                                            cmd,
+                                            30 * 1000L,
+                                            TimeUnit.MILLISECONDS
+                                    );
+
+                                    // 拉起后推送 MasterMeta
+                                    this.publishMasterMeta(masterRealIp, i.getIpv4());
+                                } catch (Exception ex) {
+                                    log.error(
+                                            "Worker({}) 远程启动失败: {}",
+                                            i.getIpv4(),
+                                            ExceptionUtil.stacktraceToString(e)
+                                    );
+                                }
+                            }
+                        });
+            }).get();
         } catch (Exception e) {
             log.error("线程错误: {}", ExceptionUtil.stacktraceToString(e));
         }
