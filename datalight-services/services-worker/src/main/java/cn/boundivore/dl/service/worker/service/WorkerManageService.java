@@ -18,16 +18,19 @@ package cn.boundivore.dl.service.worker.service;
 
 import cn.boundivore.dl.base.constants.AutoPullSwitchState;
 import cn.boundivore.dl.base.constants.Constants;
+import cn.boundivore.dl.base.enumeration.impl.ExecTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
 import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.base.request.impl.worker.ServiceMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
+import cn.boundivore.dl.exception.BashException;
 import cn.boundivore.dl.service.worker.cache.MetaCache;
 import cn.boundivore.dl.service.worker.converter.IMasterMetaConverter;
 import cn.boundivore.dl.service.worker.converter.IServiceMetaConverter;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.RandomUtil;
 import lombok.RequiredArgsConstructor;
@@ -161,21 +164,38 @@ public class WorkerManageService {
         if (AutoPullSwitchState.AUTO_PULL_COMPONENT) {
             MetaCache.ServiceMeta serviceMeta = this.metaCache.getServiceMeta();
             if (serviceMeta != null) {
-                log.info("检查并拉起服务");
+                log.info("准备检查并拉起服务组件进程");
                 serviceMeta.getServiceList()
                         .forEach(service -> {
                             service.getComponentList()
                                     .forEach(component -> {
-                                        // TODO 检查并启动组件进程
+                                        // 检查并启动组件进程
                                         String checkAndStartShell = component.getCheckAndStartShell();
-
-                                        Result<String> execResult = this.workerExecService.exec(
-                                                new ExecRequest(
-
-
-                                                )
-                                        );
-                                        ;
+                                        try {
+                                            Result<String> execResult = this.workerExecService.exec(
+                                                    new ExecRequest(
+                                                            ExecTypeEnum.COMMAND,
+                                                            String.format("Check and start %s", component.getComponentName()),
+                                                            checkAndStartShell,
+                                                            0,
+                                                            Constants.SCRIPT_DEFAULT_TIMEOUT,
+                                                            null,
+                                                            null,
+                                                            true
+                                                    )
+                                            );
+                                            Assert.isTrue(
+                                                    execResult.isSuccess(),
+                                                    () -> new BashException(
+                                                            String.format(
+                                                                    "自动拉起组件失败: %s",
+                                                                    checkAndStartShell
+                                                            )
+                                                    )
+                                            );
+                                        } catch (Exception e) {
+                                            log.error(ExceptionUtil.stacktraceToString(e));
+                                        }
                                     });
                         });
 
