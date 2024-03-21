@@ -202,7 +202,9 @@ public class Plan implements Serializable {
     }
 
     /**
-     * Description: 更新所有异步 Step 执行进度 TODO 如果追求更快的并发执行速度，可不在此处更新总进度
+     * Description: 更新所有异步 Step 执行进度
+     * TODO 如果追求更快的并发执行速度，可不在此处更新总进度，而是在 Step 完成后向 Map 集合 put <StepId, 1>
+     *     最终前端每次调用接口时，通过 count 1 实现 Step 完成数和进度的统计并返回；
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/6/12 16:57
@@ -219,7 +221,11 @@ public class Plan implements Serializable {
                     this.execCurrent.incrementAndGet() * 100 / this.execTotal.get()
             );
 
-            log.info("执行 Step 总数: {}, 当前: {}, 进度: {}%", execTotal.get(), execCurrent.get(), execProgress.get());
+            log.info("执行 Step 总数: {}, 当前: {}, 进度: {}%",
+                    execTotal.get(),
+                    execCurrent.get(),
+                    execProgress.get()
+            );
 
             return this.execCurrent;
         } finally {
