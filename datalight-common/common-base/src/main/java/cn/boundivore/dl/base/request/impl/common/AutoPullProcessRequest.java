@@ -18,8 +18,6 @@ package cn.boundivore.dl.base.request.impl.common;
 
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,10 +26,10 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 /**
- * Description: TestRequest
+ * Description: AutoPullProcessRequest
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/5
+ * Creation time: 2024/3/21
  * Modification description:
  * Modified by:
  * Modification time:
@@ -41,15 +39,25 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(
-        name = "TestRequest",
-        description = "TestRequest 测试 请求体"
+        name = "AutoPullProcessRequest",
+        description = "AutoPullProcessRequest 自动拉起开关状态 请求体"
 )
-public class TestRequest implements IRequest {
-    private static final long serialVersionUID = -8299071133808288071L;
+public class AutoPullProcessRequest implements IRequest {
 
-    @Schema(name = "Name", title = "测试名称", required = true)
-    @JsonProperty(value = "Name", required = true)
+    private static final long serialVersionUID = -7773673617799232078L;
+
+    @Schema(name = "AutoPullWorker", title = "自动拉起 Worker 开关状态", required = true)
+    @JsonProperty(value = "AutoPullWorker", required = true)
     @NotNull
-    private String name;
+    private Boolean autoPullWorker = true;
+
+    @Schema(name = "AutoPullComponent", title = "自动拉起 Component 开关状态", required = true)
+    @JsonProperty(value = "AutoPullComponent", required = true)
+    @NotNull
+    private Boolean autoPullComponent = true;
+
+    @Schema(name = "CloseDuration", title = "关闭时长", required = true)
+    @JsonProperty(value = "CloseDuration", required = true)
+    private Long closeDuration = 10 * 60 * 1000L;
 
 }

@@ -148,7 +148,10 @@ public class WorkerManageService {
      * Modification time:
      * Throws:
      */
-    @Scheduled(initialDelay = 10 * 1000, fixedDelay = 30 * 1000)
+    @Scheduled(
+            initialDelay = 10 * 1000,
+            fixedDelay = 30 * 1000
+    )
     private void checkAndPullComponent() {
         MetaCache.ServiceMeta serviceMeta = this.metaCache.getServiceMeta();
         if (serviceMeta != null) {

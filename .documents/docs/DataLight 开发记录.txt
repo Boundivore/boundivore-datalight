@@ -185,7 +185,7 @@ su -s /bin/bash "datalight" -c "hive --service metastore > /data/datalight/logs/
 2、解决 Hive 部署问题
 3、设置 Hive Grafana 模板
 4、组件进程自动拉起
-5、组件进程自动拉起开关
+5、组件进程自动拉起开关,Worker 主动拉取 Master 上的服务组件分布情况，定时器
 6、Worker 自动拉起开关
 7、plugin 的错误日志不够详细
 8、检查启停脚本的操作是否合理

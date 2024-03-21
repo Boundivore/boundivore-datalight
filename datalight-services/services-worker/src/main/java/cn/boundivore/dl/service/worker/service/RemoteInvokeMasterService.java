@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.worker.service;
 
+import cn.boundivore.dl.api.master.define.IMasterAutoPullAPI;
 import cn.boundivore.dl.api.master.define.IMasterManageAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
@@ -67,6 +68,37 @@ public class RemoteInvokeMasterService {
                 )
                 .target(
                         IMasterManageAPI.class,
+                        String.format(
+                                "http://%s:%s%s",
+                                ip,
+                                masterPort,
+                                IUrlPrefixConstants.MASTER_URL_PREFIX
+                        )
+                );
+    }
+
+    /**
+     * Description: Feign 远程调用指定节点的 IMasterAutoPullAPI 的接口
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param ip 对端 IP 地址
+     * @return IMasterAutoPullAPI 可调用 API 实例
+     */
+    public IMasterAutoPullAPI iMasterAutoPullAPI(String ip) {
+        return feignBuilder
+                .options(RequestOptionsGenerator.getRequestOptions(
+                                2 * 1000L,
+                                5 * 1000L
+                        )
+                )
+                .target(
+                        IMasterAutoPullAPI.class,
                         String.format(
                                 "http://%s:%s%s",
                                 ip,

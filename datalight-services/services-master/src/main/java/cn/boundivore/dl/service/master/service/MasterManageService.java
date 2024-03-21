@@ -23,6 +23,7 @@ import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlNode;
+import cn.boundivore.dl.service.master.bean.AutoPullSwitchState;
 import cn.boundivore.dl.service.master.cache.HeartBeatCache;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.node.job.NodeJobService;
@@ -102,14 +103,20 @@ public class MasterManageService {
      * Modification time:
      * Throws:
      */
-    @Scheduled(initialDelay = 10 * 1000, fixedDelay = Constants.HEART_BEAT_TIMEOUT)
+    @Scheduled(
+            initialDelay = 10 * 1000,
+            fixedDelay = Constants.HEART_BEAT_TIMEOUT
+    )
     private void checkAndPull() {
-        // 检查重启的节点是否完成，如果完成，节点状态变更为 STARTED 状态
-        this.checkAndDetect();
+        if (AutoPullSwitchState.AUTO_PULL_WORKER) {
+            // 检查重启的节点是否完成，如果完成，节点状态变更为 STARTED 状态
+            this.checkAndDetect();
 
-        // 检查心跳包是否过期，如果过期，则 SSH 拉起对应节点上的 Worker 进程
-        this.checkAndPullWorker();
-
+            // 检查心跳包是否过期，如果过期，则 SSH 拉起对应节点上的 Worker 进程
+            this.checkAndPullWorker();
+        } else {
+            log.info("Worker 自动拉起已关闭");
+        }
     }
 
     /**
