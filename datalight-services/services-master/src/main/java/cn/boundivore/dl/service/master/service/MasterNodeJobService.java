@@ -210,44 +210,68 @@ public class MasterNodeJobService {
      */
     private void checkNodeJobIllegal(NodeJobRequest request) {
         Long clusterId = request.getClusterId();
+
         List<Long> nodeIdList = request.getNodeInfoList()
                 .stream()
                 .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                 .collect(Collectors.toList());
 
-        List<TDlNodeInit> tDlNodeInitList = this.tDlNodeInitService.lambdaQuery()
-                .select()
-                .eq(TDlNodeInit::getClusterId, clusterId)
-                .in(TDlNodeInit::getId, nodeIdList)
-                .list();
+        switch (request.getNodeActionTypeEnum()) {
+            case DETECT:
+            case CHECK:
+            case DISPATCH:
+            case START_WORKER:
+                List<TDlNodeInit> tDlNodeInitList = this.tDlNodeInitService.lambdaQuery()
+                        .select()
+                        .eq(TDlNodeInit::getClusterId, clusterId)
+                        .in(TDlNodeInit::getId, nodeIdList)
+                        .list();
 
-        Assert.isTrue(
-                tDlNodeInitList.size() == nodeIdList.size(),
-                () -> new BException("部分节点不存在")
-        );
+                Assert.isTrue(
+                        tDlNodeInitList.size() == nodeIdList.size(),
+                        () -> new BException("初始化的部分节点不存在")
+                );
 
-        // 检查节点状态是否合法
-        NodeStateEnum finalBoundaryNodeStateEnum = this.getBoundaryInitNodeStateEnum(request.getNodeActionTypeEnum());
-        if (finalBoundaryNodeStateEnum != null) {
-            List<String> filterHostnameList = tDlNodeInitList.stream()
-                    .filter(tDlNodeInit -> tDlNodeInit
-                            .getNodeInitState()
-                            .isLessThan(finalBoundaryNodeStateEnum)
-                    )
-                    .map(TDlNodeInit::getHostname)
-                    .collect(Collectors.toList());
+                // 检查节点状态是否合法
+                NodeStateEnum finalBoundaryNodeStateEnum = this.getBoundaryInitNodeStateEnum(request.getNodeActionTypeEnum());
 
-            Assert.isTrue(
-                    filterHostnameList.isEmpty(),
-                    () -> new BException(
-                            String.format(
-                                    "当前操作的主机名中，存在不符合状态的节点: %s",
-                                    filterHostnameList
+                if (finalBoundaryNodeStateEnum != null) {
+                    List<String> filterHostnameList = tDlNodeInitList.stream()
+                            .filter(tDlNodeInit -> tDlNodeInit
+                                    .getNodeInitState()
+                                    .isLessThan(finalBoundaryNodeStateEnum)
                             )
-                    )
-            );
+                            .map(TDlNodeInit::getHostname)
+                            .collect(Collectors.toList());
 
+                    Assert.isTrue(
+                            filterHostnameList.isEmpty(),
+                            () -> new BException(
+                                    String.format(
+                                            "当前操作的主机名中，存在不符合状态的节点: %s",
+                                            filterHostnameList
+                                    )
+                            )
+                    );
+
+                }
+                break;
+            case START:
+            case SHUTDOWN:
+            case RESTART:
+                List<TDlNode> tDlNodeList = this.tDlNodeService.lambdaQuery()
+                        .select()
+                        .eq(TDlNode::getClusterId, clusterId)
+                        .in(TBasePo::getId, nodeIdList)
+                        .list();
+
+                Assert.isTrue(
+                        tDlNodeList.size() == nodeIdList.size(),
+                        () -> new BException("已服役的部分节点不存在")
+                );
+                break;
         }
+
     }
 
     /**
