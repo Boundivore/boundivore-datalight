@@ -53,6 +53,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
+import static cn.boundivore.dl.base.enumeration.impl.NodeStateEnum.START_WORKER_OK;
+
 /**
  * Description: 组装节点的操作意图，并初始化 Job，最后执行
  * Created by: Boundivore
@@ -101,8 +103,10 @@ public class MasterNodeJobService {
 
         // 切换初始化节点的状态
         NodeStateEnum nodeStateEnum = this.resolveNodeStateFromAction(request.getNodeActionTypeEnum());
-        if (nodeStateEnum != null) {
+        if (nodeStateEnum != null && nodeStateEnum.isLessThanOrEqualTo(START_WORKER_OK)) {
             this.switchNodeInitStateFromAction(request.getNodeInfoList(), nodeStateEnum);
+        } else {
+            this.switchNodeStateFromAction(request.getNodeInfoList(), nodeStateEnum);
         }
 
         List<String> hostnameList = request.getNodeInfoList()
@@ -193,6 +197,41 @@ public class MasterNodeJobService {
         Assert.isTrue(
                 this.tDlNodeInitService.updateBatchById(tDlNodeInitList),
                 () -> new DatabaseException("更新初始化节点状态失败")
+        );
+    }
+
+    /**
+     * Description: 将已服役节点的状态切换到指定值
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/1/4
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeInfoList  节点信息列表
+     * @param nodeStateEnum 将要切换到的状态
+     */
+    public void switchNodeStateFromAction(List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList,
+                                          NodeStateEnum nodeStateEnum) {
+
+        List<Long> nodeIdList = nodeInfoList
+                .stream()
+                .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
+                .collect(Collectors.toList());
+
+        List<TDlNode> tDlNodeList = this.tDlNodeService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, nodeIdList)
+                .list()
+                .stream()
+                .peek(i -> i.setNodeState(nodeStateEnum))
+                .collect(Collectors.toList());
+
+        Assert.isTrue(
+                this.tDlNodeService.updateBatchById(tDlNodeList),
+                () -> new DatabaseException("更新已服役节点状态失败")
         );
     }
 
