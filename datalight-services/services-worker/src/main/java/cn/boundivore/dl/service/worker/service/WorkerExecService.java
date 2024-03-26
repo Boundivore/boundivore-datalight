@@ -21,7 +21,6 @@ import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.bash.BashExecutor;
-import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.BashException;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +85,12 @@ public class WorkerExecService {
                 )
         );
 
-        return Result.success(bashResult.getResult());
+        return Result.success(
+                String.format(
+                        "%s\n%s",
+                        bashResult.getExecLog(),
+                        bashResult.getResult()
+                )
+        );
     }
 }

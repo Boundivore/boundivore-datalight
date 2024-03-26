@@ -39,6 +39,7 @@ import java.io.Serializable;
 @Builder
 public class BashResult implements Serializable {
     private boolean isSuccess;
+    private String execLog;
     private String result;
     private int exitValue;
 }

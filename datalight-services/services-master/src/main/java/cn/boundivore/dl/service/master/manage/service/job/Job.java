@@ -523,6 +523,7 @@ public class Job extends Thread {
         try {
             // 如果之前任务全部成功，则重载 Prometheus 并初始化 Grafana
             if (this.jobMeta.getJobResult().isSuccess()) {
+                // 重载监控初始化
                 this.reloadAndInitMonitor();
 
                 // 如果是部署服务或组件，则完成后，清除 Procedure 信息
@@ -547,8 +548,9 @@ public class Job extends Thread {
             this.jobService.saveLog(jobMeta, "MONITOR settings ready", null);
 
         } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-            this.jobService.saveLog(jobMeta, null, e.getMessage());
+            String errorMsg = ExceptionUtil.stacktraceToString(e);
+            log.error(errorMsg);
+            this.jobService.saveLog(jobMeta, null, errorMsg);
             execStateEnum = ExecStateEnum.ERROR;
         }
 

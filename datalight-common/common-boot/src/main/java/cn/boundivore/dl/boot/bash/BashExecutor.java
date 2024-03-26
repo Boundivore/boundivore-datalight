@@ -21,7 +21,6 @@ import cn.boundivore.dl.base.bash.BashLogOutputStream;
 import cn.boundivore.dl.base.bash.BashResult;
 import cn.boundivore.dl.base.bash.exec.*;
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ArrayUtil;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +28,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-
-import static cn.boundivore.dl.cloud.utils.SpringContextUtil.SCRIPTS_DIR;
 
 /**
  * Description: bash/shell 执行器
@@ -196,7 +193,7 @@ public class BashExecutor {
         try {
             executor.execute(cmdLine, resultHandler);
         } catch (IOException e) {
-            e.printStackTrace();
+           log.error(ExceptionUtil.stacktraceToString(e));
         }
     }
 
@@ -230,7 +227,8 @@ public class BashExecutor {
                 "CommandLine: %s, ExpectExitValue: %s, ExpectTimeout: %s",
                 cmdLine.toString(),
                 expectExitValue,
-                timeout);
+                timeout
+        );
 
         DefaultExecutor executor = new DefaultExecutor();
 
@@ -262,14 +260,21 @@ public class BashExecutor {
 
             BashResult bashResult = BashResult.builder()
                     .result(outResult)
+                    .execLog(execLog)
                     .exitValue(exitValue)
                     .isSuccess(!executor.isFailure(exitValue))
                     .build();
 
+            String printLogMsg = String.format(
+                    "执行: %s, 结果: %s",
+                    execLog,
+                    bashResult.toString()
+            );
+
             if (printLog) {
-                log.info("执行: {}, 结果: {}", execLog, bashResult.toString());
+                log.info(printLogMsg);
             } else {
-                log.debug("执行: {}, 结果: {}", execLog, bashResult.toString());
+                log.debug(printLogMsg);
             }
 
             return bashResult;
@@ -302,7 +307,6 @@ public class BashExecutor {
         } catch (ExecuteException e) {
             if (executor.getWatchdog() != null && executor.getWatchdog().killedProcess()) {
                 log.error("进程关闭超时[{}]", cmdLine);
-                e.printStackTrace();
                 log.error(ExceptionUtil.stacktraceToString(e));
                 return -100;
             }
@@ -327,7 +331,6 @@ public class BashExecutor {
      */
     private void handleError(String errorMessage, String execLog, Exception e) {
         log.error(errorMessage + ": {}", execLog);
-        e.printStackTrace();
         log.error(ExceptionUtil.stacktraceToString(e));
     }
 }
