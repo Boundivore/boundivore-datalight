@@ -177,8 +177,9 @@ public class RemoteInvokeGrafanaHandler {
             }
 
         } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-            throw new BException(e.getMessage());
+            String errorLog = ExceptionUtil.stacktraceToString(e);
+            log.error(errorLog);
+            throw new BException(errorLog);
         }
     }
 
@@ -202,8 +203,6 @@ public class RemoteInvokeGrafanaHandler {
                                   String nodeIp,
                                   String port) {
 
-        GrafanaUser grafanaUser1 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN);
-
         // 配置 Grafana API Feign 客户端
         this.remoteInvokeGrafanaService.init(
                 nodeIp,
@@ -212,12 +211,16 @@ public class RemoteInvokeGrafanaHandler {
         );
 
         // 1、修改 Grafana 主账号（userId1）密码
-        Result<String> changeUserPasswordResult = this.remoteInvokeGrafanaService.changeUserPassword(
-                ADMIN_OLD_TOKEN,
-                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getOldLoginPassword(),
-                grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN).getNewLoginPassword()
-        );
-        log.info("changeUserPassword: {}", changeUserPasswordResult);
+        try {
+            GrafanaUser grafanaUser1 = grafanaUserMap.get(GrafanaUserTypeEnum.ADMIN);
+            Result<String> changeUserPasswordResult = this.remoteInvokeGrafanaService.changeUserPassword(
+                    ADMIN_OLD_TOKEN,
+                    grafanaUser1.getOldLoginPassword(),
+                    grafanaUser1.getNewLoginPassword()
+            );
+            log.info("changeUserPassword: {}", changeUserPasswordResult);
+        } catch (Exception ignore) {
+        }
 
         // 2、为当前集群创建 Org，并获取 orgId
         try {
