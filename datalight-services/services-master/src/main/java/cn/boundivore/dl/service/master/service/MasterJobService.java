@@ -520,6 +520,36 @@ public class MasterJobService {
         );
     }
 
+    /**
+     * Description: 获取指定集群下正在活跃的 JobId
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return 正在活跃的 JobId
+     */
+    public Result<AbstractJobVo.JobIdVo> getActiveJobId() {
+        Long currentClusterId = null;
+        Long jobId = JobCacheUtil.getInstance().getActiveJobId().get();
+        JobCacheBean jobCacheBean = JobCacheUtil.getInstance().get(jobId);
+        if (jobCacheBean == null) {
+            jobId = null;
+        }else{
+            currentClusterId = jobCacheBean.getJobMeta().getClusterMeta().getCurrentClusterId();
+        }
+
+        return Result.success(
+                new AbstractJobVo.JobIdVo(
+                        currentClusterId,
+                        jobId
+                )
+        );
+    }
+
 
     /**
      * Description: 获取指定 Job 的进度信息
@@ -1214,7 +1244,7 @@ public class MasterJobService {
     }
 
     /**
-     * Description: 检查是否存在异常状态的 Job，若存在，则恢复
+     * Description: TODO 检查是否存在异常状态的 Job，若存在，则恢复
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/2/27

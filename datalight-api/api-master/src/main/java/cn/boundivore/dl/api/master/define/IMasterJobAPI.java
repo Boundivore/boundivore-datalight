@@ -48,6 +48,10 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterJobAPI {
 
+    @GetMapping(value = "/job/getActiveJobId")
+    @ApiOperation(notes = "获取指定集群下正在活跃的 JobId", value = "获取指定集群下正在活跃的 JobId")
+    Result<AbstractJobVo.JobIdVo> getActiveJobId() throws Exception;
+
     @GetMapping(value = "/job/progress")
     @ApiOperation(notes = "获取作业任务进度", value = "获取作业任务进度")
     Result<AbstractJobVo.JobProgressVo> getJobProgress(

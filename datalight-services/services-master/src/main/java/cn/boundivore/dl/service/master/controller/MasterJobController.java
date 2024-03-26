@@ -43,6 +43,11 @@ public class MasterJobController implements IMasterJobAPI {
 
 
     @Override
+    public Result<AbstractJobVo.JobIdVo> getActiveJobId() throws Exception {
+        return this.masterJobService.getActiveJobId();
+    }
+
+    @Override
     public Result<AbstractJobVo.JobProgressVo> getJobProgress(Long jobId) throws Exception {
         return this.masterJobService.getJobProgress(jobId);
     }

@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.api.master.define;
 
+import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
@@ -47,6 +48,10 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
         path = MASTER_URL_PREFIX
 )
 public interface IMasterNodeJobAPI {
+
+    @GetMapping(value = "/job/getActiveNodeJobId")
+    @ApiOperation(notes = "获取指定集群下正在活跃的 NodeJobId", value = "获取指定集群下正在活跃的 NodeJobId")
+    Result<AbstractNodeJobVo.NodeJobIdVo> getActiveNodeJobId() throws Exception;
 
     @GetMapping(value = "/node/job/progress")
     @ApiOperation(notes = "获取节点作业进度", value = "获取节点作业进度")

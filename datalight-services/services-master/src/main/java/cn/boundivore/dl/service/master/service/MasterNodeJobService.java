@@ -502,7 +502,7 @@ public class MasterNodeJobService {
     }
 
     /**
-     * Description: 获取正在活跃的节点 JobID
+     * Description: 获取正在活跃的节点 NodeJobID
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/4
@@ -514,21 +514,21 @@ public class MasterNodeJobService {
      * @return NodeJobIdVo 活跃的  NodeJobId 信息
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> getActiveNodeJobId() {
-        long activeJobId = NodeJobCacheUtil.getInstance().getActiveNodeJobId().get();
-        Assert.isTrue(
-                activeJobId != 0L,
-                () -> new BException("当前没有活跃的任务")
-        );
+        Long currentClusterId = null;
 
-        Long clusterId = NodeJobCacheUtil.getInstance()
-                .get(activeJobId)
-                .getNodeJobMeta()
-                .getClusterId();
+        Long activeNodeJobId = NodeJobCacheUtil.getInstance().getActiveNodeJobId().get();
+        NodeJobCacheBean nodeJobCacheBean = NodeJobCacheUtil.getInstance().get(activeNodeJobId);
+
+        if (nodeJobCacheBean == null) {
+            activeNodeJobId = null;
+        } else {
+            currentClusterId = nodeJobCacheBean.getNodeJobMeta().getClusterId();
+        }
 
         return Result.success(
                 new AbstractNodeJobVo.NodeJobIdVo(
-                        clusterId,
-                        activeJobId
+                        currentClusterId,
+                        activeNodeJobId
                 )
         );
 
