@@ -94,7 +94,8 @@ public class MasterComponentService {
      * @param serviceName 服务名称
      * @return Result<AbstractServiceComponentVo.ComponentVo> 当前集群中的对应服务的组件信息
      */
-    public Result<AbstractServiceComponentVo.ComponentVo> getComponentList(Long clusterId, String serviceName) {
+    public Result<AbstractServiceComponentVo.ComponentVo> getComponentList(Long clusterId,
+                                                                           String serviceName) {
         // 获取当前集群中服务的状态
         Map<String, AbstractServiceComponentVo.ServiceSummaryVo> serviceSummaryVoMap = this.masterServiceService
                 .getServiceSummaryVoMap(clusterId);
@@ -983,7 +984,7 @@ public class MasterComponentService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> removeComponentBatchByIds(AbstractServiceComponentRequest.ComponentIdListRequest request) {
+    public Result<AbstractServiceComponentVo.RemoveComponentBatchVo> removeComponentBatchByIds(AbstractServiceComponentRequest.ComponentIdListRequest request) {
         // 获取当前集群中未移除的组件信息
         List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
                 .select()
@@ -1017,22 +1018,31 @@ public class MasterComponentService {
         );
 
         // 判断指定服务下，如果已经没有可用组件，则自动删除该服务
-        boolean isNotRemovedExist = this.tDlComponentService.lambdaQuery()
+        boolean isServiceExistComponent = this.tDlComponentService.lambdaQuery()
                 .select()
                 .eq(TDlComponent::getClusterId, request.getClusterId())
                 .eq(TDlComponent::getServiceName, request.getServiceName())
-                .ne(TDlComponent::getComponentState, REMOVED)
+                .notIn(TDlComponent::getComponentState, UNSELECTED, SELECTED, REMOVED)
                 .exists();
 
         // 如果除已移除组件外，不存在其他组件，则删除该服务
-        if (!isNotRemovedExist) {
+        if (!isServiceExistComponent) {
             this.masterServiceService.removeServiceByName(
                     request.getClusterId(),
                     request.getServiceName()
             );
+
         }
 
-        return Result.success();
+        return Result.success(
+                new AbstractServiceComponentVo.RemoveComponentBatchVo(
+                        request.getClusterId(),
+                        new AbstractServiceComponentVo.ServiceExistVo(
+                                request.getServiceName(),
+                                isServiceExistComponent
+                        )
+                )
+        );
     }
 
     /**

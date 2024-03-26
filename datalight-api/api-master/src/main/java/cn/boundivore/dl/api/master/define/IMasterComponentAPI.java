@@ -83,7 +83,7 @@ public interface IMasterComponentAPI {
 
     @PostMapping(value = "/component/removeBatchByIds")
     @ApiOperation(notes = "批量移除组件", value = "批量移除组件")
-    Result<String> removeComponentBatchByIds(
+    Result<AbstractServiceComponentVo.RemoveComponentBatchVo> removeComponentBatchByIds(
             @RequestBody
             @Valid
             AbstractServiceComponentRequest.ComponentIdListRequest request

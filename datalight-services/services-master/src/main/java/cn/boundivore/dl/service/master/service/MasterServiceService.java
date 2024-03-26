@@ -653,6 +653,7 @@ public class MasterServiceService {
                 .select()
                 .eq(TDlService::getClusterId, clusterId)
                 .eq(TDlService::getServiceName, serviceName)
+                .ne(TDlService::getServiceState, REMOVED)
                 .one();
 
         Assert.notNull(

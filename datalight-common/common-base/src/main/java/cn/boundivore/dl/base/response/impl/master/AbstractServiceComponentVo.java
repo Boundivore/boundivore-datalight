@@ -235,6 +235,49 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "NeedRestart", required = true)
         private Boolean needRestart;
 
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractServiceComponentVo.RemoveComponentBatchVo",
+            description = "AbstractServiceComponentVo.RemoveComponentBatchVo 批量移除组件响应体"
+    )
+    public final static class RemoveComponentBatchVo implements IVo {
+
+        private static final long serialVersionUID = 3491766834570881233L;
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        private Long clusterId;
+
+        @Schema(name = "ServiceExist", title = "服务状态", required = true)
+        @JsonProperty(value = "ServiceExist", required = true)
+        private ServiceExistVo serviceExistVo;
+
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractServiceComponentVo.ServiceStateVo",
+            description = "AbstractServiceComponentVo.ServiceStateVo 服务是否存在组件实例响应体"
+    )
+    public final static class ServiceExistVo implements IVo {
+
+        private static final long serialVersionUID = -3777852919379714192L;
+
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
+        @JsonProperty(value = "ServiceName", required = true)
+        private String serviceName;
+
+        @Schema(name = "IsNotRemovedExist", title = "服务下是否还存在组件实例", required = true)
+        @JsonProperty(value = "IsNotRemovedExist", required = true)
+        private Boolean isNotRemovedExist;
 
     }
 

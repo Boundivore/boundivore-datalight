@@ -58,7 +58,7 @@ public class MasterComponentController implements IMasterComponentAPI {
     }
 
     @Override
-    public Result<String> removeComponentBatchByIds(AbstractServiceComponentRequest.ComponentIdListRequest request) throws Exception {
+    public Result<AbstractServiceComponentVo.RemoveComponentBatchVo> removeComponentBatchByIds(AbstractServiceComponentRequest.ComponentIdListRequest request) throws Exception {
         return this.masterComponentService.removeComponentBatchByIds(request);
     }
 
