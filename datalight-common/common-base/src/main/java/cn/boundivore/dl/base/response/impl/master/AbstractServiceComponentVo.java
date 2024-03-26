@@ -275,9 +275,9 @@ public abstract class AbstractServiceComponentVo {
         @JsonProperty(value = "ServiceName", required = true)
         private String serviceName;
 
-        @Schema(name = "IsNotRemovedExist", title = "服务下是否还存在组件实例", required = true)
-        @JsonProperty(value = "IsNotRemovedExist", required = true)
-        private Boolean isNotRemovedExist;
+        @Schema(name = "IsServiceExistComponent", title = "服务下是否还存在组件实例", required = true)
+        @JsonProperty(value = "IsServiceExistComponent", required = true)
+        private Boolean isServiceExistComponent;
 
     }
 
