@@ -109,7 +109,7 @@ datalight:
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
-                sleep: 1000
+                sleep: 3000
 
           - type: START
             start-state: STARTING
@@ -122,7 +122,7 @@ datalight:
                 args: [ 'Prometheus', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                sleep: 1000
+                sleep: 3000
 
           - type: STOP
             start-state: STOPPING
@@ -345,7 +345,7 @@ datalight:
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
-                sleep: 1000
+                sleep: 3000
 
           - type: START
             start-state: STARTING
@@ -358,7 +358,7 @@ datalight:
                 args: [ 'Grafana', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                sleep: 1000
+                sleep: 3000
 
           - type: STOP
             start-state: STOPPING
