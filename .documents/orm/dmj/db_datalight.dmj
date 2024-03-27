@@ -1,17 +1,18 @@
 {
   "RootName": "DataModels",
-  "CTVER": "43543335",
-  "TableCount": 23,
+  "CTVER": "43543336",
+  "TableCount": 24,
   "Count": 1,
   "items": [{
     "ID": 9,
     "Name": "db_data_light",
     "CreateDate": "2023/4/17 9:37:49",
     "OrderNo": 1,
+    "CustomAttr1": "DVS:-411.69,-984.36,2.36,0,",
     "DefDbEngine": "MYSQL",
     "DbConnectStr": "TCtMetaMysqlDb",
     "Tables": {
-      "Count": 23,
+      "Count": 24,
       "items": [
         {
           "ID": 1,
@@ -269,7 +270,7 @@
           "Name": "t_dl",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 4,
-          "GraphDesc": "Left=28.00\r\nTop=12.50",
+          "GraphDesc": "Left=33.50\r\nTop=15.50",
           "MetaFields": {
             "Count": 4,
             "items": [
@@ -3166,6 +3167,101 @@
                 "DisplayName": "缓存值",
                 "DataType": 1,
                 "DataLength": 255
+              }
+            ]
+          }
+        },
+        {
+          "ID": 1,
+          "Name": "t_dl_auto_pull_switch",
+          "Caption": "进程自动拉起状态表",
+          "CreateDate": "2023/9/19 13:59:05",
+          "OrderNo": 24,
+          "GraphDesc": "Left=24.43\r\nTop=873.22",
+          "MetaFields": {
+            "Count": 8,
+            "items": [
+              {
+                "ID": 1,
+                "Name": "id",
+                "OrderNo": 1,
+                "DisplayName": "分布式 ID",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "KeyFieldType": 1,
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 2,
+                "Name": "create_time",
+                "OrderNo": 2,
+                "DisplayName": "创建时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 3,
+                "Name": "update_time",
+                "OrderNo": 3,
+                "DisplayName": "修改时间",
+                "DataType": 2,
+                "DataTypeName": "BigInt",
+                "RelateTable": "t_",
+                "DataLength": 20
+              },
+              {
+                "ID": 4,
+                "Name": "version",
+                "OrderNo": 4,
+                "DisplayName": "乐观锁版本",
+                "DataType": 2,
+                "RelateTable": "t_",
+                "DefaultValue": "0",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "auto_pull_switch_type",
+                "Memo": "枚举，AUTO_PULL_WORKER：Worker 进程自动拉起开关类型；AUTO_PULL_COMPONENT：Component 进程自动拉起开关类型",
+                "OrderNo": 5,
+                "DisplayName": "进程自动拉起开关类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "off_on",
+                "Memo": "开启或关闭，0：关闭，1：开启",
+                "OrderNo": 6,
+                "DisplayName": "开关状态",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 1
+              },
+              {
+                "ID": 7,
+                "Name": "close_begin_time",
+                "Memo": "关闭自动拉起开关的起始时间",
+                "OrderNo": 7,
+                "DisplayName": "关闭起始时间",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "close_end_time",
+                "Memo": "关闭自动拉起开关的结束时间",
+                "OrderNo": 8,
+                "DisplayName": "关闭结束时间",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
               }
             ]
           }
