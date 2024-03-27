@@ -382,7 +382,7 @@ public class Job extends Thread {
      * 因为 TaskMeta 会包含一组 StepMeta，因此返回 List<StepMeta>
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/6/12 15:08
+     * Creation time: 2023/6/12
      * Modification description:
      * Modified by:
      * Modification time:
@@ -444,7 +444,7 @@ public class Job extends Thread {
      * Description: 根据元数据信息，为当前 Job 生成任务执行计划
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/5/30 19:07
+     * Creation time: 2023/5/30
      * Modification description:
      * Modified by:
      * Modification time:
