@@ -53,8 +53,10 @@ public class WorkerAutoPullService {
      * @return Result<String> 成功或失败
      */
     public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) {
-        AutoPullSwitchState.AUTO_PULL_COMPONENT = request.getAutoPullComponent();
-        AutoPullSwitchState.AUTO_CLOSE_DURATION_COMPONENT = request.getCloseDuration();
+        AutoPullSwitchState.setCloseAutoPullComponent(
+                request.getAutoPullComponent(),
+                request.getCloseDuration()
+        );
 
         return Result.success();
     }

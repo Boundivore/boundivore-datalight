@@ -69,8 +69,10 @@ public class MasterAutoPullService {
      * @return Result<String> 成功或失败
      */
     public Result<String> switchAutoPullWorker(AbstractAutoPullRequest.AutoPullWorkerRequest request) {
-        AutoPullSwitchState.AUTO_PULL_WORKER = request.getAutoPullWorker();
-        AutoPullSwitchState.AUTO_CLOSE_DURATION_WORKER = request.getCloseDuration();
+        AutoPullSwitchState.setCloseAutoPullWorker(
+                request.getAutoPullWorker(),
+                request.getCloseDuration()
+        );
 
         return Result.success();
     }
@@ -89,8 +91,10 @@ public class MasterAutoPullService {
      * @return Result<String> 成功或失败
      */
     public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) {
-        AutoPullSwitchState.AUTO_PULL_COMPONENT = request.getAutoPullComponent();
-        AutoPullSwitchState.AUTO_CLOSE_DURATION_COMPONENT = request.getCloseDuration();
+        AutoPullSwitchState.setCloseAutoPullComponent(
+                request.getAutoPullComponent(),
+                request.getCloseDuration()
+        );
 
         // 更新自动拉起 Component 开关状态到 Worker 进程
         this.updateAutoPullComponentSwitchToWorker();

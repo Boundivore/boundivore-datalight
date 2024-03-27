@@ -27,8 +27,62 @@ package cn.boundivore.dl.base.constants;
  * Version: V1.0
  */
 public class AutoPullSwitchState {
+    /**
+     * Worker
+     */
     public static boolean AUTO_PULL_WORKER = true;
-    public static boolean AUTO_PULL_COMPONENT = true;
     public static long AUTO_CLOSE_DURATION_WORKER = 10 * 60 * 1000L;
+    public static long AUTO_CLOSE_BEGIN_TIME_WORKER;
+    public static long AUTO_CLOSE_END_TIME_WORKER;
+
+
+    /**
+     * Component
+     */
+    public static boolean AUTO_PULL_COMPONENT = true;
     public static long AUTO_CLOSE_DURATION_COMPONENT = 10 * 60 * 1000L;
+    public static long AUTO_CLOSE_BEGIN_TIME_COMPONENT;
+    public static long AUTO_CLOSE_END_TIME_COMPONENT;
+
+    /**
+     * Description: 设置关闭 Worker 进程自动拉起开关状态的持续时间，以及开关状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param autoPullWorker 开光状态
+     * @param duration       关闭持续时间
+     */
+    public static void setCloseAutoPullWorker(boolean autoPullWorker, long duration) {
+        AUTO_PULL_WORKER = autoPullWorker;
+
+        AUTO_CLOSE_DURATION_WORKER = duration;
+        AUTO_CLOSE_BEGIN_TIME_WORKER = System.currentTimeMillis();
+        AUTO_CLOSE_END_TIME_WORKER = AUTO_CLOSE_BEGIN_TIME_WORKER + AUTO_CLOSE_DURATION_WORKER;
+    }
+
+    /**
+     * Description: 设置关闭 Component 进程自动拉起开关状态的持续时间，以及开关状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param autoPullComponent 开光状态
+     * @param duration          关闭持续时间
+     */
+    public static void setCloseAutoPullComponent(boolean autoPullComponent, long duration) {
+        AUTO_PULL_COMPONENT = autoPullComponent;
+
+        AUTO_CLOSE_DURATION_COMPONENT = duration;
+        AUTO_CLOSE_BEGIN_TIME_COMPONENT = System.currentTimeMillis();
+        AUTO_CLOSE_END_TIME_COMPONENT = AUTO_CLOSE_BEGIN_TIME_COMPONENT + AUTO_CLOSE_DURATION_COMPONENT;
+    }
 }
