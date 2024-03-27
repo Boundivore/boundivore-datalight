@@ -17,7 +17,7 @@
 package cn.boundivore.dl.service.worker.service;
 
 import cn.boundivore.dl.base.constants.AutoPullSwitchState;
-import cn.boundivore.dl.base.request.impl.common.AutoPullProcessRequest;
+import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
@@ -39,9 +39,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class WorkerAutoPullService {
 
-
     /**
-     * Description: 将自动拉起进程的开关切换至目标状态
+     * Description: 将自动拉起 Component 进程的开关切换至目标状态
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/21
@@ -53,12 +52,13 @@ public class WorkerAutoPullService {
      * @param request 将开关切换至目标状态
      * @return Result<String> 成功或失败
      */
-    public Result<String> switchAutoPull(AutoPullProcessRequest request) {
-        AutoPullSwitchState.AUTO_PULL_WORKER = request.getAutoPullWorker();
+    public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) {
         AutoPullSwitchState.AUTO_PULL_COMPONENT = request.getAutoPullComponent();
-        AutoPullSwitchState.AUTO_CLOSE_DURATION = request.getCloseDuration();
+        AutoPullSwitchState.AUTO_CLOSE_DURATION_COMPONENT = request.getCloseDuration();
+
         return Result.success();
     }
+
 
     /**
      * Description: 返回进程自动拉起开关状态(包括 Worker 和 Component)
@@ -80,5 +80,6 @@ public class WorkerAutoPullService {
                 )
         );
     }
+
 
 }

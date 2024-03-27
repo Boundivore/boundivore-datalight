@@ -29,5 +29,6 @@ package cn.boundivore.dl.base.constants;
 public class AutoPullSwitchState {
     public static boolean AUTO_PULL_WORKER = true;
     public static boolean AUTO_PULL_COMPONENT = true;
-    public static long AUTO_CLOSE_DURATION = 10 * 60 * 1000L;
+    public static long AUTO_CLOSE_DURATION_WORKER = 10 * 60 * 1000L;
+    public static long AUTO_CLOSE_DURATION_COMPONENT = 10 * 60 * 1000L;
 }

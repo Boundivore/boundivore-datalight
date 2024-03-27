@@ -17,7 +17,7 @@
 package cn.boundivore.dl.service.worker.controller;
 
 import cn.boundivore.dl.api.worker.define.IWorkerAutoPullAPI;
-import cn.boundivore.dl.base.request.impl.common.AutoPullProcessRequest;
+import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.worker.service.WorkerAutoPullService;
@@ -42,9 +42,10 @@ public class WorkerAutoPullController implements IWorkerAutoPullAPI {
 
     private final WorkerAutoPullService workerAutoPullService;
 
+
     @Override
-    public Result<String> switchAutoPull(AutoPullProcessRequest request) throws Exception {
-        return this.workerAutoPullService.switchAutoPull(request);
+    public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) throws Exception {
+        return this.workerAutoPullService.switchAutoPullComponent(request);
     }
 
     @Override

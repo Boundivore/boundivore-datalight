@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.api.worker.define;
 
-import cn.boundivore.dl.base.request.impl.common.AutoPullProcessRequest;
+import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
@@ -49,12 +49,12 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
 )
 public interface IWorkerAutoPullAPI {
 
-    @PostMapping(value = "/auto/pull/switch")
-    @ApiOperation(notes = "切换进程拉起开关状态", value = "切换进程拉起开关状态")
-    Result<String> switchAutoPull(
+    @PostMapping(value = "/auto/pull/switch/component")
+    @ApiOperation(notes = "切换自动拉起 Component 开关状态", value = "切换自动拉起 Component 开关状态")
+    Result<String> switchAutoPullComponent(
             @RequestBody
             @Valid
-            AutoPullProcessRequest request
+            AbstractAutoPullRequest.AutoPullComponentRequest request
     ) throws Exception;
 
     @GetMapping(value = "/auto/pull/get")

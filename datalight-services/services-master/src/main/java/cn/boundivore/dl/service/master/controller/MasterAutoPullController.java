@@ -17,7 +17,7 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterAutoPullAPI;
-import cn.boundivore.dl.base.request.impl.common.AutoPullProcessRequest;
+import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterAutoPullService;
@@ -42,9 +42,15 @@ public class MasterAutoPullController implements IMasterAutoPullAPI {
 
     private final MasterAutoPullService masterAutoPullService;
 
+
     @Override
-    public Result<String> switchAutoPull(AutoPullProcessRequest request) throws Exception {
-        return this.masterAutoPullService.switchAutoPull(request);
+    public Result<String> switchAutoPullWorker(AbstractAutoPullRequest.AutoPullWorkerRequest request) throws Exception {
+        return this.masterAutoPullService.switchAutoPullWorker(request);
+    }
+
+    @Override
+    public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) throws Exception {
+        return this.masterAutoPullService.switchAutoPullComponent(request);
     }
 
     @Override

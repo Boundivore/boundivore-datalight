@@ -18,7 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.AutoPullSwitchState;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
-import cn.boundivore.dl.base.request.impl.common.AutoPullProcessRequest;
+import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.orm.po.single.TDlNode;
@@ -54,8 +54,9 @@ public class MasterAutoPullService {
     // 多线程拉起 Worker 线程池
     private final ForkJoinPool forkJoinPool = new ForkJoinPool(4);
 
+
     /**
-     * Description: 将自动拉起进程的开关切换至目标状态
+     * Description: 将自动拉起 Worker 进程的开关切换至目标状态
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/21
@@ -67,13 +68,32 @@ public class MasterAutoPullService {
      * @param request 将开关切换至目标状态
      * @return Result<String> 成功或失败
      */
-    public Result<String> switchAutoPull(AutoPullProcessRequest request) {
+    public Result<String> switchAutoPullWorker(AbstractAutoPullRequest.AutoPullWorkerRequest request) {
         AutoPullSwitchState.AUTO_PULL_WORKER = request.getAutoPullWorker();
-        AutoPullSwitchState.AUTO_PULL_COMPONENT = request.getAutoPullComponent();
-        AutoPullSwitchState.AUTO_CLOSE_DURATION = request.getCloseDuration();
+        AutoPullSwitchState.AUTO_CLOSE_DURATION_WORKER = request.getCloseDuration();
 
-        // 更新开光状态到 Worker 进程
-        this.updateAutoPullStateToWorker();
+        return Result.success();
+    }
+
+    /**
+     * Description: 将自动拉起 Component 进程的开关切换至目标状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/3/21
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 将开关切换至目标状态
+     * @return Result<String> 成功或失败
+     */
+    public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) {
+        AutoPullSwitchState.AUTO_PULL_COMPONENT = request.getAutoPullComponent();
+        AutoPullSwitchState.AUTO_CLOSE_DURATION_COMPONENT = request.getCloseDuration();
+
+        // 更新自动拉起 Component 开关状态到 Worker 进程
+        this.updateAutoPullComponentSwitchToWorker();
 
         return Result.success();
     }
@@ -100,7 +120,7 @@ public class MasterAutoPullService {
     }
 
     /**
-     * Description: 更新拉起进程开关的状态
+     * Description: 更新自动拉起 Component 进程开关的状态
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/21
@@ -109,7 +129,7 @@ public class MasterAutoPullService {
      * Modification time:
      * Throws:
      */
-    public void updateAutoPullStateToWorker() {
+    public void updateAutoPullComponentSwitchToWorker() {
         // <ip, WorkerMeta> 获取全部状态为 STARTED 的节点
         List<String> startedNodeIpV4List = this.masterNodeService.getNodeListByState(
                         CollUtil.newArrayList(
@@ -121,25 +141,24 @@ public class MasterAutoPullService {
                 .collect(Collectors.toList());
 
         this.forkJoinPool.submit(() -> {
-                            startedNodeIpV4List.parallelStream()
-                                    .forEach(ip -> {
-                                                try {
-                                                    // 更新组件拉起开关状态到 Worker 进程
-                                                    this.remoteInvokeWorkerService.iWorkerAutoPullAPI(ip)
-                                                            .switchAutoPull(
-                                                                    new AutoPullProcessRequest(
-                                                                            AutoPullSwitchState.AUTO_PULL_WORKER,
-                                                                            AutoPullSwitchState.AUTO_PULL_COMPONENT,
-                                                                            AutoPullSwitchState.AUTO_CLOSE_DURATION
-                                                                    )
-                                                            );
-                                                } catch (Exception e) {
-                                                    log.error(ExceptionUtil.stacktraceToString(e));
-                                                }
-                                            }
-                                    );
-                        }
-                );
+                    startedNodeIpV4List.parallelStream()
+                            .forEach(ip -> {
+                                        try {
+                                            // 更新组件拉起开关状态到 Worker 进程
+                                            this.remoteInvokeWorkerService.iWorkerAutoPullAPI(ip)
+                                                    .switchAutoPullComponent(
+                                                            new AbstractAutoPullRequest.AutoPullComponentRequest(
+                                                                    AutoPullSwitchState.AUTO_PULL_COMPONENT,
+                                                                    AutoPullSwitchState.AUTO_CLOSE_DURATION_COMPONENT
+                                                            )
+                                                    );
+                                        } catch (Exception e) {
+                                            log.error(ExceptionUtil.stacktraceToString(e));
+                                        }
+                                    }
+                            );
+                }
+        );
     }
 
 }
