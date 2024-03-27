@@ -78,7 +78,9 @@ public class WorkerAutoPullService {
         return Result.success(
                 new AutoPullProcessVo(
                         AutoPullSwitchState.AUTO_PULL_WORKER,
-                        AutoPullSwitchState.AUTO_PULL_COMPONENT
+                        AutoPullSwitchState.AUTO_CLOSE_END_TIME_WORKER,
+                        AutoPullSwitchState.AUTO_PULL_COMPONENT,
+                        AutoPullSwitchState.AUTO_CLOSE_END_TIME_COMPONENT
                 )
         );
     }
