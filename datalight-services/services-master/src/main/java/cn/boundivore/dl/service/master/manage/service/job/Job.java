@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * Description: 为当前服务组装一个 Job
  * Stage 包含了该服务下的所有组件，Task 包含 "某一个组件在某一个节点" 上的一系列执行(一系列 Step)
  * EASY-FIX: 如果需要进一步提升 Meta 和 Plan 的规划生成效率，可以采用并行流进行改进，但需要确保 Stage、Task、Step 的执行顺序。
- * 可考虑先使用空 Stage Task Step 实例占位，占位后再并发处理实际逻辑，从而保证顺序
+ * 可考虑先使用只包含 Id 的 StageMeta TaskMeta StepMeta 实例占位，占位后再并发处理实际逻辑，从而保证顺序
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/30
