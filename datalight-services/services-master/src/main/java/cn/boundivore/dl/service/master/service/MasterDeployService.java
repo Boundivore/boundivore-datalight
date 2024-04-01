@@ -81,7 +81,9 @@ public class MasterDeployService {
         );
 
         // 单独处理 Zookeeper 这种特殊情况，即：myid 必须在数据目录下，而数据目录又可以被用户预先指定
-        this.masterConfigPreService.replaceZookeeperMyIdDir2DataDir(request.getClusterId());
+        if (request.getServiceNameList().contains("ZOOKEEPER")) {
+            this.masterConfigPreService.replaceZookeeperMyIdDir2DataDir(request.getClusterId());
+        }
 
         Long jobId = this.masterJobService.initJob(request, true);
 
