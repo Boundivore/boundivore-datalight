@@ -156,6 +156,12 @@ rm -rf /data/logs/*; \
 rm -rf /srv/datalight/*; \
 rm -rf /tmp/hsperfdata_*
 
+docker stop $(docker ps -aq)
+docker rm -f $(docker ps -aq)
+docker rmi -f $(docker images -q)
+docker network prune -f
+docker volume prune -f
+
 su datalight -c "/srv/datalight/HIVE/tez/tomcat/bin/startup.sh"
 su datalight -c "/srv/datalight/HIVE/tez/tomcat/bin/shutdown.sh"
 
@@ -215,11 +221,7 @@ kubectl delete namespaces kubesphere-system kubesphere-public kubesphere-monitor
 
 rm -rf /etc/kubernetes /etc/cni /opt/cni /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/
 
-docker stop $(docker ps -aq)
-docker rm -f $(docker ps -aq)
-docker rmi -f $(docker images -q)
-docker network prune -f
-docker volume prune -f
+
 
 
 ./bin/docker-image-tool.sh -r dockerhub.kubekey.local/bigdata -t v3.2.4 build
