@@ -41,7 +41,7 @@ public class TDlJobLog extends TBasePo<TDlJobLog> {
     private Long jobId;
 
     @Schema(name = "Node ID")
-    @TableField("NodeId")
+    @TableField("node_id")
     private Long nodeId;
 
     @Schema(name = "Stage ID")
