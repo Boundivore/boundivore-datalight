@@ -828,6 +828,7 @@ public class JobService {
         tDlJobLog.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId());
 
         tDlJobLog.setJobId(jobMeta.getId());
+        tDlJobLog.setNodeId(taskMeta.getNodeId());
         tDlJobLog.setStageId(stageMeta.getId());
         tDlJobLog.setTaskId(taskMeta.getId());
         tDlJobLog.setStepId(stepMeta.getId());
@@ -887,6 +888,7 @@ public class JobService {
         tDlJobLog.setClusterId(jobMeta.getClusterMeta().getCurrentClusterId());
 
         tDlJobLog.setJobId(jobMeta.getId());
+        tDlJobLog.setNodeId(null);
         tDlJobLog.setStageId(null);
         tDlJobLog.setTaskId(null);
         tDlJobLog.setStepId(null);

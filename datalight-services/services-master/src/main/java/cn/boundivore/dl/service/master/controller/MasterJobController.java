@@ -60,12 +60,14 @@ public class MasterJobController implements IMasterJobAPI {
     @Override
     public Result<AbstractJobVo.JobLogListVo> getJobLogList(Long clusterId,
                                                             Long jobId,
+                                                            Long nodeId,
                                                             Long stageId,
                                                             Long taskId,
                                                             Long stepId) throws Exception {
         return this.masterJobService.getJobLogList(
                 clusterId,
                 jobId,
+                nodeId,
                 stageId,
                 taskId,
                 stepId

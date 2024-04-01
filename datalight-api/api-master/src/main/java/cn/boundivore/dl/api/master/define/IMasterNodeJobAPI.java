@@ -102,6 +102,11 @@ public interface IMasterNodeJobAPI {
             @NotNull
             Long nodeJobId,
 
+            @ApiParam(name = "NodeId", value = "节点 ID")
+            @RequestParam(value = "NodeId", required = false)
+            @NotNull
+            Long nodeId,
+
             @ApiParam(name = "NodeTaskId", value = "节点任务 ID")
             @RequestParam(value = "NodeTaskId", required = false)
             Long nodeTaskId,

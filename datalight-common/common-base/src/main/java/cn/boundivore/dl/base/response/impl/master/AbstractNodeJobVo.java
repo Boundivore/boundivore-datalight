@@ -583,6 +583,11 @@ public abstract class AbstractNodeJobVo {
         @NotNull
         private Long nodeJobId;
 
+        @Schema(name = "NodeId", title = "节点 ID", required = true)
+        @JsonProperty(value = "NodeId", required = true)
+        @NotNull
+        private Long nodeId;
+
         @Schema(name = "NodeTaskId", title = "节点任务 ID", required = true)
         @JsonProperty(value = "NodeTaskId", required = true)
         @NotNull

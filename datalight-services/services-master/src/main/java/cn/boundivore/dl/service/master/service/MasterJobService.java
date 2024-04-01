@@ -538,7 +538,7 @@ public class MasterJobService {
         JobCacheBean jobCacheBean = JobCacheUtil.getInstance().get(jobId);
         if (jobCacheBean == null) {
             jobId = null;
-        }else{
+        } else {
             currentClusterId = jobCacheBean.getJobMeta().getClusterMeta().getCurrentClusterId();
         }
 
@@ -867,6 +867,7 @@ public class MasterJobService {
      *
      * @param clusterId 集群 ID
      * @param jobId     作业 ID
+     * @param nodeId    节点 ID
      * @param stageId   阶段 ID
      * @param taskId    任务 ID
      * @param stepId    步骤 ID
@@ -874,6 +875,7 @@ public class MasterJobService {
      */
     public Result<AbstractJobVo.JobLogListVo> getJobLogList(Long clusterId,
                                                             Long jobId,
+                                                            Long nodeId,
                                                             Long stageId,
                                                             Long taskId,
                                                             Long stepId) {
@@ -882,6 +884,10 @@ public class MasterJobService {
                 .select()
                 .eq(TDlJobLog::getClusterId, clusterId)
                 .eq(TDlJobLog::getJobId, jobId);
+
+        if (nodeId != null) {
+            tDlJobLogWrapper = tDlJobLogWrapper.eq(TDlJobLog::getNodeId, nodeId);
+        }
 
         if (stageId != null) {
             tDlJobLogWrapper = tDlJobLogWrapper.eq(TDlJobLog::getStageId, stageId);
@@ -902,6 +908,7 @@ public class MasterJobService {
                 .stream()
                 .map(i -> new AbstractJobVo.JobLogVo(
                                 i.getJobId(),
+                                i.getNodeId(),
                                 i.getStageId(),
                                 i.getTaskId(),
                                 i.getStepId(),

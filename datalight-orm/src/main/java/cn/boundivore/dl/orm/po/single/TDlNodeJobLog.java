@@ -36,6 +36,10 @@ public class TDlNodeJobLog extends TBasePo<TDlNodeJobLog> {
     @TableField("cluster_id")
     private Long clusterId;
 
+    @Schema(name = "Node ID")
+    @TableField("NodeId")
+    private Long nodeId;
+
     @Schema(name = "NodeJob ID")
     @TableField("node_job_id")
     private Long nodeJobId;

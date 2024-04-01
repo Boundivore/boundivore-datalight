@@ -78,6 +78,11 @@ public interface IMasterJobAPI {
             @NotNull
             Long jobId,
 
+            @ApiParam(name = "NodeId", value = "节点 ID")
+            @RequestParam(value = "NodeId", required = false)
+            @NotNull
+            Long nodeId,
+
             @ApiParam(name = "StageId", value = "阶段 ID")
             @RequestParam(value = "StageId", required = false)
             @NotNull

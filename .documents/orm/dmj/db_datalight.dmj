@@ -8,7 +8,7 @@
     "Name": "db_data_light",
     "CreateDate": "2023/4/17 9:37:49",
     "OrderNo": 1,
-    "CustomAttr1": "DVS:-411.69,-984.36,2.36,0,",
+    "CustomAttr1": "DVS:468.50,-1071.00,2.00,0,",
     "DefDbEngine": "MYSQL",
     "DbConnectStr": "TCtMetaMysqlDb",
     "Tables": {
@@ -2123,7 +2123,7 @@
           "Caption": "Step 节点步骤信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 17,
-          "GraphDesc": "Left=1105.69\r\nTop=567.00",
+          "GraphDesc": "Left=1103.19\r\nTop=568.50",
           "MetaFields": {
             "Count": 28,
             "items": [
@@ -2385,7 +2385,7 @@
           "Caption": "Task 节点任务信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 18,
-          "GraphDesc": "Left=795.92\r\nTop=568.81",
+          "GraphDesc": "Left=795.42\r\nTop=568.31",
           "MetaFields": {
             "Count": 24,
             "items": [
@@ -2627,7 +2627,7 @@
           "Caption": "Job 节点工作信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 19,
-          "GraphDesc": "Left=515.70\r\nTop=569.99",
+          "GraphDesc": "Left=514.70\r\nTop=569.99",
           "MetaFields": {
             "Count": 12,
             "items": [
@@ -2756,9 +2756,9 @@
           "Caption": "Job 节点工作日志信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 20,
-          "GraphDesc": "Left=1105.00\r\nTop=826.00",
+          "GraphDesc": "Left=1484.50\r\nTop=570.00",
           "MetaFields": {
-            "Count": 11,
+            "Count": 12,
             "items": [
               {
                 "ID": 1,
@@ -2830,9 +2830,17 @@
                 "DataLength": 20
               },
               {
+                "ID": 12,
+                "Name": "node_id",
+                "OrderNo": 8,
+                "DisplayName": "Node ID",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
                 "ID": 6,
                 "Name": "node_task_id",
-                "OrderNo": 8,
+                "OrderNo": 9,
                 "DisplayName": "NodeTask ID",
                 "DataType": 2,
                 "DataLength": 20
@@ -2840,7 +2848,7 @@
               {
                 "ID": 11,
                 "Name": "node_step_id",
-                "OrderNo": 9,
+                "OrderNo": 10,
                 "DisplayName": "NodeStep ID",
                 "DataType": 2,
                 "DataLength": 20
@@ -2848,7 +2856,7 @@
               {
                 "ID": 12,
                 "Name": "log_stdout",
-                "OrderNo": 10,
+                "OrderNo": 11,
                 "DisplayName": "标准日志",
                 "DataType": 1,
                 "DataLength": 255
@@ -2856,7 +2864,7 @@
               {
                 "ID": 11,
                 "Name": "log_errout",
-                "OrderNo": 11,
+                "OrderNo": 12,
                 "DisplayName": "错误日志",
                 "DataType": 1,
                 "DataLength": 255
@@ -2872,7 +2880,7 @@
           "OrderNo": 21,
           "GraphDesc": "Left=1137.94\r\nTop=1364.09",
           "MetaFields": {
-            "Count": 12,
+            "Count": 13,
             "items": [
               {
                 "ID": 1,
@@ -2944,9 +2952,17 @@
                 "DataLength": 20
               },
               {
+                "ID": 14,
+                "Name": "node_id",
+                "OrderNo": 8,
+                "DisplayName": "Node ID",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
                 "ID": 12,
                 "Name": "stage_id",
-                "OrderNo": 8,
+                "OrderNo": 9,
                 "DisplayName": "Stage ID",
                 "DataType": 2,
                 "DataLength": 20
@@ -2954,7 +2970,7 @@
               {
                 "ID": 6,
                 "Name": "task_id",
-                "OrderNo": 9,
+                "OrderNo": 10,
                 "DisplayName": "Task ID",
                 "DataType": 2,
                 "DataLength": 20
@@ -2962,7 +2978,7 @@
               {
                 "ID": 11,
                 "Name": "step_id",
-                "OrderNo": 10,
+                "OrderNo": 11,
                 "DisplayName": "Step ID",
                 "DataType": 2,
                 "DataLength": 20
@@ -2970,7 +2986,7 @@
               {
                 "ID": 12,
                 "Name": "log_stdout",
-                "OrderNo": 11,
+                "OrderNo": 12,
                 "DisplayName": "标准日志",
                 "DataType": 1,
                 "DataLength": 255
@@ -2978,7 +2994,7 @@
               {
                 "ID": 11,
                 "Name": "log_errout",
-                "OrderNo": 12,
+                "OrderNo": 13,
                 "DisplayName": "错误日志",
                 "DataType": 1,
                 "DataLength": 255

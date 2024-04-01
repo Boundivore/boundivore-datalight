@@ -71,11 +71,13 @@ public class MasterNodeJobController implements IMasterNodeJobAPI {
     @Override
     public Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(Long clusterId,
                                                                         Long nodeJobId,
+                                                                        Long nodeId,
                                                                         Long nodeTaskId,
                                                                         Long nodeStepId) throws Exception {
         return this.masterNodeJobService.getNodeJobLogList(
                 clusterId,
                 nodeJobId,
+                nodeId,
                 nodeTaskId,
                 nodeStepId
         );

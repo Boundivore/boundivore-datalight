@@ -1064,6 +1064,7 @@ public class MasterNodeJobService {
      */
     public Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(Long clusterId,
                                                                         Long nodeJobId,
+                                                                        Long nodeId,
                                                                         Long nodeTaskId,
                                                                         Long nodeStepId) {
 
@@ -1071,6 +1072,10 @@ public class MasterNodeJobService {
                 .select()
                 .eq(TDlNodeJobLog::getClusterId, clusterId)
                 .eq(TDlNodeJobLog::getNodeJobId, nodeJobId);
+
+        if (nodeId != null) {
+            tDlNodeJobLogWrapper = tDlNodeJobLogWrapper.eq(TDlNodeJobLog::getNodeId, nodeId);
+        }
 
         if (nodeTaskId != null) {
             tDlNodeJobLogWrapper = tDlNodeJobLogWrapper.eq(TDlNodeJobLog::getNodeTaskId, nodeTaskId);
@@ -1087,6 +1092,7 @@ public class MasterNodeJobService {
                 .stream()
                 .map(i -> new AbstractNodeJobVo.NodeJobLogVo(
                                 i.getNodeJobId(),
+                                i.getNodeId(),
                                 i.getNodeTaskId(),
                                 i.getNodeStepId(),
                                 i.getLogStdout(),

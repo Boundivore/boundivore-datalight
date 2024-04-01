@@ -810,6 +810,7 @@ public class NodeJobService {
         tDlNodeJobLog.setTag(nodeJobMeta.getTag());
         tDlNodeJobLog.setClusterId(nodeJobMeta.getClusterId());
 
+        tDlNodeJobLog.setNodeId(nodeStepMeta.getNodeTaskMeta().getNodeId());
         tDlNodeJobLog.setNodeJobId(nodeJobMeta.getId());
         tDlNodeJobLog.setNodeTaskId(nodeTaskMeta.getId());
         tDlNodeJobLog.setNodeStepId(nodeStepMeta.getId());
