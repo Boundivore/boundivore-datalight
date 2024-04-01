@@ -835,7 +835,7 @@ public class JobService {
 
         tDlJobLog.setLogStdout(
                 String.format(
-                        "[%s-%s-%s] %s",
+                        "[\n节点: %s\n服务: %s\n 组件: %s\n]\n 日志: \n%s",
                         taskMeta.getHostname(),
                         stageMeta.getServiceName(),
                         taskMeta.getComponentName(),
@@ -845,7 +845,7 @@ public class JobService {
 
         tDlJobLog.setLogErrout(
                 String.format(
-                        "[%s-%s-%s] %s",
+                        "[\n节点: %s\n服务: %s\n 组件: %s\n]\n 日志: \n%s",
                         taskMeta.getHostname(),
                         stageMeta.getServiceName(),
                         taskMeta.getComponentName(),

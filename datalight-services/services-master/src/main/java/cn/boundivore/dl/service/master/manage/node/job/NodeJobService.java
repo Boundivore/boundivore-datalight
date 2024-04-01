@@ -817,7 +817,7 @@ public class NodeJobService {
 
         tDlNodeJobLog.setLogStdout(
                 String.format(
-                        "%s %s",
+                        "[\n节点: %s\n]\n 日志: \n%s",
                         nodeTaskMeta.getHostname(),
                         logStdout
                 )
@@ -825,7 +825,7 @@ public class NodeJobService {
 
         tDlNodeJobLog.setLogErrout(
                 String.format(
-                        "%s %s",
+                        "[\n节点: %s\n]\n 日志: \n%s",
                         nodeTaskMeta.getHostname(),
                         logErrout
                 )
