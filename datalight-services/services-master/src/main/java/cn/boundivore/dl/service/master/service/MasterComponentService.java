@@ -1159,7 +1159,8 @@ public class MasterComponentService {
                 .collect(
                         Collectors.toMap(
                                 TDlComponent::getComponentName,
-                                Function.identity()
+                                Function.identity(),
+                                (existingValue, newValue) -> existingValue
                         )
                 );
 
