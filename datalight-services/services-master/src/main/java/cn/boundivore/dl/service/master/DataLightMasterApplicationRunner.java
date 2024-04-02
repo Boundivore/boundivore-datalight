@@ -71,8 +71,8 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
         // ./conf/web
-        log.info("CONF_SERVICE_DIR: {}", DataLightEnv.CONF_SERVICE_DIR);
-        ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
+        log.info("CONF_WEB_DIR: {}", DataLightEnv.CONF_WEB_DIR);
+        ResolverYamlComponentWebUI.resolver(DataLightEnv.CONF_WEB_DIR);
 
         // ./plugins
         log.info("PLUGINS_DIR_LOCAL: {}", DataLightEnv.PLUGINS_DIR_LOCAL);
