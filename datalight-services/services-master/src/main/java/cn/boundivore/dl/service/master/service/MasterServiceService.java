@@ -687,6 +687,4 @@ public class MasterServiceService {
     public void checkServiceState() {
 
     }
-
-
 }

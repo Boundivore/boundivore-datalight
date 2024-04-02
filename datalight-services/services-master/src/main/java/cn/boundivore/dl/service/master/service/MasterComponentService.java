@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
+import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
@@ -33,10 +34,12 @@ import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.service.single.impl.TDlComponentServiceImpl;
 import cn.boundivore.dl.service.master.converter.IServiceComponentConverter;
 import cn.boundivore.dl.service.master.manage.service.bean.ClusterMeta;
+import cn.boundivore.dl.service.master.resolver.ResolverYamlComponentWebUI;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceManifest;
+import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceWebUI;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +48,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static cn.boundivore.dl.base.enumeration.impl.SCStateEnum.*;
@@ -1111,4 +1115,97 @@ public class MasterComponentService {
 
     }
 
+    /**
+     * Description: 返回指定服务下组件的 WebUI Url List
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId   集群 ID
+     * @param serviceName 服务名称
+     * @return Result<ServiceWebUIVo> WebUI 列表
+     */
+    public Result<ServiceWebUIVo> getComponentWebUIList(Long clusterId, String serviceName) {
+        ServiceWebUIVo serviceWebUIVo = new ServiceWebUIVo();
+        serviceWebUIVo.setClusterId(clusterId);
+        serviceWebUIVo.setServiceName(serviceName);
+        serviceWebUIVo.setComponentWebUIList(new ArrayList<>());
+
+        List<YamlServiceWebUI.Component> componentWebUIList = ResolverYamlComponentWebUI.WEB_UI_MAP.get(
+                serviceName
+        );
+
+        if (CollUtil.isEmpty(componentWebUIList)) {
+            return Result.success(serviceWebUIVo);
+        }
+
+        List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, clusterId)
+                .eq(TDlComponent::getServiceName, serviceName)
+                .notIn(TDlComponent::getComponentState, REMOVED, SELECTED, UNSELECTED)
+                .list();
+
+        if (CollUtil.isEmpty(tDlComponentList)) {
+            return Result.success(serviceWebUIVo);
+        }
+
+        // to <ComponentName, TDlComponent>
+        final Map<String, TDlComponent> tDlComponentMap = tDlComponentList.stream()
+                .collect(
+                        Collectors.toMap(
+                                TDlComponent::getComponentName,
+                                Function.identity()
+                        )
+                );
+
+        // 获取节点列表
+        List<Long> nodeIdList = tDlComponentList.stream()
+                .map(TDlComponent::getNodeId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        final Map<Long, TDlNode> nodeMap = this.masterNodeService.getNodeMap(nodeIdList);
+
+        componentWebUIList.forEach(
+                component -> {
+                    TDlComponent tDlComponent = tDlComponentMap.get(component.getComponent());
+
+                    // 前端展示名称
+                    String showName = String.format(
+                            "%s%s",
+                            component.getComponent(),
+                            component.getButtonNameSuffix()
+                    );
+
+                    // 组装组件完整 WebUI
+                    String url = "";
+                    if (tDlComponent != null) {
+                        url = String.format(
+                                "http://%s:%s%s",
+                                nodeMap.get(tDlComponent.getNodeId()),
+                                component.getPort(),
+                                component.getPath()
+                        );
+                    }
+
+                    // 添加到返回列表
+                    serviceWebUIVo.getComponentWebUIList().add(
+                            new ServiceWebUIVo.ComponentWebUI(
+                                    component.getComponent(),
+                                    url,
+                                    showName
+                            )
+                    );
+
+
+                }
+        );
+
+        return Result.success(serviceWebUIVo);
+    }
 }

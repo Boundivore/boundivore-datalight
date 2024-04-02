@@ -281,7 +281,7 @@ public class MasterNodeService {
      * Throws:
      *
      * @param clusterId 集群 ID
-     * @return Map<Long, List < String>> 返回
+     * @return Map<Long, List <String>> 返回
      */
     private Map<Long, List<String>> getNodeComponents(Long clusterId) {
         // 优化：使用方法来封装组件查询逻辑
@@ -378,7 +378,7 @@ public class MasterNodeService {
      * @return List<TDlNode>
      */
     public List<TDlNode> getNodeListByState(List<NodeStateEnum> nodeStateEnumList) {
-        return tDlNodeService.lambdaQuery()
+        return this.tDlNodeService.lambdaQuery()
                 .select()
                 .in(TDlNode::getNodeState, nodeStateEnumList)
                 .orderByAsc(TDlNode::getHostname)
@@ -399,7 +399,7 @@ public class MasterNodeService {
      * @return List<TDlNode>
      */
     public List<TDlNode> getNodeListByIpList(List<String> ipList) {
-        return tDlNodeService.lambdaQuery()
+        return this.tDlNodeService.lambdaQuery()
                 .select()
                 .in(TDlNode::getIpv4, ipList)
                 .orderByAsc(TDlNode::getHostname)

@@ -1,0 +1,37 @@
+datalight:
+  components:
+    - service: HDFS
+      component: NameNode1
+      port: '50070'
+      path: '/dfshealth.html#tab-overview'
+      button-name-suffix: '-Web UI'
+
+    - service: HDFS
+      component: NameNode2
+      port: '50070'
+      path: '/dfshealth.html#tab-overview'
+      button-name-suffix: '-Web UI'
+
+    - service: YARN
+      component: ResourceManager1
+      port: '8088'
+      path: '/cluster'
+      button-name-suffix: '-Web UI'
+
+    - service: YARN
+      component: ResourceManager2
+      port: '8088'
+      path: '/cluster'
+      button-name-suffix: '-Web UI'
+
+    - service: YARN
+      component: HistoryServer
+      port: '19888'
+      path: '/jobhistory'
+      button-name-suffix: '-Web UI'
+
+    - service: YARN
+      component: TimelineServer
+      port: '8188'
+      path: '/applicationhistory'
+      button-name-suffix: '-Web UI'

@@ -19,6 +19,7 @@ package cn.boundivore.dl.service.master.controller;
 import cn.boundivore.dl.api.master.define.IMasterComponentAPI;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
+import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterComponentService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
@@ -65,5 +66,10 @@ public class MasterComponentController implements IMasterComponentAPI {
     @Override
     public Result<String> updateComponentRestartMark(AbstractServiceComponentRequest.UpdateNeedRestartRequest request) throws Exception {
         return this.masterComponentService.updateComponentRestartMark(request);
+    }
+
+    @Override
+    public Result<ServiceWebUIVo> getComponentWebUIList(Long clusterId, String serviceName) throws Exception {
+        return this.masterComponentService.getComponentWebUIList(clusterId, serviceName);
     }
 }

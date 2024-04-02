@@ -18,6 +18,7 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
+import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -97,4 +98,16 @@ public interface IMasterComponentAPI {
             AbstractServiceComponentRequest.UpdateNeedRestartRequest request
     ) throws Exception;
 
+
+    @GetMapping(value = "/component/webUI/list")
+    @ApiOperation(notes = "获取指定集群、服务下的组件 WebUI 列表", value = "获取指定集群、服务下的组件 WebUI 列表")
+    Result<ServiceWebUIVo> getComponentWebUIList(
+            @ApiParam(name = "clusterId", value = "集群 ID")
+            @RequestParam(value = "clusterId", required = true)
+            Long clusterId,
+
+            @ApiParam(name = "ServiceName", value = "服务名称")
+            @RequestParam(value = "ServiceName", required = true)
+            String serviceName
+    ) throws Exception;
 }

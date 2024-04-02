@@ -18,6 +18,7 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
+import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
