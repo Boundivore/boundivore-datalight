@@ -1188,7 +1188,7 @@ public class MasterComponentService {
                     if (tDlComponent != null) {
                         url = String.format(
                                 "http://%s:%s%s",
-                                nodeMap.get(tDlComponent.getNodeId()).getHostname(),
+                                nodeMap.get(tDlComponent.getNodeId()).getIpv4(),
                                 component.getPort(),
                                 component.getPath()
                         );
