@@ -34,6 +34,7 @@ start_service() {
   local api_type="$2"
   local port="$3"
 
+
   # 如果 masterIp 参数不为空，则将参数传递到 main 方法中
   if [[ -n "$master_ip" ]]; then
     if validate_ip "$master_ip"; then
@@ -47,9 +48,13 @@ start_service() {
   fi
 
   # 根据api_type选择不同的配置文件
-  local config_file="${app_conf_dir}/application-${api_type}.yml"
+  local spring_config="--spring.config.location=${app_conf_dir}/application-${api_type}.yml"
+  local log_config="-Dlogging.config=${app_conf_dir}/logback-${api_type}.xml"
+  # JVM 配置
+#  local jvm_opt="-Xmx3g -Xms1g -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:G1NewSizePercent=25 -XX:InitiatingHeapOccupancyPercent=65 -XX:+ParallelRefProcEnabled -XX:ConcGCThreads=4 -XX:ParallelGCThreads=16 -XX:MaxTenuringThreshold=8 -XX:G1HeapRegionSize=32m -XX:G1MixedGCCountTarget=32 -XX:G1OldCSetRegionThresholdPercent=5 -XX:MetaspaceSize=128m -XX:SurvivorRatio=4"
+  local jvm_opt="-Xmx3g -Xms1g -XX:+UseG1GC -XX:+UnlockExperimentalVMOptions -XX:MaxGCPauseMillis=200 -XX:G1NewSizePercent=25 -XX:InitiatingHeapOccupancyPercent=65 -XX:+ParallelRefProcEnabled -XX:ConcGCThreads=4 -XX:ParallelGCThreads=16 -XX:MaxTenuringThreshold=8 -XX:G1HeapRegionSize=32m -XX:G1MixedGCCountTarget=32 -XX:G1OldCSetRegionThresholdPercent=5 -XX:MetaspaceSize=256m -XX:SurvivorRatio=4"
 
-  local command="nohup java -Dlogging.config=${app_conf_dir}/logback-${api_type}.xml ${master_ip_arg} -jar ${app_dir}/${jar_name} --spring.config.location=${config_file} > /dev/null 2>&1 & echo ${api_type} starting in \$!..."
+  local command="nohup java ${log_config} ${jvm_opt} ${master_ip_arg} -jar ${app_dir}/${jar_name} ${spring_config} > /dev/null 2>&1 & echo ${api_type} starting in \$!..."
   # shellcheck disable=SC2155
   local pid=$(pgrep -f "${jar_name}")
 
