@@ -62,11 +62,15 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         log.info("CONF_ENV_DIR: {}", DataLightEnv.CONF_ENV_DIR);
         ResolverYamlDirectory.resolver(DataLightEnv.CONF_ENV_DIR);
 
-        // ./conf/service
+        // MANIFEST: ./conf/service
         log.info("CONF_SERVICE_DIR: {}", DataLightEnv.CONF_SERVICE_DIR);
         ResolverYamlServiceManifest.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
-        // ./conf/service
+        // DETAIL: ./conf/service
+        log.info("CONF_SERVICE_DIR: {}", DataLightEnv.CONF_SERVICE_DIR);
+        ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
+
+        // ./conf/web
         log.info("CONF_SERVICE_DIR: {}", DataLightEnv.CONF_SERVICE_DIR);
         ResolverYamlServiceDetail.resolver(DataLightEnv.CONF_SERVICE_DIR);
 
@@ -77,6 +81,8 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         // ./node/conf
         log.info("NODE_CONF_DIR: {}", DataLightEnv.NODE_CONF_DIR);
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
+
+
 
         // 更新 Master 所在节点的元数据信息
         // TODO 如果后续开启 Master 高可用功能，则此处需要根据持有活跃锁的状态来执行下面的函数

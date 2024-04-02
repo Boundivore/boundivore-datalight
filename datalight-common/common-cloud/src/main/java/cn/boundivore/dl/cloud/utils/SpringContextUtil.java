@@ -28,7 +28,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
@@ -56,6 +55,8 @@ public class SpringContextUtil implements ApplicationContextAware {
 
     public static String CONF_SERVICE_DIR;
 
+    public static String CONF_WEB_DIR;
+
     public static String DOCS_DIR;
 
     public static String NODE_DIR;
@@ -71,7 +72,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     public static String SCRIPTS_DIR;
 
 
-    static{
+    static {
         init();
     }
 
@@ -94,6 +95,7 @@ public class SpringContextUtil implements ApplicationContextAware {
         CONF_ENV_DIR = CONF_DIR + File.separator + "env";
 
         CONF_SERVICE_DIR = CONF_DIR + File.separator + "service";
+        CONF_WEB_DIR = CONF_DIR + File.separator + "web";
         DOCS_DIR = APP_PARENT_DIR + File.separator + "docs";
         NODE_DIR = APP_PARENT_DIR + File.separator + "node";
         NODE_CONF_DIR = NODE_DIR + File.separator + "conf";
