@@ -234,11 +234,13 @@ public class MasterAutoPullService {
                 () -> new DatabaseException("保存或更新组件自动拉起开关状态异常")
         );
 
+        this.updateAutoPullComponentSwitchToWorker(request.getClusterId());
+
         return Result.success();
     }
 
     /**
-     * Description: 返回进程自动拉起开关状态(包括 Worker 和 Component)
+     * Description: 返回进程自动拉起开关状态 (包括 Worker 和 Component )
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/3/21
