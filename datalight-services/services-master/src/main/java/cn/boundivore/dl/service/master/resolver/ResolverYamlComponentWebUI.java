@@ -62,7 +62,7 @@ public final class ResolverYamlComponentWebUI {
                         String.format(
                                 "%s/%s",
                                 confPath,
-                                "SERVICE-WEB-UI.yaml"
+                                "COMPONENT-WEB-UI.yaml"
                         )
                 ),
                 YamlServiceWebUI.class
