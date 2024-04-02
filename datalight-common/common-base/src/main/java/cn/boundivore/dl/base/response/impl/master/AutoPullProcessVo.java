@@ -46,20 +46,39 @@ public class AutoPullProcessVo implements IVo {
 
     private static final long serialVersionUID = 1897100658946944743L;
 
+    @Schema(name = "ClusterId", title = "集群 ID", required = true)
+    @JsonProperty(value = "ClusterId", required = true)
+    @NotNull
+    private Long clusterId;
+
+
+
     @Schema(name = "AutoPullWorker", title = "自动拉起 Worker 开关状态", required = true)
     @JsonProperty(value = "AutoPullWorker", required = true)
     @NotNull
     private Boolean autoPullWorker;
+
+    @Schema(name = "AutoCloseBeginTimeWorker", title = "Worker 自动拉起开关关闭时的起始时间", required = true)
+    @JsonProperty(value = "AutoCloseBeginTimeWorker", required = true)
+    @NotNull
+    private Long autoCloseBeginTimeWorker = 0L;
 
     @Schema(name = "AutoCloseEndTimeWorker", title = "Worker 自动拉起开关关闭时的截止时间", required = true)
     @JsonProperty(value = "AutoCloseEndTimeWorker", required = true)
     @NotNull
     private Long autoCloseEndTimeWorker = 0L;
 
+
+
     @Schema(name = "AutoPullComponent", title = "自动拉起 Component 开关状态", required = true)
     @JsonProperty(value = "AutoPullComponent", required = true)
     @NotNull
     private Boolean autoPullComponent;
+
+    @Schema(name = "AutoCloseBeginTimeComponent", title = "Component 自动拉起开关关闭时的起始时间", required = true)
+    @JsonProperty(value = "AutoCloseBeginTimeComponent", required = true)
+    @NotNull
+    private Long autoCloseBeginTimeComponent = 0L;
 
     @Schema(name = "AutoCloseEndTimeComponent", title = "Component 自动拉起开关关闭时的截止时间", required = true)
     @JsonProperty(value = "AutoCloseEndTimeComponent", required = true)

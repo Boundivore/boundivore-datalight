@@ -47,6 +47,11 @@ public abstract class AbstractAutoPullRequest {
 
         private static final long serialVersionUID = -7773673617799232078L;
 
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
         @Schema(name = "AutoPullWorker", title = "自动拉起 Worker 开关状态", required = true)
         @JsonProperty(value = "AutoPullWorker", required = true)
         @NotNull
@@ -54,7 +59,8 @@ public abstract class AbstractAutoPullRequest {
 
         @Schema(name = "CloseDuration", title = "关闭时长", required = true)
         @JsonProperty(value = "CloseDuration", required = true)
-        private Long closeDuration = 10 * 60 * 1000L;
+        @NotNull
+        private Long closeDuration;
 
     }
 
@@ -69,6 +75,11 @@ public abstract class AbstractAutoPullRequest {
 
         private static final long serialVersionUID = -5889190112920520455L;
 
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull
+        private Long clusterId;
+
         @Schema(name = "AutoPullComponent", title = "自动拉起 Component 开关状态", required = true)
         @JsonProperty(value = "AutoPullComponent", required = true)
         @NotNull
@@ -76,7 +87,7 @@ public abstract class AbstractAutoPullRequest {
 
         @Schema(name = "CloseDuration", title = "关闭时长", required = true)
         @JsonProperty(value = "CloseDuration", required = true)
-        private Long closeDuration = 10 * 60 * 1000L;
+        private Long closeDuration;
 
     }
 }

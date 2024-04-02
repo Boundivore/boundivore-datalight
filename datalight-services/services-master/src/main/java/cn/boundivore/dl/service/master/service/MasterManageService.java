@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.constants.AutoPullSwitchState;
+import cn.boundivore.dl.base.constants.AutoPullWorkerState;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
@@ -114,15 +114,11 @@ public class MasterManageService {
             fixedDelay = Constants.HEART_BEAT_TIMEOUT
     )
     private void checkAndPull() {
-        if (AutoPullSwitchState.AUTO_PULL_WORKER) {
-            // 检查重启的节点是否完成，如果完成，节点状态变更为 STARTED 状态
-            this.checkAndDetect();
+        // 检查重启的节点是否完成，如果完成，节点状态变更为 STARTED 状态
+        this.checkAndDetect();
 
-            // 检查心跳包是否过期，如果过期，则 SSH 拉起对应节点上的 Worker 进程
-            this.checkAndPullWorker();
-        } else {
-            log.info("Worker 自动拉起已关闭");
-        }
+        // 检查心跳包是否过期，如果过期，则 SSH 拉起对应节点上的 Worker 进程
+        this.checkAndPullWorker();
     }
 
     /**
@@ -151,7 +147,7 @@ public class MasterManageService {
         if (!workerMetaMap.isEmpty()) {
             // 获取能够连通的节点 IP
             List<String> isConnectedIpList = workerMetaMap.values()
-                    .stream()
+                    .parallelStream()
                     .map(i -> {
                         boolean isConnected = this.nodeJobService.scan(
                                 i.getIpv4(),
@@ -285,10 +281,19 @@ public class MasterManageService {
                     this.workerPort
             );
 
+            // 用于 跳过自动拉起 Worker 进程的开关处于关闭状态的集群对应的节点 的判断依据
+            final List<Long> autoPullTrueClusterIdList = AutoPullWorkerState.AUTO_PULL_WORKER_CACHE
+                    .values()
+                    .stream()
+                    .filter(AutoPullWorkerState.CacheBean::isAutoPullWorker)
+                    .map(AutoPullWorkerState.CacheBean::getClusterId)
+                    .collect(Collectors.toList());
+
 
             this.forkJoinPool.submit(() -> {
                 // SSH 启动 Worker，并推送 Master 位置
                 allInvalidWorkerTDlNodeList.parallelStream()
+                        .filter(i -> autoPullTrueClusterIdList.contains(i.getClusterId()))
                         .forEach(i -> {
                             try {
                                 // 首先尝试主动再次推送 Master 元数据信息，获取心跳，如失败，则尝试拉起

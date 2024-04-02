@@ -1,5 +1,6 @@
 package cn.boundivore.dl.orm.po.single;
 
+import cn.boundivore.dl.base.enumeration.impl.AutoPullSwitchTypeEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -27,9 +28,13 @@ public class TDlAutoPullSwitch extends TBasePo<TDlAutoPullSwitch> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("集群 ID")
+    @TableField("cluster_id")
+    private Long clusterId;
+
     @ApiModelProperty("进程自动拉起开关类型 枚举，AUTO_PULL_WORKER：Worker 进程自动拉起开关类型；AUTO_PULL_COMPONENT：Component 进程自动拉起开关类型")
     @TableField("auto_pull_switch_type")
-    private String autoPullSwitchType;
+    private AutoPullSwitchTypeEnum autoPullSwitchType;
 
     @ApiModelProperty("开关状态 开启或关闭，0：关闭，1：开启")
     @TableField("off_on")

@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.service.worker.service;
 
-import cn.boundivore.dl.base.constants.AutoPullSwitchState;
+import cn.boundivore.dl.base.constants.AutoPullComponentState;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.ExecTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
@@ -37,6 +37,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 /**
  * Description: Worker 管理相关工作，包括接收 Master 位置暴露，Master 主从切换消息等
@@ -157,50 +159,83 @@ public class WorkerManageService {
      * Throws:
      */
     @Scheduled(
-            initialDelay = 10 * 1000,
-            fixedDelay = 30 * 1000
+            initialDelay = 30 * 1000,
+            fixedDelay = 60 * 1000
     )
-    private void checkAndPullComponent() {
-        if (AutoPullSwitchState.AUTO_PULL_COMPONENT) {
-            MetaCache.ServiceMeta serviceMeta = this.metaCache.getServiceMeta();
-            if (serviceMeta != null) {
-                log.info("准备检查并拉起服务组件进程");
-                serviceMeta.getServiceList()
-                        .forEach(service -> {
-                            service.getComponentList()
-                                    .forEach(component -> {
-                                        // 检查并启动组件进程
-                                        String checkAndStartShell = component.getCheckAndStartShell();
-                                        try {
-                                            Result<String> execResult = this.workerExecService.exec(
-                                                    new ExecRequest(
-                                                            ExecTypeEnum.COMMAND,
-                                                            String.format("Check and start %s", component.getComponentName()),
-                                                            checkAndStartShell,
-                                                            0,
-                                                            Constants.SCRIPT_DEFAULT_TIMEOUT,
-                                                            null,
-                                                            null,
-                                                            true
-                                                    )
-                                            );
-                                            Assert.isTrue(
-                                                    execResult.isSuccess(),
-                                                    () -> new BashException(
-                                                            String.format(
-                                                                    "自动拉起组件失败: %s",
-                                                                    checkAndStartShell
-                                                            )
-                                                    )
-                                            );
-                                        } catch (Exception e) {
-                                            log.error(ExceptionUtil.stacktraceToString(e));
-                                        }
-                                    });
-                        });
+    private void crontabCheckAndPullComponent() {
 
+        // 当前节点只可能隶属于某唯一集群，因此缓存集合中只有1个元素，直接取出即可。
+        Optional<Long> clusterIdOptional = AutoPullComponentState.AUTO_PULL_COMPONENT_CACHE
+                .keySet()
+                .stream()
+                .findFirst();
 
+        if (clusterIdOptional.isPresent()) {
+            AutoPullComponentState.CacheBean autoPullComponentState = AutoPullComponentState.getAutoPullComponentState(
+                    clusterIdOptional.get()
+            );
+
+            // 如果自动拉起 Component 开关开启，则执行自动检查并拉起操作
+            if (autoPullComponentState.isAutoPullComponent()) {
+                this.checkAndPullComponent();
             }
+        }
+
+    }
+
+    /**
+     * Description: 执行检查并拉起组件进程操作
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    private void checkAndPullComponent() {
+        MetaCache.ServiceMeta serviceMeta = this.metaCache.getServiceMeta();
+        if (serviceMeta != null) {
+            log.info("准备检查并拉起服务组件进程");
+            serviceMeta.getServiceList()
+                    .forEach(service -> {
+                                service.getComponentList()
+                                        .forEach(component -> {
+                                            // 检查并启动组件进程
+                                            String checkAndStartShell = component.getCheckAndStartShell();
+                                            try {
+                                                Result<String> execResult = this.workerExecService.exec(
+                                                        new ExecRequest(
+                                                                ExecTypeEnum.COMMAND,
+                                                                String.format(
+                                                                        "Check and start %s",
+                                                                        component.getComponentName()
+                                                                ),
+                                                                checkAndStartShell,
+                                                                0,
+                                                                Constants.SCRIPT_DEFAULT_TIMEOUT,
+                                                                null,
+                                                                null,
+                                                                true
+                                                        )
+                                                );
+                                                Assert.isTrue(
+                                                        execResult.isSuccess(),
+                                                        () -> new BashException(
+                                                                String.format(
+                                                                        "自动拉起组件失败: %s",
+                                                                        checkAndStartShell
+                                                                )
+                                                        )
+                                                );
+                                            } catch (Exception e) {
+                                                log.error(ExceptionUtil.stacktraceToString(e));
+                                            }
+                                        });
+                            }
+                    );
+
+
         }
     }
 

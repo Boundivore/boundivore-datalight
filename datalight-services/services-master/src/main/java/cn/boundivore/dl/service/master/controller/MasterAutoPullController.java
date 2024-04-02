@@ -54,7 +54,7 @@ public class MasterAutoPullController implements IMasterAutoPullAPI {
     }
 
     @Override
-    public Result<AutoPullProcessVo> getAutoPullState() throws Exception {
-        return this.masterAutoPullService.getAutoPullState();
+    public Result<AutoPullProcessVo> getAutoPullState(Long clusterId) throws Exception {
+        return this.masterAutoPullService.getAutoPullState(clusterId);
     }
 }

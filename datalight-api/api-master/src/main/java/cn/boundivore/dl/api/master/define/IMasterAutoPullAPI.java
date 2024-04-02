@@ -21,10 +21,12 @@ import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -67,5 +69,9 @@ public interface IMasterAutoPullAPI {
 
     @GetMapping(value = "/auto/pull/get")
     @ApiOperation(notes = "获取进程拉起开关状态", value = "获取进程拉起开关状态")
-    Result<AutoPullProcessVo> getAutoPullState() throws Exception;
+    Result<AutoPullProcessVo> getAutoPullState(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId
+    ) throws Exception;
 }

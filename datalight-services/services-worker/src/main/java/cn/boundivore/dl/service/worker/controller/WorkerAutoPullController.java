@@ -48,8 +48,4 @@ public class WorkerAutoPullController implements IWorkerAutoPullAPI {
         return this.workerAutoPullService.switchAutoPullComponent(request);
     }
 
-    @Override
-    public Result<AutoPullProcessVo> getAutoPullState() throws Exception {
-        return this.workerAutoPullService.getAutoPullState();
-    }
 }

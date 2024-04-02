@@ -16,9 +16,8 @@
  */
 package cn.boundivore.dl.service.worker.service;
 
-import cn.boundivore.dl.base.constants.AutoPullSwitchState;
+import cn.boundivore.dl.base.constants.AutoPullComponentState;
 import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
-import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,37 +52,15 @@ public class WorkerAutoPullService {
      * @return Result<String> 成功或失败
      */
     public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) {
-        AutoPullSwitchState.setCloseAutoPullComponent(
-                request.getAutoPullComponent(),
-                request.getCloseDuration()
-        );
+
+        // 创建开关状态缓存
+        AutoPullComponentState.CacheBean cacheBean = new AutoPullComponentState.CacheBean();
+        cacheBean.setClusterId(request.getClusterId());
+        cacheBean.updatePullComponent(request.getAutoPullComponent(), request.getCloseDuration());
+        // 设置缓存
+        AutoPullComponentState.putAutoPullComponentState(cacheBean);
 
         return Result.success();
     }
-
-
-    /**
-     * Description: 返回进程自动拉起开关状态(包括 Worker 和 Component)
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/3/21
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return Result<AutoPullProcessVo> 返回自动拉起开关状态
-     */
-    public Result<AutoPullProcessVo> getAutoPullState() {
-        return Result.success(
-                new AutoPullProcessVo(
-                        AutoPullSwitchState.AUTO_PULL_WORKER,
-                        AutoPullSwitchState.AUTO_CLOSE_END_TIME_WORKER,
-                        AutoPullSwitchState.AUTO_PULL_COMPONENT,
-                        AutoPullSwitchState.AUTO_CLOSE_END_TIME_COMPONENT
-                )
-        );
-    }
-
 
 }

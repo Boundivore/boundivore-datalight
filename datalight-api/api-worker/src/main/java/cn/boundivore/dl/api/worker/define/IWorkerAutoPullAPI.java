@@ -57,7 +57,4 @@ public interface IWorkerAutoPullAPI {
             AbstractAutoPullRequest.AutoPullComponentRequest request
     ) throws Exception;
 
-    @GetMapping(value = "/auto/pull/get")
-    @ApiOperation(notes = "获取进程拉起开关状态", value = "获取进程拉起开关状态")
-    Result<AutoPullProcessVo> getAutoPullState() throws Exception;
 }

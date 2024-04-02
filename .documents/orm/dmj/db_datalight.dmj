@@ -8,7 +8,7 @@
     "Name": "db_data_light",
     "CreateDate": "2023/4/17 9:37:49",
     "OrderNo": 1,
-    "CustomAttr1": "DVS:468.50,-1071.00,2.00,0,",
+    "CustomAttr1": "DVS:-394.00,-919.00,2.00,0,",
     "DefDbEngine": "MYSQL",
     "DbConnectStr": "TCtMetaMysqlDb",
     "Tables": {
@@ -3195,7 +3195,7 @@
           "OrderNo": 24,
           "GraphDesc": "Left=24.43\r\nTop=873.22",
           "MetaFields": {
-            "Count": 8,
+            "Count": 9,
             "items": [
               {
                 "ID": 1,
@@ -3240,10 +3240,19 @@
                 "DataLength": 20
               },
               {
+                "ID": 9,
+                "Name": "cluster_id",
+                "OrderNo": 5,
+                "DisplayName": "集群 ID",
+                "DataType": 2,
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
                 "ID": 5,
                 "Name": "auto_pull_switch_type",
                 "Memo": "枚举，AUTO_PULL_WORKER：Worker 进程自动拉起开关类型；AUTO_PULL_COMPONENT：Component 进程自动拉起开关类型",
-                "OrderNo": 5,
+                "OrderNo": 6,
                 "DisplayName": "进程自动拉起开关类型",
                 "DataType": 1,
                 "Not_Nullable": true,
@@ -3253,7 +3262,7 @@
                 "ID": 6,
                 "Name": "off_on",
                 "Memo": "开启或关闭，0：关闭，1：开启",
-                "OrderNo": 6,
+                "OrderNo": 7,
                 "DisplayName": "开关状态",
                 "DataType": 2,
                 "Not_Nullable": true,
@@ -3263,7 +3272,7 @@
                 "ID": 7,
                 "Name": "close_begin_time",
                 "Memo": "关闭自动拉起开关的起始时间",
-                "OrderNo": 7,
+                "OrderNo": 8,
                 "DisplayName": "关闭起始时间",
                 "DataType": 2,
                 "Not_Nullable": true,
@@ -3273,7 +3282,7 @@
                 "ID": 8,
                 "Name": "close_end_time",
                 "Memo": "关闭自动拉起开关的结束时间",
-                "OrderNo": 8,
+                "OrderNo": 9,
                 "DisplayName": "关闭结束时间",
                 "DataType": 2,
                 "Not_Nullable": true,
