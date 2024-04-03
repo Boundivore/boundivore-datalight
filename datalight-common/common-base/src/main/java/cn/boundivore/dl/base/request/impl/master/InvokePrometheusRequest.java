@@ -29,6 +29,7 @@ import lombok.experimental.Accessors;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: JobRequest
@@ -67,9 +68,13 @@ public class InvokePrometheusRequest implements IRequest {
     @NotNull
     private String path;
 
-    @Schema(name = "Body", title = "请求 Prometheus 的请求体", required = true)
+    @Schema(name = "Body", title = "Post 请求 Prometheus 的请求体", required = true)
     @JsonProperty(value = "Body", required = true)
     @NotNull
     private String body;
+
+    @Schema(name = "QueryParamsMap", title = "Get 请求 Prometheus 的查询参数", required = true)
+    @JsonProperty(value = "QueryParamsMap", required = true)
+    Map<String, String> queryParamsMap;
 
 }

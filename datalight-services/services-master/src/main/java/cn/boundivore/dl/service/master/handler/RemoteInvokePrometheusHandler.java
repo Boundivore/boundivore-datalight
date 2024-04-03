@@ -146,7 +146,7 @@ public class RemoteInvokePrometheusHandler {
 
             switch (request.getRequestMethod()) {
                 case GET:
-                    result = iThirdPrometheusAPI.getPrometheus(request.getPath());
+                    result = iThirdPrometheusAPI.getPrometheus(request.getPath(), request.getQueryParamsMap());
                     break;
                 case POST:
                     result = iThirdPrometheusAPI.postPrometheus(request.getPath(), request.getBody());

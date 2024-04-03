@@ -20,10 +20,9 @@ import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 
@@ -63,7 +62,10 @@ public interface IThirdPrometheusAPI {
     @ApiOperation(notes = "Get 方式调用 Prometheus", value = "Get 方式调用 Prometheus")
     Result<String> getPrometheus(
             @PathVariable("path")
-            String path
+            String path,
+
+            @RequestParam
+            Map<String, String> queryParams
     );
 
 }

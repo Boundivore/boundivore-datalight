@@ -102,8 +102,8 @@ public interface IMasterComponentAPI {
     @GetMapping(value = "/component/webUI/list")
     @ApiOperation(notes = "获取指定集群、服务下的组件 WebUI 列表", value = "获取指定集群、服务下的组件 WebUI 列表")
     Result<ServiceWebUIVo> getComponentWebUIList(
-            @ApiParam(name = "clusterId", value = "集群 ID")
-            @RequestParam(value = "clusterId", required = true)
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
             @ApiParam(name = "ServiceName", value = "服务名称")
