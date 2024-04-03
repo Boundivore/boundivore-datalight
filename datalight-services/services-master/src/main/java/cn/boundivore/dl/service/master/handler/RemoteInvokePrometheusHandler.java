@@ -30,10 +30,12 @@ import cn.boundivore.dl.service.master.service.MasterNodeService;
 import cn.boundivore.dl.service.master.service.RemoteInvokePrometheusService;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -71,15 +73,22 @@ public class RemoteInvokePrometheusHandler {
      * @return Prometheus 部署所在节点的主机名
      */
     private String getPrometheusHostname(Long clusterId) {
-        TDlComponent prometheusServerTDlComponent = this.masterComponentService
+        List<TDlComponent> prometheusTDlComponentList = this.masterComponentService
                 .getTDlComponentListByServiceName(
                         clusterId,
                         "MONITOR"
                 )
                 .stream()
                 .filter(i -> i.getComponentName().equals("Prometheus"))
-                .collect(Collectors.toList())
-                .get(0);
+                .collect(Collectors.toList());
+
+        Assert.notEmpty(
+                prometheusTDlComponentList,
+                () -> new BException("指定集群下未找到 Prometheus 实例")
+        );
+
+        TDlComponent prometheusServerTDlComponent = prometheusTDlComponentList.get(0);
+
 
         if (prometheusServerTDlComponent != null && prometheusServerTDlComponent.getComponentState() == SCStateEnum.STARTED) {
             TDlNode tDlNodePrometheus = this.masterNodeService.getNodeListInNodeIds(
