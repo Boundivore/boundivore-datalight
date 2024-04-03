@@ -70,7 +70,6 @@ public class InvokePrometheusRequest implements IRequest {
 
     @Schema(name = "Body", title = "Post 请求 Prometheus 的请求体", required = true)
     @JsonProperty(value = "Body", required = true)
-    @NotNull
     private String body;
 
     @Schema(name = "QueryParamsMap", title = "Get 请求 Prometheus 的查询参数", required = true)
