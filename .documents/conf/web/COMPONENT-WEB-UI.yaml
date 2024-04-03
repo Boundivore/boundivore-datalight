@@ -1,5 +1,17 @@
 datalight:
   components:
+    - service: MONITOR
+      component: Prometheus
+      port: '9090'
+      path: '/graph'
+      button-name-suffix: '-Web UI'
+
+    - service: MONITOR
+      component: Grafana
+      port: '3000'
+      path: '/'
+      button-name-suffix: '-Web UI'
+
     - service: HDFS
       component: NameNode1
       port: '50070'
