@@ -186,7 +186,7 @@ public class MasterOperationService {
                         tDlServiceMap.get(i),
                         () -> new BException(
                                 String.format(
-                                        "部署操作必须选择不处于 %s、%s、%s状态的服务",
+                                        "当前操作必须选择不处于 %s、%s、%s 状态的服务",
                                         SCStateEnum.REMOVED,
                                         SCStateEnum.SELECTED,
                                         SCStateEnum.UNSELECTED
