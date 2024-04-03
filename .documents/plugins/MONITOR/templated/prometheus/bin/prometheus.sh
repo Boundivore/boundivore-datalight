@@ -28,7 +28,7 @@ stop_prometheus() {
 
 restart_prometheus() {
   stop_prometheus
-  sleep 2
+  sleep 3
   start_prometheus
 }
 
