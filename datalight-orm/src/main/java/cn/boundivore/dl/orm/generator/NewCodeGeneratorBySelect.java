@@ -29,7 +29,26 @@ public class NewCodeGeneratorBySelect {
 
         //数据库表的设置
         List<String> listTable = Arrays.asList(
-                "t_dl_auto_pull_switch"
+                "t_dl_role_user_relation",
+                "t_dl_role",
+                "t_dl_permission_role_relation",
+                "t_dl_permission",
+                "t_dl_permission_rule_relation",
+                "t_dl_rule_interface",
+
+                "t_dl_role_user_relation_final",
+                "t_dl_role_final",
+                "t_dl_permission_role_relation_final",
+                "t_dl_permission_final",
+                "t_dl_permission_rule_relation_final",
+                "t_dl_rule_interface_final",
+
+                "t_dl_role_user_relation_templated",
+                "t_dl_role_templated",
+                "t_dl_permission_role_relation_templated",
+                "t_dl_permission_templated",
+                "t_dl_permission_rule_relation_templated",
+                "t_dl_rule_interface_templated"
         ); //设置需要自动代码生成的表名
         List<String> listTableSuffix = Arrays.asList(""); //过滤前缀
         List<String> listTablePrefix = Arrays.asList(""); //过滤后缀

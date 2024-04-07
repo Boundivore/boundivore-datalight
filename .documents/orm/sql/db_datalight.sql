@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 02/04/2024 14:52:26
+ Date: 07/04/2024 14:46:28
 */
 
 SET NAMES utf8mb4;
@@ -366,6 +366,327 @@ CREATE TABLE `t_dl_node_task`  (
   `duration` bigint(20) NULL DEFAULT NULL COMMENT '耗时 毫秒时间戳',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = 'Task 节点任务信息表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_dl_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission`;
+CREATE TABLE `t_dl_permission`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否生效',
+  `static_version` int(11) NULL DEFAULT NULL COMMENT '静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新',
+  `permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限编码',
+  `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
+  `permission_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);',
+  `is_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为静态权限 1 为静态权限，0 为动态权限',
+  `is_global` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否全局控制',
+  `reject_permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '互斥权限编码',
+  `permission_weight` bigint(20) NOT NULL DEFAULT 1 COMMENT '权限权重 优先级，取值范围：1 ~ 10',
+  `permission_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_final
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_final`;
+CREATE TABLE `t_dl_permission_final`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否生效',
+  `static_version` int(11) NULL DEFAULT NULL COMMENT '静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新',
+  `permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限编码',
+  `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
+  `permission_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);',
+  `is_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为静态权限 1 为静态权限，0 为动态权限',
+  `is_global` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否全局控制',
+  `reject_permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '互斥权限编码',
+  `permission_weight` bigint(20) NOT NULL DEFAULT 1 COMMENT '权限权重 优先级，取值范围：1 ~ 10',
+  `permission_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限信息常量表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_role_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_role_relation`;
+CREATE TABLE `t_dl_permission_role_relation`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限角色信息映射表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_role_relation_final
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_role_relation_final`;
+CREATE TABLE `t_dl_permission_role_relation_final`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限角色信息映射常量表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_role_relation_templated
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_role_relation_templated`;
+CREATE TABLE `t_dl_permission_role_relation_templated`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限角色信息映射常量模板表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_rule_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_rule_relation`;
+CREATE TABLE `t_dl_permission_rule_relation`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `rule_interface_id` bigint(20) NULL DEFAULT NULL COMMENT '接口规则 ID',
+  `rule_page_id` bigint(20) NULL DEFAULT NULL COMMENT '页面规则 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口权限与规则映射表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_rule_relation_final
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_rule_relation_final`;
+CREATE TABLE `t_dl_permission_rule_relation_final`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `rule_interface_id` bigint(20) NULL DEFAULT NULL COMMENT '接口规则 ID',
+  `rule_page_id` bigint(20) NULL DEFAULT NULL COMMENT '页面规则 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口权限与规则映射常量表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_rule_relation_templated
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_rule_relation_templated`;
+CREATE TABLE `t_dl_permission_rule_relation_templated`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
+  `rule_interface_id` bigint(20) NULL DEFAULT NULL COMMENT '接口规则 ID',
+  `rule_page_id` bigint(20) NULL DEFAULT NULL COMMENT '页面规则 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口权限与规则映射常量模板表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_permission_templated
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_permission_templated`;
+CREATE TABLE `t_dl_permission_templated`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否生效',
+  `static_version` int(11) NULL DEFAULT NULL COMMENT '静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新',
+  `permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限编码',
+  `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
+  `permission_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);',
+  `is_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为静态权限 1 为静态权限，0 为动态权限',
+  `is_global` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否全局控制',
+  `reject_permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '互斥权限编码',
+  `permission_weight` bigint(20) NOT NULL DEFAULT 1 COMMENT '权限权重 优先级，取值范围：1 ~ 10',
+  `permission_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '权限信息常量模板表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_role
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role`;
+CREATE TABLE `t_dl_role`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `edit_enabled` tinyint(1) NOT NULL COMMENT '是否允许编辑',
+  `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
+  `role_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色编码',
+  `role_group_id` bigint(20) NOT NULL COMMENT '角色分组 ID',
+  `role_group_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组编码',
+  `role_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组名称',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '角色启用或停用（0禁用，1启用） 默认值为 1',
+  `role_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色类型 （ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）',
+  `role_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_role_final
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role_final`;
+CREATE TABLE `t_dl_role_final`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `edit_enabled` tinyint(1) NOT NULL COMMENT '是否允许编辑',
+  `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
+  `role_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色编码',
+  `role_group_id` bigint(20) NOT NULL COMMENT '角色分组 ID',
+  `role_group_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组编码',
+  `role_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组名称',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '角色启用或停用（0禁用，1启用） 默认值为 1',
+  `role_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色类型 （ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）',
+  `role_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色信息常量表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_role_templated
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role_templated`;
+CREATE TABLE `t_dl_role_templated`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
+  `edit_enabled` tinyint(1) NOT NULL COMMENT '是否允许编辑',
+  `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
+  `role_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色编码',
+  `role_group_id` bigint(20) NOT NULL COMMENT '角色分组 ID',
+  `role_group_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组编码',
+  `role_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组名称',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '角色启用或停用（0禁用，1启用） 默认值为 1',
+  `role_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色类型 （ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）',
+  `role_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色备注',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色信息常量模板表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_role_user_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role_user_relation`;
+CREATE TABLE `t_dl_role_user_relation`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  `user_id` bigint(20) NOT NULL COMMENT '绑定的用户 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色绑定关系表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_role_user_relation_final
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role_user_relation_final`;
+CREATE TABLE `t_dl_role_user_relation_final`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  `user_id` bigint(20) NOT NULL COMMENT '绑定的用户 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色绑定关系常量表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_role_user_relation_templated
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_role_user_relation_templated`;
+CREATE TABLE `t_dl_role_user_relation_templated`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色 ID',
+  `user_id` bigint(20) NOT NULL COMMENT '绑定的用户 ID',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色绑定关系模板表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_rule_interface
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_rule_interface`;
+CREATE TABLE `t_dl_rule_interface`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `rule_interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 URI 绝对路径',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口资源规则表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_rule_interface_final
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_rule_interface_final`;
+CREATE TABLE `t_dl_rule_interface_final`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `rule_interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 URI 绝对路径',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口资源规则常量表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_dl_rule_interface_templated
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_rule_interface_templated`;
+CREATE TABLE `t_dl_rule_interface_templated`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
+  `rule_interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 URI 绝对路径',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口资源规则常量模板表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_service
