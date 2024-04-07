@@ -34,4 +34,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterPermissionService {
+    // TODO 加载权限模板
+    // TODO
 }
