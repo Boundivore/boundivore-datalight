@@ -1,6 +1,6 @@
 server:
   datalight:
-    is-debug: false
+    is-debug: true
     super-user: admin
     super-user-default-password: admin
     url:
