@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543336",
-  "TableCount": 42,
+  "TableCount": 43,
   "Count": 2,
   "items": [
     {
@@ -9,18 +9,18 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-684.23,-1073.13,1.43,0,",
+      "CustomAttr1": "DVS:-804.19,-1468.18,1.69,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
-        "Count": 41,
+        "Count": 42,
         "items": [
           {
             "ID": 1,
             "Name": "t_dl_login_event",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 1,
-            "GraphDesc": "Left=27.50\r\nTop=167.00",
+            "GraphDesc": "Left=11.50\r\nTop=-34.49",
             "MetaFields": {
               "Count": 6,
               "items": [
@@ -93,7 +93,7 @@
             "Caption": "用户认证信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 2,
-            "GraphDesc": "Left=527.50\r\nTop=167.00",
+            "GraphDesc": "Left=511.50\r\nTop=-34.49",
             "MetaFields": {
               "Count": 8,
               "items": [
@@ -192,7 +192,7 @@
             "Caption": "用户基础信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 3,
-            "GraphDesc": "Left=307.00\r\nTop=167.00",
+            "GraphDesc": "Left=291.00\r\nTop=-34.49",
             "MetaFields": {
               "Count": 7,
               "items": [
@@ -1733,7 +1733,7 @@
             "Caption": "初始化步骤缓存信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 13,
-            "GraphDesc": "Left=768.24\r\nTop=165.37",
+            "GraphDesc": "Left=752.24\r\nTop=-36.12",
             "MetaFields": {
               "Count": 10,
               "items": [
@@ -3048,7 +3048,7 @@
             "Caption": "前端状态信息缓存表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 22,
-            "GraphDesc": "Left=308.00\r\nTop=4.00",
+            "GraphDesc": "Left=292.00\r\nTop=-197.49",
             "MetaFields": {
               "Count": 8,
               "items": [
@@ -5105,6 +5105,102 @@
                   "DisplayName": "接口 URI",
                   "DataType": 1,
                   "Not_Nullable": true,
+                  "DataLength": 255
+                }
+              ]
+            }
+          },
+          {
+            "ID": 1,
+            "Name": "t_dl_role_group",
+            "Caption": "角色分组信息表",
+            "CreateDate": "2022/9/19 13:59:05",
+            "OrderNo": 42,
+            "GraphDesc": "Left=336.16\r\nTop=228.16",
+            "MetaFields": {
+              "Count": 9,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 13,
+                  "Name": "is_deleted",
+                  "OrderNo": 5,
+                  "DisplayName": "是否删除",
+                  "DataType": 2,
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 1
+                },
+                {
+                  "ID": 5,
+                  "Name": "cluster_id",
+                  "OrderNo": 6,
+                  "DisplayName": "集群 ID",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 10,
+                  "Name": "role_group_code",
+                  "OrderNo": 7,
+                  "DisplayName": "角色分组编码",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 11,
+                  "Name": "role_group_name",
+                  "OrderNo": 8,
+                  "DisplayName": "角色分组名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 12,
+                  "Name": "role_group_comment",
+                  "OrderNo": 9,
+                  "DisplayName": "角色分组备注",
+                  "DataType": 1,
                   "DataLength": 255
                 }
               ]
