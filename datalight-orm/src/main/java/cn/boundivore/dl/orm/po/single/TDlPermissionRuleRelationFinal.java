@@ -27,10 +27,6 @@ public class TDlPermissionRuleRelationFinal extends TBasePo<TDlPermissionRuleRel
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
-    @TableField("cluster_id")
-    private Long clusterId;
-
     @ApiModelProperty("权限 ID")
     @TableField("permission_id")
     private Long permissionId;

@@ -27,10 +27,6 @@ public class TDlRoleUserRelationTemplated extends TBasePo<TDlRoleUserRelationTem
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
-    @TableField("cluster_id")
-    private Long clusterId;
-
     @ApiModelProperty("角色 ID")
     @TableField("role_id")
     private Long roleId;

@@ -27,10 +27,6 @@ public class TDlRoleFinal extends TBasePo<TDlRoleFinal> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
-    @TableField("cluster_id")
-    private Long clusterId;
-
     @ApiModelProperty("是否删除")
     @TableField("is_deleted")
     private Boolean isDeleted;
