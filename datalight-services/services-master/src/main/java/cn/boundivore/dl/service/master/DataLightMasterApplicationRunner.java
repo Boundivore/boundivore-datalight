@@ -54,6 +54,8 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
     private final MasterComponentService masterComponentService;
 
+    private final MasterLoadExcelPermissionService masterLoadExcelPermissionService;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -82,6 +84,9 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         log.info("NODE_CONF_DIR: {}", DataLightEnv.NODE_CONF_DIR);
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
+        // ./conf/permission
+        log.info("CONF_PERMISSION_DIR: {}", DataLightEnv.CONF_PERMISSION_DIR);
+        this.masterLoadExcelPermissionService.initPermissionTable(DataLightEnv.CONF_PERMISSION_DIR);
 
 
         // 更新 Master 所在节点的元数据信息

@@ -57,6 +57,7 @@ public class SpringContextUtil implements ApplicationContextAware {
 
     public static String CONF_WEB_DIR;
 
+    public static String CONF_PERMISSION_DIR;
     public static String DOCS_DIR;
 
     public static String NODE_DIR;
@@ -96,6 +97,7 @@ public class SpringContextUtil implements ApplicationContextAware {
 
         CONF_SERVICE_DIR = CONF_DIR + File.separator + "service";
         CONF_WEB_DIR = CONF_DIR + File.separator + "web";
+        CONF_PERMISSION_DIR = CONF_DIR + File.separator + "permission";
         DOCS_DIR = APP_PARENT_DIR + File.separator + "docs";
         NODE_DIR = APP_PARENT_DIR + File.separator + "node";
         NODE_CONF_DIR = NODE_DIR + File.separator + "conf";

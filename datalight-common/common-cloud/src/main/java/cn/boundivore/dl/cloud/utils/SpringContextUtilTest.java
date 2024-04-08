@@ -61,8 +61,10 @@ public class SpringContextUtilTest {
 
     // TEST conf/service
     public static final String CONF_SERVICE_DIR = ROOT_PATH + "/conf/service";
-
+    // TEST conf/web
     public static final String CONF_WEB_DIR = ROOT_PATH + "/conf/web";
+    // TEST conf/permission
+    public static final String CONF_PERMISSION_DIR = ROOT_PATH + "/conf/permission";
 
     //TEST plugins
     public static final String PLUGINS_DIR_LOCAL = ROOT_PATH + "/plugins";

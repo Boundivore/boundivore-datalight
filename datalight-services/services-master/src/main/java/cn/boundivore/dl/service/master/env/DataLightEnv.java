@@ -54,6 +54,7 @@ public class DataLightEnv {
     public static String CONF_ENV_DIR;
     public static String CONF_SERVICE_DIR;
     public static String CONF_WEB_DIR;
+    public static String CONF_PERMISSION_DIR;
     public static String PLUGINS_DIR_LOCAL;
     public static String PLUGINS_DIR_REMOTE;
     public static String NODE_CONF_DIR;
@@ -102,6 +103,7 @@ public class DataLightEnv {
             CONF_ENV_DIR = SpringContextUtilTest.CONF_ENV_DIR_LOCAL;
             CONF_SERVICE_DIR = SpringContextUtilTest.CONF_SERVICE_DIR;
             CONF_WEB_DIR = SpringContextUtilTest.CONF_WEB_DIR;
+            CONF_PERMISSION_DIR = SpringContextUtilTest.CONF_PERMISSION_DIR;
             PLUGINS_DIR_LOCAL = SpringContextUtilTest.PLUGINS_DIR_LOCAL;
             PLUGINS_DIR_REMOTE = SpringContextUtilTest.PLUGINS_DIR_REMOTE;
             NODE_CONF_DIR = SpringContextUtilTest.NODE_CONF_DIR_LOCAL;
@@ -126,6 +128,7 @@ public class DataLightEnv {
             CONF_ENV_DIR = SpringContextUtil.CONF_ENV_DIR;
             CONF_SERVICE_DIR = SpringContextUtil.CONF_SERVICE_DIR;
             CONF_WEB_DIR = SpringContextUtil.CONF_WEB_DIR;
+            CONF_PERMISSION_DIR = SpringContextUtil.CONF_PERMISSION_DIR;
             PLUGINS_DIR_LOCAL = SpringContextUtil.PLUGINS_DIR;
             PLUGINS_DIR_REMOTE = SpringContextUtil.PLUGINS_DIR;
             NODE_CONF_DIR = SpringContextUtil.NODE_CONF_DIR;

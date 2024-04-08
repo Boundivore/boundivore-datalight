@@ -23,6 +23,7 @@ import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.*;
 import cn.boundivore.dl.orm.service.single.impl.*;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.poi.excel.sax.Excel07SaxReader;
 import cn.hutool.poi.excel.sax.handler.RowHandler;
@@ -74,6 +75,16 @@ public class MasterLoadExcelPermissionService {
                 confPath,
                 "PermissionTableExcel-1.0.xlsx"
         );
+
+        if (!FileUtil.exist(tableInitializerPath)) {
+            log.info(
+                    String.format(
+                            "未找到权限配置模板: %s",
+                            tableInitializerPath
+                    )
+            );
+            return;
+        }
 
         // 从权限模板配置文件名中截取模板版本号
         final String excelVersionString = tableInitializerPath.substring(
