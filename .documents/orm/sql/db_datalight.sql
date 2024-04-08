@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 08/04/2024 11:29:36
+ Date: 08/04/2024 18:58:46
 */
 
 SET NAMES utf8mb4;
@@ -469,6 +469,8 @@ CREATE TABLE `t_dl_permission_rule_relation`  (
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
   `rule_interface_id` bigint(20) NULL DEFAULT NULL COMMENT '接口规则 ID',
+  `rule_data_row_id` bigint(20) NULL DEFAULT NULL COMMENT '数据行规则 ID',
+  `rule_data_column_id` bigint(20) NULL DEFAULT NULL COMMENT '数据列规则 ID',
   `rule_page_id` bigint(20) NULL DEFAULT NULL COMMENT '页面规则 ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口权限与规则映射表' ROW_FORMAT = Dynamic;
@@ -484,6 +486,8 @@ CREATE TABLE `t_dl_permission_rule_relation_final`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
   `rule_interface_id` bigint(20) NULL DEFAULT NULL COMMENT '接口规则 ID',
+  `rule_data_row_id` bigint(20) NULL DEFAULT NULL COMMENT '数据行规则 ID',
+  `rule_data_column_id` bigint(20) NULL DEFAULT NULL COMMENT '数据列规则 ID',
   `rule_page_id` bigint(20) NULL DEFAULT NULL COMMENT '页面规则 ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口权限与规则映射常量表' ROW_FORMAT = Dynamic;
@@ -499,6 +503,8 @@ CREATE TABLE `t_dl_permission_rule_relation_templated`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `permission_id` bigint(20) NOT NULL COMMENT '权限 ID',
   `rule_interface_id` bigint(20) NULL DEFAULT NULL COMMENT '接口规则 ID',
+  `rule_data_row_id` bigint(20) NULL DEFAULT NULL COMMENT '数据行规则 ID',
+  `rule_data_column_id` bigint(20) NULL DEFAULT NULL COMMENT '数据列规则 ID',
   `rule_page_id` bigint(20) NULL DEFAULT NULL COMMENT '页面规则 ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口权限与规则映射常量模板表' ROW_FORMAT = Dynamic;
@@ -687,10 +693,10 @@ CREATE TABLE `t_dl_rule_data_column_final`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据列资源规则常量表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for t_dl_rule_data_column_template
+-- Table structure for t_dl_rule_data_column_templated
 -- ----------------------------
-DROP TABLE IF EXISTS `t_dl_rule_data_column_template`;
-CREATE TABLE `t_dl_rule_data_column_template`  (
+DROP TABLE IF EXISTS `t_dl_rule_data_column_templated`;
+CREATE TABLE `t_dl_rule_data_column_templated`  (
   `id` bigint(20) NOT NULL COMMENT '分布式 ID',
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
@@ -737,10 +743,10 @@ CREATE TABLE `t_dl_rule_data_row_final`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '数据行资源规则常量表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for t_dl_rule_data_row_template
+-- Table structure for t_dl_rule_data_row_templated
 -- ----------------------------
-DROP TABLE IF EXISTS `t_dl_rule_data_row_template`;
-CREATE TABLE `t_dl_rule_data_row_template`  (
+DROP TABLE IF EXISTS `t_dl_rule_data_row_templated`;
+CREATE TABLE `t_dl_rule_data_row_templated`  (
   `id` bigint(20) NOT NULL COMMENT '分布式 ID',
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',

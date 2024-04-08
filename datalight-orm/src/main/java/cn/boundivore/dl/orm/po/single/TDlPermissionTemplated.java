@@ -1,5 +1,6 @@
 package cn.boundivore.dl.orm.po.single;
 
+import cn.boundivore.dl.base.enumeration.impl.PermissionTypeEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -37,7 +38,7 @@ public class TDlPermissionTemplated extends TBasePo<TDlPermissionTemplated> {
 
     @ApiModelProperty("静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新")
     @TableField("static_version")
-    private Integer staticVersion;
+    private Long staticVersion;
 
     @ApiModelProperty("权限编码")
     @TableField("permission_code")
@@ -49,7 +50,7 @@ public class TDlPermissionTemplated extends TBasePo<TDlPermissionTemplated> {
 
     @ApiModelProperty("权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);")
     @TableField("permission_type")
-    private String permissionType;
+    private PermissionTypeEnum permissionType;
 
     @ApiModelProperty("是否为静态权限 1 为静态权限，0 为动态权限")
     @TableField("is_static")

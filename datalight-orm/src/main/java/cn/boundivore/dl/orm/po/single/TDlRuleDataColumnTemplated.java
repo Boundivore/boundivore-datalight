@@ -3,7 +3,6 @@ package cn.boundivore.dl.orm.po.single;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -23,7 +22,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("t_dl_rule_data_column_template")
 @ApiModel(value = "TDlRuleDataColumnTemplate对象", description = "数据列资源规则模板表")
-public class TDlRuleDataColumnTemplate extends TBasePo<TDlRuleDataColumnTemplate> {
+public class TDlRuleDataColumnTemplated extends TBasePo<TDlRuleDataColumnTemplated> {
 
     private static final long serialVersionUID = 1L;
 
@@ -41,7 +40,7 @@ public class TDlRuleDataColumnTemplate extends TBasePo<TDlRuleDataColumnTemplate
 
     @ApiModelProperty("列规则 1 允许访问，0 拒绝访问")
     @TableField("is_allow")
-    private Integer isAllow;
+    private Boolean isAllow;
 
 
 }

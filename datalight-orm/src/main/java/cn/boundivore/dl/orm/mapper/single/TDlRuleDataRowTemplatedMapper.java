@@ -1,6 +1,6 @@
 package cn.boundivore.dl.orm.mapper.single;
 
-import cn.boundivore.dl.orm.po.single.TDlRuleDataRowTemplate;
+import cn.boundivore.dl.orm.po.single.TDlRuleDataRowTemplated;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2024-04-08 11:31:21
  */
 @Mapper
-public interface TDlRuleDataRowTemplateMapper extends BaseMapper<TDlRuleDataRowTemplate> {
+public interface TDlRuleDataRowTemplatedMapper extends BaseMapper<TDlRuleDataRowTemplated> {
 
 }

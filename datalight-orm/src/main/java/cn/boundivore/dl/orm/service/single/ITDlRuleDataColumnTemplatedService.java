@@ -1,6 +1,6 @@
 package cn.boundivore.dl.orm.service.single;
 
-import cn.boundivore.dl.orm.po.single.TDlRuleDataColumnTemplate;
+import cn.boundivore.dl.orm.po.single.TDlRuleDataColumnTemplated;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author Boundivore
  * @since 2024-04-08 11:31:21
  */
-public interface ITDlRuleDataColumnTemplateService extends IService<TDlRuleDataColumnTemplate> {
+public interface ITDlRuleDataColumnTemplatedService extends IService<TDlRuleDataColumnTemplated> {
 
 }

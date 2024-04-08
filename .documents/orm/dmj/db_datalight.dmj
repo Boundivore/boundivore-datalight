@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:504.34,-557.43,1.21,0,",
+      "CustomAttr1": "DVS:678.39,-715.65,1.69,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -3715,7 +3715,7 @@
             "OrderNo": 28,
             "GraphDesc": "Left=1506.64\r\nTop=416.27",
             "MetaFields": {
-              "Count": 8,
+              "Count": 10,
               "items": [
                 {
                   "ID": 1,
@@ -3782,9 +3782,25 @@
                   "DataLength": 20
                 },
                 {
+                  "ID": 15,
+                  "Name": "rule_data_row_id",
+                  "OrderNo": 8,
+                  "DisplayName": "数据行规则 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 5,
+                  "Name": "rule_data_column_id",
+                  "OrderNo": 9,
+                  "DisplayName": "数据列规则 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
                   "ID": 16,
                   "Name": "rule_page_id",
-                  "OrderNo": 8,
+                  "OrderNo": 10,
                   "DisplayName": "页面规则 ID",
                   "DataType": 2,
                   "DataLength": 20
@@ -4303,7 +4319,7 @@
             "OrderNo": 34,
             "GraphDesc": "Left=1647.95\r\nTop=744.94",
             "MetaFields": {
-              "Count": 7,
+              "Count": 9,
               "items": [
                 {
                   "ID": 1,
@@ -4361,9 +4377,25 @@
                   "DataLength": 20
                 },
                 {
+                  "ID": 15,
+                  "Name": "rule_data_row_id",
+                  "OrderNo": 7,
+                  "DisplayName": "数据行规则 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 5,
+                  "Name": "rule_data_column_id",
+                  "OrderNo": 8,
+                  "DisplayName": "数据列规则 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
                   "ID": 16,
                   "Name": "rule_page_id",
-                  "OrderNo": 7,
+                  "OrderNo": 9,
                   "DisplayName": "页面规则 ID",
                   "DataType": 2,
                   "DataLength": 20
@@ -4873,7 +4905,7 @@
             "OrderNo": 40,
             "GraphDesc": "Left=1769.05\r\nTop=1187.40",
             "MetaFields": {
-              "Count": 7,
+              "Count": 9,
               "items": [
                 {
                   "ID": 1,
@@ -4931,9 +4963,25 @@
                   "DataLength": 20
                 },
                 {
+                  "ID": 15,
+                  "Name": "rule_data_row_id",
+                  "OrderNo": 7,
+                  "DisplayName": "数据行规则 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 5,
+                  "Name": "rule_data_column_id",
+                  "OrderNo": 8,
+                  "DisplayName": "数据列规则 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
                   "ID": 16,
                   "Name": "rule_page_id",
-                  "OrderNo": 7,
+                  "OrderNo": 9,
                   "DisplayName": "页面规则 ID",
                   "DataType": 2,
                   "DataLength": 20
@@ -5481,11 +5529,11 @@
           },
           {
             "ID": 1,
-            "Name": "t_dl_rule_data_row_template",
+            "Name": "t_dl_rule_data_row_templated",
             "Caption": "数据行资源规则模板表",
             "CreateDate": "2022/9/19 13:59:05",
             "OrderNo": 47,
-            "GraphDesc": "Left=2298.88\r\nTop=1298.53",
+            "GraphDesc": "Left=2299.47\r\nTop=1299.71",
             "MetaFields": {
               "Count": 9,
               "items": [
@@ -5578,11 +5626,11 @@
           },
           {
             "ID": 1,
-            "Name": "t_dl_rule_data_column_template",
+            "Name": "t_dl_rule_data_column_templated",
             "Caption": "数据列资源规则模板表",
             "CreateDate": "2022/9/19 13:59:05",
             "OrderNo": 48,
-            "GraphDesc": "Left=2300.88\r\nTop=1479.10",
+            "GraphDesc": "Left=2297.58\r\nTop=1479.10",
             "MetaFields": {
               "Count": 8,
               "items": [

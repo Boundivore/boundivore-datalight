@@ -104,6 +104,8 @@ subprojects {
         reflectionsVersion = "0.10.2"
 
         hutoolVersion = '5.8.16'
+        poiOoxmlVersion = "5.2.3"
+        xercesVersion = "2.12.2"
         pinyin4jVersion = '2.5.1'
         httpClientVersion = '4.5.13'
         zookeeperVersion = '3.4.13'
@@ -228,6 +230,9 @@ subprojects {
             dependency group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: logstashVersion
 
             dependency group: 'cn.hutool', name: 'hutool-all', version: hutoolVersion
+            dependency group: 'org.apache.poi', name: 'poi-ooxml', version: poiOoxmlVersion
+            dependency group: 'xerces', name: 'xercesImpl', version: xercesVersion
+
             dependency group: 'com.belerweb', name: 'pinyin4j', version: pinyin4jVersion
             dependency group: 'org.apache.httpcomponents', name: 'httpclient', version: httpClientVersion
             dependency group: 'io.prometheus', name: 'simpleclient_httpserver', version: ioPrometheusVersion

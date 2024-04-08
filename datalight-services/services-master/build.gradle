@@ -32,6 +32,8 @@ dependencies {
     implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'
 
     implementation group: 'cn.hutool', name: 'hutool-all'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml'
+    implementation group: 'xerces', name: 'xercesImpl'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
     implementation group: 'com.alibaba', name: 'fastjson'
