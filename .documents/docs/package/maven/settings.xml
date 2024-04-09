@@ -130,42 +130,6 @@ under the License.
           <passphrase>optional; leave empty if not used.</passphrase>
         </server>
         -->
-        <!--     <server>
-              <id>releases</id>
-              <username>udh</username>
-              <password>ucloud.cn</password>
-           </server>
-
-            <server>
-              <id>snapshots</id>
-              <username>udh</username>
-              <password>ucloud.cn</password>
-            </server>
-
-            <server>
-              <id>thirdparty</id>
-              <username>udh</username>
-              <password>ucloud.cn</password>
-           </server>
-
-            <server>
-              <id>ucloud</id>
-              <username>admin</username>
-              <password>2dfv7zNcXLmj9F63</password>
-            </server> -->
-
-        <!--   <server>
-            <id>nexus-hmm1</id>
-            <username>admin</username>
-            <password>1qaz!QAZ</password>
-          </server>
-
-          <server>
-            <id>nexus-hmm2</id>
-            <username>admin</username>
-            <password>1qaz!QAZ</password>
-          </server> -->
-
     </servers>
 
     <!-- mirrors

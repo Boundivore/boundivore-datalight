@@ -64,6 +64,18 @@ public class MasterLoadExcelPermissionService {
     private final TDlPermissionRuleRelationTemplatedServiceImpl tDlPermissionRuleRelationTemplatedService;
 
 
+    /**
+     * Description: 初始化权限配置模板
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param confPath Excel 权限模板配置文件所在目录
+     */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = Exception.class
@@ -205,7 +217,7 @@ public class MasterLoadExcelPermissionService {
             boolean isSaveSuccess = this.tDlRuleDataColumnTemplatedService.saveBatch(tDlRuleDataColumnTemplatedList);
             Assert.isTrue(
                     isSaveSuccess,
-                    () -> new DatabaseException("Save or update THmmRuleDataColumnList failed")
+                    () -> new DatabaseException("保存 t_dl_rule_data_column_templated 失败")
             );
         }
 
@@ -310,14 +322,14 @@ public class MasterLoadExcelPermissionService {
     }
 
     /**
-     * Description: Process each row of data in each Sheet.
-     * Created by: liujingze
-     * Creation time: 2022/11/29 9:35
+     * Description: 处理每一个 Sheet 中的每一行数据
+     * Created by: Boundivore
+     * Creation time: 2024/4/9
      * Modification description:
      * Modified by:
      * Modification time:
      *
-     * @return RowHandler
+     * @return RowHandler 行处理器
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -328,13 +340,12 @@ public class MasterLoadExcelPermissionService {
                                        final Map<String, List<TDlRuleInterfaceTemplated>> staticRuleCodeTDlRuleInterfaceListMap,
                                        final Map<String, List<TDlRuleDataRowTemplated>> staticRuleCodeTDlRuleDataRowListMap,
                                        final Map<String, List<TDlRuleDataColumnTemplated>> staticRuleCodeTDlRuleDataColumnListMap,
-                                       final List<TDlPermissionTemplated> tHmmPermissionList,
-                                       final List<TDlRuleInterfaceTemplated> tHmmRuleInterfaceList,
-                                       final List<TDlRuleDataRowTemplated> tHmmRuleDataRowList,
-                                       final List<TDlRuleDataColumnTemplated> tHmmRuleDataColumnList) {
+                                       final List<TDlPermissionTemplated> tDlPermissionList,
+                                       final List<TDlRuleInterfaceTemplated> tDlRuleInterfaceList,
+                                       final List<TDlRuleDataRowTemplated> tDlRuleDataRowList,
+                                       final List<TDlRuleDataColumnTemplated> tDlRuleDataColumnList) {
 
         return (sheetIndex, rowIndex, rowCells) -> {
-
 
 
             switch (sheetIndex) {
@@ -349,7 +360,7 @@ public class MasterLoadExcelPermissionService {
 
                     // 检查 rowCells 中索引 0 到 12 之间是否存在 null 值
                     for (int x = 0; x <= 12; x++) {
-                        if(x == 9){
+                        if (x == 9) {
                             continue;
                         }
 
@@ -387,7 +398,7 @@ public class MasterLoadExcelPermissionService {
                         tDlPermissionTemplated.setEnabled(enabled);
                         tDlPermissionTemplated.setStaticVersion(staticVersion);
 
-                        tHmmPermissionList.add(tDlPermissionTemplated);
+                        tDlPermissionList.add(tDlPermissionTemplated);
 
                         // 接口规则编码
                         String staticRuleCode = rowCells.get(11) != null ? rowCells.get(11).toString() : null;
@@ -420,19 +431,19 @@ public class MasterLoadExcelPermissionService {
                         TDlRuleInterfaceTemplated tDlRuleInterfaceTemplated = new TDlRuleInterfaceTemplated();
                         tDlRuleInterfaceTemplated.setRuleInterfaceUri(ruleInterfaceUri);
 
-                        tHmmRuleInterfaceList.add(tDlRuleInterfaceTemplated);
+                        tDlRuleInterfaceList.add(tDlRuleInterfaceTemplated);
 
                         //
                         String staticRuleCode = rowCells.get(2) != null ? rowCells.get(2).toString() : null;
-                        List<TDlRuleInterfaceTemplated> tHmmRuleInterfaceListFromMap = staticRuleCodeTDlRuleInterfaceListMap.getOrDefault(
+                        List<TDlRuleInterfaceTemplated> tDlRuleInterfaceListFromMap = staticRuleCodeTDlRuleInterfaceListMap.getOrDefault(
                                 staticRuleCode,
                                 new ArrayList<>()
                         );
 
-                        tHmmRuleInterfaceListFromMap.add(tDlRuleInterfaceTemplated);
+                        tDlRuleInterfaceListFromMap.add(tDlRuleInterfaceTemplated);
                         staticRuleCodeTDlRuleInterfaceListMap.put(
                                 staticRuleCode,
-                                tHmmRuleInterfaceListFromMap
+                                tDlRuleInterfaceListFromMap
                         );
 
                     }
@@ -469,19 +480,19 @@ public class MasterLoadExcelPermissionService {
                         tDlRuleDataRowTemplated.setRuleCondition(ruleCondition);
                         tDlRuleDataRowTemplated.setRuleConditionValue(ruleConditionValue);
 
-                        tHmmRuleDataRowList.add(tDlRuleDataRowTemplated);
+                        tDlRuleDataRowList.add(tDlRuleDataRowTemplated);
 
-                        //Rule relation
+                        // 规则相关
                         String staticRuleCode = rowCells.get(6) != null ? rowCells.get(6).toString() : null;
-                        List<TDlRuleDataRowTemplated> tHmmRuleDataRowListFromMap = staticRuleCodeTDlRuleDataRowListMap.getOrDefault(
+                        List<TDlRuleDataRowTemplated> tDlRuleDataRowListFromMap = staticRuleCodeTDlRuleDataRowListMap.getOrDefault(
                                 staticRuleCode,
                                 CollUtil.newArrayList()
                         );
 
-                        tHmmRuleDataRowListFromMap.add(tDlRuleDataRowTemplated);
+                        tDlRuleDataRowListFromMap.add(tDlRuleDataRowTemplated);
                         staticRuleCodeTDlRuleDataRowListMap.put(
                                 staticRuleCode,
-                                tHmmRuleDataRowListFromMap
+                                tDlRuleDataRowListFromMap
                         );
                     }
 
@@ -515,19 +526,19 @@ public class MasterLoadExcelPermissionService {
                         tDlRuleDataColumnTemplated.setColumnName(columnName);
                         tDlRuleDataColumnTemplated.setIsAllow(isAllow);
 
-                        tHmmRuleDataColumnList.add(tDlRuleDataColumnTemplated);
+                        tDlRuleDataColumnList.add(tDlRuleDataColumnTemplated);
 
                         //Rule relation
                         String staticRuleCode = rowCells.get(5) != null ? rowCells.get(5).toString() : null;
-                        List<TDlRuleDataColumnTemplated> tHmmRuleDataColumnListFromMap = staticRuleCodeTDlRuleDataColumnListMap.getOrDefault(
+                        List<TDlRuleDataColumnTemplated> tDlRuleDataColumnListFromMap = staticRuleCodeTDlRuleDataColumnListMap.getOrDefault(
                                 staticRuleCode,
                                 CollUtil.newArrayList()
                         );
 
-                        tHmmRuleDataColumnListFromMap.add(tDlRuleDataColumnTemplated);
+                        tDlRuleDataColumnListFromMap.add(tDlRuleDataColumnTemplated);
                         staticRuleCodeTDlRuleDataColumnListMap.put(
                                 staticRuleCode,
-                                tHmmRuleDataColumnListFromMap
+                                tDlRuleDataColumnListFromMap
                         );
                     }
 
@@ -535,7 +546,7 @@ public class MasterLoadExcelPermissionService {
                 default:
                     throw new BException(
                             String.format(
-                                    "Not supported, SheetIndex: %s",
+                                    "尚未被定义支持的 Sheet 页面, SheetIndex: %s",
                                     sheetIndex
                             )
                     );
