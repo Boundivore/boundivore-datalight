@@ -144,21 +144,6 @@ under the License.
      | server for that repository.
      |-->
     <mirrors>
-
-        <!--         <mirror>
-                  <id>nexus-hmm1</id>
-                  <mirrorOf>maven-releases</mirrorOf>
-                  <name>Nexus</name>
-                  <url>http://192.168.2.229:8081/repository/maven-releases/</url>
-                </mirror> -->
-
-        <!--         <mirror>
-                  <id>nexus-hmm2</id>
-                  <mirrorOf>central</mirrorOf>
-                  <name>Nexus</name>
-                  <url>http://192.168.2.229:8081/repository/maven-public/</url>
-                </mirror> -->
-
         <mirror>
             <id>aliyunmaven</id>
             <mirrorOf>*</mirrorOf>
