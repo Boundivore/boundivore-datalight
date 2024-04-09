@@ -20,8 +20,8 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("t_dl_rule_data_column_template")
-@ApiModel(value = "TDlRuleDataColumnTemplate对象", description = "数据列资源规则模板表")
+@TableName("t_dl_rule_data_column_templated")
+@ApiModel(value = "TDlRuleDataColumnTemplated对象", description = "数据列资源规则模板表")
 public class TDlRuleDataColumnTemplated extends TBasePo<TDlRuleDataColumnTemplated> {
 
     private static final long serialVersionUID = 1L;

@@ -73,7 +73,7 @@ public class MasterLoadExcelPermissionService {
         String tableInitializerPath = String.format(
                 "%s/%s",
                 confPath,
-                "PermissionTableExcel-1.0.xlsx"
+                "PermissionTableExcel-v1.xlsx"
         );
 
         if (!FileUtil.exist(tableInitializerPath)) {
@@ -335,6 +335,8 @@ public class MasterLoadExcelPermissionService {
 
         return (sheetIndex, rowIndex, rowCells) -> {
 
+
+
             switch (sheetIndex) {
                 case 0:
                     log.info(String.format(
@@ -345,15 +347,29 @@ public class MasterLoadExcelPermissionService {
                             )
                     );
 
-                    if (rowIndex >= 2) {
-                        String permissionName = rowCells.get(2).toString();
-                        String permissionCode = rowCells.get(3).toString();
-                        PermissionTypeEnum permissionType = PermissionTypeEnum.valueOf(rowCells.get(4).toString());
-                        Boolean isGlobal = Short.parseShort(rowCells.get(5).toString()) == 1;
-                        Long permissionWeight = Long.valueOf(rowCells.get(6).toString());
+                    // 检查 rowCells 中索引 0 到 12 之间是否存在 null 值
+                    for (int x = 0; x <= 12; x++) {
+                        if(x == 9){
+                            continue;
+                        }
 
-                        Boolean isDeleted = Short.parseShort(rowCells.get(7).toString()) == 1;
-                        Boolean enabled = Short.parseShort(rowCells.get(8).toString()) == 1;
+                        if (rowCells.size() <= x || rowCells.get(x) == null) {
+                            // 如果存在 null，则跳过本次循环
+                            return;
+                        }
+                    }
+
+                    if (rowIndex >= 2) {
+                        String num = rowCells.get(0) != null ? rowCells.get(0).toString() : null;
+                        String id = rowCells.get(1) != null ? rowCells.get(1).toString() : null;
+                        String permissionName = rowCells.get(2) != null ? rowCells.get(2).toString() : null;
+                        String permissionCode = rowCells.get(3) != null ? rowCells.get(3).toString() : null;
+                        PermissionTypeEnum permissionType = rowCells.get(4) != null ? PermissionTypeEnum.valueOf(rowCells.get(4).toString()) : null;
+                        Boolean isGlobal = rowCells.get(5) != null && Short.parseShort(rowCells.get(5).toString()) == 1;
+                        Long permissionWeight = rowCells.get(6) != null ? Long.parseLong(rowCells.get(6).toString()) : -1L;
+
+                        Boolean isDeleted = rowCells.get(7) != null && Short.parseShort(rowCells.get(7).toString()) == 1;
+                        Boolean enabled = rowCells.get(8) != null && Short.parseShort(rowCells.get(8).toString()) == 1;
                         String rejectPermissionCode = rowCells.get(9) != null ? rowCells.get(9).toString() : null;
                         String permissionComment = rowCells.get(10) != null ? rowCells.get(10).toString() : null;
 
@@ -363,7 +379,7 @@ public class MasterLoadExcelPermissionService {
                         tDlPermissionTemplated.setPermissionType(permissionType);
                         tDlPermissionTemplated.setIsGlobal(isGlobal);
                         tDlPermissionTemplated.setPermissionWeight(permissionWeight);
-                        tDlPermissionTemplated.setPermissionCode(rejectPermissionCode);
+                        tDlPermissionTemplated.setRejectPermissionCode(rejectPermissionCode);
                         tDlPermissionTemplated.setPermissionComment(permissionComment);
 
                         tDlPermissionTemplated.setIsStatic(true);
@@ -389,6 +405,14 @@ public class MasterLoadExcelPermissionService {
                             rowIndex,
                             rowCells)
                     );
+
+                    // 检查 rowCells 中索引 0 到 12 之间是否存在 null 值
+                    for (int x = 0; x <= 2; x++) {
+                        if (rowCells.size() <= x || rowCells.get(x) == null) {
+                            // 如果存在 null，则跳过本次循环
+                            return;
+                        }
+                    }
 
                     if (rowIndex >= 2) {
                         String ruleInterfaceUri = rowCells.get(1).toString();
@@ -423,12 +447,20 @@ public class MasterLoadExcelPermissionService {
                             )
                     );
 
+                    // 检查 rowCells 中索引 0 到 12 之间是否存在 null 值
+                    for (int x = 0; x <= 6; x++) {
+                        if (rowCells.size() <= x || rowCells.get(x) == null) {
+                            // 如果存在 null，则跳过本次循环
+                            return;
+                        }
+                    }
+
                     if (rowIndex >= 2) {
-                        String databaseName = rowCells.get(1).toString();
-                        String tableName = rowCells.get(2).toString();
-                        String columnName = rowCells.get(3).toString();
-                        String ruleCondition = rowCells.get(4).toString();
-                        String ruleConditionValue = rowCells.get(5).toString();
+                        String databaseName = rowCells.get(1) != null ? rowCells.get(1).toString() : null;
+                        String tableName = rowCells.get(2) != null ? rowCells.get(2).toString() : null;
+                        String columnName = rowCells.get(3) != null ? rowCells.get(3).toString() : null;
+                        String ruleCondition = rowCells.get(4) != null ? rowCells.get(4).toString() : null;
+                        String ruleConditionValue = rowCells.get(5) != null ? rowCells.get(5).toString() : null;
 
                         TDlRuleDataRowTemplated tDlRuleDataRowTemplated = new TDlRuleDataRowTemplated();
                         tDlRuleDataRowTemplated.setDatabaseName(databaseName);
@@ -440,7 +472,7 @@ public class MasterLoadExcelPermissionService {
                         tHmmRuleDataRowList.add(tDlRuleDataRowTemplated);
 
                         //Rule relation
-                        String staticRuleCode = rowCells.get(6).toString();
+                        String staticRuleCode = rowCells.get(6) != null ? rowCells.get(6).toString() : null;
                         List<TDlRuleDataRowTemplated> tHmmRuleDataRowListFromMap = staticRuleCodeTDlRuleDataRowListMap.getOrDefault(
                                 staticRuleCode,
                                 CollUtil.newArrayList()
@@ -463,11 +495,19 @@ public class MasterLoadExcelPermissionService {
                             )
                     );
 
+                    // 检查 rowCells 中索引 0 到 12 之间是否存在 null 值
+                    for (int x = 0; x <= 5; x++) {
+                        if (rowCells.size() <= x || rowCells.get(x) == null) {
+                            // 如果存在 null，则跳过本次循环
+                            return;
+                        }
+                    }
+
                     if (rowIndex >= 2) {
-                        String databaseName = rowCells.get(1).toString();
-                        String tableName = rowCells.get(2).toString();
-                        String columnName = rowCells.get(3).toString();
-                        Boolean isAllow = Short.parseShort(rowCells.get(4).toString()) == 1;
+                        String databaseName = rowCells.get(1) != null ? rowCells.get(1).toString() : null;
+                        String tableName = rowCells.get(2) != null ? rowCells.get(2).toString() : null;
+                        String columnName = rowCells.get(3) != null ? rowCells.get(3).toString() : null;
+                        Boolean isAllow = rowCells.get(4) != null && Short.parseShort(rowCells.get(4).toString()) == 1;
 
                         TDlRuleDataColumnTemplated tDlRuleDataColumnTemplated = new TDlRuleDataColumnTemplated();
                         tDlRuleDataColumnTemplated.setDatabaseName(databaseName);
@@ -478,7 +518,7 @@ public class MasterLoadExcelPermissionService {
                         tHmmRuleDataColumnList.add(tDlRuleDataColumnTemplated);
 
                         //Rule relation
-                        String staticRuleCode = rowCells.get(5).toString();
+                        String staticRuleCode = rowCells.get(5) != null ? rowCells.get(5).toString() : null;
                         List<TDlRuleDataColumnTemplated> tHmmRuleDataColumnListFromMap = staticRuleCodeTDlRuleDataColumnListMap.getOrDefault(
                                 staticRuleCode,
                                 CollUtil.newArrayList()
