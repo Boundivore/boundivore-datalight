@@ -40,39 +40,160 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MasterPermissionService {
 
+    /**
+     * Description: 测试接口权限
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return 通过则返回成功
+     */
     public Result<String> testPermissionInterface() {
-        return null;
+        return Result.success();
     }
 
+    /**
+     * Description: 测试数据行权限
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 数据行权限请求体
+     * @return Result<AbstractPermissionRuleVo.PermissionListVo> 返回权限列表
+     */
     public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataRow(TestRuleDataRowRequest request) {
         return null;
     }
 
+    /**
+     * Description: 测试数据列权限
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 数据列权限请求体
+     * @return Result<AbstractPermissionRuleVo.PermissionListVo> 返回数据权限列表
+     */
     public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataColumn(TestRuleDataColumnRequest request) {
         return null;
     }
 
-    public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId, String ruleInterfaceUri) {
+    /**
+     * Description: 根据用户 ID 以及接口 URI 获取接口权限规则列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param userId           用户 ID
+     * @param ruleInterfaceUri 规则接口 URI
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> 接口权限规则列表
+     */
+    public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId,
+                                                                                                      String ruleInterfaceUri) {
         return null;
     }
 
+
+    /**
+     * Description: 根据用户 ID 获取数据行权限及规则列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param userId 用户 ID
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> 数据行权限规则列表
+     */
     public Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> listPermissionRuleDataRow(Long userId) {
         return null;
     }
 
+    /**
+     * Description: 根据用户 ID 获取数据列权限及规则列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param userId 用户 ID
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> 数据列权限规则列表
+     */
     public Result<AbstractPermissionRuleVo.PermissionRuleDataColumnListVo> listPermissionRuleDataColumn(Long userId) {
         return null;
     }
 
+    /**
+     * Description: 更新权限规则列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 待更新权限请求体
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleListVo> 返回更新后的内容
+     */
     public Result<AbstractPermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) {
         return null;
     }
 
+    /**
+     * Description: 根据权限 ID 获取权限详情信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param permissionId 权限 ID
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> 返回权限详情
+     */
     public Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) {
         return null;
     }
 
+    /**
+     * Description: 根据角色 ID 获取该角色绑定的权限列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param roleId 角色 ID
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleListVo> 返回角色下的权限列表
+     */
     public Result<AbstractPermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) {
         return null;
     }
+
+
 }
