@@ -226,7 +226,7 @@ public class MasterUserService {
         // 用户登录
         StpUtil.login(tDlUserAuth.getUserId());
         // 设置Extra值
-        StpUtil.getSession().set("principal", tDlUserAuth.getPrincipal());
+        StpUtil.getSession().set("principal", tDlUserAuth.getPrincipal()).set("userId", tDlUserAuth.getUserId());
 
         // 组装返回实体
         UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
