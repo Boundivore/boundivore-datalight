@@ -16,6 +16,11 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
+import cn.boundivore.dl.base.request.impl.master.test.TestRuleDataColumnRequest;
+import cn.boundivore.dl.base.request.impl.master.test.TestRuleDataRowRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractPermissionRuleVo;
+import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +39,40 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterPermissionService {
-    // TODO 加载权限模板
-    // TODO
+
+    public Result<String> testPermissionInterface() {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataRow(TestRuleDataRowRequest request) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataColumn(TestRuleDataColumnRequest request) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId, String ruleInterfaceUri) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> listPermissionRuleDataRow(Long userId) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionRuleDataColumnListVo> listPermissionRuleDataColumn(Long userId) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) {
+        return null;
+    }
+
+    public Result<AbstractPermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) {
+        return null;
+    }
 }

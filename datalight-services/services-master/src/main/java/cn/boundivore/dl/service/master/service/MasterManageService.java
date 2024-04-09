@@ -109,10 +109,10 @@ public class MasterManageService {
      * Modification time:
      * Throws:
      */
-//    @Scheduled(
-//            initialDelay = 10 * 1000,
-//            fixedDelay = Constants.HEART_BEAT_TIMEOUT
-//    )
+    @Scheduled(
+            initialDelay = 10 * 1000,
+            fixedDelay = Constants.HEART_BEAT_TIMEOUT
+    )
     private void checkAndPull() {
         // 检查重启的节点是否完成，如果完成，节点状态变更为 STARTED 状态
         this.checkAndDetect();

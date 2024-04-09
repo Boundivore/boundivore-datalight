@@ -79,10 +79,6 @@ public interface IMasterPermissionAPI {
     @GetMapping(value = "/permission/listPermissionRuleInterface")
     @ApiOperation(notes = "查询当前用户 接口 权限列表", value = "查询当前用户 接口 权限列表 [Finished]")
     Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(
-            @ApiParam(name = "MerchantId", value = "商家 ID", example = "")
-            @RequestParam(value = "MerchantId", required = false)
-            Long merchantId,
-
             @ApiParam(name = "UserId", value = "用户 ID", example = "")
             @RequestParam(value = "UserId", required = false)
             Long userId,
@@ -95,10 +91,6 @@ public interface IMasterPermissionAPI {
     @GetMapping(value = "/permission/listPermissionRuleDataRow")
     @ApiOperation(notes = "查询当前用户数据 行 权限列表", value = "查询当前用户数据 行 权限列表 [Finished]")
     Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> listPermissionRuleDataRow(
-            @ApiParam(name = "MerchantId", value = "商家 ID", example = "")
-            @RequestParam(value = "MerchantId", required = false)
-            Long merchantId,
-
             @ApiParam(name = "UserId", value = "用户 ID", example = "")
             @RequestParam(value = "UserId", required = false)
             Long userId
@@ -107,10 +99,6 @@ public interface IMasterPermissionAPI {
     @GetMapping(value = "/permission/listPermissionRuleDataColumn")
     @ApiOperation(notes = "查询当前用户数据 列 权限列表", value = "查询当前用户数据 列 权限列表 [Finished]")
     Result<AbstractPermissionRuleVo.PermissionRuleDataColumnListVo> listPermissionRuleDataColumn(
-            @ApiParam(name = "MerchantId", value = "商家 ID", example = "")
-            @RequestParam(value = "MerchantId", required = false)
-            Long merchantId,
-
             @ApiParam(name = "UserId", value = "用户 ID", example = "")
             @RequestParam(value = "UserId", required = false)
             Long userId
