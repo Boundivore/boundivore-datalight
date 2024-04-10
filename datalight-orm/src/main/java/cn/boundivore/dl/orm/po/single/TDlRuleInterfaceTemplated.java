@@ -27,10 +27,8 @@ public class TDlRuleInterfaceTemplated extends TBasePo<TDlRuleInterfaceTemplated
 
     private static final long serialVersionUID = 1L;
 
-
     @ApiModelProperty("接口 URI 绝对路径")
     @TableField("rule_interface_uri")
     private String ruleInterfaceUri;
-
 
 }

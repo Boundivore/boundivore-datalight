@@ -18,8 +18,6 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterPermissionAPI;
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
-import cn.boundivore.dl.base.request.impl.master.test.TestRuleDataColumnRequest;
-import cn.boundivore.dl.base.request.impl.master.test.TestRuleDataRowRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractPermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterPermissionService;
@@ -51,29 +49,10 @@ public class MasterPermissionController implements IMasterPermissionAPI {
     }
 
     @Override
-    public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataRow(TestRuleDataRowRequest request) throws Exception {
-        return this.masterPermissionService.testPermissionDataRow(request);
-    }
-
-    @Override
-    public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataColumn(TestRuleDataColumnRequest request) throws Exception {
-        return this.masterPermissionService.testPermissionDataColumn(request);
-    }
-
-    @Override
     public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId, String ruleInterfaceUri) throws Exception {
         return this.masterPermissionService.listPermissionRuleInterface(userId, ruleInterfaceUri);
     }
 
-    @Override
-    public Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> listPermissionRuleDataRow(Long userId) throws Exception {
-        return this.masterPermissionService.listPermissionRuleDataRow(userId);
-    }
-
-    @Override
-    public Result<AbstractPermissionRuleVo.PermissionRuleDataColumnListVo> listPermissionRuleDataColumn(Long userId) throws Exception {
-        return this.masterPermissionService.listPermissionRuleDataColumn(userId);
-    }
 
     @Override
     public Result<AbstractPermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) throws Exception {

@@ -27,13 +27,8 @@ public class TDlRuleInterface extends TBasePo<TDlRuleInterface> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
-    @TableField("cluster_id")
-    private Long clusterId;
-
     @ApiModelProperty("接口 URI 绝对路径")
     @TableField("rule_interface_uri")
     private String ruleInterfaceUri;
-
 
 }

@@ -27,10 +27,6 @@ public class TDlPermissionRuleRelation extends TBasePo<TDlPermissionRuleRelation
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("集群 ID")
-    @TableField("cluster_id")
-    private Long clusterId;
-
     @ApiModelProperty("权限 ID")
     @TableField("permission_id")
     private Long permissionId;
@@ -38,14 +34,6 @@ public class TDlPermissionRuleRelation extends TBasePo<TDlPermissionRuleRelation
     @ApiModelProperty("接口规则 ID")
     @TableField("rule_interface_id")
     private Long ruleInterfaceId;
-
-    @ApiModelProperty("数据行规则 ID")
-    @TableField("rule_data_row_id")
-    private Long ruleDataRowId;
-
-    @ApiModelProperty("数据列规则 ID")
-    @TableField("rule_data_column_id")
-    private Long ruleDataColumnId;
 
     @ApiModelProperty("页面规则 ID")
     @TableField("rule_page_id")

@@ -1,4 +1,4 @@
-package cn.boundivore.dl.boot.permissions.access;
+package cn.boundivore.dl.boot.filter;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +28,13 @@ public class AccessPostMethodFilter implements Filter {
         try {
             customHttpServletRequestWrapper = new AccessHttpServletRequestWrapper(req);
         } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-
             log.error(
                     String.format(
                             "请求错误, URI: %s",
                             req.getRequestURI()
                     )
             );
+            log.error(ExceptionUtil.stacktraceToString(e));
         }
         chain.doFilter((Objects.isNull(customHttpServletRequestWrapper) ? request : customHttpServletRequestWrapper), response);
     }

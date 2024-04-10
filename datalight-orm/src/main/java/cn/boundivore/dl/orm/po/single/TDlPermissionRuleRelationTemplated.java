@@ -35,14 +35,6 @@ public class TDlPermissionRuleRelationTemplated extends TBasePo<TDlPermissionRul
     @TableField("rule_interface_id")
     private Long ruleInterfaceId;
 
-    @ApiModelProperty("数据行规则 ID")
-    @TableField("rule_data_row_id")
-    private Long ruleDataRowId;
-
-    @ApiModelProperty("数据列规则 ID")
-    @TableField("rule_data_column_id")
-    private Long ruleDataColumnId;
-
     @ApiModelProperty("页面规则 ID")
     @TableField("rule_page_id")
     private Long rulePageId;

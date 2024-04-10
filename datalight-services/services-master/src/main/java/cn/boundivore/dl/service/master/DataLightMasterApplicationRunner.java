@@ -54,8 +54,6 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
     private final MasterComponentService masterComponentService;
 
-    private final MasterLoadExcelPermissionService masterLoadExcelPermissionService;
-
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
@@ -84,14 +82,13 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         log.info("NODE_CONF_DIR: {}", DataLightEnv.NODE_CONF_DIR);
         ResolverYamlNode.resolver(DataLightEnv.NODE_CONF_DIR);
 
-        // ./conf/permission
+        // ./conf/permission，权限模板所在目录，后期如有需要可用于导出已配置的权限
         log.info("CONF_PERMISSION_DIR: {}", DataLightEnv.CONF_PERMISSION_DIR);
-        this.masterLoadExcelPermissionService.initPermissionTable(DataLightEnv.CONF_PERMISSION_DIR);
 
 
         // 更新 Master 所在节点的元数据信息
         // TODO 如果后续开启 Master 高可用功能，则此处需要根据持有活跃锁的状态来执行下面的函数
-        this.masterManageService.updateMasterMeta();
+//        this.masterManageService.updateMasterMeta();
 
         // 检查超级用户是否注入到数据库
         this.masterUserService.checkInitSuperUser();

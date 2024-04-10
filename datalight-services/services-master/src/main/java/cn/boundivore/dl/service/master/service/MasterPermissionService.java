@@ -17,8 +17,6 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
-import cn.boundivore.dl.base.request.impl.master.test.TestRuleDataColumnRequest;
-import cn.boundivore.dl.base.request.impl.master.test.TestRuleDataRowRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractPermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
@@ -56,39 +54,6 @@ public class MasterPermissionService {
         return Result.success();
     }
 
-    /**
-     * Description: 测试数据行权限
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param request 数据行权限请求体
-     * @return Result<AbstractPermissionRuleVo.PermissionListVo> 返回权限列表
-     */
-    public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataRow(TestRuleDataRowRequest request) {
-        return null;
-    }
-
-    /**
-     * Description: 测试数据列权限
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param request 数据列权限请求体
-     * @return Result<AbstractPermissionRuleVo.PermissionListVo> 返回数据权限列表
-     */
-    public Result<AbstractPermissionRuleVo.PermissionListVo> testPermissionDataColumn(TestRuleDataColumnRequest request) {
-        return null;
-    }
 
     /**
      * Description: 根据用户 ID 以及接口 URI 获取接口权限规则列表
@@ -106,41 +71,6 @@ public class MasterPermissionService {
      */
     public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId,
                                                                                                       String ruleInterfaceUri) {
-        return null;
-    }
-
-
-    /**
-     * Description: 根据用户 ID 获取数据行权限及规则列表
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param userId 用户 ID
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> 数据行权限规则列表
-     */
-    public Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> listPermissionRuleDataRow(Long userId) {
-        return null;
-    }
-
-    /**
-     * Description: 根据用户 ID 获取数据列权限及规则列表
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param userId 用户 ID
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleDataRowListVo> 数据列权限规则列表
-     */
-    public Result<AbstractPermissionRuleVo.PermissionRuleDataColumnListVo> listPermissionRuleDataColumn(Long userId) {
         return null;
     }
 
