@@ -36,10 +36,6 @@ public class TDlPermissionTemplated extends TBasePo<TDlPermissionTemplated> {
     @TableField("enabled")
     private Boolean enabled;
 
-    @ApiModelProperty("静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新")
-    @TableField("static_version")
-    private Long staticVersion;
-
     @ApiModelProperty("权限编码")
     @TableField("permission_code")
     private String permissionCode;
@@ -51,14 +47,6 @@ public class TDlPermissionTemplated extends TBasePo<TDlPermissionTemplated> {
     @ApiModelProperty("权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);")
     @TableField("permission_type")
     private PermissionTypeEnum permissionType;
-
-    @ApiModelProperty("是否为静态权限 1 为静态权限，0 为动态权限")
-    @TableField("is_static")
-    private Boolean isStatic;
-
-    @ApiModelProperty("是否全局控制")
-    @TableField("is_global")
-    private Boolean isGlobal;
 
     @ApiModelProperty("互斥权限编码")
     @TableField("reject_permission_code")

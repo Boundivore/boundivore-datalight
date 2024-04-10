@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:786.30,-1209.83,1.70,0,",
+      "CustomAttr1": "DVS:109.32,-1209.83,1.70,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -3455,7 +3455,7 @@
             "OrderNo": 26,
             "GraphDesc": "Left=1197.76\r\nTop=414.77",
             "MetaFields": {
-              "Count": 15,
+              "Count": 12,
               "items": [
                 {
                   "ID": 1,
@@ -3516,17 +3516,9 @@
                   "DataLength": 1
                 },
                 {
-                  "ID": 19,
-                  "Name": "static_version",
-                  "Memo": "导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新",
-                  "OrderNo": 7,
-                  "DisplayName": "静态文件版本",
-                  "DataType": 2
-                },
-                {
                   "ID": 12,
                   "Name": "permission_code",
-                  "OrderNo": 8,
+                  "OrderNo": 7,
                   "DisplayName": "权限编码",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -3535,7 +3527,7 @@
                 {
                   "ID": 4,
                   "Name": "permission_name",
-                  "OrderNo": 9,
+                  "OrderNo": 8,
                   "DisplayName": "权限名称",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -3545,37 +3537,16 @@
                   "ID": 15,
                   "Name": "permission_type",
                   "Memo": "枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);",
-                  "OrderNo": 10,
+                  "OrderNo": 9,
                   "DisplayName": "权限类型",
                   "DataType": 1,
                   "Not_Nullable": true,
                   "DataLength": 255
                 },
                 {
-                  "ID": 20,
-                  "Name": "is_static",
-                  "Memo": "1 为静态权限，0 为动态权限",
-                  "OrderNo": 11,
-                  "DisplayName": "是否为静态权限",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 16,
-                  "Name": "is_global",
-                  "OrderNo": 12,
-                  "DisplayName": "是否全局控制",
-                  "DataType": 2,
-                  "DefaultValue": "1",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
                   "ID": 17,
                   "Name": "reject_permission_code",
-                  "OrderNo": 13,
+                  "OrderNo": 10,
                   "DisplayName": "互斥权限编码",
                   "DataType": 1,
                   "DataLength": 255
@@ -3584,7 +3555,7 @@
                   "ID": 18,
                   "Name": "permission_weight",
                   "Memo": "优先级，取值范围：1 ~ 10",
-                  "OrderNo": 14,
+                  "OrderNo": 11,
                   "DisplayName": "权限权重",
                   "DataType": 2,
                   "DefaultValue": "1",
@@ -3594,7 +3565,7 @@
                 {
                   "ID": 5,
                   "Name": "permission_comment",
-                  "OrderNo": 15,
+                  "OrderNo": 12,
                   "DisplayName": "权限备注",
                   "DataType": 1,
                   "DataLength": 255
@@ -4035,7 +4006,7 @@
             "OrderNo": 32,
             "GraphDesc": "Left=1437.45\r\nTop=786.40",
             "MetaFields": {
-              "Count": 15,
+              "Count": 12,
               "items": [
                 {
                   "ID": 1,
@@ -4096,17 +4067,9 @@
                   "DataLength": 1
                 },
                 {
-                  "ID": 19,
-                  "Name": "static_version",
-                  "Memo": "导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新",
-                  "OrderNo": 7,
-                  "DisplayName": "静态文件版本",
-                  "DataType": 2
-                },
-                {
                   "ID": 12,
                   "Name": "permission_code",
-                  "OrderNo": 8,
+                  "OrderNo": 7,
                   "DisplayName": "权限编码",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -4115,7 +4078,7 @@
                 {
                   "ID": 4,
                   "Name": "permission_name",
-                  "OrderNo": 9,
+                  "OrderNo": 8,
                   "DisplayName": "权限名称",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -4125,37 +4088,16 @@
                   "ID": 15,
                   "Name": "permission_type",
                   "Memo": "枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);",
-                  "OrderNo": 10,
+                  "OrderNo": 9,
                   "DisplayName": "权限类型",
                   "DataType": 1,
                   "Not_Nullable": true,
                   "DataLength": 255
                 },
                 {
-                  "ID": 20,
-                  "Name": "is_static",
-                  "Memo": "1 为静态权限，0 为动态权限",
-                  "OrderNo": 11,
-                  "DisplayName": "是否为静态权限",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 16,
-                  "Name": "is_global",
-                  "OrderNo": 12,
-                  "DisplayName": "是否全局控制",
-                  "DataType": 2,
-                  "DefaultValue": "1",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
                   "ID": 17,
                   "Name": "reject_permission_code",
-                  "OrderNo": 13,
+                  "OrderNo": 10,
                   "DisplayName": "互斥权限编码",
                   "DataType": 1,
                   "DataLength": 255
@@ -4164,7 +4106,7 @@
                   "ID": 18,
                   "Name": "permission_weight",
                   "Memo": "优先级，取值范围：1 ~ 10",
-                  "OrderNo": 14,
+                  "OrderNo": 11,
                   "DisplayName": "权限权重",
                   "DataType": 2,
                   "DefaultValue": "1",
@@ -4174,7 +4116,7 @@
                 {
                   "ID": 5,
                   "Name": "permission_comment",
-                  "OrderNo": 15,
+                  "OrderNo": 12,
                   "DisplayName": "权限备注",
                   "DataType": 1,
                   "DataLength": 255

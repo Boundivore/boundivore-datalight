@@ -1,6 +1,7 @@
 package cn.boundivore.dl.orm.po.single;
 
 import cn.boundivore.dl.orm.po.TBasePo;
+import cn.hutool.http.Method;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;

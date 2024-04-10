@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 10/04/2024 15:47:48
+ Date: 10/04/2024 15:59:37
 */
 
 SET NAMES utf8mb4;
@@ -378,12 +378,9 @@ CREATE TABLE `t_dl_permission`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否生效',
-  `static_version` int(11) NULL DEFAULT NULL COMMENT '静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新',
   `permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限编码',
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
   `permission_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);',
-  `is_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为静态权限 1 为静态权限，0 为动态权限',
-  `is_global` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否全局控制',
   `reject_permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '互斥权限编码',
   `permission_weight` bigint(20) NOT NULL DEFAULT 1 COMMENT '权限权重 优先级，取值范围：1 ~ 10',
   `permission_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限备注',
@@ -459,12 +456,9 @@ CREATE TABLE `t_dl_permission_templated`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否删除',
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否生效',
-  `static_version` int(11) NULL DEFAULT NULL COMMENT '静态文件版本 导入的 Excel 静态文件的版本，只有 Excel 版本大于当前数据库记录的版本，静态文件才会被导入或更新',
   `permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限编码',
   `permission_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
   `permission_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);',
-  `is_static` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否为静态权限 1 为静态权限，0 为动态权限',
-  `is_global` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否全局控制',
   `reject_permission_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '互斥权限编码',
   `permission_weight` bigint(20) NOT NULL DEFAULT 1 COMMENT '权限权重 优先级，取值范围：1 ~ 10',
   `permission_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '权限备注',

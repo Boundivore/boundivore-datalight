@@ -16,6 +16,11 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.service.single.impl.TDlPermissionRuleRelationTemplatedServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlPermissionTemplatedServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlRuleInterfaceTemplatedServiceImpl;
 import cn.boundivore.dl.service.master.bean.PermissionTemplated;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.exceptions.ExceptionUtil;
@@ -33,6 +38,7 @@ import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +67,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MasterPermissionHandlerService implements StpInterface {
 
+
     // 定义包名和类名通配符
     private final static String CLASS = "*.class";
     private final static String PACKAGE = "cn.boundivore.dl.api.master.define.";
@@ -70,7 +77,7 @@ public class MasterPermissionHandlerService implements StpInterface {
 
     @PostConstruct
     public void init() {
-        scanApiAnnotation();
+        this.scanApiAnnotation();
     }
 
     /**
