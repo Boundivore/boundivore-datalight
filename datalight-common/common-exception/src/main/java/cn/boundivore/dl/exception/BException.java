@@ -28,6 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class BException extends RuntimeException {
+    private static final long serialVersionUID = 1499703629430782202L;
     private final String message;
 
     public BException(String message) {

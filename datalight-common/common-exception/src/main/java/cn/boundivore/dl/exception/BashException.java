@@ -28,6 +28,8 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class BashException extends RuntimeException {
+    private static final long serialVersionUID = -5871703454779670726L;
+
     private final String message;
 
     public BashException(String message) {

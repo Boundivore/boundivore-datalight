@@ -28,6 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class LoginFailException extends RuntimeException {
+    private static final long serialVersionUID = 8471764309098698619L;
     private final String message;
     public LoginFailException(String message) {
         this.message = message;

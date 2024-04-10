@@ -28,6 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class FileDownloadException extends RuntimeException {
+    private static final long serialVersionUID = 9156724959661527916L;
     private final String message;
     public FileDownloadException(String message) {
         this.message = message;

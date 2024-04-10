@@ -17,18 +17,19 @@
 package cn.boundivore.dl.exception;
 
 /**
- * Description: PermissionDeniedException
+ * Description: PermissionInterfaceDeniedException
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/6
+ * Creation time: 2024/4/10
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-public class PermissionDeniedException extends RuntimeException {
+public class PermissionInterfaceDeniedException extends RuntimeException {
+    private static final long serialVersionUID = 3116012101804692855L;
 
-  public PermissionDeniedException(String message) {
-    super(message);
-  }
+    public PermissionInterfaceDeniedException(String message) {
+        super(message);
+    }
 }

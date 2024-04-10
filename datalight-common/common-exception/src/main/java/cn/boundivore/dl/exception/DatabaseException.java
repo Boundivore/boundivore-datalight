@@ -27,6 +27,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class DatabaseException extends RuntimeException {
+    private static final long serialVersionUID = -5152590951319787944L;
     private final String message;
     public DatabaseException(String message) {
         this.message = message;

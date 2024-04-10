@@ -16,9 +16,8 @@
  */
 package cn.boundivore.dl.exception;
 
-
 /**
- * Description: FileUploadException
+ * Description: AuthDeniedException
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/6
@@ -27,15 +26,11 @@ package cn.boundivore.dl.exception;
  * Modification time:
  * Version: V1.0
  */
-public class FileUploadException extends RuntimeException {
-    private static final long serialVersionUID = -8515123927954304896L;
-    private final String message;
-    public FileUploadException(String message) {
-        this.message = message;
-    }
+public class AuthDeniedException extends RuntimeException {
 
-    @Override
-    public String getMessage() {
-        return this.message;
+    private static final long serialVersionUID = 3116012101804692855L;
+
+    public AuthDeniedException(String message) {
+        super(message);
     }
 }

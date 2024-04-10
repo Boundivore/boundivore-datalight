@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaCheckLogin
 public class MasterPrometheusInvokeController implements IMasterPrometheusInvokeAPI {
 
     private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;

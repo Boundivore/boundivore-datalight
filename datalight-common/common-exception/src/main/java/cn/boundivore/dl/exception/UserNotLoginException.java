@@ -27,6 +27,8 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class UserNotLoginException extends RuntimeException {
+  private static final long serialVersionUID = 5147963157523808106L;
+
   public UserNotLoginException(String message) {
     super(message);
   }

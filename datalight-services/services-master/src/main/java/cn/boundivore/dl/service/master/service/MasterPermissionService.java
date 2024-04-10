@@ -109,21 +109,19 @@ public class MasterPermissionService {
     }
 
     /**
-     * Description: 根据角色 ID 获取该角色绑定的权限列表
+     * Description: 根据角色 ID 后去权限信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
+     * Creation time: 2024/4/10
      * Modification description:
      * Modified by:
      * Modification time:
      * Throws:
      *
      * @param roleId 角色 ID
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleListVo> 返回角色下的权限列表
+     * @return Result<AbstractPermissionRuleVo.PermissionRuleListVo> 权限信息
      */
     public Result<AbstractPermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) {
         return null;
     }
-
-
 }

@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaCheckLogin
 public class MasterAlertController implements IMasterAlertAPI {
 
     private final MasterAlertService masterAlertService;

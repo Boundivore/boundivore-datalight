@@ -36,7 +36,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaCheckLogin
 public class MasterDLCController implements IMasterDLCAPI {
 
     private final MasterDLCService masterDLCService;

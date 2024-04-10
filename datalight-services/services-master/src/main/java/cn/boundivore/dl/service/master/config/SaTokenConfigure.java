@@ -16,12 +16,22 @@
  */
 package cn.boundivore.dl.service.master.config;
 
+import cn.boundivore.dl.base.enumeration.impl.StaticRoleTypeEnum;
+import cn.boundivore.dl.service.master.bean.PermissionTemplated;
+import cn.boundivore.dl.service.master.service.MasterPermissionHandlerService;
+import cn.boundivore.dl.service.master.utils.SaTokenCheckUtil;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Map;
+
+import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 /**
  * Description: SaTokenConfigure
@@ -34,8 +44,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * Version: V1.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class SaTokenConfigure implements WebMvcConfigurer {
 
+    private final MasterPermissionHandlerService masterPermissionHandlerService;
 
     /**
      * Description: 注册 Sa-Token 拦截器，打开注解式鉴权功能
@@ -57,30 +69,24 @@ public class SaTokenConfigure implements WebMvcConfigurer {
 
                     // 登录校验，拦截所有路由，并排除登录 URI
                     SaRouter.match(
-                            "/**",
-                            "/api/v1/master/user/login",
+                            MASTER_URL_PREFIX + "/**",
                             r -> StpUtil.checkLogin()
                     );
 
-                    SaRouter.match(
-                            "/api/v1/master/**",
-                            r -> StpUtil.checkRoleOr("admin", "super-admin")
+                    // <PermissionCode, PermissionTemplated> 动态加载当前所有接口权限
+                    Map<String, PermissionTemplated> permissionTemplatedMap = this.masterPermissionHandlerService.getPermissionTemplatedMap();
+
+                    // 遍历添加权限校检
+                    permissionTemplatedMap.forEach((permissionCode, permissionTemplated) -> {
+                                SaRouter.match(
+                                        permissionTemplated.getPath(),
+                                        r -> SaTokenCheckUtil.checkRoleOrPermission(
+                                                CollUtil.newArrayList(StaticRoleTypeEnum.ADMIN.name()),
+                                                CollUtil.newArrayList(permissionTemplated.getCode())
+                                        )
+                                );
+                            }
                     );
-
-                    // 权限校验
-                    SaRouter.match("/api/v1/master/**", r -> StpUtil.checkPermission("user"));
-                    SaRouter.match("/api/v1/master/**", r -> StpUtil.checkPermission("admin"));
-                    SaRouter.match("/api/v1/master/**", r -> StpUtil.checkPermission("goods"));
-                    SaRouter.match("/api/v1/master/**", r -> StpUtil.checkPermission("orders"));
-                    SaRouter.match("/api/v1/master/**", r -> StpUtil.checkPermission("notice"));
-                    SaRouter.match("/api/v1/master/**", r -> StpUtil.checkPermission("comment"));
-
-                    // 甚至你可以随意的写一个打印语句
-                    SaRouter.match("/**", r -> System.out.println("----啦啦啦----"));
-
-                    // 连缀写法
-                    SaRouter.match("/**").check(r -> System.out.println("----啦啦啦----"));
-
                 })
         ).addPathPatterns("/**");
     }

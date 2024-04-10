@@ -28,6 +28,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class LicenseNotFoundException extends RuntimeException {
+    private static final long serialVersionUID = -6382955717538833009L;
     private final String message;
     public LicenseNotFoundException(String message) {
         this.message = message;

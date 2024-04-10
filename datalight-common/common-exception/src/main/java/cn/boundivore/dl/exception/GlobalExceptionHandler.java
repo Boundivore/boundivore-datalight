@@ -133,7 +133,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler({UserNotLoginException.class, PermissionDeniedException.class})
+    @ExceptionHandler({UserNotLoginException.class, AuthDeniedException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
     public Result<?> authExceptionHandler(Exception e) {
@@ -141,6 +141,16 @@ public class GlobalExceptionHandler {
         log.error("User Auth exception:[{}]", error);
         return Result.fail(ResultEnum.FAIL_AUTH_EXCEPTION);
     }
+
+    @ExceptionHandler({PermissionInterfaceDeniedException.class})
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public Result<?> permissionInterfaceExceptionHandler(Exception e) {
+        val error = ExceptionUtil.stacktraceToString(e);
+        log.error("Interface permission exception:[{}]", error);
+        return Result.fail(ResultEnum.FAIL_INTERFACE_UNAUTHORIZED);
+    }
+
 
     @ExceptionHandler(LoginFailException.class)
     @ResponseBody
@@ -280,7 +290,7 @@ public class GlobalExceptionHandler {
 
         return Result.fail(
                 resultEnum,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                new ErrorMessage(resultEnum.getMessageCN())
         );
     }
 

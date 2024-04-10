@@ -14,28 +14,42 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.exception;
+package cn.boundivore.dl.base.enumeration.impl;
 
+import cn.boundivore.dl.base.enumeration.IBaseEnum;
 
 /**
- * Description: FileUploadException
+ * Description: StaticRoleTypeEnum
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/6
+ * Creation time: 2024/4/10
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-public class FileUploadException extends RuntimeException {
-    private static final long serialVersionUID = -8515123927954304896L;
+public enum StaticRoleTypeEnum implements IBaseEnum {
+
+    ADMIN("0", "超级用户"),
+    MANAGER("1", "管理员"),
+    VIEWER("2", "浏览者");
+
+
+    private final String code;
     private final String message;
-    public FileUploadException(String message) {
+
+    StaticRoleTypeEnum(String code, String message) {
+        this.code = code;
         this.message = message;
     }
 
     @Override
+    public String getCode() {
+        return code;
+    }
+
+    @Override
     public String getMessage() {
-        return this.message;
+        return message;
     }
 }

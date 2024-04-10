@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaCheckLogin
 public class MasterDeployController implements IMasterDeployAPI {
 
     private final MasterDeployService masterDeployService;

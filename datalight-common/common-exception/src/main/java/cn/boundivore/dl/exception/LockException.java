@@ -27,6 +27,7 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class LockException extends RuntimeException {
+    private static final long serialVersionUID = 5839387457266498062L;
     private final String message;
     public LockException(String message) {
         this.message = message;

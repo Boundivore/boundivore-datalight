@@ -27,6 +27,8 @@ package cn.boundivore.dl.exception;
  * Version: V1.0
  */
 public class InnerRemoteInvokeException extends RuntimeException {
+  private static final long serialVersionUID = 1806697517224921932L;
+
   public InnerRemoteInvokeException(String message) {
     super(message);
   }

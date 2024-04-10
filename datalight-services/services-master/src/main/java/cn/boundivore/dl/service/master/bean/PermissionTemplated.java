@@ -14,28 +14,31 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.exception;
+package cn.boundivore.dl.service.master.bean;
 
+import cn.hutool.http.Method;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Description: FileUploadException
+ * Description: 接口权限信息
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/6
+ * Creation time: 2024/4/10
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-public class FileUploadException extends RuntimeException {
-    private static final long serialVersionUID = -8515123927954304896L;
-    private final String message;
-    public FileUploadException(String message) {
-        this.message = message;
-    }
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PermissionTemplated {
 
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
+    private String path;
+    private String code;
+    private String name;
+    private Method httpMethod;
+
 }

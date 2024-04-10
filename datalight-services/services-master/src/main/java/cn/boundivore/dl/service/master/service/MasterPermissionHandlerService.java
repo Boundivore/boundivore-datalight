@@ -16,9 +16,13 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.service.master.bean.PermissionTemplated;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -37,7 +41,9 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Description: 扫描 Swagger 注解，解析权限项，返回权限详情等
@@ -49,6 +55,7 @@ import java.util.List;
  * Modification time:
  * Version: V1.0
  */
+@Getter
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -57,6 +64,9 @@ public class MasterPermissionHandlerService implements StpInterface {
     // 定义包名和类名通配符
     private final static String CLASS = "*.class";
     private final static String PACKAGE = "cn.boundivore.dl.api.master.define.";
+
+    // <PermissionCode, PermissionTemplated>
+    private final Map<String, PermissionTemplated> permissionTemplatedMap = new HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -74,7 +84,7 @@ public class MasterPermissionHandlerService implements StpInterface {
      * Modification time:
      * Throws:
      */
-    public void scanApiAnnotation() {
+    private void scanApiAnnotation() {
         // 创建一个资源解析器来扫描类路径
         ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
         // 转换包名为类路径的通配符形式
@@ -103,11 +113,14 @@ public class MasterPermissionHandlerService implements StpInterface {
                 // 获取并遍历类中的所有方法
                 for (Method method : clazz.getDeclaredMethods()) {
                     if (method.isAnnotationPresent(ApiOperation.class)) {
-                        String methodPath = extractMethodPath(method);
-                        String fullPath = feignClientPath + methodPath;
+                        MappingBean mappingBean = extractHttpMethodPath(method);
+
+                        String relativePath = mappingBean.getHttpPath() != null ? mappingBean.getHttpPath() : "";
+                        String interfacePath = feignClientPath + relativePath;
+                        String httpMethod = mappingBean.getHttpMethod();
                         ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
 
-//                        log.info("Full URI: {}, Class: {}, Method: {}, Operation: {}, Notes: {}, Nickname: {}",
+//                        log.info("Path: {}, Class: {}, Method: {}, Operation: {}, Notes: {}, Nickname: {}",
 //                                fullPath,
 //                                classname,
 //                                method.getName(),
@@ -115,11 +128,28 @@ public class MasterPermissionHandlerService implements StpInterface {
 //                                apiOperation.notes(),
 //                                apiOperation.nickname()
 //                        );
-                        log.info("Full URI: {}, PermissionCode: {}, PermissionName: {}",
-                                fullPath,
-                                this.getPermissionCode(clazz.getSimpleName(), method.getName()),
-                                apiOperation.value()
+                        String permissionCode = this.getPermissionCode(clazz.getSimpleName(), method.getName());
+                        String permissionName = apiOperation.value();
+                        log.info("Path: {}, PermissionCode: {}, PermissionName: {}, HttpMethod: {}",
+                                interfacePath,
+                                permissionCode,
+                                permissionName,
+                                httpMethod
+
                         );
+
+                        if (!method.getName().contains("login")) {
+                            this.permissionTemplatedMap.put(
+                                    permissionCode,
+                                    new PermissionTemplated(
+                                            interfacePath,
+                                            permissionCode,
+                                            permissionName,
+                                            cn.hutool.http.Method.valueOf(httpMethod)
+                                    )
+                            );
+                        }
+
                     }
                 }
             }
@@ -184,7 +214,7 @@ public class MasterPermissionHandlerService implements StpInterface {
     }
 
     /**
-     * Description: 获取 GetMapping 或 PostMapping 中的 value 值
+     * Description: 获取 GetMapping 或 PostMapping 中的 value 值并包含具体 HttpMethod
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/10
@@ -196,18 +226,36 @@ public class MasterPermissionHandlerService implements StpInterface {
      * @param method 当前被 ApiOperation 注解标注的方法
      * @return 返回 GetMapping 或 PostMapping 中的 value 值
      */
-    private String extractMethodPath(Method method) {
+    private MappingBean extractHttpMethodPath(Method method) {
         // 获取方法上的 GetMapping 或 PostMapping 注解
         GetMapping getMapping = method.getAnnotation(GetMapping.class);
         PostMapping postMapping = method.getAnnotation(PostMapping.class);
 
         if (getMapping != null && getMapping.value().length > 0) {
-            return getMapping.value()[0];
+
+            return new MappingBean("GET", getMapping.value()[0]);
         } else if (postMapping != null && postMapping.value().length > 0) {
-            return postMapping.value()[0];
+            return new MappingBean("POST", postMapping.value()[0]);
         }
 
-        return "";
+        return null;
+    }
+
+    /**
+     * Description: GET POST 信息封装静态内部类
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Data
+    @AllArgsConstructor
+    private static class MappingBean {
+        private String httpMethod;
+        private String httpPath;
     }
 
     /**
@@ -227,7 +275,8 @@ public class MasterPermissionHandlerService implements StpInterface {
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
         List<String> permissionList = new ArrayList<>();
-        permissionList.add("I0000002");
+        permissionList.add("IMasterPermissionAPI.testPermissionInterface");
+        log.info("调用了获取权限方法: {}", permissionList);
         return permissionList;
     }
 
@@ -248,7 +297,8 @@ public class MasterPermissionHandlerService implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         List<String> roleList = new ArrayList<>();
-        roleList.add("admin");
+        roleList.add("ADMIN");
+        log.info("调用了获取角色方法: {}", roleList);
         return roleList;
     }
 

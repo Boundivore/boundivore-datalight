@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaCheckLogin
 public class MasterAutoPullController implements IMasterAutoPullAPI {
 
     private final MasterAutoPullService masterAutoPullService;
