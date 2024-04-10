@@ -31,4 +31,8 @@ public class TDlRuleInterfaceTemplated extends TBasePo<TDlRuleInterfaceTemplated
     @TableField("rule_interface_uri")
     private String ruleInterfaceUri;
 
+    @ApiModelProperty("接口 HTTP METHOD GET, POST")
+    @TableField("rule_interface_method")
+    private String ruleInterfaceMethod;
+
 }

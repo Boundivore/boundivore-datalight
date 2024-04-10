@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-607.30,-1117.97,1.43,0,",
+      "CustomAttr1": "DVS:786.30,-1209.83,1.70,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -3755,7 +3755,7 @@
             "OrderNo": 29,
             "GraphDesc": "Left=1905.27\r\nTop=416.62",
             "MetaFields": {
-              "Count": 5,
+              "Count": 6,
               "items": [
                 {
                   "ID": 1,
@@ -3801,6 +3801,16 @@
                   "Memo": "绝对路径",
                   "OrderNo": 5,
                   "DisplayName": "接口 URI",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 6,
+                  "Name": "rule_interface_method",
+                  "Memo": "GET, POST",
+                  "OrderNo": 6,
+                  "DisplayName": "接口 HTTP METHOD",
                   "DataType": 1,
                   "Not_Nullable": true,
                   "DataLength": 255
@@ -4325,7 +4335,7 @@
             "OrderNo": 35,
             "GraphDesc": "Left=2315.19\r\nTop=784.79",
             "MetaFields": {
-              "Count": 5,
+              "Count": 6,
               "items": [
                 {
                   "ID": 1,
@@ -4371,6 +4381,16 @@
                   "Memo": "绝对路径",
                   "OrderNo": 5,
                   "DisplayName": "接口 URI",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 6,
+                  "Name": "rule_interface_method",
+                  "Memo": "GET, POST",
+                  "OrderNo": 6,
+                  "DisplayName": "接口 HTTP METHOD",
                   "DataType": 1,
                   "Not_Nullable": true,
                   "DataLength": 255

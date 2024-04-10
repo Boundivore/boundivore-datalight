@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 10/04/2024 11:56:43
+ Date: 10/04/2024 15:47:48
 */
 
 SET NAMES utf8mb4;
@@ -553,6 +553,7 @@ CREATE TABLE `t_dl_rule_interface`  (
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `rule_interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 URI 绝对路径',
+  `rule_interface_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 HTTP METHOD GET, POST',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口资源规则表' ROW_FORMAT = Dynamic;
 
@@ -566,6 +567,7 @@ CREATE TABLE `t_dl_rule_interface_templated`  (
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `rule_interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 URI 绝对路径',
+  `rule_interface_method` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接口 HTTP METHOD GET, POST',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口资源规则常量模板表' ROW_FORMAT = Dynamic;
 
