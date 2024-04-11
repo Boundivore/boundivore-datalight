@@ -47,23 +47,19 @@ public class MasterPermissionController implements IMasterPermissionAPI {
     }
 
     @Override
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> permissionDetails(Long permissionId) throws Exception {
+        return this.masterPermissionService.permissionDetails(permissionId);
+    }
+
+    @Override
     public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId, String ruleInterfaceUri) throws Exception {
         return this.masterPermissionService.listPermissionRuleInterface(userId, ruleInterfaceUri);
     }
 
-
     @Override
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) throws Exception {
-        return this.masterPermissionService.putPermissionBatch(request);
-    }
-
-    @Override
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) throws Exception {
-        return this.masterPermissionService.details(permissionId);
-    }
-
-    @Override
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) throws Exception {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionByRoleId(Long roleId) throws Exception {
         return this.masterPermissionService.listPermissionByRoleId(roleId);
     }
+
+
 }

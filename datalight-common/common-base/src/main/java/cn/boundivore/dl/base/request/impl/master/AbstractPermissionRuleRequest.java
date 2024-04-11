@@ -27,33 +27,6 @@ import java.util.List;
  */
 public abstract class AbstractPermissionRuleRequest {
 
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    @Schema(
-            name = "AbstractPermissionRuleRequest.NewPermissionAndRuleRequest",
-            description = "AbstractPermissionRuleRequest.NewPermissionAndRuleRequest: 新建、更新、删除批量权限信息 请求体"
-    )
-    public final static class NewPermissionAndRuleRequest implements IRequest {
-
-        private static final long serialVersionUID = 5587915222636038824L;
-
-        @ApiModelProperty(name = "RoleId", value = "角色 ID", required = true)
-        @JsonProperty(value = "RoleId", required = true)
-        private Long roleId;
-
-        @ApiModelProperty(name = "IsClearInterface", value = "是否清空指定角色下所有接口权限", required = true)
-        @JsonProperty(value = "IsClearInterface", required = true)
-        private Boolean isClearInterface = false;
-
-        @ApiModelProperty(name = "PermissionInterfaceList", value = "接口权限列表", required = true)
-        @JsonProperty(value = "PermissionInterfaceList", required = true)
-        @Valid
-        private List<NewPermissionInterfaceRequest> permissionInterfaceList = new ArrayList<>();
-
-    }
-
 
     @Data
     @AllArgsConstructor
@@ -67,10 +40,10 @@ public abstract class AbstractPermissionRuleRequest {
 
         private static final long serialVersionUID = 6616348577672629228L;
 
-        @ApiModelProperty(name = "PermissionFinalId", value = "权限类目常量 ID", required = true)
-        @JsonProperty(value = "PermissionFinalId", required = true)
+        @ApiModelProperty(name = "PermissionId", value = "权限类目常量 ID", required = true)
+        @JsonProperty(value = "PermissionId", required = true)
         @NotNull(message = "权限类目常量 ID 不能为空")
-        private Long permissionFinalId;
+        private Long permissionId;
 
         @ApiModelProperty(required = true, name = "NewRuleInterface", value = "权限接口规则")
         @JsonProperty(required = true, value = "NewRuleInterface")

@@ -54,9 +54,13 @@ public abstract class AbstractRolePermissionRuleVo {
     public final static class PermissionVo implements IVo {
         private static final long serialVersionUID = -1954502674063728108L;
 
-        @ApiModelProperty(required = true, name = "PermissionId", value = "主键 ID")
+        @ApiModelProperty(required = true, name = "PermissionId", value = "权限主键 ID")
         @JsonProperty(value = "PermissionId", required = true)
         private Long permissionId;
+
+        @ApiModelProperty(required = true, name = "RuleId", value = "规则主键 ID")
+        @JsonProperty(value = "RuleId", required = true)
+        private Long ruleId;
 
         @ApiModelProperty(required = true, name = "IsDeleted", value = "是否删除")
         @JsonProperty(value = "IsDeleted", required = true)
@@ -92,67 +96,33 @@ public abstract class AbstractRolePermissionRuleVo {
 
     }
 
+
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
             name = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo",
-            description = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo 接口权限规则信息列表 响应体"
+            description = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo 接口权限详情列表 响应体"
     )
     public final static class PermissionRuleInterfaceListVo implements IVo {
-        private static final long serialVersionUID = -3706117875208207796L;
-
-        @ApiModelProperty(required = true, name = "PermissionRuleInterfaceList", value = "接口权限规则信息列表 响应体")
-        @JsonProperty(value = "PermissionRuleInterfaceList", required = true)
-        private List<PermissionRuleInterfaceVo> permissionRuleInterfaceList;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    @Schema(
-            name = "AbstractRolePermissionRuleVo.PermissionRuleListVo",
-            description = "AbstractRolePermissionRuleVo.PermissionRuleListVo 权限权限详情列表 响应体"
-    )
-    public final static class PermissionRuleListVo implements IVo {
         private static final long serialVersionUID = 68623053874861368L;
 
-        @ApiModelProperty(required = true, name = "PermissionRuleInterfaceList", value = "接口权限信息列表")
-        @JsonProperty(value = "PermissionRuleInterfaceList", required = true)
-        private List<PermissionRuleInterfaceVo> permissionRuleInterfaceList = new ArrayList<>();
+        @ApiModelProperty(required = true, name = "PermissionRuleInterfaceDetailList", value = "接口权限信息列表")
+        @JsonProperty(value = "PermissionRuleInterfaceDetailList", required = true)
+        private List<PermissionRuleInterfaceDetailVo> permissionRuleInterfaceList = new ArrayList<>();
     }
+
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceVo",
-            description = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceVo 接口权限规则信息列表 响应体"
+            name = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo",
+            description = "AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo 权限与接口规则详情 响应体"
     )
-    public final static class PermissionRuleInterfaceVo implements IVo {
-        private static final long serialVersionUID = 5866369726494529388L;
-
-        @ApiModelProperty(required = true, name = "Permission", value = "权限主体信息")
-        @JsonProperty(value = "Permission", required = true)
-        private PermissionVo permissionVo;
-
-        @ApiModelProperty(required = true, name = "RuleInterface", value = "权限规则信息")
-        @JsonProperty(value = "RuleInterface", required = true)
-        private RuleInterfaceVo ruleInterface;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    @Schema(
-            name = "AbstractRolePermissionRuleVo.PermissionRuleDetailsVo",
-            description = "AbstractRolePermissionRuleVo.PermissionRuleDetailsVo 权限权限详情 响应体"
-    )
-    public final static class PermissionRuleDetailsVo implements IVo {
+    public final static class PermissionRuleInterfaceDetailVo implements IVo {
         private static final long serialVersionUID = 3594602803678213609L;
 
         @ApiModelProperty(required = true, name = "Permission", value = "权限主体信息")
@@ -172,18 +142,22 @@ public abstract class AbstractRolePermissionRuleVo {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractRolePermissionRuleVo.RuleInterfaceVo",
-            description = "AbstractRolePermissionRuleVo.RuleInterfaceVo 权限接口规则 响应体"
+            description = "AbstractRolePermissionRuleVo.RuleInterfaceVo 接口规则 响应体"
     )
     @EqualsAndHashCode
     public final static class RuleInterfaceVo implements IVo {
         private static final long serialVersionUID = -6011186614241048963L;
 
-        @ApiModelProperty(required = true, name = "RuleInterfaceId", value = "接口规则主键 ID")
-        @JsonProperty(value = "RuleInterfaceId", required = true)
-        private Long ruleInterfaceId;
+        @ApiModelProperty(required = true, name = "RuleId", value = "规则主键 ID")
+        @JsonProperty(value = "RuleId", required = true)
+        private Long ruleId;
 
         @ApiModelProperty(required = true, name = "RuleInterfaceUri", value = "接口 URI 绝对路径")
         @JsonProperty(value = "RuleInterfaceUri", required = true)
         private String ruleInterfaceUri;
+
+        @ApiModelProperty(required = true, name = "RuleInterfaceMethod", value = "Http 请求方式")
+        @JsonProperty(value = "RuleInterfaceMethod", required = true)
+        private String ruleInterfaceMethod;
     }
 }

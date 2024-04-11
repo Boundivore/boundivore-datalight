@@ -18,15 +18,16 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.PermissionTypeEnum;
-import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlPermission;
 import cn.boundivore.dl.orm.po.single.TDlRuleInterface;
 import cn.boundivore.dl.orm.service.single.impl.TDlPermissionServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlRuleInterfaceServiceImpl;
 import cn.boundivore.dl.service.master.bean.PermissionBean;
+import cn.boundivore.dl.service.master.converter.IPermissionRuleConverter;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +58,8 @@ public class MasterPermissionService {
     private final TDlRuleInterfaceServiceImpl tDlRuleInterfaceService;
 
     private final MasterPermissionHandlerService masterPermissionHandlerService;
+
+    private final IPermissionRuleConverter iPermissionRuleConverter;
 
 
     @Transactional(
@@ -250,9 +253,42 @@ public class MasterPermissionService {
         return Result.success();
     }
 
+    /**
+     * Description: 获取当前权限详情
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param permissionId 权限 ID
+     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> 指定权限详情
+     */
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> permissionDetails(Long permissionId) {
+        TDlPermission tDlPermission = this.tDlPermissionService.getById(permissionId);
+        Assert.notNull(
+                tDlPermission,
+                () -> new BException("不存在的权限 ID")
+        );
+
+        TDlRuleInterface tDlRuleInterface = this.tDlRuleInterfaceService.getById(tDlPermission.getRuleId());
+        Assert.notNull(
+                tDlRuleInterface,
+                () -> new BException("不存在的权限规则关联")
+        );
+
+        return Result.success(
+                new AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo(
+                        this.iPermissionRuleConverter.convert2PermissionVo(tDlPermission),
+                        this.iPermissionRuleConverter.convert2RuleInterfaceVo(tDlRuleInterface)
+                )
+        );
+    }
 
     /**
-     * Description: 根据用户 ID 以及接口 URI 获取接口权限规则列表
+     * Description: 查询当前用户接口权限列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/9
@@ -271,53 +307,19 @@ public class MasterPermissionService {
     }
 
     /**
-     * Description: 更新权限规则列表
+     * Description: 根据角色 ID 获取权限信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param request 待更新权限请求体
-     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> 返回更新后的内容
-     */
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) {
-        return null;
-    }
-
-    /**
-     * Description: 根据权限 ID 获取权限详情信息
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/9
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param permissionId 权限 ID
-     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> 返回权限详情
-     */
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) {
-        return null;
-    }
-
-    /**
-     * Description: 根据角色 ID 后去权限信息
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/10
+     * Creation time: 2024/4/11
      * Modification description:
      * Modified by:
      * Modification time:
      * Throws:
      *
      * @param roleId 角色 ID
-     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> 权限信息
+     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> 该角色下所有权限以及接口规则信息
      */
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionByRoleId(Long roleId) {
         return null;
     }
 }
