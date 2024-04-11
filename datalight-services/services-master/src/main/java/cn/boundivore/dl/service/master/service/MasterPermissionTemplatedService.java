@@ -66,7 +66,7 @@ public class MasterPermissionTemplatedService {
     )
     @PostConstruct
     public void init() {
-        this.initPermissionInDB();
+        this.initPermissionTemplatedInDB();
     }
 
     /**
@@ -83,7 +83,7 @@ public class MasterPermissionTemplatedService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public void initPermissionInDB() {
+    public void initPermissionTemplatedInDB() {
         // <PermissionCode,  PermissionTemplated> 获取扫描注解得到的所有接口信息
         Map<String, PermissionTemplated> permissionTemplatedMap = this.masterPermissionHandlerService.getPermissionTemplatedMap();
 
@@ -118,7 +118,7 @@ public class MasterPermissionTemplatedService {
                             /*
                                 在架构设计上，一个权限可以对应多个接口规则，但是此处一个模板权限仅对应一个模板接口规则，
                                 因此此处三张表各自的主键 ID，使用数值相同的 ID 值即可，降低操作复杂度，提升初始化效率。
-                                如果后续有 "权限 一对多 接口规则" 的情况，可修改下述代码逻辑。
+                                如果后续有 "权限 一对多 接口规则" 的情况，需根据业务情况，另改入库方式。
                             */
                             Long id = idCounter.incrementAndGet();
 
@@ -249,4 +249,48 @@ public class MasterPermissionTemplatedService {
         return tDlPermissionRuleRelationTemplated;
 
     }
+
+    /**
+     * Description: 获取全量权限模板列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    public List<TDlPermissionTemplated> getTDlPermissionTemplatedList() {
+        return this.tDlPermissionTemplatedService.list();
+    }
+
+    /**
+     * Description: 获取全量权限规则模板列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    public List<TDlRuleInterfaceTemplated> getTDlRuleInterfaceTemplatedList() {
+        return this.tDlRuleInterfaceTemplatedService.list();
+    }
+
+    /**
+     * Description: 获取全量权限规则模板关系列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    public List<TDlPermissionRuleRelationTemplated> getTDlPermissionRuleRelationTemplatedList() {
+        return this.tDlPermissionRuleRelationTemplatedService.list();
+    }
+
+
 }

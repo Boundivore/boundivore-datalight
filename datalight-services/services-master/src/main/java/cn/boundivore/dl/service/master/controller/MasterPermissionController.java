@@ -18,10 +18,9 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterPermissionAPI;
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
-import cn.boundivore.dl.base.response.impl.master.AbstractPermissionRuleVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterPermissionService;
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,23 +47,23 @@ public class MasterPermissionController implements IMasterPermissionAPI {
     }
 
     @Override
-    public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId, String ruleInterfaceUri) throws Exception {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId, String ruleInterfaceUri) throws Exception {
         return this.masterPermissionService.listPermissionRuleInterface(userId, ruleInterfaceUri);
     }
 
 
     @Override
-    public Result<AbstractPermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) throws Exception {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) throws Exception {
         return this.masterPermissionService.putPermissionBatch(request);
     }
 
     @Override
-    public Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) throws Exception {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) throws Exception {
         return this.masterPermissionService.details(permissionId);
     }
 
     @Override
-    public Result<AbstractPermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) throws Exception {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) throws Exception {
         return this.masterPermissionService.listPermissionByRoleId(roleId);
     }
 }

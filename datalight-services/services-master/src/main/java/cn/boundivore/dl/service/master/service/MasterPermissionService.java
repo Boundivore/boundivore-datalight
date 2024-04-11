@@ -16,12 +16,20 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
-import cn.boundivore.dl.base.response.impl.master.AbstractPermissionRuleVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.service.single.impl.TDlPermissionRuleRelationServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlPermissionServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlRuleInterfaceServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Description: 权限管理相关
@@ -37,6 +45,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterPermissionService {
+
+    private final MasterPermissionTemplatedService masterPermissionTemplatedService;
+
+    private final TDlPermissionServiceImpl tDlPermissionService;
+    private final TDlRuleInterfaceServiceImpl tDlRuleInterfaceService;
+    private final TDlPermissionRuleRelationServiceImpl tDlPermissionRuleRelationService;
+
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @PostConstruct
+    public void init() {
+        this.initPermissionFromTemplated();
+    }
 
     /**
      * Description: 测试接口权限
@@ -54,6 +77,23 @@ public class MasterPermissionService {
         return Result.success();
     }
 
+    /**
+     * Description: 从权限模板中加载权限信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public void initPermissionFromTemplated() {
+        
+    }
 
     /**
      * Description: 根据用户 ID 以及接口 URI 获取接口权限规则列表
@@ -67,10 +107,10 @@ public class MasterPermissionService {
      *
      * @param userId           用户 ID
      * @param ruleInterfaceUri 规则接口 URI
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> 接口权限规则列表
+     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> 接口权限规则列表
      */
-    public Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId,
-                                                                                                      String ruleInterfaceUri) {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId,
+                                                                                                          String ruleInterfaceUri) {
         return null;
     }
 
@@ -85,9 +125,9 @@ public class MasterPermissionService {
      * Throws:
      *
      * @param request 待更新权限请求体
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleListVo> 返回更新后的内容
+     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> 返回更新后的内容
      */
-    public Result<AbstractPermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> putPermissionBatch(AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request) {
         return null;
     }
 
@@ -102,9 +142,9 @@ public class MasterPermissionService {
      * Throws:
      *
      * @param permissionId 权限 ID
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> 返回权限详情
+     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> 返回权限详情
      */
-    public Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> details(Long permissionId) {
         return null;
     }
 
@@ -119,9 +159,9 @@ public class MasterPermissionService {
      * Throws:
      *
      * @param roleId 角色 ID
-     * @return Result<AbstractPermissionRuleVo.PermissionRuleListVo> 权限信息
+     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> 权限信息
      */
-    public Result<AbstractPermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(Long roleId) {
         return null;
     }
 }

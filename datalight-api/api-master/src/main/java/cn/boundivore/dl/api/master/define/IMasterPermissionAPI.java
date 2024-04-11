@@ -17,7 +17,7 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
-import cn.boundivore.dl.base.response.impl.master.AbstractPermissionRuleVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +58,7 @@ public interface IMasterPermissionAPI {
 
     @GetMapping(value = "/permission/listPermissionRuleInterface")
     @ApiOperation(notes = "查询当前用户 接口 权限列表", value = "查询当前用户 接口 权限列表")
-    Result<AbstractPermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(
+    Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(
             @ApiParam(name = "UserId", value = "用户 ID", example = "")
             @RequestParam(value = "UserId", required = false)
             Long userId,
@@ -71,7 +71,7 @@ public interface IMasterPermissionAPI {
 
     @PostMapping(value = "/permission/putPermissionBatch")
     @ApiOperation(notes = "新增、修改、删除 权限", value = "新增、修改、删除 权限")
-    Result<AbstractPermissionRuleVo.PermissionRuleListVo> putPermissionBatch(
+    Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> putPermissionBatch(
             @RequestBody
             @Valid
             AbstractPermissionRuleRequest.NewPermissionAndRuleRequest request
@@ -80,7 +80,7 @@ public interface IMasterPermissionAPI {
 
     @GetMapping(value = "/permission/details")
     @ApiOperation(notes = "获取当前权限详情", value = "获取当前权限详情")
-    Result<AbstractPermissionRuleVo.PermissionRuleDetailsVo> details(
+    Result<AbstractRolePermissionRuleVo.PermissionRuleDetailsVo> details(
             @ApiParam(name = "PermissionId", value = "权限 Id", example = "1")
             @RequestParam(value = "PermissionId")
             Long permissionId
@@ -88,7 +88,7 @@ public interface IMasterPermissionAPI {
 
     @GetMapping(value = "/permission/listPermissionByRoleId")
     @ApiOperation(notes = "根据角色 ID 获取权限信息", value = "根据角色 ID 获取权限信息")
-    Result<AbstractPermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(
+    Result<AbstractRolePermissionRuleVo.PermissionRuleListVo> listPermissionByRoleId(
             @ApiParam(name = "RoleId", value = "角色 ID", example = "1")
             @RequestParam(value = "RoleId")
             Long roleId
