@@ -16,12 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.exception.DatabaseException;
-import cn.boundivore.dl.orm.service.single.impl.TDlPermissionRuleRelationTemplatedServiceImpl;
-import cn.boundivore.dl.orm.service.single.impl.TDlPermissionTemplatedServiceImpl;
-import cn.boundivore.dl.orm.service.single.impl.TDlRuleInterfaceTemplatedServiceImpl;
-import cn.boundivore.dl.service.master.bean.PermissionTemplated;
+import cn.boundivore.dl.service.master.bean.PermissionBean;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import io.swagger.annotations.ApiOperation;
@@ -38,7 +33,6 @@ import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -72,8 +66,8 @@ public class MasterPermissionHandlerService implements StpInterface {
     private final static String CLASS = "*.class";
     private final static String PACKAGE = "cn.boundivore.dl.api.master.define.";
 
-    // <PermissionCode, PermissionTemplated>
-    private final Map<String, PermissionTemplated> permissionTemplatedMap = new HashMap<>();
+    // <PermissionCode, PermissionBean>
+    private final Map<String, PermissionBean> permissionBeanMap = new HashMap<>();
 
     @PostConstruct
     public void init() {
@@ -146,9 +140,9 @@ public class MasterPermissionHandlerService implements StpInterface {
                         );
 
                         if (!method.getName().contains("login")) {
-                            this.permissionTemplatedMap.put(
+                            this.permissionBeanMap.put(
                                     permissionCode,
-                                    new PermissionTemplated(
+                                    new PermissionBean(
                                             interfacePath,
                                             permissionCode,
                                             permissionName,

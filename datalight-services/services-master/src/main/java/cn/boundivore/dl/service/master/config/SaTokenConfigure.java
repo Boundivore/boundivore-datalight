@@ -17,7 +17,7 @@
 package cn.boundivore.dl.service.master.config;
 
 import cn.boundivore.dl.base.enumeration.impl.StaticRoleTypeEnum;
-import cn.boundivore.dl.service.master.bean.PermissionTemplated;
+import cn.boundivore.dl.service.master.bean.PermissionBean;
 import cn.boundivore.dl.service.master.service.MasterPermissionHandlerService;
 import cn.boundivore.dl.service.master.utils.SaTokenCheckUtil;
 import cn.dev33.satoken.interceptor.SaInterceptor;
@@ -73,16 +73,16 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                             r -> StpUtil.checkLogin()
                     );
 
-                    // <PermissionCode, PermissionTemplated> 动态加载当前所有接口权限
-                    Map<String, PermissionTemplated> permissionTemplatedMap = this.masterPermissionHandlerService.getPermissionTemplatedMap();
+                    // <PermissionCode, PermissionBean> 动态加载当前所有接口权限
+                    Map<String, PermissionBean> permissionTemplatedMap = this.masterPermissionHandlerService.getPermissionBeanMap();
 
                     // 遍历添加权限校检
-                    permissionTemplatedMap.forEach((permissionCode, permissionTemplated) -> {
+                    permissionTemplatedMap.forEach((permissionCode, permissionBean) -> {
                                 SaRouter.match(
-                                        permissionTemplated.getPath(),
+                                        permissionBean.getPath(),
                                         r -> SaTokenCheckUtil.checkRoleOrPermission(
                                                 CollUtil.newArrayList(StaticRoleTypeEnum.ADMIN.name()),
-                                                CollUtil.newArrayList(permissionTemplated.getCode())
+                                                CollUtil.newArrayList(permissionBean.getCode())
                                         )
                                 );
                             }

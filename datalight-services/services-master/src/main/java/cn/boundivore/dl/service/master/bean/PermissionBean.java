@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PermissionTemplated {
+public class PermissionBean {
 
     private String path;
     private String code;

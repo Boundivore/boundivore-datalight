@@ -28,6 +28,10 @@ public class TDlPermission extends TBasePo<TDlPermission> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("权限规则 ID")
+    @TableField("rule_id")
+    private Long ruleId;
+
     @ApiModelProperty("是否删除")
     @TableField("is_deleted")
     private Boolean isDeleted;

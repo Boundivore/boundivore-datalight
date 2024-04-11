@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543336",
-  "TableCount": 36,
+  "TableCount": 29,
   "Count": 2,
   "items": [
     {
@@ -9,18 +9,18 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:109.32,-1209.83,1.70,0,",
+      "CustomAttr1": "DVS:299.45,-1080.41,1.44,0,t_dl_permission",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
-        "Count": 35,
+        "Count": 28,
         "items": [
           {
             "ID": 1,
             "Name": "t_dl_login_event",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 1,
-            "GraphDesc": "Left=36.74\r\nTop=204.13",
+            "GraphDesc": "Left=36.74\r\nTop=596.03",
             "MetaFields": {
               "Count": 6,
               "items": [
@@ -93,7 +93,7 @@
             "Caption": "用户认证信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 2,
-            "GraphDesc": "Left=536.74\r\nTop=204.13",
+            "GraphDesc": "Left=536.74\r\nTop=596.03",
             "MetaFields": {
               "Count": 8,
               "items": [
@@ -192,7 +192,7 @@
             "Caption": "用户基础信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 3,
-            "GraphDesc": "Left=316.24\r\nTop=204.13",
+            "GraphDesc": "Left=316.24\r\nTop=596.03",
             "MetaFields": {
               "Count": 7,
               "items": [
@@ -1733,7 +1733,7 @@
             "Caption": "初始化步骤缓存信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 13,
-            "GraphDesc": "Left=777.48\r\nTop=202.50",
+            "GraphDesc": "Left=777.48\r\nTop=594.40",
             "MetaFields": {
               "Count": 10,
               "items": [
@@ -3048,7 +3048,7 @@
             "Caption": "前端状态信息缓存表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 22,
-            "GraphDesc": "Left=317.24\r\nTop=41.13",
+            "GraphDesc": "Left=317.24\r\nTop=433.03",
             "MetaFields": {
               "Count": 8,
               "items": [
@@ -3242,7 +3242,7 @@
             "Name": "t_dl_role_user_relation",
             "Caption": "角色绑定关系表",
             "OrderNo": 24,
-            "GraphDesc": "Left=28.07\r\nTop=410.95",
+            "GraphDesc": "Left=28.07\r\nTop=802.85",
             "MetaFields": {
               "Count": 6,
               "items": [
@@ -3310,7 +3310,7 @@
             "Caption": "角色信息表",
             "CreateDate": "2022/9/19 13:59:05",
             "OrderNo": 25,
-            "GraphDesc": "Left=334.12\r\nTop=409.75",
+            "GraphDesc": "Left=334.12\r\nTop=801.65",
             "MetaFields": {
               "Count": 14,
               "items": [
@@ -3453,9 +3453,9 @@
             "Caption": "权限信息表",
             "CreateDate": "2022/9/19 13:59:05",
             "OrderNo": 26,
-            "GraphDesc": "Left=1197.76\r\nTop=414.77",
+            "GraphDesc": "Left=1197.76\r\nTop=806.67",
             "MetaFields": {
-              "Count": 12,
+              "Count": 13,
               "items": [
                 {
                   "ID": 1,
@@ -3497,8 +3497,17 @@
                 },
                 {
                   "ID": 13,
-                  "Name": "is_deleted",
+                  "Name": "rule_id",
                   "OrderNo": 5,
+                  "DisplayName": "权限规则 ID",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 13,
+                  "Name": "is_deleted",
+                  "OrderNo": 6,
                   "DisplayName": "是否删除",
                   "DataType": 2,
                   "DefaultValue": "0",
@@ -3508,7 +3517,7 @@
                 {
                   "ID": 14,
                   "Name": "enabled",
-                  "OrderNo": 6,
+                  "OrderNo": 7,
                   "DisplayName": "是否生效",
                   "DataType": 2,
                   "DefaultValue": "1",
@@ -3518,7 +3527,7 @@
                 {
                   "ID": 12,
                   "Name": "permission_code",
-                  "OrderNo": 7,
+                  "OrderNo": 8,
                   "DisplayName": "权限编码",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -3527,7 +3536,7 @@
                 {
                   "ID": 4,
                   "Name": "permission_name",
-                  "OrderNo": 8,
+                  "OrderNo": 9,
                   "DisplayName": "权限名称",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -3537,7 +3546,7 @@
                   "ID": 15,
                   "Name": "permission_type",
                   "Memo": "枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);",
-                  "OrderNo": 9,
+                  "OrderNo": 10,
                   "DisplayName": "权限类型",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -3546,7 +3555,7 @@
                 {
                   "ID": 17,
                   "Name": "reject_permission_code",
-                  "OrderNo": 10,
+                  "OrderNo": 11,
                   "DisplayName": "互斥权限编码",
                   "DataType": 1,
                   "DataLength": 255
@@ -3555,7 +3564,7 @@
                   "ID": 18,
                   "Name": "permission_weight",
                   "Memo": "优先级，取值范围：1 ~ 10",
-                  "OrderNo": 11,
+                  "OrderNo": 12,
                   "DisplayName": "权限权重",
                   "DataType": 2,
                   "DefaultValue": "1",
@@ -3565,7 +3574,7 @@
                 {
                   "ID": 5,
                   "Name": "permission_comment",
-                  "OrderNo": 12,
+                  "OrderNo": 13,
                   "DisplayName": "权限备注",
                   "DataType": 1,
                   "DataLength": 255
@@ -3579,7 +3588,7 @@
             "Caption": "权限角色信息映射表",
             "CreateDate": "2022/9/19 13:59:05",
             "OrderNo": 27,
-            "GraphDesc": "Left=820.47\r\nTop=415.32",
+            "GraphDesc": "Left=820.47\r\nTop=807.22",
             "MetaFields": {
               "Count": 6,
               "items": [
@@ -3637,82 +3646,6 @@
                   "DisplayName": "角色 ID",
                   "DataType": 2,
                   "Not_Nullable": true,
-                  "DataLength": 20
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
-            "Name": "t_dl_permission_rule_relation",
-            "Caption": "接口权限与规则映射表",
-            "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 28,
-            "GraphDesc": "Left=1506.64\r\nTop=416.27",
-            "MetaFields": {
-              "Count": 7,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "KeyFieldType": 1,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 6,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 12,
-                  "Name": "permission_id",
-                  "OrderNo": 5,
-                  "DisplayName": "权限 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 4,
-                  "Name": "rule_interface_id",
-                  "OrderNo": 6,
-                  "DisplayName": "接口规则 ID",
-                  "DataType": 2,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 16,
-                  "Name": "rule_page_id",
-                  "OrderNo": 7,
-                  "DisplayName": "页面规则 ID",
-                  "DataType": 2,
                   "DataLength": 20
                 }
               ]
@@ -3723,559 +3656,8 @@
             "Name": "t_dl_rule_interface",
             "Caption": "接口资源规则表",
             "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 29,
-            "GraphDesc": "Left=1905.27\r\nTop=416.62",
-            "MetaFields": {
-              "Count": 6,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "KeyFieldType": 1,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 6,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 17,
-                  "Name": "rule_interface_uri",
-                  "Memo": "绝对路径",
-                  "OrderNo": 5,
-                  "DisplayName": "接口 URI",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 6,
-                  "Name": "rule_interface_method",
-                  "Memo": "GET, POST",
-                  "OrderNo": 6,
-                  "DisplayName": "接口 HTTP METHOD",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                }
-              ]
-            }
-          },
-          {
-            "Name": "t_dl_role_user_relation_templated",
-            "Caption": "角色绑定关系模板表",
-            "OrderNo": 30,
-            "GraphDesc": "Left=29.11\r\nTop=786.06",
-            "MetaFields": {
-              "Count": 6,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "Memo": "分布式 ID",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式",
-                  "DataType": 2,
-                  "KeyFieldType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 4,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 11,
-                  "Name": "role_id",
-                  "OrderNo": 5,
-                  "DisplayName": "角色 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 9,
-                  "Name": "user_id",
-                  "OrderNo": 6,
-                  "DisplayName": "绑定的用户 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
-            "Name": "t_dl_role_templated",
-            "Caption": "角色信息常量模板表",
-            "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 31,
-            "GraphDesc": "Left=437.22\r\nTop=785.82",
-            "MetaFields": {
-              "Count": 14,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "KeyFieldType": 1,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 6,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 9,
-                  "Name": "is_deleted",
-                  "OrderNo": 5,
-                  "DisplayName": "是否删除",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 10,
-                  "Name": "edit_enabled",
-                  "OrderNo": 6,
-                  "DisplayName": "是否允许编辑",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 4,
-                  "Name": "role_name",
-                  "OrderNo": 7,
-                  "DisplayName": "角色名称",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 8,
-                  "Name": "role_code",
-                  "OrderNo": 8,
-                  "DisplayName": "角色编码",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 18,
-                  "Name": "role_group_id",
-                  "OrderNo": 9,
-                  "DisplayName": "角色分组 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 20,
-                  "Name": "role_group_code",
-                  "OrderNo": 10,
-                  "DisplayName": "角色分组编码",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 19,
-                  "Name": "role_group_name",
-                  "OrderNo": 11,
-                  "DisplayName": "角色分组名称",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 5,
-                  "Name": "enabled",
-                  "Memo": "默认值为 1",
-                  "OrderNo": 12,
-                  "DisplayName": "角色启用或停用（0禁用，1启用）",
-                  "DataType": 2,
-                  "DefaultValue": "1",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 12,
-                  "Name": "role_type",
-                  "Memo": "（ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）",
-                  "OrderNo": 13,
-                  "DisplayName": "角色类型",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 7,
-                  "Name": "role_comment",
-                  "OrderNo": 14,
-                  "DisplayName": "角色备注",
-                  "DataType": 1,
-                  "DataLength": 255
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
-            "Name": "t_dl_permission_templated",
-            "Caption": "权限信息常量模板表",
-            "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 32,
-            "GraphDesc": "Left=1437.45\r\nTop=786.40",
-            "MetaFields": {
-              "Count": 12,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "KeyFieldType": 1,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 6,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 13,
-                  "Name": "is_deleted",
-                  "OrderNo": 5,
-                  "DisplayName": "是否删除",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 14,
-                  "Name": "enabled",
-                  "OrderNo": 6,
-                  "DisplayName": "是否生效",
-                  "DataType": 2,
-                  "DefaultValue": "1",
-                  "Not_Nullable": true,
-                  "DataLength": 1
-                },
-                {
-                  "ID": 12,
-                  "Name": "permission_code",
-                  "OrderNo": 7,
-                  "DisplayName": "权限编码",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 4,
-                  "Name": "permission_name",
-                  "OrderNo": 8,
-                  "DisplayName": "权限名称",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 15,
-                  "Name": "permission_type",
-                  "Memo": "枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读写权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);",
-                  "OrderNo": 9,
-                  "DisplayName": "权限类型",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 17,
-                  "Name": "reject_permission_code",
-                  "OrderNo": 10,
-                  "DisplayName": "互斥权限编码",
-                  "DataType": 1,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 18,
-                  "Name": "permission_weight",
-                  "Memo": "优先级，取值范围：1 ~ 10",
-                  "OrderNo": 11,
-                  "DisplayName": "权限权重",
-                  "DataType": 2,
-                  "DefaultValue": "1",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 5,
-                  "Name": "permission_comment",
-                  "OrderNo": 12,
-                  "DisplayName": "权限备注",
-                  "DataType": 1,
-                  "DataLength": 255
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
-            "Name": "t_dl_permission_role_relation_templated",
-            "Caption": "权限角色信息映射常量模板表",
-            "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 33,
-            "GraphDesc": "Left=924.27\r\nTop=786.95",
-            "MetaFields": {
-              "Count": 6,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "KeyFieldType": 1,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 6,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 4,
-                  "Name": "permission_id",
-                  "OrderNo": 5,
-                  "DisplayName": "权限 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 5,
-                  "Name": "role_id",
-                  "OrderNo": 6,
-                  "DisplayName": "角色 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
-            "Name": "t_dl_permission_rule_relation_templated",
-            "Caption": "接口权限与规则映射常量模板表",
-            "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 34,
-            "GraphDesc": "Left=1785.02\r\nTop=784.86",
-            "MetaFields": {
-              "Count": 7,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "KeyFieldType": 1,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 6,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 12,
-                  "Name": "permission_id",
-                  "OrderNo": 5,
-                  "DisplayName": "权限 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 4,
-                  "Name": "rule_interface_id",
-                  "OrderNo": 6,
-                  "DisplayName": "接口规则 ID",
-                  "DataType": 2,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 16,
-                  "Name": "rule_page_id",
-                  "OrderNo": 7,
-                  "DisplayName": "页面规则 ID",
-                  "DataType": 2,
-                  "DataLength": 20
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
-            "Name": "t_dl_rule_interface_templated",
-            "Caption": "接口资源规则常量模板表",
-            "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 35,
-            "GraphDesc": "Left=2315.19\r\nTop=784.79",
+            "OrderNo": 28,
+            "GraphDesc": "Left=1503.77\r\nTop=806.44",
             "MetaFields": {
               "Count": 6,
               "items": [
