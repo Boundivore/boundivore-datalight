@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 11/04/2024 15:50:29
+ Date: 11/04/2024 17:52:34
 */
 
 SET NAMES utf8mb4;
@@ -415,9 +415,6 @@ CREATE TABLE `t_dl_role`  (
   `edit_enabled` tinyint(1) NOT NULL COMMENT '是否允许编辑',
   `role_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
   `role_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色编码',
-  `role_group_id` bigint(20) NOT NULL COMMENT '角色分组 ID',
-  `role_group_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组编码',
-  `role_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色分组名称',
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '角色启用或停用（0禁用，1启用） 默认值为 1',
   `role_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色类型 （ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）',
   `role_comment` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '角色备注',

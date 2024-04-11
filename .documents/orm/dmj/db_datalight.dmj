@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:299.45,-1080.41,1.44,0,t_dl_permission",
+      "CustomAttr1": "DVS:-399.77,-1063.87,2.00,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -3312,7 +3312,7 @@
             "OrderNo": 25,
             "GraphDesc": "Left=334.12\r\nTop=801.65",
             "MetaFields": {
-              "Count": 14,
+              "Count": 11,
               "items": [
                 {
                   "ID": 1,
@@ -3389,37 +3389,10 @@
                   "DataLength": 255
                 },
                 {
-                  "ID": 18,
-                  "Name": "role_group_id",
-                  "OrderNo": 9,
-                  "DisplayName": "角色分组 ID",
-                  "DataType": 2,
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                },
-                {
-                  "ID": 20,
-                  "Name": "role_group_code",
-                  "OrderNo": 10,
-                  "DisplayName": "角色分组编码",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
-                  "ID": 19,
-                  "Name": "role_group_name",
-                  "OrderNo": 11,
-                  "DisplayName": "角色分组名称",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
-                },
-                {
                   "ID": 5,
                   "Name": "enabled",
                   "Memo": "默认值为 1",
-                  "OrderNo": 12,
+                  "OrderNo": 9,
                   "DisplayName": "角色启用或停用（0禁用，1启用）",
                   "DataType": 2,
                   "DefaultValue": "1",
@@ -3430,7 +3403,7 @@
                   "ID": 12,
                   "Name": "role_type",
                   "Memo": "（ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）",
-                  "OrderNo": 13,
+                  "OrderNo": 10,
                   "DisplayName": "角色类型",
                   "DataType": 1,
                   "Not_Nullable": true,
@@ -3439,7 +3412,7 @@
                 {
                   "ID": 7,
                   "Name": "role_comment",
-                  "OrderNo": 14,
+                  "OrderNo": 11,
                   "DisplayName": "角色备注",
                   "DataType": 1,
                   "DataLength": 255
