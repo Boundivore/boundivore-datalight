@@ -120,12 +120,14 @@ public class MasterPermissionService {
 
                     // 设置权限与规则关联 ID
                     tDlPermission.setRuleId(tDlRuleInterface.getId());
+                    // 防止之前被删除的权限，本次又重新添加后，删除标记无法变更的问题
+                    tDlPermission.setIsDeleted(false);
 
                     tDlPermissionList.add(tDlPermission);
                     tDlRuleInterfaceList.add(tDlRuleInterface);
                 });
 
-        // 最终检查：如果原有的旧数据中存在不包含的接口，则将该条权限标记为 deleted，一共页面查看知晓确认，并通过手动删除
+        // 最终检查：如果原有的旧数据中存在不包含的接口，则将该条权限标记为删除，反之标记为未删除，一共页面查看知晓确认，并通过手动删除
         tDlPermissionCodeMap.forEach((permissionCode, tDlPermission) -> {
             if (!permissionBeanMap.containsKey(permissionCode)) {
                 tDlPermission.setIsDeleted(true);
