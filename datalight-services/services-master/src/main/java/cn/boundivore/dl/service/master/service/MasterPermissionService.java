@@ -132,6 +132,10 @@ public class MasterPermissionService {
             if (!permissionBeanMap.containsKey(permissionCode)) {
                 tDlPermission.setIsDeleted(true);
                 tDlPermissionList.add(tDlPermission);
+                log.info(
+                        "检测到废弃权限，请前往平台页面确认后手动删除: Name: {}",
+                        tDlPermission.getPermissionName()
+                );
             }
         });
 
