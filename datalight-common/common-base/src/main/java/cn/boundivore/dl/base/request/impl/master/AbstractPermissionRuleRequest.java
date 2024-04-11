@@ -9,11 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Description: 权限相关请求体
@@ -26,7 +22,6 @@ import java.util.List;
  * Version: V1.0
  */
 public abstract class AbstractPermissionRuleRequest {
-
 
     @Data
     @AllArgsConstructor
@@ -45,29 +40,7 @@ public abstract class AbstractPermissionRuleRequest {
         @NotNull(message = "权限类目常量 ID 不能为空")
         private Long permissionId;
 
-        @ApiModelProperty(required = true, name = "NewRuleInterface", value = "权限接口规则")
-        @JsonProperty(required = true, value = "NewRuleInterface")
-        @NotNull(message = "权限接口规则")
-        @Valid
-        private NewRuleInterfaceRequest newRuleInterface;
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Accessors(chain = true)
-    @Schema(
-            name = "AbstractPermissionRuleRequest.NewRuleInterfaceRequest",
-            description = "AbstractPermissionRuleRequest.NewRuleInterfaceRequest: 新建权限接口规则 请求体"
-    )
-    public final static class NewRuleInterfaceRequest implements IRequest {
-
-        private static final long serialVersionUID = -8485629232571382032L;
-
-        @ApiModelProperty(name = "RuleInterfaceUri", value = "权限接口规则接口地址", required = true)
-        @JsonProperty(value = "RuleInterfaceUri", required = true)
-        @NotBlank(message = "权限接口规则接口地址不能为空")
-        private String ruleInterfaceUri;
 
     }
+
 }

@@ -1,5 +1,6 @@
 package cn.boundivore.dl.orm.po.single;
 
+import cn.boundivore.dl.base.enumeration.impl.RoleTypeEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -43,25 +44,13 @@ public class TDlRole extends TBasePo<TDlRole> {
     @TableField("role_code")
     private String roleCode;
 
-    @ApiModelProperty("角色分组 ID")
-    @TableField("role_group_id")
-    private Long roleGroupId;
-
-    @ApiModelProperty("角色分组编码")
-    @TableField("role_group_code")
-    private String roleGroupCode;
-
-    @ApiModelProperty("角色分组名称")
-    @TableField("role_group_name")
-    private String roleGroupName;
-
     @ApiModelProperty("角色启用或停用（0禁用，1启用） 默认值为 1")
     @TableField("enabled")
     private Boolean enabled;
 
     @ApiModelProperty("角色类型 （ROLE_DYNAMIC 自定义角色，ROLE_STATIC 静态默认自动生成的角色）")
     @TableField("role_type")
-    private String roleType;
+    private RoleTypeEnum roleType;
 
     @ApiModelProperty("角色备注")
     @TableField("role_comment")

@@ -32,6 +32,7 @@ import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +59,8 @@ public class MasterPermissionService {
     private final TDlRuleInterfaceServiceImpl tDlRuleInterfaceService;
 
     private final MasterPermissionHandlerService masterPermissionHandlerService;
+
+    private final MasterRoleService masterRoleService;
 
     private final IPermissionRuleConverter iPermissionRuleConverter;
 

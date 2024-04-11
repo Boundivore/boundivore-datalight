@@ -30,9 +30,7 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  */
 public enum StaticRoleTypeEnum implements IBaseEnum {
 
-    ADMIN("0", "超级用户"),
-    MANAGER("1", "管理员"),
-    VIEWER("2", "浏览者");
+    ADMIN("0", "超级用户");
 
 
     private final String code;

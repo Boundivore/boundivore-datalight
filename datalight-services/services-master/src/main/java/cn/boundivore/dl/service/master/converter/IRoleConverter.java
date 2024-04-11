@@ -16,24 +16,20 @@
  */
 package cn.boundivore.dl.service.master.converter;
 
-import cn.boundivore.dl.base.request.impl.master.AbstractClusterRequest;
-import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
-import cn.boundivore.dl.orm.po.single.TDlCluster;
 import cn.boundivore.dl.orm.po.single.TDlPermission;
+import cn.boundivore.dl.orm.po.single.TDlRole;
 import cn.boundivore.dl.orm.po.single.TDlRuleInterface;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.TargetType;
 import org.mapstruct.factory.Mappers;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 /**
- * Description: IPermissionRuleConverter
+ * Description: IRoleConverter
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/11
@@ -45,19 +41,15 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(componentModel = SPRING)
 @Component
-public interface IPermissionRuleConverter {
+public interface IRoleConverter {
 
-    IPermissionRuleConverter INSTANCE = Mappers.getMapper(IPermissionRuleConverter.class);
+    IRoleConverter INSTANCE = Mappers.getMapper(IRoleConverter.class);
 
-
-    @Mappings({
-            @Mapping(source = "id", target = "permissionId")
-    })
-    AbstractRolePermissionRuleVo.PermissionVo convert2PermissionVo(TDlPermission tDlPermission);
 
     @Mappings({
-            @Mapping(source = "id", target = "ruleId")
+            @Mapping(source = "id", target = "roleId")
     })
-    AbstractRolePermissionRuleVo.RuleInterfaceVo convert2RuleInterfaceVo(TDlRuleInterface tDlRuleInterface);
+    AbstractRolePermissionRuleVo.RoleVo convert2RoleVo(TDlRole tDlRole);
+
 
 }

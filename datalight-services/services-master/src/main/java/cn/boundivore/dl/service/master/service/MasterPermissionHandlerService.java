@@ -17,7 +17,6 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.service.master.bean.PermissionBean;
-import cn.dev33.satoken.stp.StpInterface;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -40,9 +39,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,7 +56,7 @@ import java.util.Map;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MasterPermissionHandlerService implements StpInterface {
+public class MasterPermissionHandlerService {
 
 
     // 定义包名和类名通配符
@@ -258,50 +255,5 @@ public class MasterPermissionHandlerService implements StpInterface {
         private String httpMethod;
         private String httpPath;
     }
-
-    /**
-     * Description: 获取当前登录用户的权限内容列表
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/10
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param loginId   账号 ID
-     * @param loginType 账号类型
-     * @return List<String> 权限列表
-     */
-    @Override
-    public List<String> getPermissionList(Object loginId, String loginType) {
-        List<String> permissionList = new ArrayList<>();
-        permissionList.add("IMasterPermissionAPI.testPermissionInterface");
-        log.info("调用了获取权限方法: {}", permissionList);
-        return permissionList;
-    }
-
-    /**
-     * Description: 获取当前登录用户的角色内容列表
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/10
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param loginId   账号 ID
-     * @param loginType 账号类型
-     * @return List<String>角色列表
-     */
-    @Override
-    public List<String> getRoleList(Object loginId, String loginType) {
-        List<String> roleList = new ArrayList<>();
-        roleList.add("ADMIN");
-        log.info("调用了获取角色方法: {}", roleList);
-        return roleList;
-    }
-
 
 }
