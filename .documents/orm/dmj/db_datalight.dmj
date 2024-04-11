@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-399.77,-1063.87,2.00,0,",
+      "CustomAttr1": "DVS:-285.02,-988.04,2.00,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
