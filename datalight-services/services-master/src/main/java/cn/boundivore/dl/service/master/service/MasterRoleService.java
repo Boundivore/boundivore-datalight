@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.enumeration.impl.StaticRoleTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlRole;
@@ -165,6 +166,10 @@ public class MasterRoleService {
     )
     public Result<AbstractRolePermissionRuleVo.RoleVo> newRole(AbstractRoleRequest.NewRoleRequest request) {
         IdUtil.fastSimpleUUID();
+        // 检查角色名称是否重复
+
+        // 入库
+
         return null;
     }
 
@@ -182,7 +187,15 @@ public class MasterRoleService {
      * @return Result<AbstractRolePermissionRuleVo.RoleVo> 角色详细信息
      */
     public Result<AbstractRolePermissionRuleVo.RoleVo> getRoleById(Long roleId) {
-        return null;
+        TDlRole tDlRole = this.tDlRoleService.getById(roleId);
+        Assert.notNull(
+                tDlRole,
+                () -> new BException("不存在的角色 ID")
+        );
+
+        return Result.success(
+                this.iRoleConverter.convert2RoleVo(tDlRole)
+        );
     }
 
     /**
@@ -245,6 +258,12 @@ public class MasterRoleService {
             rollbackFor = DatabaseException.class
     )
     public Result<String> removeRoleBatchByIdList(AbstractRoleRequest.RoleIdListRequest request) {
+        // 检查是否存在关联的用户
+
+        // 删除角色
+
+        // 调用 MasterPermissionService 中的函数删除可能关联的权限
+
         return Result.success();
     }
 }
