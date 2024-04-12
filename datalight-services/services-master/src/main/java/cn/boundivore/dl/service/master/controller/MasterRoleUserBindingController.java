@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MasterRoleUserBindingController implements IMasterRoleUserBindingAPI {
 
-    private MasterRoleUserBindingService masterRoleUserBindingService;
+    private final MasterRoleUserBindingService masterRoleUserBindingService;
 
     @Override
     public Result<String> attachRoleUserByRoleUserId(AbstractRoleRequest.RoleUserIdListRequest request) throws Exception {

@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MasterRoleController implements IMasterRoleAPI {
 
-    private MasterRoleService masterRoleService;
+    private final MasterRoleService masterRoleService;
 
 
     @Override
