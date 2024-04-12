@@ -16,8 +16,8 @@
  */
 package cn.boundivore.dl.api.master.define;
 
-import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
-import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
+import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,61 +34,54 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 
 
 /**
- * Description: 关于用户的相关接口定义
+ * Description: 角色相关接口
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/13
+ * Creation time: 2023/7/13
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterUserAPI", tags = {"Master 接口：用户调用相关"})
+@Api(value = "IMasterRoleAPI", tags = {"Master 接口：角色相关"})
 @FeignClient(
-        name = "IMasterUserAPI",
-        contextId = "IMasterUserAPI",
+        name = "IMasterRoleAPI",
+        contextId = "IMasterRoleAPI",
         path = MASTER_URL_PREFIX
 )
-public interface IMasterUserAPI {
+public interface IMasterRoleAPI {
 
-    @PostMapping(value = "/user/register")
-    @ApiOperation(notes = "用户注册", value = "用户注册")
-    Result<UserInfoVo> register(
+    @PostMapping(value = "/role/newRole")
+    @ApiOperation(notes = "新建角色", value = "新建角色")
+    Result<AbstractRolePermissionRuleVo.RoleVo> newRole(
             @RequestBody
             @Valid
-            AbstractUserRequest.UserRegisterRequest request
+            AbstractRoleRequest.NewRoleRequest request
     ) throws Exception;
 
-    @PostMapping(value = "/user/removeById")
-    @ApiOperation(notes = "移除用户", value = "移除用户")
-    Result<String> removeById(
-            @RequestBody
-            @Valid
-            AbstractUserRequest.UserIdRequest request
+    @GetMapping(value = "/role/getRoleById")
+    @ApiOperation(notes = "根据角色 ID 获取角色信息", value = "根据角色 ID 获取角色信息")
+    Result<AbstractRolePermissionRuleVo.RoleVo> getRoleById(
+            @ApiParam(name = "RoleId", value = "RoleId")
+            @RequestParam(value = "RoleId", required = true)
+            Long roleId
     ) throws Exception;
 
-    @PostMapping(value = "/user/login")
-    @ApiOperation(notes = "用户登录", value = "用户登录")
-    Result<UserInfoVo> login(
-            @RequestBody
-            @Valid
-            AbstractUserRequest.UserAuthRequest request
+    @GetMapping(value = "/role/getRoleListByUserId")
+    @ApiOperation(notes = "根据用户 ID 获取角色信息列表", value = "根据用户 ID 获取角色信息列表")
+    Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleListByUserId(
+            @ApiParam(name = "UserId", value = "UserId")
+            @RequestParam(value = "UserId", required = true)
+            Long userId
     ) throws Exception;
 
-    @GetMapping(value = "/user/logout")
-    @ApiOperation(notes = "用户登出", value = "用户登出")
-    Result<String> logout() throws Exception;
 
-    @GetMapping(value = "/user/isLogin")
-    @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
-    Result<Boolean> isLogin() throws Exception;
-
-    @PostMapping(value = "/user/changePassword")
-    @ApiOperation(notes = "修改密码", value = "修改密码")
-    Result<String> changePassword(
+    @PostMapping(value = "/role/removeRoleBatchByIdList")
+    @ApiOperation(notes = "根据角色 ID 列表移除角色", value = "根据角色 ID 列表移除角色")
+    Result<String> removeRoleBatchByIdList(
             @RequestBody
             @Valid
-            AbstractUserRequest.UserChangePasswordRequest request
+            AbstractRoleRequest.RoleIdListRequest request
     ) throws Exception;
 
 }

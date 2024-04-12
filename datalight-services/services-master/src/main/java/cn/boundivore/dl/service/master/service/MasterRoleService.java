@@ -58,12 +58,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MasterRoleService {
 
-
     private final TDlRoleServiceImpl tDlRoleService;
 
     private final TDlRoleUserRelationServiceImpl tDlRoleUserRelationService;
 
+    private final MasterPermissionRoleBindingService masterPermissionRoleBindingService;
+
     private final IRoleConverter iRoleConverter;
+
 
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -166,11 +168,44 @@ public class MasterRoleService {
     )
     public Result<AbstractRolePermissionRuleVo.RoleVo> newRole(AbstractRoleRequest.NewRoleRequest request) {
         IdUtil.fastSimpleUUID();
+
         // 检查角色名称是否重复
+        Assert.isFalse(
+                this.tDlRoleService.lambdaQuery()
+                        .select()
+                        .eq(TDlRole::getRoleName, request.getRoleName())
+                        .exists(),
+                () -> new BException("角色名称已存在")
+        );
+
+        // 用户不允许创建静态角色
+        Assert.isTrue(
+                request.getRoleType() != RoleTypeEnum.ROLE_STATIC,
+                () -> new BException(
+                        String.format(
+                                "用户不允许创建静态角色，请传递: %s",
+                                RoleTypeEnum.ROLE_DYNAMIC
+                        )
+                )
+        );
 
         // 入库
+        TDlRole tDlRole = new TDlRole();
+        tDlRole.setRoleName(request.getRoleName());
+        tDlRole.setRoleType(request.getRoleType());
+        tDlRole.setEnabled(request.getEnabled());
+        tDlRole.setRoleComment(request.getRoleComment());
 
-        return null;
+        tDlRole.setIsDeleted(false);
+        tDlRole.setEditEnabled(true);
+
+        Assert.isTrue(
+                this.tDlRoleService.save(tDlRole),
+                () -> new DatabaseException("新建角色失败")
+        );
+
+
+        return Result.success(this.iRoleConverter.convert2RoleVo(tDlRole));
     }
 
     /**
@@ -213,7 +248,6 @@ public class MasterRoleService {
      */
     public Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleListByUserId(Long userId) {
         AbstractRolePermissionRuleVo.RoleListVo roleListVo = new AbstractRolePermissionRuleVo.RoleListVo();
-
 
         List<Long> roleIdList = this.tDlRoleUserRelationService.lambdaQuery()
                 .select()
@@ -258,12 +292,82 @@ public class MasterRoleService {
             rollbackFor = DatabaseException.class
     )
     public Result<String> removeRoleBatchByIdList(AbstractRoleRequest.RoleIdListRequest request) {
-        // 检查是否存在关联的用户
 
-        // 删除角色
+        // 检查是否包含超级角色，如果包含则抛出异常
+        Assert.isFalse(
+                request.getRoleIdList().contains(1L),
+                () -> new BException(
+                        String.format(
+                                "无法移除 %s 超级角色",
+                                StaticRoleTypeEnum.ADMIN
+                        )
+                )
+        );
+
+        List<Long> roleIdList = request.getRoleIdList()
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        // 检查是否包含静态角色（静态角色为系统自动创建，不允许删除）
+        List<TDlRole> dynamicTDlRoleList = this.tDlRoleService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, roleIdList)
+                .eq(TDlRole::getRoleType, RoleTypeEnum.ROLE_DYNAMIC)
+                .list();
+
+        Assert.isTrue(
+                dynamicTDlRoleList.size() == roleIdList.size(),
+                () -> new BException(
+                        String.format(
+                                "操作列表中包含静态角色，%s 不允许删除",
+                                RoleTypeEnum.ROLE_STATIC
+                        )
+                )
+        );
+
+
+        // 检查是否存在关联的用户
+        boolean isAttached = this.tDlRoleUserRelationService.lambdaQuery()
+                .select()
+                .in(TDlRoleUserRelation::getRoleId, roleIdList)
+                .exists();
+
+        Assert.isFalse(
+                isAttached,
+                () -> new BException("角色中包含绑定的用户关系，请先解除用户绑定")
+        );
+
+        // 检查角色是否全部存在
+        List<TDlRole> tDlRoleList = this.tDlRoleService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, roleIdList)
+                .eq(TDlRole::getIsDeleted, false)
+                .list();
+
+        Assert.isTrue(
+                tDlRoleList.size() == roleIdList.size(),
+                () -> new BException("参数中包含不存在的角色 ID")
+        );
 
         // 调用 MasterPermissionService 中的函数删除可能关联的权限
+        Assert.isTrue(
+                this.masterPermissionRoleBindingService.detachPermissionRoleByRoleId(
+                        new AbstractRoleRequest.RoleIdListRequest(
+                                roleIdList
+                        )
+                ).isSuccess(),
+                () -> new BException("调用移除权限角色函数失败")
+        );
+
+        // 删除角色
+        Assert.isTrue(
+                this.tDlRoleService.removeBatchByIds(tDlRoleList),
+                () -> new DatabaseException("删除角色失败")
+        );
 
         return Result.success();
     }
+
+
 }

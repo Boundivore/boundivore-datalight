@@ -33,8 +33,8 @@ import cn.boundivore.dl.orm.service.single.impl.TDlUserAuthServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserServiceImpl;
 import cn.boundivore.dl.service.master.converter.IUserConverter;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
-import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.crypto.digest.DigestUtil;
 import lombok.RequiredArgsConstructor;
@@ -59,15 +59,17 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MasterUserService {
 
-    protected final TDlUserServiceImpl tDlUserService;
-    protected final TDlUserAuthServiceImpl tDlUserAuthService;
-    protected final TDlLoginEventServiceImpl tDlLoginEventService;
+    private final TDlUserServiceImpl tDlUserService;
+    private final TDlUserAuthServiceImpl tDlUserAuthService;
+    private final TDlLoginEventServiceImpl tDlLoginEventService;
 
-    protected final IUserConverter iUserConverter;
+    private final IUserConverter iUserConverter;
 
-    protected final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    protected final DataLightEnv dataLightEnv;
+    private final DataLightEnv dataLightEnv;
+
+    private final MasterRoleUserBindingService masterRoleUserBindingService;
 
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -132,6 +134,85 @@ public class MasterUserService {
         );
 
         return Result.success(iUserConverter.convert2UserInfoVo(tUser));
+    }
+
+    /**
+     * Description: 根据用户 ID 删除指定用户
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 用户 ID 请求体
+     * @return Result<String> 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @LocalLock
+    public Result<String> removeById(AbstractUserRequest.UserIdRequest request) {
+        // 检查是否删除超级用户，如果是，则抛出异常
+        Assert.isTrue(
+                request.getUserId() == 1L,
+                () -> new BException("admin 用户无法删除")
+        );
+
+        // 检查用户是否真实存在
+        Assert.notNull(
+                this.tDlUserService.getById(request.getUserId()),
+                () -> new BException("不存在的用户")
+        );
+
+        // 删除用户主体
+        Assert.isTrue(
+                this.tDlUserService.removeById(request.getUserId()),
+                () -> new DatabaseException("移除用户失败: t_dl_user")
+        );
+
+        // 删除相关表数据
+        TDlUserAuth tDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getUserId, request.getUserId())
+                .one();
+
+        if (tDlUserAuth != null) {
+            Assert.isTrue(
+                    this.tDlUserAuthService.removeById(tDlUserAuth),
+                    () -> new DatabaseException("移除用户失败: t_dl_auth")
+            );
+        }
+
+
+        // 删除登录相关数据
+        TDlLoginEvent tDlLoginEvent = this.tDlLoginEventService.lambdaQuery()
+                .select()
+                .eq(TDlLoginEvent::getUserId, request.getUserId())
+                .one();
+
+        if (tDlLoginEvent != null) {
+            Assert.isTrue(
+                    this.tDlLoginEventService.removeById(tDlLoginEvent),
+                    () -> new DatabaseException("移除用户失败: t_dl_login_event")
+            );
+        }
+
+        // 删除绑定的角色关系
+        Assert.isTrue(
+                this.masterRoleUserBindingService.detachRoleUser(
+                        new AbstractUserRequest.UserIdListRequest(
+                                CollUtil.newArrayList(request.getUserId()
+                                )
+                        )
+                ).isSuccess(),
+                () -> new BException("调用解绑用户角色接口失败")
+        );
+
+        return Result.success();
+
     }
 
     /**

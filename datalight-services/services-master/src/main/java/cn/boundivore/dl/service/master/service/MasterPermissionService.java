@@ -22,8 +22,11 @@ import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlPermission;
+import cn.boundivore.dl.orm.po.single.TDlPermissionRoleRelation;
 import cn.boundivore.dl.orm.po.single.TDlRuleInterface;
+import cn.boundivore.dl.orm.service.single.impl.TDlPermissionRoleRelationServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlPermissionServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlRuleInterfaceServiceImpl;
 import cn.boundivore.dl.service.master.bean.PermissionBean;
@@ -32,7 +35,6 @@ import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +57,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MasterPermissionService {
 
+    private final TDlPermissionRoleRelationServiceImpl tDlPermissionRoleRelationService;
+
     private final TDlPermissionServiceImpl tDlPermissionService;
+
     private final TDlRuleInterfaceServiceImpl tDlRuleInterfaceService;
 
     private final MasterPermissionHandlerService masterPermissionHandlerService;
@@ -269,7 +274,7 @@ public class MasterPermissionService {
      * @param permissionId 权限 ID
      * @return Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> 指定权限详情
      */
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> permissionDetails(Long permissionId) {
+    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> getPermissionById(Long permissionId) {
         TDlPermission tDlPermission = this.tDlPermissionService.getById(permissionId);
         Assert.notNull(
                 tDlPermission,
@@ -291,7 +296,7 @@ public class MasterPermissionService {
     }
 
     /**
-     * Description: 查询当前用户接口权限列表
+     * Description: 根据用户 ID 获取权限信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/9
@@ -300,13 +305,43 @@ public class MasterPermissionService {
      * Modification time:
      * Throws:
      *
-     * @param userId           用户 ID
-     * @param ruleInterfaceUri 规则接口 URI
-     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> 接口权限规则列表
+     * @param userId 用户 ID
+     * @return Result<AbstractRolePermissionRuleVo.PermissionVo> 接口权限规则列表
      */
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(Long userId,
-                                                                                                          String ruleInterfaceUri) {
-        return null;
+    public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByUserId(Long userId) {
+
+        // 根据用户 ID 获取用户关联角色
+        List<Long> roleIdList = this.masterRoleService.getRoleListByUserId(userId)
+                .getData()
+                .getRoleList()
+                .stream()
+                .map(AbstractRolePermissionRuleVo.RoleVo::getRoleId)
+                .collect(Collectors.toList());
+
+        // 查询关联表，获取权限 ID 列表
+        List<Long> permissionIdList = this.tDlPermissionRoleRelationService.lambdaQuery()
+                .select()
+                .in(TDlPermissionRoleRelation::getRoleId, roleIdList)
+                .list()
+                .stream()
+                .map(TDlPermissionRoleRelation::getPermissionId)
+                .collect(Collectors.toList());
+
+        // 获取权限列表
+        List<TDlPermission> tDlPermissionList = this.tDlPermissionService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, permissionIdList)
+                .eq(TDlPermission::getIsDeleted, false)
+                .list();
+
+
+        return Result.success(
+                new AbstractRolePermissionRuleVo.PermissionListVo(
+                        tDlPermissionList.stream()
+                                .map(this.iPermissionRuleConverter::convert2PermissionVo)
+                                .collect(Collectors.toList())
+                )
+        );
     }
 
     /**
@@ -320,9 +355,35 @@ public class MasterPermissionService {
      * Throws:
      *
      * @param roleId 角色 ID
-     * @return Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> 该角色下所有权限以及接口规则信息
+     * @return Result<AbstractRolePermissionRuleVo.PermissionVo> 该角色下所有权限以及接口规则信息
      */
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionByRoleId(Long roleId) {
-        return null;
+    public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByRoleId(Long roleId) {
+
+        // 查询关联表，获取权限 ID 列表
+        List<Long> permissionIdList = this.tDlPermissionRoleRelationService.lambdaQuery()
+                .select()
+                .eq(TDlPermissionRoleRelation::getRoleId, roleId)
+                .list()
+                .stream()
+                .map(TDlPermissionRoleRelation::getPermissionId)
+                .collect(Collectors.toList());
+
+        // 获取权限列表
+        List<TDlPermission> tDlPermissionList = this.tDlPermissionService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, permissionIdList)
+                .eq(TDlPermission::getIsDeleted, false)
+                .list();
+
+
+        return Result.success(
+                new AbstractRolePermissionRuleVo.PermissionListVo(
+                        tDlPermissionList.stream()
+                                .map(this.iPermissionRuleConverter::convert2PermissionVo)
+                                .collect(Collectors.toList())
+                )
+        );
     }
+
+
 }

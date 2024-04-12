@@ -66,6 +66,9 @@ public class DataLightEnv {
     public static String SCRIPTS_PATH_DIR_REMOTE;
     public static String BIN_PATH_DIR_REMOTE;
 
+    @Value("${server.datalight.version}")
+    private String version;
+
     @Value("${server.datalight.is-debug}")
     private boolean isDebug;
 

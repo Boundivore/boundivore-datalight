@@ -76,6 +76,48 @@ public abstract class AbstractRoleRequest {
         @JsonProperty(value = "RoleIdList", required = true)
         @NotEmpty(message = "角色 ID 列表不能为空")
         private List<Long> roleIdList;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractRoleRequest.RoleUserIdRequest",
+            description = "AbstractRoleRequest.RoleUserIdRequest: 角色与用户 ID 信息 请求体"
+    )
+    public final static class RoleUserIdRequest implements IRequest {
+
+        private static final long serialVersionUID = -7519956203389684421L;
+
+        @ApiModelProperty(name = "RoleId", value = "角色 ID", required = true)
+        @JsonProperty(value = "RoleId", required = true)
+        @NotNull(message = "角色 ID 不能为空")
+        private Long roleId;
+
+        @ApiModelProperty(name = "UserId", value = "用户 ID", required = true)
+        @JsonProperty(value = "UserId", required = true)
+        @NotNull(message = "用户 ID 不能为空")
+        private Long userId;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractRoleRequest.RoleUserIdRequest",
+            description = "AbstractRoleRequest.RoleUserIdRequest: 角色与用户 ID 信息列表 请求体"
+    )
+    public final static class RoleUserIdListRequest implements IRequest {
+
+        private static final long serialVersionUID = -7519956203389684421L;
+
+        @ApiModelProperty(name = "RoleUserList", value = "角色用户映射列表", required = true)
+        @JsonProperty(value = "RoleUserList", required = true)
+        @NotEmpty(message = "角色用户映射列表不能为空")
+        private List<RoleUserIdRequest> roleUserList;
 
 
     }

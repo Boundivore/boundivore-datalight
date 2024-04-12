@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.api.master.define;
 
-import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
@@ -24,12 +23,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -57,29 +51,25 @@ public interface IMasterPermissionAPI {
     @ApiOperation(notes = "测试接口权限", value = "测试接口权限")
     Result<String> testPermissionInterface() throws Exception;
 
-    @GetMapping(value = "/permission/details")
+    @GetMapping(value = "/permission/getPermissionById")
     @ApiOperation(notes = "获取当前权限详情", value = "获取当前权限详情")
-    Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> permissionDetails(
+    Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> getPermissionById(
             @ApiParam(name = "PermissionId", value = "权限 Id", example = "1")
             @RequestParam(value = "PermissionId", required = true)
             Long permissionId
     ) throws Exception;
 
-    @GetMapping(value = "/permission/listPermissionRuleInterface")
-    @ApiOperation(notes = "查询当前用户接口权限列表", value = "查询当前用户接口权限列表")
-    Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionRuleInterface(
+    @GetMapping(value = "/permission/getPermissionListByUserId")
+    @ApiOperation(notes = "查询当前用户权限列表", value = "查询当前用户权限列表")
+    Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByUserId(
             @ApiParam(name = "UserId", value = "用户 ID", example = "")
-            @RequestParam(value = "UserId", required = false)
-            Long userId,
-
-            @ApiParam(name = "RuleInterfaceUri", value = "接口 URI, 传空时则拉取所有接口权限", example = "")
-            @RequestParam(value = "RuleInterfaceUri", required = false)
-            String ruleInterfaceUri
+            @RequestParam(value = "UserId", required = true)
+            Long userId
     ) throws Exception;
 
-    @GetMapping(value = "/permission/listPermissionByRoleId")
+    @GetMapping(value = "/permission/getPermissionListByRoleId")
     @ApiOperation(notes = "根据角色 ID 获取权限信息", value = "根据角色 ID 获取权限信息")
-    Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceListVo> listPermissionByRoleId(
+    Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByRoleId(
             @ApiParam(name = "RoleId", value = "角色 ID", example = "1")
             @RequestParam(value = "RoleId", required = true)
             Long roleId

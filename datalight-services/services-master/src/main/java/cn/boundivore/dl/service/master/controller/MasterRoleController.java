@@ -16,18 +16,19 @@
  */
 package cn.boundivore.dl.service.master.controller;
 
-import cn.boundivore.dl.api.master.define.IMasterPermissionAPI;
+import cn.boundivore.dl.api.master.define.IMasterRoleAPI;
+import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.service.master.service.MasterPermissionService;
+import cn.boundivore.dl.service.master.service.MasterRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Description: MasterPermissionController
+ * Description: MasterRoleController
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2024/4/9s
+ * Creation time: 2024/4/12
  * Modification description:
  * Modified by:
  * Modification time:
@@ -35,30 +36,28 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-public class MasterPermissionController implements IMasterPermissionAPI {
+public class MasterRoleController implements IMasterRoleAPI {
 
-    private final MasterPermissionService masterPermissionService;
+    private MasterRoleService masterRoleService;
 
 
     @Override
-    public Result<String> testPermissionInterface() throws Exception {
-        return this.masterPermissionService.testPermissionInterface();
+    public Result<AbstractRolePermissionRuleVo.RoleVo> newRole(AbstractRoleRequest.NewRoleRequest request) throws Exception {
+        return this.masterRoleService.newRole(request);
     }
 
     @Override
-    public Result<AbstractRolePermissionRuleVo.PermissionRuleInterfaceDetailVo> getPermissionById(Long permissionId) throws Exception {
-        return this.masterPermissionService.getPermissionById(permissionId);
+    public Result<AbstractRolePermissionRuleVo.RoleVo> getRoleById(Long roleId) throws Exception {
+        return this.masterRoleService.getRoleById(roleId);
     }
 
     @Override
-    public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByUserId(Long userId) throws Exception {
-        return this.masterPermissionService.getPermissionListByUserId(userId);
+    public Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleListByUserId(Long userId) throws Exception {
+        return this.masterRoleService.getRoleListByUserId(userId);
     }
 
     @Override
-    public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByRoleId(Long roleId) throws Exception {
-        return this.masterPermissionService.getPermissionListByRoleId(roleId);
+    public Result<String> removeRoleBatchByIdList(AbstractRoleRequest.RoleIdListRequest request) throws Exception {
+        return this.masterRoleService.removeRoleBatchByIdList(request);
     }
-
-
 }

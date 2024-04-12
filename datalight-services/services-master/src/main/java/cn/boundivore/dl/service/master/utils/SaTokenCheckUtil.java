@@ -49,12 +49,17 @@ public class SaTokenCheckUtil {
     public static void checkRoleOrPermission(List<String> roleList, List<String> permissionList) {
         // 检查角色
         boolean hasRole = roleList.stream().anyMatch(StpUtil::hasRole);
+        if (hasRole) {
+            return;
+        }
+
         // 检查权限
         boolean hasPermission = permissionList.stream().anyMatch(StpUtil::hasPermission);
+        if (hasPermission) {
+            return;
+        }
 
         // 如果用户既没有列表中的角色也没有权限，则抛出异常
-        if (!hasRole && !hasPermission) {
-            throw new PermissionInterfaceDeniedException("权限拒绝");
-        }
+        throw new PermissionInterfaceDeniedException("权限拒绝");
     }
 }

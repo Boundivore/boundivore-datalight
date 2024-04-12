@@ -29,8 +29,10 @@ import lombok.experimental.Accessors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 /**
  * Description: 用户相关 Request 集合
@@ -150,5 +152,41 @@ public abstract class AbstractUserRequest {
         @NotBlank
         @Pattern(regexp = "^[a-f0-9]{32}$", message = "新密码格式不正确")
         private String newCredential;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractUserRequest.UserIdRequest",
+            description = "AbstractUserRequest.UserIdRequest 用户 ID 请求体"
+    )
+    public static class UserIdRequest implements IRequest {
+
+        private static final long serialVersionUID = -6472232143086042947L;
+
+        @Schema(name = "UserId", title = "用户 ID", required = true)
+        @JsonProperty(value = "UserId", required = true)
+        @NotNull(message = "用户 ID 不能为空")
+        private Long userId;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractUserRequest.UserIdListRequest",
+            description = "AbstractUserRequest.UserIdListRequest 用户 ID 列表 请求体"
+    )
+    public static class UserIdListRequest implements IRequest {
+
+        private static final long serialVersionUID = -6472232143086042947L;
+
+        @Schema(name = "UserIdList", title = "用户 ID 列表", required = true)
+        @JsonProperty(value = "UserIdList", required = true)
+        @NotEmpty(message = "用户 ID 列表不能为空")
+        private List<Long> userIdList;
     }
 }

@@ -16,12 +16,11 @@
  */
 package cn.boundivore.dl.service.master.controller;
 
-import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
-import cn.boundivore.dl.service.master.service.MasterUserService;
 import cn.boundivore.dl.api.master.define.IMasterUserAPI;
+import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
 import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.boundivore.dl.service.master.service.MasterUserService;
 import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +45,11 @@ public class MasterUserController implements IMasterUserAPI {
     @Override
     public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request) throws Exception {
         return this.masterUserService.register(request, false);
+    }
+
+    @Override
+    public Result<String> removeById(AbstractUserRequest.UserIdRequest request) throws Exception {
+        return this.masterUserService.removeById(request);
     }
 
     @SaIgnore

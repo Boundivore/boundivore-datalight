@@ -14,40 +14,37 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.service.master.converter;
+package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
-import cn.boundivore.dl.orm.po.single.TDlRole;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
-
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+import cn.boundivore.dl.base.response.impl.master.DataLightVersionVo;
+import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
+import cn.dev33.satoken.annotation.SaIgnore;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 /**
- * Description: IRoleConverter
+ * Description: 返回 DataLight 当前版本号
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2024/4/11
+ * Creation time: 2024/4/12
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
+@Service
+@RequiredArgsConstructor
+@SaIgnore
+public class MasterDataLightVersionService {
 
-@Mapper(componentModel = SPRING)
-@Component
-public interface IRoleConverter {
+    private final DataLightEnv dataLightEnv;
 
-    IRoleConverter INSTANCE = Mappers.getMapper(IRoleConverter.class);
-
-
-    @Mappings({
-            @Mapping(source = "id", target = "roleId")
-    })
-    AbstractRolePermissionRuleVo.RoleVo convert2RoleVo(TDlRole tDlRole);
-
-
+    public Result<DataLightVersionVo> getDataLightVersion() {
+        return Result.success(
+                new DataLightVersionVo(
+                        dataLightEnv.getVersion()
+                )
+        );
+    }
 }

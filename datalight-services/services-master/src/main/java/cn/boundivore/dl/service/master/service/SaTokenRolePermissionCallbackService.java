@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,10 +60,21 @@ public class SaTokenRolePermissionCallbackService implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        List<String> permissionList = new ArrayList<>();
-        permissionList.add("IMasterPermissionAPI.testPermissionInterface");
-        log.info("调用了获取权限方法: {}", permissionList);
-        return permissionList;
+        List<String> permissionCodeList = this.masterPermissionService.getPermissionListByUserId(
+                        Long.parseLong(loginId.toString())
+                ).getData()
+                .getPermissionList()
+                .stream()
+                .map(AbstractRolePermissionRuleVo.PermissionVo::getPermissionCode)
+                .collect(Collectors.toList());
+
+        log.info(
+                "用户: {}, 绑定权限: {}",
+                loginId,
+                permissionCodeList
+        );
+
+        return permissionCodeList;
     }
 
     /**
@@ -91,7 +101,11 @@ public class SaTokenRolePermissionCallbackService implements StpInterface {
                 .map(AbstractRolePermissionRuleVo.RoleVo::getRoleName)
                 .collect(Collectors.toList());
 
-        log.info("调用了获取角色方法: {}", roleNameList);
+        log.info(
+                "用户: {}, 绑定角色: {}",
+                loginId,
+                roleNameList
+        );
 
         return roleNameList;
 

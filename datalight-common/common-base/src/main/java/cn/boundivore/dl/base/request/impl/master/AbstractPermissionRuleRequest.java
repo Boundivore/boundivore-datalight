@@ -9,7 +9,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Description: 权限相关请求体
@@ -22,6 +24,51 @@ import javax.validation.constraints.NotNull;
  * Version: V1.0
  */
 public abstract class AbstractPermissionRuleRequest {
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractPermissionRuleRequest.PermissionRoleIdRequest",
+            description = "AbstractPermissionRuleRequest.PermissionRoleIdRequest: 权限与角色 ID 信息 请求体"
+    )
+    public final static class PermissionRoleIdRequest implements IRequest {
+
+        private static final long serialVersionUID = 3576061572492713349L;
+
+        @ApiModelProperty(name = "PermissionId", value = "权限 ID", required = true)
+        @JsonProperty(value = "PermissionId", required = true)
+        @NotNull(message = "权限 ID 不能为空")
+        private Long permissionId;
+
+        @ApiModelProperty(name = "RoleId", value = "角色 ID", required = true)
+        @JsonProperty(value = "RoleId", required = true)
+        @NotNull(message = "角色 ID 不能为空")
+        private Long roleId;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractPermissionRuleRequest.PermissionRoleIdListRequest",
+            description = "AbstractPermissionRuleRequest.PermissionRoleIdListRequest: 权限与角色 ID 信息列表 请求体"
+    )
+    public final static class PermissionRoleIdListRequest implements IRequest {
+
+        private static final long serialVersionUID = 2368545681642644579L;
+
+        @ApiModelProperty(name = "PermissionRoleIdList", value = "权限角色映射列表", required = true)
+        @JsonProperty(value = "PermissionRoleIdList", required = true)
+        @NotEmpty(message = "权限角色映射列表不能为空")
+        private List<PermissionRoleIdRequest> permissionRoleIdList;
+
+
+    }
+
 
     @Data
     @AllArgsConstructor
