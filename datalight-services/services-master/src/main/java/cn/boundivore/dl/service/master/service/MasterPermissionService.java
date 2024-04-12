@@ -31,6 +31,7 @@ import cn.boundivore.dl.orm.service.single.impl.TDlPermissionServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlRuleInterfaceServiceImpl;
 import cn.boundivore.dl.service.master.bean.PermissionBean;
 import cn.boundivore.dl.service.master.converter.IPermissionRuleConverter;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.RequiredArgsConstructor;
@@ -310,6 +311,9 @@ public class MasterPermissionService {
      */
     public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByUserId(Long userId) {
 
+        AbstractRolePermissionRuleVo.PermissionListVo permissionListVo = new AbstractRolePermissionRuleVo.PermissionListVo();
+        permissionListVo.setPermissionList(new ArrayList<>());
+
         // 根据用户 ID 获取用户关联角色
         List<Long> roleIdList = this.masterRoleService.getRoleListByUserId(userId)
                 .getData()
@@ -317,6 +321,10 @@ public class MasterPermissionService {
                 .stream()
                 .map(AbstractRolePermissionRuleVo.RoleVo::getRoleId)
                 .collect(Collectors.toList());
+
+        if (CollUtil.isEmpty(roleIdList)) {
+            return Result.success(permissionListVo);
+        }
 
         // 查询关联表，获取权限 ID 列表
         List<Long> permissionIdList = this.tDlPermissionRoleRelationService.lambdaQuery()
@@ -327,21 +335,11 @@ public class MasterPermissionService {
                 .map(TDlPermissionRoleRelation::getPermissionId)
                 .collect(Collectors.toList());
 
-        // 获取权限列表
-        List<TDlPermission> tDlPermissionList = this.tDlPermissionService.lambdaQuery()
-                .select()
-                .in(TBasePo::getId, permissionIdList)
-                .eq(TDlPermission::getIsDeleted, false)
-                .list();
-
-
-        return Result.success(
-                new AbstractRolePermissionRuleVo.PermissionListVo(
-                        tDlPermissionList.stream()
-                                .map(this.iPermissionRuleConverter::convert2PermissionVo)
-                                .collect(Collectors.toList())
-                )
+        permissionListVo.setPermissionList(
+                this.assemblePermissionVo(permissionIdList)
         );
+
+        return Result.success(permissionListVo);
     }
 
     /**
@@ -358,6 +356,8 @@ public class MasterPermissionService {
      * @return Result<AbstractRolePermissionRuleVo.PermissionVo> 该角色下所有权限以及接口规则信息
      */
     public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByRoleId(Long roleId) {
+        AbstractRolePermissionRuleVo.PermissionListVo permissionListVo = new AbstractRolePermissionRuleVo.PermissionListVo();
+        permissionListVo.setPermissionList(new ArrayList<>());
 
         // 查询关联表，获取权限 ID 列表
         List<Long> permissionIdList = this.tDlPermissionRoleRelationService.lambdaQuery()
@@ -368,6 +368,32 @@ public class MasterPermissionService {
                 .map(TDlPermissionRoleRelation::getPermissionId)
                 .collect(Collectors.toList());
 
+        permissionListVo.setPermissionList(
+                this.assemblePermissionVo(permissionIdList)
+        );
+
+        return Result.success(permissionListVo);
+    }
+
+
+    /**
+     * Description: 组装 PermissionVo 列表信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param permissionIdList 权限 ID 列表
+     * @return List<AbstractRolePermissionRuleVo.PermissionVo> 权限列表详情
+     */
+    private List<AbstractRolePermissionRuleVo.PermissionVo> assemblePermissionVo(List<Long> permissionIdList) {
+        if (CollUtil.isEmpty(permissionIdList)) {
+            return new ArrayList<>();
+        }
+
         // 获取权限列表
         List<TDlPermission> tDlPermissionList = this.tDlPermissionService.lambdaQuery()
                 .select()
@@ -375,15 +401,9 @@ public class MasterPermissionService {
                 .eq(TDlPermission::getIsDeleted, false)
                 .list();
 
-
-        return Result.success(
-                new AbstractRolePermissionRuleVo.PermissionListVo(
-                        tDlPermissionList.stream()
-                                .map(this.iPermissionRuleConverter::convert2PermissionVo)
-                                .collect(Collectors.toList())
-                )
-        );
+        return tDlPermissionList.stream()
+                .map(this.iPermissionRuleConverter::convert2PermissionVo)
+                .collect(Collectors.toList());
     }
-
 
 }

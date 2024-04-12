@@ -304,6 +304,7 @@ public class MasterRoleService {
                 )
         );
 
+        // 参数中已经判断 roleIdList 是否为空
         List<Long> roleIdList = request.getRoleIdList()
                 .stream()
                 .distinct()
