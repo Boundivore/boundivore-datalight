@@ -17,6 +17,7 @@
 package cn.boundivore.dl.plugin.monitor.config;
 
 import cn.boundivore.dl.base.enumeration.impl.MasterWorkerEnum;
+import cn.boundivore.dl.base.utils.YamlDeserializer;
 import cn.boundivore.dl.base.utils.YamlSerializer;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.bean.config.YamlAlertManagerConfig;
@@ -66,6 +67,7 @@ public class ConfigLogicAlertManagerYml extends AbstractConfigLogic {
                     .setUrl(this.getWebReceiver());
 
 
+            replacedTemplated = YamlDeserializer.toString(yamlAlertManagerConfig);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -120,8 +122,9 @@ public class ConfigLogicAlertManagerYml extends AbstractConfigLogic {
                     .get(0)
                     .setUrl("TestUrl");
 
-            System.out.println(yamlAlertManagerConfig);
+            replacedTemplated = YamlDeserializer.toString(yamlAlertManagerConfig);
 
+            System.out.println(replacedTemplated);
 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
