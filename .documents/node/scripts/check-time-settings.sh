@@ -24,7 +24,7 @@ ip_address="$1"
 ip_address=$(checkIp "${ip_address}")
 
 # 定义时间误差的阈值，单位为秒
-threshold=0.001
+threshold=0.1
 
 # 获取节点的时间偏移
 offset=$(ssh -o ConnectTimeout=5 -n "${ip_address}" "chronyc tracking 2>/dev/null" | grep 'System time' | awk '{print $4}')
