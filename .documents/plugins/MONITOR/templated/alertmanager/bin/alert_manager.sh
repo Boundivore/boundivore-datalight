@@ -16,8 +16,15 @@ start_alertmanager() {
 }
 
 stop_alertmanager() {
-  pkill -f "${ALERTMANAGER_CONFIG}"
-  exit 0
+    local pids
+    pids=$(ps aux | grep "${ALERTMANAGER_CONFIG}" | grep -v grep | awk '{print $2}')
+    if [ -n "$pids" ]; then
+        kill -9 "${pids}"
+        echo "Alertmanager stopped successfully."
+    else
+        echo "No Alertmanager process found."
+    fi
+    exit 0
 }
 
 restart_alertmanager() {

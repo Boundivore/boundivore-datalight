@@ -12,8 +12,15 @@ start_exporter() {
 }
 
 stop_exporter() {
-  pkill -f "node_exporter ${LISTEN_ADDRESS}"
-  exit 0
+    local pids
+    pids=$(ps aux | grep "node_exporter" | grep -v grep | awk '{print $2}')
+    if [ -n "$pids" ]; then
+        kill -9 "${pids}"
+        echo "Node Exporter stopped successfully."
+    else
+        echo "No Node Exporter process found."
+    fi
+    exit 0
 }
 
 restart_exporter() {

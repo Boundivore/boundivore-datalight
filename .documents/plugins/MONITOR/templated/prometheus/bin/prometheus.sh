@@ -24,7 +24,13 @@ start_prometheus() {
 }
 
 stop_prometheus() {
-  pkill -f "${PROMETHEUS_CONFIG}"
+  local pids
+      pids=$(ps aux | grep "${PROMETHEUS_CONFIG}" | grep -v grep | awk '{print $2}')
+      if [ -n "$pids" ]; then
+          kill -9 "${pids}"
+      else
+          echo "No Prometheus process found."
+      fi
   exit 0
 }
 

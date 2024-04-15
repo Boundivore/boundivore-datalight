@@ -15,8 +15,15 @@ start_grafana() {
 }
 
 stop_grafana() {
-  pkill -f "${GRAFANA_CONFIG}"
-  exit 0
+    local pids
+    pids=$(ps aux | grep "${GRAFANA_CONFIG}" | grep -v grep | awk '{print $2}')
+    if [ -n "$pids" ]; then
+        kill -9 "${pids}"
+        echo "Grafana stopped successfully."
+    else
+        echo "No Grafana process found."
+    fi
+    exit 0
 }
 
 restart_grafana() {

@@ -19,8 +19,15 @@ start_exporter() {
 }
 
 stop_exporter() {
-  pkill -f "${CONFIG_FILE}"
-  exit 0
+    local pids
+    pids=$(ps aux | grep "${CONFIG_FILE}" | grep -v grep | awk '{print $2}')
+    if [ -n "$pids" ]; then
+        kill -9 "${pids}"
+        echo "Exporter stopped successfully."
+    else
+        echo "No Exporter process found."
+    fi
+    exit 0
 }
 
 restart_exporter() {
