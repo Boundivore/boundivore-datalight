@@ -199,6 +199,46 @@ public class MasterNodeService {
     }
 
     /**
+     * Description: 获取节点详情
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeId 节点 ID
+     * @return Result<AbstractNodeVo.NodeDetailVo> 节点详情
+     */
+    public Result<AbstractNodeVo.NodeDetailVo> getNodeDetailById(Long nodeId) {
+
+        TDlNode tDlNode = this.tDlNodeService.lambdaQuery()
+                .select()
+                .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
+                .one();
+
+        Assert.notNull(
+                tDlNode,
+                () -> new BException("不存在的节点 ID")
+        );
+
+
+        return Result.success(
+                new AbstractNodeVo.NodeDetailVo()
+                        .setNodeId(tDlNode.getId())
+                        .setHostname(tDlNode.getHostname())
+                        .setNodeIp(tDlNode.getIpv4())
+                        .setSshPort(tDlNode.getSshPort())
+                        .setCpuArch(tDlNode.getCpuArch())
+                        .setCpuCores(tDlNode.getCpuCores())
+                        .setRam(tDlNode.getRam())
+                        .setDiskTotal(tDlNode.getDisk())
+                        .setNodeState(tDlNode.getNodeState())
+        );
+    }
+
+    /**
      * Description: 获取节点列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -208,7 +248,7 @@ public class MasterNodeService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId 集群ID
+     * @param clusterId 集群 ID
      * @return 节点列表结果
      */
     public Result<AbstractNodeVo.NodeVo> getNodeList(Long clusterId) {
@@ -281,7 +321,7 @@ public class MasterNodeService {
      * Throws:
      *
      * @param clusterId 集群 ID
-     * @return Map<Long, List <String>> 返回
+     * @return Map<Long, List < String>> 返回
      */
     private Map<Long, List<String>> getNodeComponents(Long clusterId) {
         // 优化：使用方法来封装组件查询逻辑

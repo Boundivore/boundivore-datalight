@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.api.worker.define;
+package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.response.impl.common.AbstractLogFileVo;
 import cn.boundivore.dl.base.result.Result;
@@ -31,7 +31,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
 
 
 /**
- * Description: Worker 读取日志文件相关接口
+ * Description: Master 读取日志文件相关接口
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/3/21
@@ -40,25 +40,37 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IWorkerLogFileReaderAPI", tags = {"Worker 接口：读取日志文件相关"})
+@Api(value = "IMasterLogFileReaderAPI", tags = {"Master 接口：读取日志文件相关"})
 @FeignClient(
-        name = "IWorkerLogFileReaderAPI",
-        contextId = "IWorkerLogFileReaderAPI",
+        name = "IMasterLogFileReaderAPI",
+        contextId = "IMasterLogFileReaderAPI",
         path = WORKER_URL_PREFIX
 )
-public interface IWorkerLogFileReaderAPI {
+public interface IMasterLogFileReaderAPI {
 
-    @GetMapping(value = "/log/file/getLogFileCollection")
-    @ApiOperation(notes = "获取日志文件列表", value = "获取日志文件列表")
-    Result<AbstractLogFileVo.LogFileCollectionVo> getLogFileCollection(
+    @GetMapping(value = "/log/file/getLogCollectionWithNodeId")
+    @ApiOperation(notes = "根据节点 ID 获取日志树状集合", value = "根据节点 ID 获取日志树状集合")
+    Result<AbstractLogFileVo.LogFileCollectionVo> getLogCollectionWithNodeId(
+            @ApiParam(name = "NodeId", value = "节点 ID")
+            @RequestParam(value = "NodeId", required = true)
+            @NotNull(message = "节点 ID 不能为空")
+            Long nodeId,
+
             @ApiParam(name = "RootLogFileDirectory", value = "日志文件根目录")
             @RequestParam(value = "RootLogFileDirectory", required = true)
+            @NotNull(message = "根路径不能为空")
             String rootLogFileDirectory
     ) throws Exception;
 
-    @GetMapping(value = "/log/file/loadFileContent")
-    @ApiOperation(notes = "分步加载文件内容", value = "分步加载文件内容")
-    Result<AbstractLogFileVo.LogFileContentVo> loadFileContent(
+
+    @GetMapping(value = "/log/file/loadFileContentWithNodeId")
+    @ApiOperation(notes = "根据节点 ID 分步加载文件内容", value = "根据节点 ID 分步加载文件内容")
+    Result<AbstractLogFileVo.LogFileContentVo> loadFileContentWithNodeId(
+            @ApiParam(name = "NodeId", value = "节点 ID")
+            @RequestParam(value = "NodeId", required = true)
+            @NotNull(message = "节点 ID 不能为空")
+            Long nodeId,
+
             @ApiParam(name = "FilePath", value = "文件绝对路径")
             @RequestParam(value = "FilePath", required = true)
             @NotNull(message = "文件绝对路径不能为空")

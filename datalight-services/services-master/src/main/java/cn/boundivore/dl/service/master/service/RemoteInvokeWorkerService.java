@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.api.worker.define.IWorkerConfigAPI;
 import cn.boundivore.dl.api.worker.define.IWorkerExecAPI;
+import cn.boundivore.dl.api.worker.define.IWorkerLogFileReaderAPI;
 import cn.boundivore.dl.api.worker.define.IWorkerManageAPI;
 import cn.boundivore.dl.base.constants.IUrlPrefixConstants;
 import cn.boundivore.dl.cloud.feign.RequestOptionsGenerator;
@@ -137,6 +138,37 @@ public class RemoteInvokeWorkerService {
                 )
                 .target(
                         IWorkerManageAPI.class,
+                        String.format(
+                                "http://%s:%s%s",
+                                ip,
+                                workerPort,
+                                IUrlPrefixConstants.WORKER_URL_PREFIX
+                        )
+                );
+    }
+
+    /**
+     * Description: Feign 远程调用指定节点的 IWorkerLogFileReaderAPI 的接口
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param ip 对端 IP 地址
+     * @return IWorkerManageAPI 可调用 API 实例
+     */
+    public IWorkerLogFileReaderAPI iWorkerLogFileReaderAPI(String ip) {
+        return feignBuilder
+                .options(RequestOptionsGenerator.getRequestOptions(
+                                10 * 1000L,
+                                10 * 1000L
+                        )
+                )
+                .target(
+                        IWorkerLogFileReaderAPI.class,
                         String.format(
                                 "http://%s:%s%s",
                                 ip,
