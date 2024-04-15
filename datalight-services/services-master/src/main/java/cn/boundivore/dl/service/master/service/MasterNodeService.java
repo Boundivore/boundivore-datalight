@@ -215,6 +215,7 @@ public class MasterNodeService {
 
         TDlNode tDlNode = this.tDlNodeService.lambdaQuery()
                 .select()
+                .eq(TBasePo::getId, nodeId)
                 .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
                 .one();
 
