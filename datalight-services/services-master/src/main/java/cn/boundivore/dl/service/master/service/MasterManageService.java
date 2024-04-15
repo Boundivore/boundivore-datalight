@@ -292,7 +292,7 @@ public class MasterManageService {
             this.forkJoinPool.submit(() -> {
                 // SSH 启动 Worker，并推送 Master 位置
                 allInvalidWorkerTDlNodeList.parallelStream()
-                        .filter(i -> autoPullTrueClusterIdList.contains(i.getClusterId()))
+                        .filter(i -> CollUtil.isEmpty(autoPullTrueClusterIdList) || autoPullTrueClusterIdList.contains(i.getClusterId()))
                         .forEach(i -> {
                             try {
                                 // 首先尝试主动再次推送 Master 元数据信息，获取心跳，如失败，则尝试拉起
