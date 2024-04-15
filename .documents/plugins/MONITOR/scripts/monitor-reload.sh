@@ -16,3 +16,5 @@ reload_url="http://${prometheus_host}:${prometheus_port}/-/reload"
 # 使用 curl 命令调用 reload_url
 curl_command="curl -X POST $reload_url"
 eval $curl_command
+
+exit 0

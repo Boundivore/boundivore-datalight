@@ -20,7 +20,6 @@ stop_exporter() {
     else
         echo "No Node Exporter process found."
     fi
-    exit 0
 }
 
 restart_exporter() {
@@ -38,3 +37,5 @@ elif [[ "$1" == "restart" ]]; then
 else
   echo "Invalid argument. Please use 'start', 'stop', or 'restart'."
 fi
+
+exit 0

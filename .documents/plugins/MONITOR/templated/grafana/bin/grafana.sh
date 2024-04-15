@@ -23,7 +23,6 @@ stop_grafana() {
     else
         echo "No Grafana process found."
     fi
-    exit 0
 }
 
 restart_grafana() {
@@ -46,3 +45,5 @@ case "$1" in
     echo "Invalid argument. Please use 'start', 'stop', or 'restart'."
     ;;
 esac
+
+exit 0

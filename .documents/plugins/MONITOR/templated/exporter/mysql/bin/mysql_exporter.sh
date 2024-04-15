@@ -27,7 +27,6 @@ stop_exporter() {
     else
         echo "No Exporter process found."
     fi
-    exit 0
 }
 
 restart_exporter() {
@@ -50,3 +49,5 @@ case "$1" in
     echo "Invalid argument. Please use 'start', 'stop', or 'restart'."
     ;;
 esac
+
+exit 0

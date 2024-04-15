@@ -31,7 +31,6 @@ stop_prometheus() {
       else
           echo "No Prometheus process found."
       fi
-  exit 0
 }
 
 restart_prometheus() {
@@ -54,3 +53,5 @@ case "$1" in
     echo "Invalid argument. Please use 'start', 'stop', or 'restart'."
     ;;
 esac
+
+exit 0
