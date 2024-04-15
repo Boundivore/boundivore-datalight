@@ -25,7 +25,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Description: 读取日志文件响应体
@@ -38,6 +37,25 @@ import java.util.Map;
  * Version: V1.0
  */
 public abstract class AbstractLogFileVo {
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractLogFileVo.RootDirectoryVo",
+            description = "AbstractLogFileVo.RootDirectoryVo 日志根目录路径响应体"
+    )
+    public final static class RootDirectoryVo implements IVo {
+
+        private static final long serialVersionUID = -9178897731336811616L;
+
+        @Schema(name = "RootDirectoryPath", title = "日志根目录路径", required = true)
+        @JsonProperty(value = "RootDirectoryPath", required = true)
+        private String rootDirectoryPath;
+
+    }
+
     @Data
     @Builder
     @NoArgsConstructor

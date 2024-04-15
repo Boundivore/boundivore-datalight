@@ -18,6 +18,10 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.response.impl.common.AbstractLogFileVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.resolver.ResolverYamlDirectory;
+import cn.boundivore.dl.service.master.resolver.yaml.YamlDirectory;
+import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,17 +47,39 @@ public class MasterLogFileReaderService {
 
 
     /**
+     * Description: 获取日志目录根路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractLogFileVo.RootDirectoryVo> 日志目录根路径
+     */
+    public Result<AbstractLogFileVo.RootDirectoryVo> getLogRootDirectory() {
+        YamlDirectory.Directory directoryYaml = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
+        return Result.success(
+                new AbstractLogFileVo.RootDirectoryVo(
+                        directoryYaml.getLogDir()
+                )
+        );
+    }
+
+
+    /**
      * Description: 获取指定节点目录下的内容，树状结构
      * 结构举例：
      * >目录1
-     *      文件1
-     *      文件2
-     *      >目录2
-     *          文件3
-     *          文件4
+     * 文件1
+     * 文件2
+     * >目录2
+     * 文件3
+     * 文件4
      * >目录3
-     *      文件5
-     *      文件6
+     * 文件5
+     * 文件6
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/15
@@ -68,6 +94,21 @@ public class MasterLogFileReaderService {
      */
     public Result<AbstractLogFileVo.LogFileCollectionVo> getLogCollectionWithNodeId(Long nodeId,
                                                                                     String rootLogFileDirectory) throws Exception {
+
+        YamlDirectory.Directory directoryYaml = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
+        String logDir = directoryYaml.getLogDir()
+                .substring(
+                        0, directoryYaml.getLogDir().length() - (directoryYaml.getLogDir().endsWith("/") ? 1 : 0)
+                );
+        String requestDir = rootLogFileDirectory.substring(
+                0, directoryYaml.getLogDir().length() - (directoryYaml.getLogDir().endsWith("/") ? 1 : 0)
+        );
+
+        Assert.isTrue(
+                logDir.equals(requestDir),
+                () -> new BException("传入的路径并非日志路径")
+        );
+
 
         // 获取节点 IP
         String nodeIp = this.masterNodeService.getNodeDetailById(nodeId)
@@ -99,6 +140,18 @@ public class MasterLogFileReaderService {
                                                                                 Long startOffset,
                                                                                 Long endOffset) throws Exception {
 
+
+        YamlDirectory.Directory directoryYaml = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
+        String logDir = directoryYaml.getLogDir()
+                .substring(
+                        0, directoryYaml.getLogDir().length() - (directoryYaml.getLogDir().endsWith("/") ? 1 : 0)
+                );
+
+        Assert.isTrue(
+                filePath.contains(logDir),
+                () -> new BException("不允许查看非日志系统之外的文件内容")
+        );
+
         // 获取节点 IP
         String nodeIp = this.masterNodeService.getNodeDetailById(nodeId)
                 .getData()
@@ -112,4 +165,6 @@ public class MasterLogFileReaderService {
                         endOffset
                 );
     }
+
+
 }

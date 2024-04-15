@@ -48,6 +48,10 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
 )
 public interface IMasterLogFileReaderAPI {
 
+    @GetMapping(value = "/log/file/getLogRootDirectory")
+    @ApiOperation(notes = "获取日志根目录路径", value = "获取日志根目录路径")
+    Result<AbstractLogFileVo.RootDirectoryVo> getLogRootDirectory() throws Exception;
+
     @GetMapping(value = "/log/file/getLogCollectionWithNodeId")
     @ApiOperation(notes = "根据节点 ID 获取日志树状集合", value = "根据节点 ID 获取日志树状集合")
     Result<AbstractLogFileVo.LogFileCollectionVo> getLogCollectionWithNodeId(

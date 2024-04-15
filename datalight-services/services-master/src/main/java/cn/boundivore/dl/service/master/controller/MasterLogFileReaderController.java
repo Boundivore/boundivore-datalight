@@ -41,6 +41,11 @@ public class MasterLogFileReaderController implements IMasterLogFileReaderAPI {
 
 
     @Override
+    public Result<AbstractLogFileVo.RootDirectoryVo> getLogRootDirectory() throws Exception {
+        return this.masterLogFileReaderService.getLogRootDirectory();
+    }
+
+    @Override
     public Result<AbstractLogFileVo.LogFileCollectionVo> getLogCollectionWithNodeId(Long nodeId,
                                                                                     String rootLogFileDirectory) throws Exception {
         return this.masterLogFileReaderService.getLogCollectionWithNodeId(

@@ -66,6 +66,8 @@ public class PluginConfig implements Serializable {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UnixEnv implements Serializable {
+        private static final long serialVersionUID = 5729312354089392214L;
+
         String DATALIGHT_DIR;
         String SERVICE_DIR;
         String LOG_DIR;
@@ -78,6 +80,8 @@ public class PluginConfig implements Serializable {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class MySQLEnv implements Serializable {
+        private static final long serialVersionUID = -4899970505611114558L;
+
         String dbHost;
         String dbPort;
         String dbName;
