@@ -21,6 +21,8 @@ import cn.boundivore.dl.base.utils.YamlSerializer;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.bean.config.YamlAlertManagerConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.CharsetUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.File;
@@ -73,7 +75,7 @@ public class ConfigLogicAlertManagerYml extends AbstractConfigLogic {
 
     /**
      * Description: Master 告警钩子接口
-     * /api/v1/master/alert/receiveOriginalAlertMsg
+     * /api/v1/master/alert/alertHook
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/8/11
@@ -98,6 +100,32 @@ public class ConfigLogicAlertManagerYml extends AbstractConfigLogic {
                 )
                 .collect(Collectors.toList())
                 .get(0);
+    }
+
+    public static void main(String[] args) {
+        try {
+            String replacedTemplated = FileUtil.readString(
+                    "D:\\workspace\\boundivore_workspace\\boundivore-datalight\\.documents\\plugins\\MONITOR\\templated\\alertmanager\\conf\\alertmanager.yml",
+                    CharsetUtil.CHARSET_UTF_8
+            );
+
+            YamlAlertManagerConfig yamlAlertManagerConfig = YamlSerializer.toObject(
+                    replacedTemplated,
+                    YamlAlertManagerConfig.class
+            );
+
+            yamlAlertManagerConfig.getReceivers()
+                    .get(0)
+                    .getWebhookConfigs()
+                    .get(0)
+                    .setUrl("TestUrl");
+
+            System.out.println(yamlAlertManagerConfig);
+
+
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

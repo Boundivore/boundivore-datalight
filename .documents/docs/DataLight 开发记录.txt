@@ -230,6 +230,9 @@ cat /etc/hosts
 重载 Prometheus：
 curl -X POST http://node01:9090/-/reload
 
+/srv/datalight/MONITOR/alertmanager/alertmanager --config.file=/srv/datalight/MONITOR/alertmanager/alertmanager/alertmanager.yml --web.config.reload-urls="http://localhost:9093/-/reload"
+
+curl -X POST http://localhost:9093/-/reload
 
 /srv/datalight/KUBESPHERE/bin/kk delete cluster -f /srv/datalight/KUBESPHERE/conf/datalight-config-auth-harbor.yaml
 
