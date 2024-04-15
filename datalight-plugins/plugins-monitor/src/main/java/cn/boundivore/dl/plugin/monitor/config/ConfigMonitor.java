@@ -55,6 +55,8 @@ public class ConfigMonitor extends AbstractConfig {
                 return new ConfigLogicPrometheusYml(super.pluginConfig).config(file, replacedTemplate);
             case "alertmanager.yml":
                 return new ConfigLogicAlertManagerYml(super.pluginConfig).config(file, replacedTemplate);
+            case "rules.yml":
+                return new ConfigLogicPrometheusRulesYml(super.pluginConfig).config(file, replacedTemplate);
             case "mysql-datalight.cnf":
                 return new ConfigLogicMySQLCnf(super.pluginConfig).config(file, replacedTemplate);
             case "defaults.ini":

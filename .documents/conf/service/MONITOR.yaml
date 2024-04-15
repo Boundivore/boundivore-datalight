@@ -10,6 +10,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/prometheus'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/prometheus/conf'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/prometheus'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/prometheus/rules'
+
       - service-conf-dir: '{{SERVICE_DIR}}/MONITOR/alertmanager/bin'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/MONITOR/templated/alertmanager/bin'
 

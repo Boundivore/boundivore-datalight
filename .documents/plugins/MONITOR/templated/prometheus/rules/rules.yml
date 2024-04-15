@@ -1,0 +1,5 @@
+groups:
+  - name: test
+    rules:
+      - alert: TestAlert
+        expr: vector(1)  # 这个表达式永远会触发报警

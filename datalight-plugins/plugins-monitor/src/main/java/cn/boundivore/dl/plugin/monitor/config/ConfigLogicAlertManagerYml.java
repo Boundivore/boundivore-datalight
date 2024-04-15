@@ -90,7 +90,7 @@ public class ConfigLogicAlertManagerYml extends AbstractConfigLogic {
                 .stream()
                 .filter(meta -> meta.getMasterWorkerEnum() == MasterWorkerEnum.MASTER)
                 .map(meta -> String.format(
-                                "http://%s:%s%s/alert/receiveOriginalAlertMsg",
+                                "http://%s:%s%s/alert/alertHook",
                                 meta.getHostname(),
                                 meta.getPort(),
                                 MASTER_URL_PREFIX

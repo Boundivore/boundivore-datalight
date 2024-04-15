@@ -16,14 +16,16 @@
  */
 package cn.boundivore.dl.plugin.monitor.config;
 
+import cn.boundivore.dl.base.utils.YamlDeserializer;
+import cn.boundivore.dl.base.utils.YamlSerializer;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
+import cn.boundivore.dl.plugin.base.bean.config.YamlPrometheusRulesConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
-import cn.hutool.core.lang.Assert;
 
 import java.io.File;
 
 /**
- * Description: 配置一系列 bin/*.sh 文件
+ * Description: 配置 prometheus.yml 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/14
@@ -32,10 +34,10 @@ import java.io.File;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicBinSh extends AbstractConfigLogic {
+public class ConfigLogicPrometheusRulesYml extends AbstractConfigLogic {
 
 
-    public ConfigLogicBinSh(PluginConfig pluginConfig) {
+    public ConfigLogicPrometheusRulesYml(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 
@@ -46,25 +48,37 @@ public class ConfigLogicBinSh extends AbstractConfigLogic {
                 file
         );
 
-        // 获取 {{SERVICE_DIR}}
-        String serviceDir = super.serviceDir();
-        // 获取 {{DATA_DIR}}
-        String dataDir = super.dataDir();
 
-        return replacedTemplated
-                .replace(
-                        "{{SERVICE_DIR}}",
-                        serviceDir
-                )
-                .replace(
-                        "{{DATA_DIR}}",
-                        dataDir
-                )
-                .replace(
-                        "{{LOG_DIR}}",
-                        logDir()
-                )
-                ;
+        // 获取 prometheus.yml 最终值
+        return this.rulesYml(replacedTemplated);
+    }
+
+    /**
+     * Description: 返回告警规则配置
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param replacedTemplated 配置文件模板
+     * @return 修改后的配置文件模板
+     */
+    private String rulesYml(String replacedTemplated) {
+        try {
+            YamlPrometheusRulesConfig yamlPrometheusRulesConfig = YamlSerializer.toObject(
+                    replacedTemplated,
+                    YamlPrometheusRulesConfig.class
+            );
+
+            replacedTemplated = YamlDeserializer.toString(yamlPrometheusRulesConfig);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return replacedTemplated;
     }
 
 }

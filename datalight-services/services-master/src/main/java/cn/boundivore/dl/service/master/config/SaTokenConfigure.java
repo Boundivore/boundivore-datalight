@@ -78,13 +78,15 @@ public class SaTokenConfigure implements WebMvcConfigurer {
 
                     // 遍历添加权限校检
                     permissionTemplatedMap.forEach((permissionCode, permissionBean) -> {
-                                SaRouter.match(
-                                        permissionBean.getPath(),
-                                        r -> SaTokenCheckUtil.checkRoleOrPermission(
-                                                CollUtil.newArrayList(StaticRoleTypeEnum.ADMIN.name()),
-                                                CollUtil.newArrayList(permissionBean.getCode())
-                                        )
-                                );
+                                if (!permissionBean.getCode().contains("IMasterAlertAPI.alertHook")) {
+                                    SaRouter.match(
+                                            permissionBean.getPath(),
+                                            r -> SaTokenCheckUtil.checkRoleOrPermission(
+                                                    CollUtil.newArrayList(StaticRoleTypeEnum.ADMIN.name()),
+                                                    CollUtil.newArrayList(permissionBean.getCode())
+                                            )
+                                    );
+                                }
                             }
                     );
                 })

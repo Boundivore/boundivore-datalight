@@ -2,9 +2,11 @@
 
 PROMETHEUS_PATH="{{SERVICE_DIR}}/MONITOR/prometheus/prometheus"
 PROMETHEUS_CONFIG="{{SERVICE_DIR}}/MONITOR/prometheus/prometheus.yml"
+PROMETHEUS_LOG_PATH="{{LOG_DIR}}/MONITOR/prometheus/prometheus.log"
 
 echo "PROMETHEUS_PATH: ${PROMETHEUS_PATH}"
 echo "PROMETHEUS_CONFIG: ${PROMETHEUS_CONFIG}"
+echo "PROMETHEUS_LOG_PATH: ${PROMETHEUS_LOG_PATH}"
 
 EXPORTER_OPTIONS=(
   "--web.listen-address=0.0.0.0:9090"
@@ -18,7 +20,7 @@ EXPORTER_OPTIONS=(
 )
 
 start_prometheus() {
-  nohup "${PROMETHEUS_PATH}" --config.file="${PROMETHEUS_CONFIG}" "${EXPORTER_OPTIONS[@]}" > /dev/null 2>&1 &
+  nohup "${PROMETHEUS_PATH}" --config.file="${PROMETHEUS_CONFIG}" "${EXPORTER_OPTIONS[@]}" > "${PROMETHEUS_LOG_PATH}" 2>&1 &
 }
 
 stop_prometheus() {
