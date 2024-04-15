@@ -29,7 +29,7 @@ stop_alertmanager() {
 
 restart_alertmanager() {
   stop_alertmanager
-  sleep 1
+  sleep 3
   start_alertmanager
 }
 

@@ -25,7 +25,7 @@ stop_exporter() {
 
 restart_exporter() {
   stop_exporter
-  sleep 1
+  sleep 3
   start_exporter
 }
 

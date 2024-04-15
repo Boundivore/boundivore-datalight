@@ -28,7 +28,7 @@ stop_grafana() {
 
 restart_grafana() {
   stop_grafana
-  sleep 2
+  sleep 3
   start_grafana
 }
 
