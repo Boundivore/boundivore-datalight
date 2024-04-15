@@ -72,14 +72,14 @@ public class MasterLogFileReaderService {
      * Description: 获取指定节点目录下的内容，树状结构
      * 结构举例：
      * >目录1
-     * 文件1
-     * 文件2
-     * >目录2
-     * 文件3
-     * 文件4
-     * >目录3
-     * 文件5
-     * 文件6
+     *      文件1
+     *      文件2
+     *      >目录2
+     *          文件3
+     *          文件4
+     *      >目录3
+     *          文件5
+     *          文件6
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/15
