@@ -16,11 +16,9 @@
  */
 package cn.boundivore.dl.service.master.controller;
 
-import cn.boundivore.dl.api.master.define.IMasterAlertAPI;
 import cn.boundivore.dl.api.master.define.IMasterDataLightVersionAPI;
 import cn.boundivore.dl.base.response.impl.master.DataLightVersionVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.service.master.service.MasterAlertService;
 import cn.boundivore.dl.service.master.service.MasterDataLightVersionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

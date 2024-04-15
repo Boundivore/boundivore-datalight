@@ -51,7 +51,9 @@ public class MasterAlertService {
      * @return Result<String> 调用成功或失败
      */
     public Result<String> alertHook(AlertWebhookPayloadRequest request) {
-        log.info("调用告警钩子接口成功: {}", request);
+        if (log.isDebugEnabled()) {
+            log.debug("调用告警钩子接口成功: {}", request);
+        }
         return Result.success();
     }
 }

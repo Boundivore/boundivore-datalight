@@ -68,11 +68,13 @@ public class SaTokenRolePermissionCallbackService implements StpInterface {
                 .map(AbstractRolePermissionRuleVo.PermissionVo::getPermissionCode)
                 .collect(Collectors.toList());
 
-        log.info(
-                "用户: {}, 绑定权限: {}",
-                loginId,
-                permissionCodeList
-        );
+        if (log.isDebugEnabled()) {
+            log.debug(
+                    "用户: {}, 绑定权限: {}",
+                    loginId,
+                    permissionCodeList
+            );
+        }
 
         return permissionCodeList;
     }
@@ -101,11 +103,13 @@ public class SaTokenRolePermissionCallbackService implements StpInterface {
                 .map(AbstractRolePermissionRuleVo.RoleVo::getRoleName)
                 .collect(Collectors.toList());
 
-        log.info(
-                "用户: {}, 绑定角色: {}",
-                loginId,
-                roleNameList
-        );
+        if (log.isDebugEnabled()) {
+            log.debug(
+                    "用户: {}, 绑定角色: {}",
+                    loginId,
+                    roleNameList
+            );
+        }
 
         return roleNameList;
 
