@@ -17,7 +17,6 @@
 package cn.boundivore.dl.api.worker.define;
 
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
-import cn.boundivore.dl.base.request.impl.worker.ServiceMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -50,12 +49,5 @@ public interface IWorkerManageAPI {
     Result<String> updateMasterMeta(
             @RequestBody
             MasterMetaRequest request
-    );
-
-    @PostMapping(value = "/manage/update/meta/service")
-    @ApiOperation(notes = "更新 Service 元数据信息", value = "更新 Service 元数据信息")
-    Result<String> updateServiceMeta(
-            @RequestBody
-            ServiceMetaRequest request
     );
 }

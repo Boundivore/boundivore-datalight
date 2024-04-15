@@ -59,14 +59,6 @@ public interface IMasterAutoPullAPI {
             AbstractAutoPullRequest.AutoPullWorkerRequest request
     ) throws Exception;
 
-    @PostMapping(value = "/auto/pull/switch/component")
-    @ApiOperation(notes = "切换自动拉起 Component 开关状态", value = "切换自动拉起 Component 开关状态")
-    Result<String> switchAutoPullComponent(
-            @RequestBody
-            @Valid
-            AbstractAutoPullRequest.AutoPullComponentRequest request
-    ) throws Exception;
-
     @GetMapping(value = "/auto/pull/get")
     @ApiOperation(notes = "获取进程拉起开关状态", value = "获取进程拉起开关状态")
     Result<AutoPullProcessVo> getAutoPullState(

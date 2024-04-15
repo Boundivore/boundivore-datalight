@@ -63,31 +63,4 @@ public abstract class AbstractAutoPullRequest {
         private Long closeDuration;
 
     }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Schema(
-            name = "AbstractAutoPullRequest.AutoPullComponentRequest",
-            description = "AbstractAutoPullRequest.AutoPullComponentRequest 自动拉起 Component 开关请求体"
-    )
-    public static class AutoPullComponentRequest implements IRequest {
-
-        private static final long serialVersionUID = -5889190112920520455L;
-
-        @Schema(name = "ClusterId", title = "集群 ID", required = true)
-        @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
-        private Long clusterId;
-
-        @Schema(name = "AutoPullComponent", title = "自动拉起 Component 开关状态", required = true)
-        @JsonProperty(value = "AutoPullComponent", required = true)
-        @NotNull
-        private Boolean autoPullComponent = true;
-
-        @Schema(name = "CloseDuration", title = "关闭时长", required = true)
-        @JsonProperty(value = "CloseDuration", required = true)
-        private Long closeDuration;
-
-    }
 }

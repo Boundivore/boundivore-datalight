@@ -21,7 +21,6 @@ import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
-import cn.boundivore.dl.base.request.impl.worker.ServiceMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlNode;
@@ -409,48 +408,4 @@ public class MasterManageService {
                 )
         );
     }
-
-    /**
-     * Description: 推送服务下组件状态为 STARTED 的相关元数据信息到各个 Worker 进程
-     * 注，推送时机：
-     * 1、Master 启动时推送
-     * 2、Master 高可用发生切换时推送
-     * 3、Service、Component 状态发生更新时，推送
-     * 4、Service、Component 重启时，应先确保更新各个 Worker 节点自动拉起开关处于 Off 状态，再执行重启操作，防止重启过程中，对进程进行重复拉起
-     * （即，RESTART action 中需要新增关闭对应节点 Worker 进程自动拉起开关，在结束时，应当再将自动拉起开关处于 On 状态）
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/3/27
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param request  服务组件元数据信息请求体
-     * @param workerIp 对应的 Worker 所在节点的 IP 地址
-     */
-    public void publishServiceMeta(ServiceMetaRequest request,
-                                   String workerIp) {
-        log.info(
-                "推送 ServiceMeta 元数据信至 Worker({})",
-                workerIp
-        );
-
-        Result<String> result = this.remoteInvokeWorkerService
-                .iWorkerManageAPI(workerIp)
-                .updateServiceMeta(request);
-
-        Assert.isTrue(
-                result.isSuccess(),
-                () -> new BException(
-                        String.format(
-                                "向 %s 更新 ServiceMeta 数据失败: %s",
-                                workerIp,
-                                result.getMessage()
-                        )
-                )
-        );
-
-    }
-
 }

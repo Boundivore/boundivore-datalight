@@ -68,21 +68,4 @@ public class AutoPullProcessVo implements IVo {
     @NotNull
     private Long autoCloseEndTimeWorker = 0L;
 
-
-
-    @Schema(name = "AutoPullComponent", title = "自动拉起 Component 开关状态", required = true)
-    @JsonProperty(value = "AutoPullComponent", required = true)
-    @NotNull
-    private Boolean autoPullComponent;
-
-    @Schema(name = "AutoCloseBeginTimeComponent", title = "Component 自动拉起开关关闭时的起始时间", required = true)
-    @JsonProperty(value = "AutoCloseBeginTimeComponent", required = true)
-    @NotNull
-    private Long autoCloseBeginTimeComponent = 0L;
-
-    @Schema(name = "AutoCloseEndTimeComponent", title = "Component 自动拉起开关关闭时的截止时间", required = true)
-    @JsonProperty(value = "AutoCloseEndTimeComponent", required = true)
-    @NotNull
-    private Long autoCloseEndTimeComponent = 0L;
-
 }

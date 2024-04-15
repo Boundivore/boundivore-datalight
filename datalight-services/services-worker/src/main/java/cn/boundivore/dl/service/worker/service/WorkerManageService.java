@@ -16,19 +16,16 @@
  */
 package cn.boundivore.dl.service.worker.service;
 
-import cn.boundivore.dl.base.constants.AutoPullComponentState;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.enumeration.impl.ExecTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
 import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
-import cn.boundivore.dl.base.request.impl.worker.ServiceMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.exception.BashException;
 import cn.boundivore.dl.service.worker.cache.MetaCache;
 import cn.boundivore.dl.service.worker.converter.IMasterMetaConverter;
-import cn.boundivore.dl.service.worker.converter.IServiceMetaConverter;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.thread.ThreadUtil;
@@ -37,8 +34,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * Description: Worker 管理相关工作，包括接收 Master 位置暴露，Master 主从切换消息等
@@ -58,8 +53,6 @@ public class WorkerManageService {
     private final MetaCache metaCache;
 
     private final IMasterMetaConverter iMasterMetaConverter;
-
-    private final IServiceMetaConverter iServiceMetaConverter;
 
     private final RemoteInvokeMasterService remoteInvokeMasterService;
 
@@ -91,26 +84,6 @@ public class WorkerManageService {
         return Result.success();
     }
 
-    /**
-     * Description: 更新服务的元数据信息，用于后续的服务下组件进程的自动拉起
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/14
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param request 服务元数据信息
-     * @return 更新成功或更新失败
-     */
-    public Result<String> updateServiceMeta(ServiceMetaRequest request) {
-        // Service 信息更新到 Worker 内存
-        this.metaCache.updateMasterMeta(
-                this.iServiceMetaConverter.convert2ServiceMeta(request)
-        );
-        return Result.success();
-    }
 
     /**
      * Description: 定期向 Master 发送心跳包
@@ -145,42 +118,6 @@ public class WorkerManageService {
                 log.error("心跳包发送失败: {}", ExceptionUtil.getMessage(e));
             }
         }
-    }
-
-    /**
-     * Description: 根据缓存信息，周期性检查并拉起应该处于启动状态的 Component
-     * EASY TO FIX: 可以通过动态修改 Trigger 动态改变定时任务的周期策略
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/2
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
-    @Scheduled(
-            initialDelay = 30 * 1000,
-            fixedDelay = 60 * 1000
-    )
-    private void crontabCheckAndPullComponent() {
-
-        // 当前节点只可能隶属于某唯一集群，因此缓存集合中只有1个元素，直接取出即可。
-        Optional<Long> clusterIdOptional = AutoPullComponentState.AUTO_PULL_COMPONENT_CACHE
-                .keySet()
-                .stream()
-                .findFirst();
-
-        if (clusterIdOptional.isPresent()) {
-            AutoPullComponentState.CacheBean autoPullComponentState = AutoPullComponentState.getAutoPullComponentState(
-                    clusterIdOptional.get()
-            );
-
-            // 如果自动拉起 Component 开关开启，则执行自动检查并拉起操作
-            if (autoPullComponentState.isAutoPullComponent()) {
-                this.checkAndPullComponent();
-            }
-        }
-
     }
 
     /**

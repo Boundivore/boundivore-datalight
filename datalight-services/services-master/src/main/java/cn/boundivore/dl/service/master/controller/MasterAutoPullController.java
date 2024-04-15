@@ -21,7 +21,6 @@ import cn.boundivore.dl.base.request.impl.common.AbstractAutoPullRequest;
 import cn.boundivore.dl.base.response.impl.master.AutoPullProcessVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterAutoPullService;
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,11 +44,6 @@ public class MasterAutoPullController implements IMasterAutoPullAPI {
     @Override
     public Result<String> switchAutoPullWorker(AbstractAutoPullRequest.AutoPullWorkerRequest request) throws Exception {
         return this.masterAutoPullService.switchAutoPullWorker(request);
-    }
-
-    @Override
-    public Result<String> switchAutoPullComponent(AbstractAutoPullRequest.AutoPullComponentRequest request) throws Exception {
-        return this.masterAutoPullService.switchAutoPullComponent(request);
     }
 
     @Override

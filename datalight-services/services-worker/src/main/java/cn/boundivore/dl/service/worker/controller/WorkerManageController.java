@@ -18,7 +18,6 @@ package cn.boundivore.dl.service.worker.controller;
 
 import cn.boundivore.dl.api.worker.define.IWorkerManageAPI;
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
-import cn.boundivore.dl.base.request.impl.worker.ServiceMetaRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.worker.service.WorkerManageService;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +42,5 @@ public class WorkerManageController implements IWorkerManageAPI {
     @Override
     public Result<String> updateMasterMeta(MasterMetaRequest request) {
         return this.workerManageService.updateMasterMeta(request);
-    }
-
-    @Override
-    public Result<String> updateServiceMeta(ServiceMetaRequest request) {
-        return this.workerManageService.updateServiceMeta(request);
     }
 }

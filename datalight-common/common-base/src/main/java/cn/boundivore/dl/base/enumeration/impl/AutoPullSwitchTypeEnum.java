@@ -30,8 +30,7 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  */
 public enum AutoPullSwitchTypeEnum implements IBaseEnum {
 
-    AUTO_PULL_WORKER("0", "Worker 进程自动拉起"),
-    AUTO_PULL_COMPONENT("1", "Component 进程自动拉起");
+    AUTO_PULL_WORKER("0", "Worker 进程自动拉起");
 
     private final String code;
     private final String message;
