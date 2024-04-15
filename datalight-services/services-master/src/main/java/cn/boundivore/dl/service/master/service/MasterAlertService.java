@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +36,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterAlertService {
-    
-    public Result<String> receiveOriginalAlertMsg(String request) {
+
+    /**
+     * Description: 接收 AlertManager 告警钩子函数
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request AlertManager 告警封装
+     * @return Result<String> 调用成功或失败
+     */
+    public Result<String> alertHook(AlertWebhookPayloadRequest request) {
         return Result.success();
     }
 }

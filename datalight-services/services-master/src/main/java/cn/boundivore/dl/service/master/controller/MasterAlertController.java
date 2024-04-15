@@ -17,13 +17,9 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterAlertAPI;
-import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
-import cn.boundivore.dl.base.request.impl.master.AbstractClusterRequest;
-import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
+import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterAlertService;
-import cn.boundivore.dl.service.master.service.MasterClusterService;
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,7 +40,7 @@ public class MasterAlertController implements IMasterAlertAPI {
     private final MasterAlertService masterAlertService;
 
     @Override
-    public Result<String> receiveOriginalAlertMsg(String request) throws Exception {
-        return this.masterAlertService.receiveOriginalAlertMsg(request);
+    public Result<String> alertHook(AlertWebhookPayloadRequest request) throws Exception {
+        return this.masterAlertService.alertHook(request);
     }
 }

@@ -16,6 +16,7 @@
  */
 package cn.boundivore.dl.api.master.define;
 
+import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,11 +47,11 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterAlertAPI {
 
-    @PostMapping(value = "/alert/receiveOriginalAlertMsg")
+    @PostMapping(value = "/alert/alertHook")
     @ApiOperation(notes = "接收原始告警信息", value = "接收原始告警信息")
-    Result<String> receiveOriginalAlertMsg(
+    Result<String> alertHook(
             @RequestBody
             @Valid
-            String request
+            AlertWebhookPayloadRequest request
     ) throws Exception;
 }
