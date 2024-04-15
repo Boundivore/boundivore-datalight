@@ -3,9 +3,9 @@ global:
 
 route:
 #  group_by: ['DataLight']  # 根据哪些标签对警报进行分组
-#  group_wait: 30s  # 在首次发送警报前等待多久
-#  group_interval: 5m  # 在第一次发送警报后，等待多久才发送新的一组警报
-#  repeat_interval: 1h  # 在警报解决后，等待多久才重复发送
+  group_wait: 10s  # 在首次发送警报前等待多久
+  group_interval: 5s  # 在第一次发送警报后，等待多久才发送新的一组警报
+  repeat_interval: 10s  # 在警报解决后，等待多久才重复发送
   receiver: 'webhook_receiver'  # 默认的接收器
 
 receivers:
