@@ -63,7 +63,7 @@ public final class ResolverYamlPrometheusRules {
                 YamlPrometheusRules.class
         );
 
-        log.info("-------------------------YamlPrometheusRules---------------------------");
+        log.info("------------------------- {} ---------------------------", fileName);
         log.info(rulesYaml.toString());
 
         // 这里可以添加更多的处理逻辑，如校验规则的有效性等

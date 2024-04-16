@@ -29,13 +29,7 @@ public class NewCodeGeneratorBySelect {
 
         //数据库表的设置
         List<String> listTable = Arrays.asList(
-                "t_dl_role_group",
-                "t_dl_rule_data_row",
-                "t_dl_rule_data_column",
-                "t_dl_rule_data_row_final",
-                "t_dl_rule_data_column_final",
-                "t_dl_rule_data_row_template",
-                "t_dl_rule_data_column_template"
+                "t_dl_alert"
         ); //设置需要自动代码生成的表名
         List<String> listTableSuffix = Arrays.asList(""); //过滤前缀
         List<String> listTablePrefix = Arrays.asList(""); //过滤后缀

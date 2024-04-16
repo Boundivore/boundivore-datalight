@@ -428,7 +428,7 @@ public class MasterManageService {
      *
      * @param alerts 告警列表
      */
-    public void pullServiceComponent(List<AlertWebhookPayloadRequest.Alert> alerts) {
+    public void checkAndPullServiceComponent(List<AlertWebhookPayloadRequest.Alert> alerts) {
         // 服务组件进程自动拉起
         alerts.parallelStream()
                 .filter(alert -> {

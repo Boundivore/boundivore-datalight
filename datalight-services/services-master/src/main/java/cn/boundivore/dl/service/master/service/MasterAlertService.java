@@ -16,29 +16,13 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.ExecTypeEnum;
-import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
-import cn.boundivore.dl.base.enumeration.impl.StepTypeEnum;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
-import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.orm.po.single.TDlComponent;
-import cn.boundivore.dl.orm.po.single.TDlNode;
-import cn.boundivore.dl.service.master.bean.AlertSummaryBean;
-import cn.boundivore.dl.service.master.bean.RestartInfo;
-import cn.boundivore.dl.service.master.env.DataLightEnv;
-import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
-import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
-import cn.hutool.core.lang.Assert;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
+import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Description: 告警相关逻辑
@@ -56,6 +40,12 @@ import java.util.List;
 public class MasterAlertService {
 
     private final MasterManageService masterManageService;
+
+    private final MasterAlertNoticeService masterAlertNoticeService;
+
+    private final TDlAlertServiceImpl tDlAlertService;
+
+    private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
 
     /**
      * Description: 接收 AlertManager 告警钩子函数
@@ -75,17 +65,40 @@ public class MasterAlertService {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
-        // 微信
-        // 钉钉
-        // 飞书
-        // 邮件
-        // 短信
 
-        // 根据告警自动拉起服务组件
-        this.masterManageService.pullServiceComponent(request.getAlerts());
+        // 根据告警检查是否需要自动拉起服务组件
+        this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
 
         return Result.success();
     }
+
+    // 新增告警配置
+    public Result<String> newAlertRule() {
+
+        // 解析参数
+
+        // 保存数据库
+
+        // 创建文件夹
+        // 写入到节点文件
+        // 更改权限
+        // 解析 prometheus.yml
+        // 添加文件绝对路径到 rules 数组
+
+        // 重载 Prometheus 配置，更新告警规则
+        this.remoteInvokePrometheusHandler.invokePrometheusReload(1L);
+        return Result.success();
+    }
+
+    // 删除告警配置
+
+    // 获取告警配置列表
+
+    // 获取告警配置详情
+
+    // 查看历史版本
+
+    // 启用\禁用告警配置
 
 
 }

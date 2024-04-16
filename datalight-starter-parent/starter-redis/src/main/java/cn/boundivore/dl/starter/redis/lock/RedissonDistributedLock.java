@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Version: V1.0
  */
 @ConditionalOnClass(RedissonClient.class)
-@ConditionalOnProperty(prefix = "data.light.lock", name = "type", havingValue = "REDIS", matchIfMissing = true)
+@ConditionalOnProperty(prefix = "datalight.lock", name = "type", havingValue = "REDIS", matchIfMissing = true)
 public class RedissonDistributedLock implements IDistributedLock {
     @Resource
     private RedissonClient redisson;

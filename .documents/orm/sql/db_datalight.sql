@@ -11,11 +11,29 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 11/04/2024 19:48:32
+ Date: 16/04/2024 16:57:41
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for t_dl_alert
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_alert`;
+CREATE TABLE `t_dl_alert`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `alert_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警配置名称',
+  `alert_file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则配置文件路径',
+  `alert_file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则配置文件名称',
+  `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
+  `alert_version` bigint(20) NOT NULL DEFAULT 1 COMMENT '告警规则文件版本',
+  `handler_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警触发时的处理手段类型 枚举：见代码',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警配置信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_audit_log

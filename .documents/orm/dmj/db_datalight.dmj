@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543336",
-  "TableCount": 29,
+  "TableCount": 30,
   "Count": 2,
   "items": [
     {
@@ -9,11 +9,11 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-285.02,-988.04,2.00,0,",
+      "CustomAttr1": "DVS:-531.82,735.37,1.70,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
-        "Count": 28,
+        "Count": 29,
         "items": [
           {
             "ID": 1,
@@ -32,7 +32,7 @@
                   "DataType": 2,
                   "DataTypeName": "BigInt",
                   "KeyFieldType": 1,
-                  "RelateTable": "t_dl",
+                  "RelateTable": "t_dl_alert",
                   "DataLength": 20
                 },
                 {
@@ -42,7 +42,7 @@
                   "DisplayName": "创建时间",
                   "DataType": 2,
                   "DataTypeName": "BigInt",
-                  "RelateTable": "t_dl",
+                  "RelateTable": "t_dl_alert",
                   "DataLength": 20
                 },
                 {
@@ -52,7 +52,7 @@
                   "DisplayName": "修改时间",
                   "DataType": 2,
                   "DataTypeName": "BigInt",
-                  "RelateTable": "t_dl",
+                  "RelateTable": "t_dl_alert",
                   "DataLength": 20
                 },
                 {
@@ -61,7 +61,7 @@
                   "OrderNo": 4,
                   "DisplayName": "乐观锁版本",
                   "DataType": 2,
-                  "RelateTable": "t_dl",
+                  "RelateTable": "t_dl_alert",
                   "DefaultValue": "0",
                   "Not_Nullable": true,
                   "DataLength": 20
@@ -3694,6 +3694,118 @@
                 }
               ]
             }
+          },
+          {
+            "ID": 1,
+            "Name": "t_dl_alert",
+            "Caption": "告警配置信息表",
+            "CreateDate": "2023/9/19 13:59:05",
+            "OrderNo": 29,
+            "GraphDesc": "Left=14.83\r\nTop=2607.32",
+            "MetaFields": {
+              "Count": 10,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "RelateTable": "t_",
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 5,
+                  "Name": "alert_name",
+                  "OrderNo": 5,
+                  "DisplayName": "告警配置名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 8,
+                  "Name": "alert_file_path",
+                  "OrderNo": 6,
+                  "DisplayName": "规则配置文件路径",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 7,
+                  "Name": "alert_file_name",
+                  "OrderNo": 7,
+                  "DisplayName": "规则配置文件名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 9,
+                  "Name": "enabled",
+                  "OrderNo": 8,
+                  "DisplayName": "是否启用",
+                  "DataType": 2,
+                  "DefaultValue": "1",
+                  "Not_Nullable": true,
+                  "DataLength": 1
+                },
+                {
+                  "ID": 6,
+                  "Name": "alert_version",
+                  "OrderNo": 9,
+                  "DisplayName": "告警规则文件版本",
+                  "DataType": 2,
+                  "DefaultValue": "1",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 10,
+                  "Name": "handler_type",
+                  "Memo": "枚举：见代码",
+                  "OrderNo": 10,
+                  "DisplayName": "告警触发时的处理手段类型",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                }
+              ]
+            }
           }
         ]
       }
@@ -3703,16 +3815,18 @@
       "Name": "Templated",
       "CreateDate": "2024/4/7 10:26:29",
       "OrderNo": 2,
+      "CustomAttr1": "DVS:-177.00,-1541.50,2.00,0,t_dl",
       "Tables": {
         "Count": 1,
         "items": [{
           "ID": 1,
-          "Name": "t_dl",
+          "Name": "t_dl_alert",
+          "Caption": "告警配置信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 1,
-          "GraphDesc": "Left=10.00\r\nTop=10.00\r\n",
+          "GraphDesc": "Left=10.00\r\nTop=10.00",
           "MetaFields": {
-            "Count": 4,
+            "Count": 10,
             "items": [
               {
                 "ID": 1,
@@ -3755,6 +3869,63 @@
                 "DefaultValue": "0",
                 "Not_Nullable": true,
                 "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "alert_name",
+                "OrderNo": 5,
+                "DisplayName": "告警配置名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 8,
+                "Name": "alert_file_path",
+                "OrderNo": 6,
+                "DisplayName": "规则配置文件路径",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 7,
+                "Name": "alert_file_name",
+                "OrderNo": 7,
+                "DisplayName": "规则配置文件名称",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "enabled",
+                "OrderNo": 8,
+                "DisplayName": "是否启用",
+                "DataType": 2,
+                "DefaultValue": "1",
+                "Not_Nullable": true,
+                "DataLength": 1
+              },
+              {
+                "ID": 6,
+                "Name": "alert_version",
+                "OrderNo": 9,
+                "DisplayName": "告警规则文件版本",
+                "DataType": 2,
+                "DefaultValue": "1",
+                "Not_Nullable": true,
+                "DataLength": 20
+              },
+              {
+                "ID": 10,
+                "Name": "handler_type",
+                "Memo": "枚举：见代码",
+                "OrderNo": 10,
+                "DisplayName": "告警触发时的处理手段类型",
+                "DataType": 1,
+                "Not_Nullable": true,
+                "DataLength": 255
               }
             ]
           }

@@ -1,4 +1,4 @@
-# my global config
+# global config
 global:
   scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
   evaluation_interval: 30s # Evaluate rules every 30 seconds. The default is every 1 minute.
@@ -13,7 +13,6 @@ alerting:
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
   - 'rules/RULE-*.yaml'
-  - 'rules/custom/RULE-CUSTOM-*.yaml'
 
 #remote_write:
 #  - url: "http://{{remote.write.addr}}:{{remote.write.port}}/api/v1/prom/write?db=prometheus"
