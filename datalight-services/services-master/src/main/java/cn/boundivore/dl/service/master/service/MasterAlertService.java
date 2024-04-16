@@ -54,6 +54,8 @@ public class MasterAlertService {
         if (log.isDebugEnabled()) {
             log.debug("调用告警钩子接口成功: {}", request);
         }
+
+        log.info("调用告警钩子接口成功: {}", request);
         return Result.success();
     }
 }
