@@ -64,7 +64,6 @@ public class MasterAutoPullService {
     @PostConstruct
     public void init() {
         this.initAutoPullWorkerFromDB();
-        this.initAutoPullComponentFromDB();
     }
 
     /**
@@ -82,21 +81,6 @@ public class MasterAutoPullService {
                 .select();
 
     }
-
-    /**
-     * Description: 从数据库中恢复 组件 进程自动拉起开关的状态
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/2
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
-    private void initAutoPullComponentFromDB() {
-
-    }
-
 
     /**
      * Description: 将自动拉起 Worker 进程的开关切换至目标状态
