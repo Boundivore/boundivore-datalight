@@ -8,7 +8,7 @@ groups:
           severity: warning
           hostname: |
             {{- $instance := $labels.instance }}
-            {{- $instance | regexReplaceAll "^(.*?):(\\d+)$" "$1" | regexReplaceAll "^(.*)\\.(.*?)$" "$1" }}
+            {{- $instance | regexReplaceAll "^(.*?)(\\..*)?$" "$1" }}
         annotations:
           summary: "{{ $labels.job }} 进程在 {{ $labels.hostname }} 宕机"
           description: "{{ $labels.job }} 进程在 {{ $labels.hostname }} 已经宕机超过5分钟"
