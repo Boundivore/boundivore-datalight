@@ -78,6 +78,16 @@ public class MasterAlertService {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
+        // 微信
+
+        // 钉钉
+
+        // 飞书
+
+        // 邮件
+
+        // 短信
+
         // 根据告警自动拉起服务组件
         this.pullServiceComponent(request.getAlerts());
 
