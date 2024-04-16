@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 /**
- * Description: 用于将各类服务的部署配置解析到对应的实体中
+ * Description: 用于将目录配置解析到对应的实体中
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/4/24

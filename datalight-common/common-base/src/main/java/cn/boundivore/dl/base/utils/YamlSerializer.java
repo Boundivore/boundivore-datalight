@@ -18,6 +18,7 @@ package cn.boundivore.dl.base.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.File;
@@ -46,7 +47,7 @@ public class YamlSerializer {
      * Modification time:
      * Throws: JsonProcessingException
      *
-     * @param yamlStr 字符串
+     * @param yamlStr   字符串
      * @param valueType 要转换的目标类型
      * @return 转换后的对象
      */
@@ -64,11 +65,12 @@ public class YamlSerializer {
      * Modification time:
      * Throws: JsonProcessingException
      *
-     * @param yamlFile 文件
+     * @param yamlFile  文件
      * @param valueType 要转换的目标类型
      * @return 转换后的对象
      */
     public static <T> T toObject(File yamlFile, Class<T> valueType) throws IOException {
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         return objectMapper.readValue(yamlFile, valueType);
     }
 }
