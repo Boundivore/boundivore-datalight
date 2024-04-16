@@ -48,11 +48,11 @@ public class ExecRequest implements IRequest {
     @JsonProperty(value = "ScriptType", required = true)
     private ExecTypeEnum execTypeEnum;
 
-    @Schema(name = "Name", title = "Task 名称", required = true)
+    @Schema(name = "Name", title = "名称", required = true)
     @JsonProperty("Name")
     private String name;
 
-    @Schema(name = "Exec", title = "Task 待执行的脚本或语句", required = true)
+    @Schema(name = "Exec", title = "待执行的脚本或语句", required = true)
     @JsonProperty("Exec")
     private String exec;
 

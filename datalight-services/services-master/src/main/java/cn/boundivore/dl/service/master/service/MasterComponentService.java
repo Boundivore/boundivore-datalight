@@ -924,7 +924,7 @@ public class MasterComponentService {
     }
 
     /**
-     * Description: 获取某个集群下对应服务的组件列表
+     * Description: 获取指定节点中对应服务的组件列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/27
@@ -933,19 +933,43 @@ public class MasterComponentService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId   集群 ID
+     * @param nodeId      节点 ID
      * @param serviceName 服务名称
      * @return 返回组件列表
      */
-    public List<TDlComponent> getTDlComponentListByServiceNameInNode(Long clusterId,
-                                                                     Long nodeId,
+    public List<TDlComponent> getTDlComponentListByServiceNameInNode(Long nodeId,
                                                                      String serviceName) {
         return this.tDlComponentService.lambdaQuery()
                 .select()
-                .eq(TDlComponent::getClusterId, clusterId)
                 .eq(TDlComponent::getNodeId, nodeId)
                 .eq(TDlComponent::getServiceName, serviceName)
                 .list();
+    }
+
+    /**
+     * Description: 获取指定节点、指定组件的组件详细信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param nodeId        节点 ID
+     * @param serviceName   服务名称
+     * @param componentName 组件名称
+     * @return TDlComponent 返回组件详情
+     */
+    public TDlComponent getTDlComponentByComponentNameInNode(Long nodeId,
+                                                             String serviceName,
+                                                             String componentName) {
+        return this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getNodeId, nodeId)
+                .eq(TDlComponent::getServiceName, serviceName)
+                .eq(TDlComponent::getComponentName, componentName)
+                .one();
     }
 
     /**

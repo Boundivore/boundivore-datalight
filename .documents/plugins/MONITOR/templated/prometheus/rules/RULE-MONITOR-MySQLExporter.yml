@@ -7,5 +7,5 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "{{ $labels.instance }}@{{ $labels.job }}"
+          summary: "STATIC-{{ $labels.instance }}@{{ $labels.job }}"
           description: "{{ $labels.job }} 进程在 {{ $labels.instance }} 已经宕机"

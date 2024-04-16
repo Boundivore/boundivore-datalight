@@ -155,7 +155,7 @@ public abstract class AbstractTask implements ITask {
                 stepMeta.getShell(),
                 ArrayUtil.toString(stepMeta.getArgs())
         );
-        Result<String> result = remoteInvokeWorkerService.iWorkerExecAPI(taskMeta.getNodeIp())
+        Result<String> result = this.remoteInvokeWorkerService.iWorkerExecAPI(taskMeta.getNodeIp())
                 .exec(
                         new ExecRequest(
                                 ExecTypeEnum.COMMAND,

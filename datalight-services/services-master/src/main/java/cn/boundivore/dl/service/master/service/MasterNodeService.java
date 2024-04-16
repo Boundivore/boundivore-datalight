@@ -480,16 +480,36 @@ public class MasterNodeService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId    集群 ID
      * @param hostnameList 主机名列表
      * @return List<TDlNodeInit> 节点列表
      */
-    public List<TDlNode> getNodeListInHostnames(Long clusterId, List<String> hostnameList) {
+    public List<TDlNode> getNodeListInHostnames(List<String> hostnameList) {
         return this.tDlNodeService.lambdaQuery()
                 .select()
-                .eq(TDlNode::getClusterId, clusterId)
                 .in(TDlNode::getHostname, hostnameList)
+                .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
                 .list();
+    }
+
+    /**
+     * Description: 根据主机名列表获取主机信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/7
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param hostname 主机名
+     * @return List<TDlNodeInit> 节点列表
+     */
+    public TDlNode getNodeListByHostname(String hostname) {
+        return this.tDlNodeService.lambdaQuery()
+                .select()
+                .eq(TDlNode::getHostname, hostname)
+                .ne(TDlNode::getNodeState, NodeStateEnum.REMOVED)
+                .one();
     }
 
     /**
