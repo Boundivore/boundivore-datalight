@@ -2,7 +2,7 @@ groups:
   - name: DataLight
     rules:
       - alert: TimelineServerDown
-        expr: process_start_time_seconds{job="YARN-TimelineServer"} == 0
+        expr: up{job="YARN-TimelineServer"} == 0
         for: 10s
         labels:
           severity: warning

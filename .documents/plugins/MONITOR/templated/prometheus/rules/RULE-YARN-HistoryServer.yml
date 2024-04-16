@@ -2,7 +2,7 @@ groups:
   - name: DataLight
     rules:
       - alert: HistoryServerDown
-        expr: process_start_time_seconds{job="YARN-HistoryServer"} == 0
+        expr: up{job="YARN-HistoryServer"} == 0
         for: 10s
         labels:
           severity: warning

@@ -2,7 +2,7 @@ groups:
   - name: DataLight
     rules:
       - alert: ZKFailoverControllerDown
-        expr: process_start_time_seconds{job="HDFS-ZKFailoverController"} == 0
+        expr: up{job="HDFS-ZKFailoverController"} == 0
         for: 10s
         labels:
           severity: warning

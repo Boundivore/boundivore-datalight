@@ -2,7 +2,7 @@ groups:
   - name: DataLight
     rules:
       - alert: DataNodeDown
-        expr: process_start_time_seconds{job="HDFS-DataNode"} == 0
+        expr: up{job="HDFS-DataNode"} == 0
         for: 10s
         labels:
           severity: warning

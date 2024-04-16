@@ -2,7 +2,7 @@ groups:
   - name: DataLight
     rules:
       - alert: NodeExporterDown
-        expr: process_start_time_seconds{job="MONITOR-NodeExporter"} == 0
+        expr: up{job="MONITOR-NodeExporter"} == 0
         for: 10s
         labels:
           severity: warning
