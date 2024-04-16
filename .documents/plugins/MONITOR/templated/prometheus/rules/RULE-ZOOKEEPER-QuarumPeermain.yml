@@ -1,0 +1,18 @@
+groups:
+  - name: DataLight
+    rules:
+      - alert: QuorumPeermainDown
+        expr: process_start_time_seconds{job="ZOOKEEPER-QuorumPeermain"} == 0
+        for: 10s
+        labels:
+          severity: critical
+          hostname: |
+            {{- $instance := $labels.instance }}
+            {{- if matches $instance "^.*\\..*$" }}
+              {{- $instance | regexReplaceAll "(.*)\\..*" "$1" }}
+            {{- else }}
+              {{- $instance | regexReplaceAll "(.*):.*" "$1" | reReplaceAll "^(.*)$" "$1" }}
+            {{- end }}
+        annotations:
+          summary: "{{ $labels.job }} 进程在 {{ $labels.hostname }} 宕机"
+          description: "{{ $labels.job }} 进程在 {{ $labels.hostname }} 已经宕机超过5分钟"

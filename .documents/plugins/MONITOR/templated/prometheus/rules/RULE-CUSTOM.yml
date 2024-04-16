@@ -1,0 +1,5 @@
+groups:
+  - name: DataLight-CUSTOM
+    rules:
+      - alert: DataLight-CUSTOM-Alert
+        expr: vector(0)
