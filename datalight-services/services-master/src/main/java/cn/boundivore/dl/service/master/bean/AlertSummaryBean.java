@@ -71,7 +71,7 @@ public class AlertSummaryBean {
     @Override
     public String toString() {
         return String.format(
-                "\nHostname: %s\n Port: %s\n ServiceName: %s\n ComponentName: %s\n",
+                " \nHostname: %s\n Port: %s\n ServiceName: %s\n ComponentName: %s\n",
                 hostname,
                 port,
                 serviceName,

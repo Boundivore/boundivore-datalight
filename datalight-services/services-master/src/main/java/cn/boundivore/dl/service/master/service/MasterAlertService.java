@@ -63,7 +63,7 @@ public class MasterAlertService {
                             try {
                                 String summary = alert.getAnnotations().get("summary");
                                 AlertSummaryBean alertSummaryBean = AlertSummaryBean.parseAndPrintComponents(summary);
-                                log.info("收到告警: {}\n, 描述: {}",
+                                log.info("收到告警: {}\n 描述: {}",
                                         alertSummaryBean,
                                         alert.getAnnotations().get("description")
                                 );
