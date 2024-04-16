@@ -56,11 +56,21 @@ public class MasterAlertService {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
-        request.getAlerts().forEach(alert -> {
-            String summary = alert.getAnnotations().get("summary");
-            AlertSummaryBean alertSummaryBean = AlertSummaryBean.parseAndPrintComponents(summary);
-            log.info("收到告警: {}", alertSummaryBean);
-        });
+        request.getAlerts()
+                .stream()
+                .filter(alert -> alert.getAnnotations().get("summary") != null)
+                .forEach(alert -> {
+                            try {
+                                String summary = alert.getAnnotations().get("summary");
+                                AlertSummaryBean alertSummaryBean = AlertSummaryBean.parseAndPrintComponents(summary);
+                                log.info("收到告警: {}\n, 描述: {}",
+                                        alertSummaryBean,
+                                        alert.getAnnotations().get("description")
+                                );
+                            } catch (Exception ignored) {
+                            }
+                        }
+                );
 
         return Result.success();
     }
