@@ -6,9 +6,6 @@ groups:
         for: 10s
         labels:
           severity: warning
-          hostname: |
-            {{- $instance := $labels.instance }}
-            {{- $instance | reReplaceAll "([^:]+).*" "$1" }}
         annotations:
-          summary: "{{ $labels.job }} 进程在 {{ $labels.hostname }} 宕机"
-          description: "{{ $labels.job }} 进程在 {{ $labels.hostname }} 已经宕机超过5分钟"
+          summary: "{{ $labels.instance }}@{{ $labels.job }}"
+          description: "{{ $labels.job }} 进程在 {{ $labels.instance }} 已经宕机"

@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.service.master.bean.AlertSummaryBean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,16 @@ public class MasterAlertService {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
-        log.info("调用告警钩子接口成功: {}", request);
+        request.getAlerts().forEach(alert -> {
+            String summary = alert.getAnnotations().get("summary");
+            AlertSummaryBean alertSummaryBean = AlertSummaryBean.parseAndPrintComponents(summary);
+            log.info("收到告警: {}", alertSummaryBean);
+        });
+
         return Result.success();
     }
+
+
 }
+
+
