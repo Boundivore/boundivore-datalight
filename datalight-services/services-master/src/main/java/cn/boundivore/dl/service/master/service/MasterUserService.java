@@ -601,10 +601,7 @@ public class MasterUserService {
                     userInfoVo.setIsNeedChangePassword(false);
 
                     // 读取用户登录数据
-                    TDlLoginEvent tDlLoginEvent = this.tDlLoginEventService.lambdaQuery()
-                            .select()
-                            .eq(TDlLoginEvent::getUserId, tDlUser.getId())
-                            .one();
+                    TDlLoginEvent tDlLoginEvent = userIdTDlLoginEventMap.get(tDlUser.getId());
                     if (tDlLoginEvent == null || tDlLoginEvent.getLastLogin() == null) {
                         userInfoVo.setLastLogin(-1L);
                     }
