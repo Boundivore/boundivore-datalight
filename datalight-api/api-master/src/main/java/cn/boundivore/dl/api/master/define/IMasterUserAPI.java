@@ -99,7 +99,7 @@ public interface IMasterUserAPI {
             Long userId
     ) throws Exception;
 
-    @GetMapping(value = "/user/getUserDetailById")
+    @GetMapping(value = "/user/getUserDetailList")
     @ApiOperation(notes = "获取已有的用户列表", value = "获取已有的用户列表")
     Result<AbstractUserVo.UserInfoListVo> getUserDetailList() throws Exception;
 }
