@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
@@ -106,13 +107,13 @@ public class MasterAlertNoticeService {
      */
     public Result<String> sendToEmail(AlertWebhookPayloadRequest request) {
 
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom("noreply@example.com"); // 发件人邮箱，根据实际情况配置
-//        message.setTo(recipient); // 收件人邮箱
-//        message.setSubject(subject); // 邮件主题
-//        message.setText(messageText); // 邮件内容
-//
-//        mailSender.send(message);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("noreply@example.com"); // 发件人邮箱，根据实际情况配置
+        message.setTo("616616769@qq.com"); // 收件人邮箱
+        message.setSubject("测试邮件发送"); // 邮件主题
+        message.setText("哈哈哈哈哈"); // 邮件内容
+
+        javaMailSender.send(message);
 
         return Result.success();
     }
