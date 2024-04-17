@@ -593,21 +593,21 @@ public class MasterUserService {
         List<AbstractUserVo.UserInfoVo> userInfoList = this.tDlUserService.list()
                 .stream()
                 .map(tDlUser -> {
-                    // 组装返回实体
-                    AbstractUserVo.UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
-                    userInfoVo.setToken(StpUtil.getTokenValue());
-                    userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
-                    // 如果当前登录的用户不是超级用户，则不需要建议修改密码
-                    userInfoVo.setIsNeedChangePassword(false);
+                            // 组装返回实体
+                            AbstractUserVo.UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
+                            userInfoVo.setToken(StpUtil.getTokenValue());
+                            userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
+                            // 如果当前登录的用户不是超级用户，则不需要建议修改密码
+                            userInfoVo.setIsNeedChangePassword(false);
 
-                    // 读取用户登录数据
-                    TDlLoginEvent tDlLoginEvent = userIdTDlLoginEventMap.get(tDlUser.getId());
-                    if (tDlLoginEvent == null || tDlLoginEvent.getLastLogin() == null) {
-                        userInfoVo.setLastLogin(-1L);
-                    }
+                            TDlLoginEvent tDlLoginEvent = userIdTDlLoginEventMap.get(tDlUser.getId());
+                            if (tDlLoginEvent == null || tDlLoginEvent.getLastLogin() == null) {
+                                userInfoVo.setLastLogin(-1L);
+                            }
 
-                    return userInfoVo;
-                })
+                            return userInfoVo;
+                        }
+                )
                 .collect(Collectors.toList());
 
         return Result.success(
