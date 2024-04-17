@@ -13,7 +13,6 @@ alerting:
 # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
 rule_files:
   - 'rules/RULE-*.yaml'
-  - 'rules/custom/CUSTOM-*.yaml'
 
 #remote_write:
 #  - url: "http://{{remote.write.addr}}:{{remote.write.port}}/api/v1/prom/write?db=prometheus"
