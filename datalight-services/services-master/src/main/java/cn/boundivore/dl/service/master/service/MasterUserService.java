@@ -432,7 +432,7 @@ public class MasterUserService {
         // 获取当前已登录的账户信息
         TDlUserAuth loginTDlUserAuth = this.tDlUserAuthService.lambdaQuery()
                 .select()
-                .eq(TDlUserAuth::getUserId, StpUtil.getLoginId())
+                .eq(TDlUserAuth::getUserId, StpUtil.getLoginIdAsLong())
                 .one();
         String loginPrincipal = loginTDlUserAuth.getPrincipal();
         String changePasswordPrincipal = request.getPrincipal();
@@ -536,9 +536,9 @@ public class MasterUserService {
      * @return Result<UserInfoVo> 用户详细信息
      */
     public Result<AbstractUserVo.UserInfoVo> getUserDetailById(Long userId) {
-        if (!StpUtil.getLoginId().equals(userId)) {
+        if (StpUtil.getLoginIdAsLong() != userId) {
             Assert.isTrue(
-                    StpUtil.getLoginId().equals(1L),
+                    StpUtil.getLoginIdAsLong() == 1L,
                     () -> new BException("普通用户仅可查看自身详细信息")
             );
         }
@@ -579,7 +579,7 @@ public class MasterUserService {
      */
     public Result<AbstractUserVo.UserInfoListVo> getUserDetailList() {
         Assert.isTrue(
-                StpUtil.getLoginId().equals(1L),
+                StpUtil.getLoginIdAsLong() == 1L,
                 () -> new BException("普通用户仅可查看自身详细信息")
         );
 
