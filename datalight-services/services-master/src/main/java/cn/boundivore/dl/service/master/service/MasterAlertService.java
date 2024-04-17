@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractAlertRuleRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
@@ -83,7 +84,7 @@ public class MasterAlertService {
     }
 
     // 新增告警配置
-    public Result<String> newAlertRule() {
+    public Result<String> newAlertRule(AbstractAlertRuleRequest.NewAlertRuleRequest request) {
 
         // 解析参数
 
