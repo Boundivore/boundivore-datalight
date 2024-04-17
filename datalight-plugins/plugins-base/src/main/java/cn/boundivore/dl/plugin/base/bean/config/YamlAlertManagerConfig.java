@@ -82,6 +82,9 @@ public class YamlAlertManagerConfig {
         public static class WebhookConfig {
             @JsonProperty("url")
             private String url;
+
+            @JsonProperty("send_resolved")
+            private Boolean sendResolved;
         }
     }
 
