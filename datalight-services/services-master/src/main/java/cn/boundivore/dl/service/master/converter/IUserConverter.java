@@ -17,14 +17,13 @@
 package cn.boundivore.dl.service.master.converter;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
-import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.orm.po.single.TDlUser;
 import cn.boundivore.dl.orm.po.single.TDlUserAuth;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
@@ -53,7 +52,7 @@ public interface IUserConverter {
     @Mappings({
             @Mapping(source = "id", target = "userId")
     })
-    UserInfoVo convert2UserInfoVo(TDlUser tDlUser);
+    AbstractUserVo.UserInfoVo convert2UserInfoVo(TDlUser tDlUser);
 
 
 }

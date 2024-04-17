@@ -17,7 +17,7 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
-import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,7 +53,7 @@ public interface IMasterUserAPI {
 
     @PostMapping(value = "/user/register")
     @ApiOperation(notes = "用户注册", value = "用户注册")
-    Result<UserInfoVo> register(
+    Result<AbstractUserVo.UserInfoVo> register(
             @RequestBody
             @Valid
             AbstractUserRequest.UserRegisterRequest request
@@ -69,7 +69,7 @@ public interface IMasterUserAPI {
 
     @PostMapping(value = "/user/login")
     @ApiOperation(notes = "用户登录", value = "用户登录")
-    Result<UserInfoVo> login(
+    Result<AbstractUserVo.UserInfoVo> login(
             @RequestBody
             @Valid
             AbstractUserRequest.UserAuthRequest request
@@ -91,4 +91,15 @@ public interface IMasterUserAPI {
             AbstractUserRequest.UserChangePasswordRequest request
     ) throws Exception;
 
+    @GetMapping(value = "/user/getUserDetailById")
+    @ApiOperation(notes = "根据用户 ID 获取用户详细信息", value = "根据用户 ID 获取用户详细信息")
+    Result<AbstractUserVo.UserInfoVo> getUserDetailById(
+            @ApiParam(name = "UserId", value = "用户 Id", example = "1")
+            @RequestParam(value = "UserId", required = true)
+            Long userId
+    ) throws Exception;
+
+    @GetMapping(value = "/user/getUserDetailById")
+    @ApiOperation(notes = "获取已有的用户列表", value = "获取已有的用户列表")
+    Result<AbstractUserVo.UserInfoListVo> getUserDetailList() throws Exception;
 }

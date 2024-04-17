@@ -19,7 +19,7 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.IdentityTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
-import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
@@ -42,6 +42,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -76,7 +80,7 @@ public class MasterUserService {
             rollbackFor = DatabaseException.class
     )
     @LocalLock
-    public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request, boolean isInit) throws Exception {
+    public Result<AbstractUserVo.UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request, boolean isInit) throws Exception {
         AbstractUserRequest.UserAuthRequest userAuthRequest = request.getUserAuth();
         AbstractUserRequest.UserBaseRequest userBaseRequest = request.getUserBase();
 
@@ -261,7 +265,7 @@ public class MasterUserService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
+    public Result<AbstractUserVo.UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
 
         // 检查认证主体格式是否合法
         this.checkPrincipalIllegal(request.getIdentityType(), request.getPrincipal());
@@ -300,17 +304,13 @@ public class MasterUserService {
             tDlLoginEvent.setLastLogin(-1L);
         }
 
-
-        // 登录
-        StpUtil.login(tDlUserAuth.getUserId());
-
         // 用户登录
         StpUtil.login(tDlUserAuth.getUserId());
         // 设置Extra值
         StpUtil.getSession().set("principal", tDlUserAuth.getPrincipal()).set("userId", tDlUserAuth.getUserId());
 
         // 组装返回实体
-        UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
+        AbstractUserVo.UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
         userInfoVo.setLastLogin(tDlLoginEvent.getLastLogin());
         userInfoVo.setToken(StpUtil.getTokenValue());
         userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
@@ -520,5 +520,103 @@ public class MasterUserService {
         );
 
         this.register(request, true);
+    }
+
+    /**
+     * Description: 根据用户 ID 获取用户详细信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/17
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param userId 用户 ID
+     * @return Result<UserInfoVo> 用户详细信息
+     */
+    public Result<AbstractUserVo.UserInfoVo> getUserDetailById(Long userId) {
+        if (!StpUtil.getLoginId().equals(userId)) {
+            Assert.isTrue(
+                    StpUtil.getLoginId().equals(1L),
+                    () -> new BException("普通用户仅可查看自身详细信息")
+            );
+        }
+
+        // 读取用户基本数据
+        TDlUser tDlUser = this.tDlUserService.getById(userId);
+
+        // 组装返回实体
+        AbstractUserVo.UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
+        userInfoVo.setToken(StpUtil.getTokenValue());
+        userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
+        // 如果当前登录的用户不是超级用户，则不需要建议修改密码
+        userInfoVo.setIsNeedChangePassword(false);
+
+        // 读取用户登录数据
+        TDlLoginEvent tDlLoginEvent = this.tDlLoginEventService.lambdaQuery()
+                .select()
+                .eq(TDlLoginEvent::getUserId, userId)
+                .one();
+        if (tDlLoginEvent == null || tDlLoginEvent.getLastLogin() == null) {
+            userInfoVo.setLastLogin(-1L);
+        }
+
+        return Result.success(userInfoVo);
+    }
+
+    /**
+     * Description: 获取已有的用户列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/17
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractUserVo.UserInfoListVo> 用户详情列表
+     */
+    public Result<AbstractUserVo.UserInfoListVo> getUserDetailList() {
+        Assert.isTrue(
+                StpUtil.getLoginId().equals(1L),
+                () -> new BException("普通用户仅可查看自身详细信息")
+        );
+
+
+        // 读取用户登录数据集合 Map<用户 ID, TDlLoginEvent>
+        Map<Long, TDlLoginEvent> userIdTDlLoginEventMap = this.tDlLoginEventService.list()
+                .stream()
+                .collect(Collectors.toMap(TDlLoginEvent::getUserId, event -> event));
+
+        // 组装返回实体
+        List<AbstractUserVo.UserInfoVo> userInfoList = this.tDlUserService.list()
+                .stream()
+                .map(tDlUser -> {
+                    // 组装返回实体
+                    AbstractUserVo.UserInfoVo userInfoVo = this.iUserConverter.convert2UserInfoVo(tDlUser);
+                    userInfoVo.setToken(StpUtil.getTokenValue());
+                    userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
+                    // 如果当前登录的用户不是超级用户，则不需要建议修改密码
+                    userInfoVo.setIsNeedChangePassword(false);
+
+                    // 读取用户登录数据
+                    TDlLoginEvent tDlLoginEvent = this.tDlLoginEventService.lambdaQuery()
+                            .select()
+                            .eq(TDlLoginEvent::getUserId, tDlUser.getId())
+                            .one();
+                    if (tDlLoginEvent == null || tDlLoginEvent.getLastLogin() == null) {
+                        userInfoVo.setLastLogin(-1L);
+                    }
+
+                    return userInfoVo;
+                })
+                .collect(Collectors.toList());
+
+        return Result.success(
+                new AbstractUserVo.UserInfoListVo(
+                        userInfoList
+                )
+        );
     }
 }

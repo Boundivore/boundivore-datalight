@@ -18,7 +18,7 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterUserAPI;
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
-import cn.boundivore.dl.base.response.impl.master.UserInfoVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterUserService;
 import cn.dev33.satoken.annotation.SaIgnore;
@@ -43,7 +43,7 @@ public class MasterUserController implements IMasterUserAPI {
 
 
     @Override
-    public Result<UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request) throws Exception {
+    public Result<AbstractUserVo.UserInfoVo> register(AbstractUserRequest.UserRegisterRequest request) throws Exception {
         return this.masterUserService.register(request, false);
     }
 
@@ -54,7 +54,7 @@ public class MasterUserController implements IMasterUserAPI {
 
     @SaIgnore
     @Override
-    public Result<UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
+    public Result<AbstractUserVo.UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
         return this.masterUserService.login(request);
     }
 
@@ -72,5 +72,15 @@ public class MasterUserController implements IMasterUserAPI {
     @Override
     public Result<String> changePassword(AbstractUserRequest.UserChangePasswordRequest request) throws Exception {
         return this.masterUserService.changePassword(request);
+    }
+
+    @Override
+    public Result<AbstractUserVo.UserInfoVo> getUserDetailById(Long userId) throws Exception {
+        return this.masterUserService.getUserDetailById(userId);
+    }
+
+    @Override
+    public Result<AbstractUserVo.UserInfoListVo> getUserDetailList() throws Exception {
+        return this.masterUserService.getUserDetailList();
     }
 }
