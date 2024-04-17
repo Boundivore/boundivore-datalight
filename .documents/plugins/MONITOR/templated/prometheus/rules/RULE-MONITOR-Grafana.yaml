@@ -1,11 +1,15 @@
 groups:
   - name: DataLight
     rules:
-      - alert: NodeExporterDown
+      - alert: 'NodeExporter ShutDown'
         expr: up{job="MONITOR-Grafana"} == 0
         for: 10s
         labels:
           severity: warning
         annotations:
-          summary: "STATIC-{{ $labels.instance }}@{{ $labels.job }}"
-          description: "{{ $labels.job }} 进程在 {{ $labels.instance }} 已经宕机"
+          alert_type: "STATIC"
+          alert_id: ""
+          alert_job: "{{ $labels.job }}"
+          alert_instance: "{{ $labels.instance }}"
+          summary: "{{ $labels.job }} 进程在 {{ $labels.instance }} 宕机"
+          description: ""

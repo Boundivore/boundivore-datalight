@@ -25,6 +25,17 @@ spring:
   #  cloud:
   #    loadbalancer:
   #      enabled: false
+  mail:
+    host: smtp.qq.com
+    port: 587
+    username: boundivore@foxmail.com
+    password: xcbjqkhrcnlobead
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-request-size: 5MB

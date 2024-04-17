@@ -18,6 +18,8 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +43,18 @@ public class MasterAlertService {
 
     private final MasterManageService masterManageService;
 
-    private final MasterAlertNoticeService masterAlertNoticeService;
+    private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
+
 
     private final TDlAlertServiceImpl tDlAlertService;
 
-    private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
+    private final TDlAlertHandlerRelationServiceImpl tDlAlertHandlerRelationService;
+
+    private final TDlAlertHandlerMailServiceImpl tDlAlertHandlerMailService;
+
+    private final MasterAlertNoticeService masterAlertNoticeService;
+
+
 
     /**
      * Description: 接收 AlertManager 告警钩子函数
@@ -65,9 +74,10 @@ public class MasterAlertService {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
+        log.info("收到告警: {}", request);
 
         // 根据告警检查是否需要自动拉起服务组件
-        this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
+//        this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
 
         return Result.success();
     }

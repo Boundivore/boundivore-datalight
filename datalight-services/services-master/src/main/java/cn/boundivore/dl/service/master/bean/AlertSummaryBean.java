@@ -43,22 +43,17 @@ public class AlertSummaryBean {
     private String serviceName;
     private String componentName;
 
-    public static AlertSummaryBean parseAndPrintComponents(String input) {
-        String[] parts = input.split("[:@]");
-        if (parts.length != 3) {
-            log.info("AlertSummary 格式错误");
-            return null;
-        }
+    public static AlertSummaryBean parseAndPrintComponents(String alertJob, String alertInstance) {
 
-        String hostname = parts[0];
-        String port = parts[1];
-        String[] serviceComponent = parts[2].split("-");
-        if (serviceComponent.length != 2) {
-            log.info("服务和组件名格式错误");
-            return null;
-        }
-        String serviceName = serviceComponent[0];
-        String componentName = serviceComponent[1];
+        // 解析服务名与组件名
+        String[] serviceComponentNameArr = alertJob.split("-");
+        String serviceName = serviceComponentNameArr[0];
+        String componentName = serviceComponentNameArr[1];
+
+        // 解析主机名与端口号
+        String[] hostnamePortArr = alertInstance.split(":");
+        String hostname = hostnamePortArr[0];
+        String port = hostnamePortArr[1];
 
         return new AlertSummaryBean(
                 hostname,

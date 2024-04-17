@@ -27,6 +27,7 @@ dependencies {
         exclude(module: 'org.apache.logging.log4j:log4j-to-slf4j')
         exclude(module: 'org.apache.logging.log4j:log4j-api')
     }
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
 
 //    implementation group: 'cn.dev33', name: 'sa-token-jwt'
     implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'

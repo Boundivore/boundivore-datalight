@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 /**
@@ -36,6 +37,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterAlertNoticeService {
+
+    private final JavaMailSenderImpl javaMailSender;
 
     /**
      * Description: 发送告警信息到微信
@@ -102,6 +105,15 @@ public class MasterAlertNoticeService {
      * @return Result<String> 成功或失败
      */
     public Result<String> sendToEmail(AlertWebhookPayloadRequest request) {
+
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom("noreply@example.com"); // 发件人邮箱，根据实际情况配置
+//        message.setTo(recipient); // 收件人邮箱
+//        message.setSubject(subject); // 邮件主题
+//        message.setText(messageText); // 邮件内容
+//
+//        mailSender.send(message);
+
         return Result.success();
     }
 

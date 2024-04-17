@@ -432,16 +432,24 @@ public class MasterManageService {
         // 服务组件进程自动拉起
         alerts.parallelStream()
                 .filter(alert -> {
-                    String summary = alert.getAnnotations().get("summary");
-                    return summary != null && summary.contains("STATIC");
+                    String alertType = alert.getAnnotations().get("alert_type");
+                    return alertType != null && alertType.equals("STATIC");
                 })
                 .forEach(alert -> {
                             try {
+
+                                String alertJob = alert.getAnnotations().get("alert_instance");
+                                String alertInstance = alert.getAnnotations().get("alert_instance");
+
+                                AlertSummaryBean alertSummaryBean = AlertSummaryBean.parseAndPrintComponents(
+                                        alertJob,
+                                        alertInstance
+                                );
+
                                 String summary = alert.getAnnotations().get("summary");
-                                AlertSummaryBean alertSummaryBean = AlertSummaryBean.parseAndPrintComponents(summary);
                                 log.info("\n 收到告警: {}\n 描述: {}",
                                         alertSummaryBean,
-                                        alert.getAnnotations().get("description")
+                                        summary
                                 );
 
                                 Assert.notNull(

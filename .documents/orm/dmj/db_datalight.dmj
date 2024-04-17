@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543336",
-  "TableCount": 30,
+  "TableCount": 32,
   "Count": 2,
   "items": [
     {
@@ -9,11 +9,11 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-531.82,735.37,1.70,0,",
+      "CustomAttr1": "DVS:-328.88,958.90,1.70,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
-        "Count": 29,
+        "Count": 31,
         "items": [
           {
             "ID": 1,
@@ -3701,7 +3701,7 @@
             "Caption": "告警配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 29,
-            "GraphDesc": "Left=14.83\r\nTop=2607.32",
+            "GraphDesc": "Left=15.41\r\nTop=2668.41",
             "MetaFields": {
               "Count": 10,
               "items": [
@@ -3806,6 +3806,143 @@
                 }
               ]
             }
+          },
+          {
+            "ID": 1,
+            "Name": "t_dl_alert_handler_relation",
+            "Caption": "告警与处理告警信息关联表",
+            "CreateDate": "2023/9/19 13:59:05",
+            "OrderNo": 30,
+            "GraphDesc": "Left=417.29\r\nTop=2670.00",
+            "MetaFields": {
+              "Count": 6,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "RelateTable": "t_",
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 11,
+                  "Name": "alert_id",
+                  "OrderNo": 5,
+                  "DisplayName": "告警 ID",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 6,
+                  "Name": "handler_id",
+                  "OrderNo": 6,
+                  "DisplayName": "处理信息 ID",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                }
+              ]
+            }
+          },
+          {
+            "ID": 1,
+            "Name": "t_dl_alert_handler_mail",
+            "Caption": "处理告警邮箱配置信息表",
+            "CreateDate": "2023/9/19 13:59:05",
+            "OrderNo": 31,
+            "GraphDesc": "Left=824.94\r\nTop=2669.42",
+            "MetaFields": {
+              "Count": 5,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "RelateTable": "t_",
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 11,
+                  "Name": "mail_account",
+                  "OrderNo": 5,
+                  "DisplayName": "收件人地址",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                }
+              ]
+            }
           }
         ]
       }
@@ -3815,7 +3952,7 @@
       "Name": "Templated",
       "CreateDate": "2024/4/7 10:26:29",
       "OrderNo": 2,
-      "CustomAttr1": "DVS:-177.00,-1541.50,2.00,0,t_dl",
+      "CustomAttr1": "DVS:-177.00,-1541.50,2.00,0,t_dl\r\n",
       "Tables": {
         "Count": 1,
         "items": [{
@@ -3824,7 +3961,7 @@
           "Caption": "告警配置信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 1,
-          "GraphDesc": "Left=10.00\r\nTop=10.00",
+          "GraphDesc": "Left=10.00\r\nTop=10.00\r\n",
           "MetaFields": {
             "Count": 10,
             "items": [
