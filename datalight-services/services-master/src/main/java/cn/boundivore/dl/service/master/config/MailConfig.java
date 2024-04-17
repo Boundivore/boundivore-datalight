@@ -23,16 +23,6 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-/**
- * Description: 邮件收发器配置
- * Created by: Boundivore
- * E-mail: boundivore@foxmail.com
- * Creation time: 2024/4/17
- * Modification description:
- * Modified by:
- * Modification time:
- * Version: V1.0
- */
 @Configuration
 public class MailConfig {
 
@@ -60,7 +50,8 @@ public class MailConfig {
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.starttls.enable", "false");
+        props.put("mail.smtp.ssl.enable", "true");
         props.put("mail.debug", "false");
 
         return mailSender;

@@ -53,8 +53,8 @@ public class MailTest {
     }
 
     @Test
-    public void reloadPrometheus() {
+    public void sendMail() {
         Result<String> result = this.masterAlertNoticeService.sendToEmail(null);
-        log.info(result.toString());
+        log.info("测试邮件发送：{}", result);
     }
 }

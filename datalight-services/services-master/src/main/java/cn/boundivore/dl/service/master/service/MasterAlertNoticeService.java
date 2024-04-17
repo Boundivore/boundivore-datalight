@@ -108,10 +108,10 @@ public class MasterAlertNoticeService {
     public Result<String> sendToEmail(AlertWebhookPayloadRequest request) {
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@example.com"); // 发件人邮箱，根据实际情况配置
-        message.setTo("616616769@qq.com"); // 收件人邮箱
-        message.setSubject("测试邮件发送"); // 邮件主题
-        message.setText("哈哈哈哈哈"); // 邮件内容
+        message.setFrom("boundivore@foxmail.com");
+        message.setTo("616616769@qq.com");
+        message.setSubject("测试邮件发送");
+        message.setText("哈哈哈哈哈");
 
         javaMailSender.send(message);
 

@@ -27,15 +27,21 @@ spring:
   #      enabled: false
   mail:
     host: smtp.qq.com
-    port: 587
+    protocol: smtp
+    default-encoding: UTF-8
+    port: 465
     username: boundivore@foxmail.com
     password: xcbjqkhrcnlobead
+    test-connection: true
     properties:
       mail:
         smtp:
           auth: true
           starttls:
-            enable: true
+            enable: false  # STARTTLS不再启用
+          ssl:
+            enable: true   # 启用SSL
+
   servlet:
     multipart:
       max-request-size: 5MB
