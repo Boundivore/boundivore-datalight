@@ -43,7 +43,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterUserAPI", tags = {"Master 接口：用户调用相关"})
+@Api(value = "IMasterUserAPI", tags = {"Master 接口：用户相关"})
 @FeignClient(
         name = "IMasterUserAPI",
         contextId = "IMasterUserAPI",

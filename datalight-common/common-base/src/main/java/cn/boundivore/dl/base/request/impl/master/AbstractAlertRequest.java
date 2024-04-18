@@ -25,25 +25,25 @@ import java.util.Map;
  * Modification time:
  * Version: V1.0
  */
-public abstract class AbstractAlertRuleRequest {
+public abstract class AbstractAlertRequest {
 
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractAlertRuleRequest.NewAlertRuleRequest",
-            description = "AbstractAlertRuleRequest.NewAlertRuleRequest: 新建告警规则 请求体"
+            name = "AbstractAlertRequest.NewAlertRuleRequest",
+            description = "AbstractAlertRequest.NewAlertRuleRequest: 新建告警规则 请求体"
     )
     public final static class NewAlertRuleRequest implements IRequest {
 
         private static final long serialVersionUID = 4209771485171669929L;
 
-        @ApiModelProperty(name = "AlertName", value = "告警配置名称", required = true)
-        @JsonProperty(value = "AlertName", required = true)
-        private String alertName;
+        @ApiModelProperty(name = "AlertRuleName", value = "告警配置名称", required = true)
+        @JsonProperty(value = "AlertRuleName", required = true)
+        private String alertRuleName;
 
-        @ApiModelProperty(name = "AlertRuleContent", value = "告警配置内容实体", required = true)
+        @ApiModelProperty(name = "AlertRuleContent", value = "告警规则配置解析后的实体", required = true)
         @JsonProperty(value = "AlertRuleContent", required = true)
         @NotNull(message = "规则实体不能为空")
         private AlertRuleContentRequest alertRuleContent;
@@ -64,8 +64,8 @@ public abstract class AbstractAlertRuleRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractAlertRuleRequest.AlertRuleContentRequest",
-            description = "AbstractAlertRuleRequest.AlertRuleContentRequest: 新建告警规则内容实体 请求体"
+            name = "AbstractAlertRequest.AlertRuleContentRequest",
+            description = "AbstractAlertRequest.AlertRuleContentRequest: 新建告警规则内容实体 请求体"
     )
     public final static class AlertRuleContentRequest implements IRequest {
         private static final long serialVersionUID = -5838473919880577976L;
@@ -82,8 +82,8 @@ public abstract class AbstractAlertRuleRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractAlertRuleRequest.GroupRequest",
-            description = "AbstractAlertRuleRequest.GroupRequest: 告警规则实体中的分组 请求体"
+            name = "AbstractAlertRequest.GroupRequest",
+            description = "AbstractAlertRequest.GroupRequest: 告警规则实体中的分组 请求体"
     )
     public static class GroupRequest implements IRequest {
         private static final long serialVersionUID = -4561495605113571769L;
@@ -102,8 +102,8 @@ public abstract class AbstractAlertRuleRequest {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractAlertRuleRequest.AlertRuleContentRequest",
-            description = "AbstractAlertRuleRequest.AlertRuleContentRequest: 告警规则分组中的规则 请求体"
+            name = "AbstractAlertRequest.RuleRequest",
+            description = "AbstractAlertRequest.RuleRequest: 告警规则分组中的规则 请求体"
     )
     public static class RuleRequest implements IRequest {
         private static final long serialVersionUID = -1194530752751114766L;
@@ -112,7 +112,7 @@ public abstract class AbstractAlertRuleRequest {
         @JsonProperty(value = "Alert")
         private String alert;
 
-        @ApiModelProperty(name = "Expr", value = "告警规则判断表达式", required = true)
+        @ApiModelProperty(name = "Expr", value = "告警规则判断表达式 [Base64 格式]", required = true)
         @JsonProperty(value = "Expr")
         private String expr;
 

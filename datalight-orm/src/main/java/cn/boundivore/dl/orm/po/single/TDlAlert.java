@@ -39,6 +39,10 @@ public class TDlAlert extends TBasePo<TDlAlert> {
     @TableField("alert_file_name")
     private String alertFileName;
 
+    @ApiModelProperty("规则配置文件内容")
+    @TableField("alert_rule_content")
+    private String alertRuleContent;
+
     @ApiModelProperty("是否启用")
     @TableField("enabled")
     private Boolean enabled;

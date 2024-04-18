@@ -17,6 +17,8 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -53,5 +55,13 @@ public interface IMasterAlertAPI {
             @RequestBody
             @Valid
             AlertWebhookPayloadRequest request
+    ) throws Exception;
+
+    @PostMapping(value = "/alert/newAlertRule")
+    @ApiOperation(notes = "新建告警规则", value = "新建告警规则")
+    Result<AbstractAlertVo.AlertRuleVo> newAlertRule(
+            @RequestBody
+            @Valid
+            AbstractAlertRequest.NewAlertRuleRequest request
     ) throws Exception;
 }

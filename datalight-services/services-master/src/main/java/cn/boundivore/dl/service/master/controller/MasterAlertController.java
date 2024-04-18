@@ -18,6 +18,8 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterAlertAPI;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterAlertService;
 import cn.dev33.satoken.annotation.SaIgnore;
@@ -36,13 +38,18 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-@SaIgnore
 public class MasterAlertController implements IMasterAlertAPI {
 
     private final MasterAlertService masterAlertService;
 
+    @SaIgnore
     @Override
     public Result<String> alertHook(AlertWebhookPayloadRequest request) throws Exception {
         return this.masterAlertService.alertHook(request);
+    }
+
+    @Override
+    public Result<AbstractAlertVo.AlertRuleVo> newAlertRule(AbstractAlertRequest.NewAlertRuleRequest request) throws Exception {
+        return this.masterAlertService.newAlertRule(request);
     }
 }

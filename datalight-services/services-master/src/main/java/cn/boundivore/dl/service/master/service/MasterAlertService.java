@@ -17,12 +17,18 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
-import cn.boundivore.dl.base.request.impl.master.AbstractAlertRuleRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.base.utils.YamlDeserializer;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
+import cn.boundivore.dl.plugin.base.bean.config.YamlPrometheusRulesConfig;
+import cn.boundivore.dl.service.master.converter.IAlertRuleConverter;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
+import cn.hutool.core.codec.Base64;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -46,6 +52,8 @@ public class MasterAlertService {
 
     private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
 
+    private final IAlertRuleConverter iAlertRuleConverter;
+
 
     private final TDlAlertServiceImpl tDlAlertService;
 
@@ -54,7 +62,6 @@ public class MasterAlertService {
     private final TDlAlertHandlerMailServiceImpl tDlAlertHandlerMailService;
 
     private final MasterAlertNoticeService masterAlertNoticeService;
-
 
 
     /**
@@ -83,12 +90,34 @@ public class MasterAlertService {
         return Result.success();
     }
 
+    /**
+     * Description: 新建告警规则
+     * 注：参数中 expr 表达式可能包含多种操作运算符和特殊字符，因此，此处传递时应该以 Base64 进行，且入库时，需要再对整体字符串进行 Base64 编码
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 新建规则请求体
+     * @return Result<AbstractAlertVo.AlertRuleVo> 新建的告警规则信息
+     */
     // 新增告警配置
-    public Result<String> newAlertRule(AbstractAlertRuleRequest.NewAlertRuleRequest request) {
+    public Result<AbstractAlertVo.AlertRuleVo> newAlertRule(AbstractAlertRequest.NewAlertRuleRequest request) throws JsonProcessingException {
 
-        // 解析参数
+        // 解析参数到 YamlBean
+        YamlPrometheusRulesConfig yamlPrometheusRulesConfig = this.iAlertRuleConverter.convert2YamlPrometheusRulesConfig(
+                request.getAlertRuleContent()
+        );
+        log.info("解析完毕： {}\n\n", yamlPrometheusRulesConfig);
+        log.info("解析完毕变为 Yaml： {}\n\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
+        log.info("解析完毕变为 Base64： {}\n\n", Base64.encode(YamlDeserializer.toString(yamlPrometheusRulesConfig)));
 
         // 保存数据库
+
+
 
         // 创建文件夹
         // 写入到节点文件
@@ -97,8 +126,15 @@ public class MasterAlertService {
         // 添加文件绝对路径到 rules 数组
 
         // 重载 Prometheus 配置，更新告警规则
-        this.remoteInvokePrometheusHandler.invokePrometheusReload(1L);
-        return Result.success();
+//        this.remoteInvokePrometheusHandler.invokePrometheusReload(1L);
+
+        AbstractAlertVo.AlertRuleVo alertRuleVo = new AbstractAlertVo.AlertRuleVo();
+        AbstractAlertVo.AlertRuleContentVo alertRuleContentVo = this.iAlertRuleConverter.convert2AlertRuleContentVo(
+                yamlPrometheusRulesConfig
+        );
+        alertRuleVo.setAlertRuleContent(alertRuleContentVo);
+
+        return Result.success(alertRuleVo);
     }
 
     // 删除告警配置

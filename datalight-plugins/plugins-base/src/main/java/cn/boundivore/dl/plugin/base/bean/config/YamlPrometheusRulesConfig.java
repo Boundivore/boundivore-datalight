@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description: rules.yml 对应的 JavaBean 实体
+ * Description: Prometheus 告警规则 RULE-*.yaml 对应的 JavaBean 实体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/15
