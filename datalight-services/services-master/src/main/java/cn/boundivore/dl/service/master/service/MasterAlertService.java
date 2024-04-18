@@ -338,35 +338,61 @@ public class MasterAlertService {
         );
 
         // 检查关联配置信息是否存在
+        String errMsgFormat = "暂时无法找到 [%s] 告警处理方式的配置 ID";
         switch (request.getAlertHandlerTypeEnum()) {
             case ALERT_INTERFACE:
                 Assert.notNull(
                         null,
-                        () -> new BException("无法找到[接口]告警处理方式的配置 ID")
+                        () -> new BException(
+                                String.format(
+                                        errMsgFormat,
+                                        "接口"
+                                )
+                        )
                 );
                 break;
             case ALERT_MAIL:
                 Assert.notNull(
                         this.tDlAlertHandlerMailService.getById(request.getHandlerId()),
-                        () -> new BException("无法找到[邮件]告警处理方式的配置 ID")
+                        () -> new BException(
+                                String.format(
+                                        errMsgFormat,
+                                        "邮件"
+                                )
+                        )
                 );
                 break;
             case ALERT_WEICHAT:
                 Assert.notNull(
                         null,
-                        () -> new BException("无法找到[微信]告警处理方式的配置 ID")
+                        () -> new BException(
+                                String.format(
+                                        errMsgFormat,
+                                        "微信"
+                                )
+                        )
                 );
                 break;
             case ALERT_FEISHU:
                 Assert.notNull(
                         null,
-                        () -> new BException("无法找到[飞书]告警处理方式的配置 ID")
+                        () -> new BException(
+                                String.format(
+                                        errMsgFormat,
+                                        "飞书"
+                                )
+                        )
                 );
                 break;
             case ALERT_DINGDING:
                 Assert.notNull(
                         null,
-                        () -> new BException("无法找到[钉钉]告警处理方式的配置 ID")
+                        () -> new BException(
+                                String.format(
+                                        errMsgFormat,
+                                        "钉钉"
+                                )
+                        )
                 );
                 break;
             default:
