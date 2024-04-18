@@ -130,7 +130,8 @@ public class MasterAlertService {
 
     /**
      * Description: 新建告警规则
-     * 注：参数中 expr 表达式可能包含多种操作运算符和特殊字符，因此，此处传递时应该以 Base64 进行，且入库时，需要再对整体字符串进行 Base64 编码
+     * 注：参数中 expr 表达式可能包含多种操作运算符和特殊字符，因此，此处传递时应该以 Base64 进行，
+     *  且入库时，需要再对整体字符串进行 Base64 编码
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/18
