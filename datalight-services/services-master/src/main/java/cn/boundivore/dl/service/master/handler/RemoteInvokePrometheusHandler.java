@@ -112,12 +112,37 @@ public class RemoteInvokePrometheusHandler {
      * Modification description:
      * Modified by:
      * Modification time:
+     *
+     * @param clusterId 集群 ID
      */
     public void invokePrometheusReload(Long clusterId) {
         try {
             String prometheusHostname = this.getPrometheusHostname(clusterId);
             this.remoteInvokePrometheusService.iThirdPrometheusAPI(
                             prometheusHostname,
+                            "9090"
+                    )
+                    .reloadPrometheus();
+        } catch (Exception e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+        }
+    }
+
+    /**
+     * Description: 重新加载 Prometheus
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/5/31
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     *
+     * @param hostnameOrIp 主机名或 IP
+     */
+    public void invokePrometheusReload(String hostnameOrIp) {
+        try {
+            this.remoteInvokePrometheusService.iThirdPrometheusAPI(
+                            hostnameOrIp,
                             "9090"
                     )
                     .reloadPrometheus();

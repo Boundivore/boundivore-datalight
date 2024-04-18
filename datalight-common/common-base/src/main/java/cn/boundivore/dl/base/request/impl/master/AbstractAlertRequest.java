@@ -39,6 +39,11 @@ public abstract class AbstractAlertRequest {
 
         private static final long serialVersionUID = 4209771485171669929L;
 
+        @ApiModelProperty(name = "ClusterId", value = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        @NotNull(message = "集群 ID 不能为空")
+        private Long clusterId;
+
         @ApiModelProperty(name = "AlertRuleName", value = "告警配置名称", required = true)
         @JsonProperty(value = "AlertRuleName", required = true)
         private String alertRuleName;

@@ -973,6 +973,32 @@ public class MasterComponentService {
     }
 
     /**
+     * Description: 获取指定节点、指定组件的组件详细信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId     集群 ID
+     * @param serviceName   服务名称
+     * @param componentName 组件名称
+     * @return List<TDlComponent> 返回组件列表
+     */
+    public List<TDlComponent> getTDlComponentByComponentName(Long clusterId,
+                                                             String serviceName,
+                                                             String componentName) {
+        return this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, clusterId)
+                .eq(TDlComponent::getServiceName, serviceName)
+                .eq(TDlComponent::getComponentName, componentName)
+                .list();
+    }
+
+    /**
      * Description: 获取某集群，某服务下所有组件的状态
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com

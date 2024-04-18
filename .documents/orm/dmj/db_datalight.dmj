@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-398.88,916.55,1.70,0,",
+      "CustomAttr1": "DVS:7.00,156.55,1.70,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -3032,7 +3032,7 @@
                 {
                   "ID": 14,
                   "Name": "sha256",
-                  "Memo": "256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容+文件绝对路径）",
+                  "Memo": "256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容，也可考虑+文件绝对路径)",
                   "OrderNo": 8,
                   "DisplayName": "文件内容摘要",
                   "DataType": 1,

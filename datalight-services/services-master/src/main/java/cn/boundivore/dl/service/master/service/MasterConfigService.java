@@ -120,7 +120,7 @@ public class MasterConfigService {
      * Throws: DatabaseException 数据库操作失败抛出 DatabaseException 异常
      *
      * @param request                  待保存或更新的配置列表
-     * @param groupTDlConfigContentMap 已存储的配置文件内容
+     * @param groupTDlConfigContentMap <clusterId + filename + sha256, TDlConfigContent> 已存储的配置文件内容
      * @return Result<String>
      */
     @Transactional(

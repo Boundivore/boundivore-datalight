@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 18/04/2024 11:35:58
+ Date: 18/04/2024 15:06:54
 */
 
 SET NAMES utf8mb4;
@@ -164,7 +164,7 @@ CREATE TABLE `t_dl_config_content`  (
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `filename` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置文件名称',
   `config_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '配置文件内容 配置文件内容的 Base64',
-  `sha256` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件内容摘要 256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容+文件绝对路径）',
+  `sha256` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件内容摘要 256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容，也可考虑+文件绝对路径)',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '配置文件内容信息表' ROW_FORMAT = DYNAMIC;
 

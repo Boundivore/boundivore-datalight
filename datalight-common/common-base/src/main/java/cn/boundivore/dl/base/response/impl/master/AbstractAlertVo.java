@@ -76,6 +76,10 @@ public abstract class AbstractAlertVo {
         @JsonProperty(value = "AlertRuleContentBase64", required = true)
         private String alertRuleContentBase64;
 
+        @Schema(name = "Sha256", title = "文件指纹", required = true)
+        @JsonProperty(value = "Sha256", required = true)
+        private String sha256;
+
         @ApiModelProperty(name = "AlertRuleContent", value = "告警规则配置解析后的实体", required = true)
         @JsonProperty(value = "AlertRuleContent", required = true)
         private AlertRuleContentVo alertRuleContent;
@@ -86,7 +90,7 @@ public abstract class AbstractAlertVo {
 
         @Schema(name = "AlertVersion", title = "当前规则文件版本号", required = true)
         @JsonProperty(value = "AlertVersion", required = true)
-        private String alertVersion;
+        private Long alertVersion;
 
         @Schema(name = "HandlerType", title = "告警触发后处理告警的操作类型", required = true)
         @JsonProperty(value = "HandlerType", required = true)

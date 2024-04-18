@@ -40,7 +40,7 @@ public class TDlConfigContent extends TBasePo<TDlConfigContent> {
     @TableField("config_data")
     private String configData;
 
-    @Schema(name = "文件内容摘要 256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容+文件绝对路径）")
+    @Schema(name = "文件内容摘要 256 位摘要算法，极低碰撞概率，用于比较文件内容是否相同(文件内容，也可考虑+文件绝对路径)")
     @TableField("sha256")
     private String sha256;
 

@@ -32,10 +32,11 @@ public enum AlertHandlerTypeEnum implements IBaseEnum {
 
     ALERT_IGNORE("0", "静默告警信息"),
     ALERT_LOG("1", "打印告警日志"),
-    ALERT_WEICHAT("2", "发送到微信"),
-    ALERT_DINGDING("3", "发送到钉钉"),
-    ALERT_FEISHU("4", "发送到飞书"),
-    ALERT_INTERFACE("5", "发送到指定接口");
+    ALERT_INTERFACE("2", "发送到指定接口"),
+    ALERT_MAIL("3", "打印告警日志"),
+    ALERT_WEICHAT("4", "发送到微信"),
+    ALERT_FEISHU("6", "发送到飞书"),
+    ALERT_DINGDING("6", "发送到钉钉");
 
     private final String code;
     private final String message;

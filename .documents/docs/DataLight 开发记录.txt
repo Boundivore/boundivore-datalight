@@ -699,3 +699,40 @@ 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
         "YARN"
     ]
 }
+
+
+
+
+新增告警：
+{
+    "AlertHandlerTypeEnum": "ALERT_INTERFACE",
+    "AlertName": "自定义告警信息",
+    "AlertRuleContent": {
+        "Groups": [
+            {
+                "Name": "Custom",
+                "Rules": [
+                    {
+                        "Alert": "NodeManager ShutDown",
+                        "Annotations": {
+                            "alert_type": "",
+                            "alert_id": "",
+                            "alert_job": "",
+                            "alert_instance": "",
+                            "summary": "{{ $labels.job }} 进程在 {{ $labels.instance }} 宕机",
+                            "description": ""
+                        },
+                        "Expr": "dXAlN0Jqb2IlM0QlMjJZQVJOLU5vZGVNYW5hZ2VyJTIyJTdEJTIwJTNEJTNEJTIwMA==",
+                        "For": "10s",
+                        "Labels": {
+                            "severity": "warning"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
+},
+"HandlerId": 1
+}
