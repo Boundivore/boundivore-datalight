@@ -22,8 +22,6 @@ import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.ServiceTypeEnum;
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -281,4 +279,74 @@ public abstract class AbstractServiceComponentVo {
 
     }
 
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractServiceComponentVo.ComponentListVo",
+            description = "AbstractServiceComponentVo.ComponentListVo 组件列表信息响应体"
+    )
+    public final static class ComponentListVo implements IVo {
+
+        private static final long serialVersionUID = -989335649546080625L;
+
+        @Schema(name = "ClusterId", title = "集群 ID", required = true)
+        @JsonProperty(value = "ClusterId", required = true)
+        private Long clusterId;
+
+        @Schema(name = "ServiceName", title = "服务名称", required = true)
+        @JsonProperty(value = "ServiceName", required = true)
+        private String serviceName;
+
+        @Schema(name = "ComponentSimpleList", title = "组件概览信息列表", required = true)
+        @JsonProperty(value = "ComponentSimpleList", required = true)
+        private List<ComponentSimpleVo> componentSimpleList;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractServiceComponentVo.ComponentSimpleVo",
+            description = "AbstractServiceComponentVo.ComponentSimpleVo 组件概览信息响应体"
+    )
+    public final static class ComponentSimpleVo implements IVo {
+
+        private static final long serialVersionUID = 5324456265631937131L;
+
+        @Schema(name = "ComponentId", title = "组件 ID", required = true)
+        @JsonProperty(value = "ComponentId", required = true)
+        private Long componentId;
+
+        @Schema(name = "ComponentName", title = "组件名称", required = true)
+        @JsonProperty(value = "ComponentName", required = true)
+        private String componentName;
+
+        @Schema(name = "NodeId", title = "节点 ID", required = true)
+        @JsonProperty(value = "NodeId", required = true)
+        private Long nodeId;
+
+        @Schema(name = "Hostname", title = "节点主机名", required = true)
+        @JsonProperty(value = "Hostname", required = true)
+        private String hostname;
+
+        @Schema(name = "NodeIp", title = "节点 IP 地址", required = true)
+        @JsonProperty(value = "NodeIp", required = true)
+        private String nodeIp;
+
+        @Schema(name = "NodeState", title = "节点当前状态", required = true)
+        @JsonProperty(value = "NodeState", required = true)
+        private NodeStateEnum nodeStateEnum;
+
+        @Schema(name = "SCStateEnum", title = "组件在当前节点的状态", required = true)
+        @JsonProperty(value = "SCStateEnum", required = true)
+        private SCStateEnum scStateEnum;
+
+        @Schema(name = "NeedRestart", title = "是否需要重启", required = true)
+        @JsonProperty(value = "NeedRestart", required = true)
+        private Boolean needRestart;
+    }
 }

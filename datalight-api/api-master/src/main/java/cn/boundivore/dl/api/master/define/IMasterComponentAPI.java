@@ -53,6 +53,22 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterComponentAPI {
 
+    @GetMapping(value = "/component/listByComponentName")
+    @ApiOperation(notes = "获取指定组件的列表信息", value = "获取指定组件的列表信息")
+    Result<AbstractServiceComponentVo.ComponentListVo> getComponentListByComponentName(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId,
+
+            @ApiParam(name = "ServiceName", value = "服务名称")
+            @RequestParam(value = "ServiceName", required = true)
+            String serviceName,
+
+            @ApiParam(name = "ComponentName", value = "组件名称")
+            @RequestParam(value = "ComponentName", required = true)
+            String componentName
+    ) throws Exception;
+
     @GetMapping(value = "/component/listByServiceName")
     @ApiOperation(notes = "获取指定服务下的组件分布信息", value = "获取指定服务下的组件分布信息")
     Result<AbstractServiceComponentVo.ComponentVo> getComponentList(

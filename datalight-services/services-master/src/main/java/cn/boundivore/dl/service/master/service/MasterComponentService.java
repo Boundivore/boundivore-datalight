@@ -85,6 +85,105 @@ public class MasterComponentService {
     private final MasterInitProcedureService masterInitProcedureService;
 
     /**
+     * Description: 根据指定服务、组件获取组件列表信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId     集群 ID
+     * @param serviceName   服务名称
+     * @param componentName 组件名称
+     * @return Result<AbstractServiceComponentVo.ComponentListVo> 组件信息列表
+     */
+    public Result<AbstractServiceComponentVo.ComponentListVo> getComponentListByComponentName(Long clusterId,
+                                                                                              String serviceName,
+                                                                                              String componentName) {
+
+        AbstractServiceComponentVo.ComponentListVo componentListVo = new AbstractServiceComponentVo.ComponentListVo();
+        componentListVo.setClusterId(clusterId);
+        componentListVo.setServiceName(serviceName);
+        componentListVo.setComponentSimpleList(new ArrayList<>());
+
+        List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, clusterId)
+                .eq(TDlComponent::getServiceName, serviceName)
+                .eq(TDlComponent::getComponentName, componentName)
+                .ne(TDlComponent::getComponentState, REMOVED)
+                .list();
+
+        if (!tDlComponentList.isEmpty()) {
+            // 获取 NodeId 对应的 TDlNode 映射关系
+            Map<Long, TDlNode> tDlNodeMap = this.getComponentNodeMap(clusterId, tDlComponentList);
+
+            tDlComponentList.forEach(tDlComponent -> {
+                TDlNode tDlNode = tDlNodeMap.get(tDlComponent.getNodeId());
+
+                componentListVo.getComponentSimpleList().add(
+                        new AbstractServiceComponentVo.ComponentSimpleVo(
+                                tDlComponent.getId(),
+                                tDlComponent.getComponentName(),
+                                tDlComponent.getNodeId(),
+                                tDlNode.getHostname(),
+                                tDlNode.getIpv4(),
+                                tDlNode.getNodeState(),
+                                tDlComponent.getComponentState(),
+                                tDlComponent.getNeedRestart()
+                        )
+                );
+
+            });
+        }
+
+
+        return Result.success(componentListVo);
+    }
+
+    /**
+     * Description: 根据指定服务、组件获取组件列表信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId        集群 ID
+     * @param tDlComponentList 组件数据库实体列表
+     * @return Map<Long, TDlNode> 返回 TDlNodeMap，包含 nodeId 与 TDlNode 的映射关系
+     */
+    public Map<Long, TDlNode> getComponentNodeMap(Long clusterId, List<TDlComponent> tDlComponentList) {
+        Assert.notEmpty(
+                tDlComponentList,
+                () -> new BException("组件列表不能为空")
+        );
+
+        // 提取 TDlComponent 列表中的 nodeId 并转换为 nodeIdList
+        List<Long> nodeIdList = tDlComponentList.stream()
+                .map(TDlComponent::getNodeId)
+                .collect(Collectors.toList());
+
+        // 获取 NodeId 对应的 TDlNode 映射关系
+        Map<Long, TDlNode> tDlNodeMap = this.masterNodeService.getNodeListInNodeIds(clusterId, nodeIdList)
+                .stream()
+                .filter(i -> i.getNodeState() != NodeStateEnum.REMOVED)
+                .collect(Collectors.toMap(TBasePo::getId, i -> i));
+
+        Assert.isTrue(
+                tDlNodeMap.size() == nodeIdList.size(),
+                () -> new DatabaseException("数据库异常, 组件列表中存在无效的节点 ID")
+        );
+
+        return tDlNodeMap;
+    }
+
+
+    /**
      * Description: 根据提供的服务名称获取该服务下组件的分布情况
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -247,21 +346,8 @@ public class MasterComponentService {
                 .list();
 
         if (!tDlComponentList.isEmpty()) {
-            // 提取 TDlComponent 列表中的 nodeId 并转换为 nodeIdList
-            List<Long> nodeIdList = tDlComponentList.stream()
-                    .map(TDlComponent::getNodeId)
-                    .collect(Collectors.toList());
-
             // 获取 NodeId 对应的 TDlNode 映射关系
-            Map<Long, TDlNode> tDlNodeMap = this.masterNodeService.getNodeListInNodeIds(clusterId, nodeIdList)
-                    .stream()
-                    .filter(i -> i.getNodeState() != NodeStateEnum.REMOVED)
-                    .collect(Collectors.toMap(TBasePo::getId, i -> i));
-
-            Assert.isTrue(
-                    tDlNodeMap.size() == nodeIdList.size(),
-                    () -> new DatabaseException("数据库异常, 组件列表中存在无效的节点 ID")
-            );
+            Map<Long, TDlNode> tDlNodeMap = this.getComponentNodeMap(clusterId, tDlComponentList);
 
             // 根据映射关系创建组件节点信息的列表
             return tDlComponentList

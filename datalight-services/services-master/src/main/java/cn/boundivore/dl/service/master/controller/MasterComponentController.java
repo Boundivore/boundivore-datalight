@@ -43,6 +43,11 @@ public class MasterComponentController implements IMasterComponentAPI {
     private final MasterComponentService masterComponentService;
 
     @Override
+    public Result<AbstractServiceComponentVo.ComponentListVo> getComponentListByComponentName(Long clusterId, String serviceName, String componentName) throws Exception {
+        return this.masterComponentService.getComponentListByComponentName(clusterId, serviceName, componentName);
+    }
+
+    @Override
     public Result<AbstractServiceComponentVo.ComponentVo> getComponentList(Long clusterId, String serviceName) throws Exception {
         return this.masterComponentService.getComponentList(clusterId, serviceName);
     }
