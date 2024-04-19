@@ -216,18 +216,6 @@ public class MasterAlertService {
                 () -> new DatabaseException("保存告警规则到数据库失败")
         );
 
-        // 关系保存到数据库
-        if (request.getHandlerId() != null) {
-            TDlAlertHandlerRelation tDlAlertHandlerRelation = new TDlAlertHandlerRelation();
-            tDlAlertHandlerRelation.setAlertId(tDlAlert.getId());
-            tDlAlertHandlerRelation.setHandlerId(request.getHandlerId());
-
-            Assert.isTrue(
-                    this.tDlAlertHandlerRelationService.save(tDlAlertHandlerRelation),
-                    () -> new DatabaseException("保存告警规则关联关系到数据库失败")
-            );
-        }
-
 
         // 获取 Prometheus 所在节点的详细信息
         TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
@@ -435,10 +423,7 @@ public class MasterAlertService {
      */
     private void checkNewAlertRuleRequest(AbstractAlertRequest.NewAlertRuleRequest request) {
         // 检查是否存在同名告警名称
-        checkForDuplicateAlertName(request.getAlertRuleName());
-
-        // 检查关联配置信息是否存在
-        checkHandlerExistence(request.getAlertHandlerTypeEnum(), request.getHandlerId());
+        this.checkForDuplicateAlertName(request.getAlertRuleName());
     }
 
     /**
@@ -933,9 +918,86 @@ public class MasterAlertService {
             rollbackFor = DatabaseException.class
     )
     @LocalLock
-    public Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(AbstractAlertRequest.UpdateAlertRuleRequest request) {
+    public Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(AbstractAlertRequest.UpdateAlertRuleRequest request) throws JsonProcessingException {
 
-        return null;
+        // 检查请求合法性
+        this.checkUpdateAlertRuleRequest(request);
+
+        // 解析参数到 YamlBean
+        YamlPrometheusRulesConfig yamlPrometheusRulesConfig = this.iAlertRuleConverter.convert2YamlPrometheusRulesConfig(
+                request.getAlertRuleContent()
+        );
+        // 解码 Expr Base64 格式的表达式的值
+        yamlPrometheusRulesConfig.getGroups()
+                .forEach(ruleGroup ->
+                        ruleGroup.getRules().forEach(rule -> {
+                                    String exprDecodeBase64 = Base64.decodeStr(
+                                            rule.getExpr(),
+                                            CharsetUtil.UTF_8
+                                    );
+                                    rule.setExpr(exprDecodeBase64);
+                                }
+                        )
+                );
+
+        log.info("解析完毕:\n{}\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
+
+        String ruleFileName = String.format(
+                ALERT_RULE_FILE_FORMAT,
+                request.getAlertRuleName()
+        );
+
+        String ruleFilePath = String.format(
+                ALERT_RULE_FILE_PATH_FORMAT,
+                ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir(),
+                ruleFileName
+        );
+
+        log.info("告警规则文件路径: {}", ruleFilePath);
+
+
+        // 更新数据库
+        TDlAlert tDlAlert = this.tDlAlertService.getById(request.getAlertRuleId());
+        tDlAlert.setClusterId(request.getClusterId());
+        tDlAlert.setAlertName(request.getAlertRuleName());
+        tDlAlert.setAlertFileName(ruleFileName);
+        tDlAlert.setAlertFilePath(ruleFilePath);
+        tDlAlert.setAlertRuleContent(
+                Base64.encode(
+                        YamlDeserializer.toString(yamlPrometheusRulesConfig),
+                        CharsetUtil.UTF_8
+                )
+        );
+        tDlAlert.setEnabled(request.getEnabled());
+        tDlAlert.setAlertVersion(tDlAlert.getAlertVersion() + 1L);
+        tDlAlert.setHandlerType(request.getAlertHandlerTypeEnum());
+
+        Assert.isTrue(
+                tDlAlertService.updateById(tDlAlert),
+                () -> new DatabaseException("更新告警规则到数据库失败")
+        );
+
+        // 获取 Prometheus 所在节点的详细信息
+        TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
+                .getData();
+
+        // 将文件写入到指定节点的指定目录, 如果希望这部分告警规则的配置文件，被列入到配置文件管理中，则可以通过调用共用配置文件服务的函数来实现
+        this.writeAlertRuleFile2Target(
+                nodeDetailVo,
+                tDlAlert.getAlertFileName(),
+                tDlAlert.getAlertFilePath(),
+                tDlAlert.getAlertVersion(),
+                tDlAlert.getAlertRuleContent()
+        );
+
+        // 重载 Prometheus 配置，更新告警规则
+        this.remoteInvokePrometheusHandler.invokePrometheusReload(nodeDetailVo.getHostname());
+
+        // 组装返回报文
+        AbstractAlertVo.AlertRuleVo alertRuleVo = this.createAlertRuleVo(yamlPrometheusRulesConfig, tDlAlert);
+
+        return Result.success(alertRuleVo);
     }
 
 
@@ -952,13 +1014,26 @@ public class MasterAlertService {
      * @param request 新增的告警规则请求
      */
     private void checkUpdateAlertRuleRequest(AbstractAlertRequest.UpdateAlertRuleRequest request) {
-        // 检查是否存在同名告警名称
-        checkForDuplicateAlertName(request.getAlertRuleName());
+        // 检查是否变更了名称（不允许变更告警名称)
+        TDlAlert tDlAlert = this.tDlAlertService.lambdaQuery()
+                .select()
+                .eq(TDlAlert::getClusterId, request.getClusterId())
+                .eq(TBasePo::getId, request.getAlertRuleId())
+                .one();
 
-        // 检查关联配置信息是否存在
-        checkHandlerExistence(request.getAlertHandlerTypeEnum(), request.getHandlerId());
+        Assert.notNull(
+                tDlAlert,
+                () -> new BException("目标集群中未找到指定告警信息配置")
+        );
+
+        Assert.isTrue(
+                tDlAlert.getAlertName().equals(request.getAlertRuleName()),
+                () -> new BException("不允许修改告警配置名称")
+        );
     }
 
+
+    // 设定告警与处理手段的绑定关系
 
 }
 

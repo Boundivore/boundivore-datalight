@@ -57,11 +57,6 @@ public abstract class AbstractAlertRequest {
         @JsonProperty(value = "AlertHandlerTypeEnum", required = true)
         @NotNull(message = "告警处理类型不能为空")
         private AlertHandlerTypeEnum alertHandlerTypeEnum;
-
-        @Schema(name = "HandlerId", title = "告警处理方式的配置 ID", required = true)
-        @JsonProperty(value = "HandlerId", required = false)
-        private Long handlerId;
-
     }
 
     @Data
@@ -243,10 +238,6 @@ public abstract class AbstractAlertRequest {
         @JsonProperty(value = "AlertRuleContent", required = true)
         @NotNull(message = "规则实体不能为空")
         private AlertRuleContentRequest alertRuleContent;
-
-        @Schema(name = "HandlerId", title = "告警处理方式的配置 ID", required = true)
-        @JsonProperty(value = "HandlerId", required = false)
-        private Long handlerId;
     }
 
 }
