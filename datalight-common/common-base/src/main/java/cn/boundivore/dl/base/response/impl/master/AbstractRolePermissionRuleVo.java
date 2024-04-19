@@ -40,7 +40,7 @@ public abstract class AbstractRolePermissionRuleVo {
     public final static class PermissionListVo implements IVo {
         private static final long serialVersionUID = -2032227646790245253L;
 
-        @ApiModelProperty(required = true, name = "PermissionList", value = "权限主体列表 响应体")
+        @Schema(required = true, name = "PermissionList", title = "权限主体列表 响应体")
         @JsonProperty(value = "PermissionList", required = true)
         private List<PermissionVo> permissionList;
     }
@@ -56,43 +56,43 @@ public abstract class AbstractRolePermissionRuleVo {
     public final static class PermissionVo implements IVo {
         private static final long serialVersionUID = -1954502674063728108L;
 
-        @ApiModelProperty(required = true, name = "PermissionId", value = "权限主键 ID")
+        @Schema(required = true, name = "PermissionId", title = "权限主键 ID")
         @JsonProperty(value = "PermissionId", required = true)
         private Long permissionId;
 
-        @ApiModelProperty(required = true, name = "RuleId", value = "规则主键 ID")
+        @Schema(required = true, name = "RuleId", title = "规则主键 ID")
         @JsonProperty(value = "RuleId", required = true)
         private Long ruleId;
 
-        @ApiModelProperty(required = true, name = "IsDeleted", value = "是否删除")
+        @Schema(required = true, name = "IsDeleted", title = "是否删除")
         @JsonProperty(value = "IsDeleted", required = true)
         private Boolean isDeleted;
 
-        @ApiModelProperty(required = true, name = "Enabled", value = "是否生效")
+        @Schema(required = true, name = "Enabled", title = "是否生效")
         @JsonProperty(value = "Enabled", required = true)
         private Boolean enabled;
 
-        @ApiModelProperty(required = true, name = "PermissionCode", value = "权限编码")
+        @Schema(required = true, name = "PermissionCode", title = "权限编码")
         @JsonProperty(value = "PermissionCode", required = true)
         private String permissionCode;
 
-        @ApiModelProperty(required = true, name = "PermissionName", value = "权限名称")
+        @Schema(required = true, name = "PermissionName", title = "权限名称")
         @JsonProperty(value = "PermissionName", required = true)
         private String permissionName;
 
-        @ApiModelProperty(required = true, name = "PermissionType", value = "权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);")
+        @Schema(required = true, name = "PermissionType", title = "权限类型 枚举：PERMISSION_INTERFACE(0, 接口操作权限),PERMISSION_DATA_ROW(1, 数据行读权限),PERMISSION_DATA_COLUMN(2, 数据列读权限),PERMISSION_PAGE(3, 页面操作权限);")
         @JsonProperty(value = "PermissionType", required = true)
         private PermissionTypeEnum permissionType;
 
-        @ApiModelProperty(name = "RejectPermissionCode", value = "互斥权限编码", required = true)
+        @Schema(name = "RejectPermissionCode", title = "互斥权限编码", required = true)
         @JsonProperty(value = "RejectPermissionCode", required = true)
         private String rejectPermissionCode;
 
-        @ApiModelProperty(required = true, name = "PermissionWeight", value = "权限权重 优先级，取值范围：1 ~ 10")
+        @Schema(required = true, name = "PermissionWeight", title = "权限权重 优先级，取值范围：1 ~ 10")
         @JsonProperty(value = "PermissionWeight", required = true)
         private Long permissionWeight;
 
-        @ApiModelProperty(required = true, name = "PermissionComment", value = "权限备注")
+        @Schema(required = true, name = "PermissionComment", title = "权限备注")
         @JsonProperty(value = "PermissionComment", required = true)
         private String permissionComment;
 
@@ -110,7 +110,7 @@ public abstract class AbstractRolePermissionRuleVo {
     public final static class PermissionRuleInterfaceListVo implements IVo {
         private static final long serialVersionUID = 68623053874861368L;
 
-        @ApiModelProperty(required = true, name = "PermissionRuleInterfaceDetailList", value = "接口权限信息列表")
+        @Schema(name = "PermissionRuleInterfaceDetailList", title = "接口权限信息列表", required = true)
         @JsonProperty(value = "PermissionRuleInterfaceDetailList", required = true)
         private List<PermissionRuleInterfaceDetailVo> permissionRuleInterfaceList = new ArrayList<>();
     }
@@ -127,11 +127,11 @@ public abstract class AbstractRolePermissionRuleVo {
     public final static class PermissionRuleInterfaceDetailVo implements IVo {
         private static final long serialVersionUID = 3594602803678213609L;
 
-        @ApiModelProperty(required = true, name = "Permission", value = "权限主体信息")
+        @Schema(required = true, name = "Permission", title = "权限主体信息")
         @JsonProperty(value = "Permission", required = true)
         private PermissionVo permissionVo;
 
-        @ApiModelProperty(required = true, name = "RuleInterface", value = "权限规则信息(仅权限类型为 PERMISSION_INTERFACE 时不为空)")
+        @Schema(name = "RuleInterface", title = "权限规则信息(仅权限类型为 PERMISSION_INTERFACE 时不为空)", required = true)
         @JsonProperty(value = "RuleInterface", required = true)
         private RuleInterfaceVo ruleInterface;
 
@@ -150,15 +150,15 @@ public abstract class AbstractRolePermissionRuleVo {
     public final static class RuleInterfaceVo implements IVo {
         private static final long serialVersionUID = -6011186614241048963L;
 
-        @ApiModelProperty(required = true, name = "RuleId", value = "规则主键 ID")
+        @Schema(required = true, name = "RuleId", title = "规则主键 ID")
         @JsonProperty(value = "RuleId", required = true)
         private Long ruleId;
 
-        @ApiModelProperty(required = true, name = "RuleInterfaceUri", value = "接口 URI 绝对路径")
+        @Schema(required = true, name = "RuleInterfaceUri", title = "接口 URI 绝对路径")
         @JsonProperty(value = "RuleInterfaceUri", required = true)
         private String ruleInterfaceUri;
 
-        @ApiModelProperty(required = true, name = "RuleInterfaceMethod", value = "Http 请求方式")
+        @Schema(required = true, name = "RuleInterfaceMethod", title = "Http 请求方式")
         @JsonProperty(value = "RuleInterfaceMethod", required = true)
         private String ruleInterfaceMethod;
     }
@@ -177,31 +177,31 @@ public abstract class AbstractRolePermissionRuleVo {
 
         private static final long serialVersionUID = -5290148403914121307L;
 
-        @ApiModelProperty(required = true, name = "RoleId", value = "角色 ID")
+        @Schema(required = true, name = "RoleId", title = "角色 ID")
         @JsonProperty(value = "RoleId", required = true)
         private Long roleId;
 
-        @ApiModelProperty(name = "EditEnabled", value = "是否可编辑", required = true)
+        @Schema(name = "EditEnabled", title = "是否可编辑", required = true)
         @JsonProperty(value = "EditEnabled", required = true)
         private Boolean editEnabled;
 
-        @ApiModelProperty(name = "RoleName", value = "角色名称", required = true)
+        @Schema(name = "RoleName", title = "角色名称", required = true)
         @JsonProperty(value = "RoleName", required = true)
         private String roleName;
 
-        @ApiModelProperty(name = "RoleCode", value = "角色编码", required = true)
+        @Schema(name = "RoleCode", title = "角色编码", required = true)
         @JsonProperty(value = "RoleCode", required = true)
         private String roleCode;
 
-        @ApiModelProperty(name = "Enabled", value = "是否启用标记", required = true)
+        @Schema(name = "Enabled", title = "是否启用标记", required = true)
         @JsonProperty(value = "Enabled", required = true)
         private Boolean enabled;
 
-        @ApiModelProperty(name = "RoleType", value = "角色类型", required = true)
+        @Schema(name = "RoleType", title = "角色类型", required = true)
         @JsonProperty(value = "RoleType", required = true)
         private RoleTypeEnum roleType;
 
-        @ApiModelProperty(name = "RoleComment", value = "角色备注", required = false)
+        @Schema(name = "RoleComment", title = "角色备注", required = false)
         @JsonProperty(value = "RoleComment", required = false)
         private String roleComment;
     }
@@ -220,7 +220,7 @@ public abstract class AbstractRolePermissionRuleVo {
 
         private static final long serialVersionUID = 243959052209910553L;
 
-        @ApiModelProperty(name = "RoleList", value = "角色信息列表", required = true)
+        @Schema(name = "RoleList", title = "角色信息列表", required = true)
         @JsonProperty(value = "RoleList", required = true)
         private List<RoleVo> roleList;
 

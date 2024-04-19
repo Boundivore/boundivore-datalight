@@ -22,9 +22,12 @@ import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -72,4 +75,39 @@ public interface IMasterAlertAPI {
             @Valid
             AbstractAlertRequest.AlertIdListRequest request
     ) throws Exception;
+
+
+    @GetMapping(value = "/alert/getAlertSimpleList")
+    @ApiOperation(notes = "获取告警信息概览列表", value = "获取告警信息概览列表")
+    Result<AbstractAlertVo.AlertSimpleListVo> getAlertSimpleList(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId
+    ) throws Exception;
+
+    @GetMapping(value = "/alert/getAlertDetailById")
+    @ApiOperation(notes = "根据 ID 获取告警详细信息", value = "根据 ID 获取告警详细信息")
+    Result<AbstractAlertVo.AlertRuleVo> getAlertDetailById(
+            @ApiParam(name = "AlertId", value = "告警信息 ID")
+            @RequestParam(value = "AlertId", required = true)
+            Long alertId
+    ) throws Exception;
+
+
+    @PostMapping(value = "/alert/switchAlertEnabled")
+    @ApiOperation(notes = "启用、停用告警", value = "启用、停用告警")
+    Result<String> switchAlertEnabled(
+            @RequestBody
+            @Valid
+            AbstractAlertRequest.AlertSwitchEnabledListRequest request
+    ) throws Exception;
+
+    @PostMapping(value = "/alert/updateAlertRule")
+    @ApiOperation(notes = "更新告警配置信息", value = "更新告警配置信息")
+    Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(
+            @RequestBody
+            @Valid
+            AbstractAlertRequest.UpdateAlertRuleRequest request
+    ) throws Exception;
+
 }

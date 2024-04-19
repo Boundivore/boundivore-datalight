@@ -39,22 +39,22 @@ public abstract class AbstractRoleRequest {
 
         private static final long serialVersionUID = -7752686548270223945L;
 
-        @ApiModelProperty(name = "RoleName", value = "角色名称", required = true)
+        @Schema(name = "RoleName", title = "角色名称", required = true)
         @JsonProperty(value = "RoleName", required = true)
         @NotNull(message = "角色名称不能为空")
         private String roleName;
 
-        @ApiModelProperty(name = "Enabled", value = "是否启用标记", required = true)
+        @Schema(name = "Enabled", title = "是否启用标记", required = true)
         @JsonProperty(value = "Enabled", required = true)
         @NotNull(message = "是否启用标记不能为空")
         private Boolean enabled;
 
-        @ApiModelProperty(name = "RoleType", value = "角色类型", required = true)
+        @Schema(name = "RoleType", title = "角色类型", required = true)
         @JsonProperty(value = "RoleType", required = true)
         @NotNull(message = "角色类型不能为空")
         private RoleTypeEnum roleType;
 
-        @ApiModelProperty(name = "RoleComment", value = "角色备注", required = false)
+        @Schema(name = "RoleComment", title = "角色备注", required = false)
         @JsonProperty(value = "RoleComment", required = false)
         private String roleComment;
 
@@ -72,7 +72,7 @@ public abstract class AbstractRoleRequest {
 
         private static final long serialVersionUID = 3152313825607294067L;
 
-        @ApiModelProperty(name = "RoleIdList", value = "角色 ID 列表", required = true)
+        @Schema(name = "RoleIdList", title = "角色 ID 列表", required = true)
         @JsonProperty(value = "RoleIdList", required = true)
         @NotEmpty(message = "角色 ID 列表不能为空")
         private List<Long> roleIdList;
@@ -90,12 +90,12 @@ public abstract class AbstractRoleRequest {
 
         private static final long serialVersionUID = -7519956203389684421L;
 
-        @ApiModelProperty(name = "RoleId", value = "角色 ID", required = true)
+        @Schema(name = "RoleId", title = "角色 ID", required = true)
         @JsonProperty(value = "RoleId", required = true)
         @NotNull(message = "角色 ID 不能为空")
         private Long roleId;
 
-        @ApiModelProperty(name = "UserId", value = "用户 ID", required = true)
+        @Schema(name = "UserId", title = "用户 ID", required = true)
         @JsonProperty(value = "UserId", required = true)
         @NotNull(message = "用户 ID 不能为空")
         private Long userId;
@@ -114,7 +114,7 @@ public abstract class AbstractRoleRequest {
 
         private static final long serialVersionUID = -7519956203389684421L;
 
-        @ApiModelProperty(name = "RoleUserList", value = "角色用户映射列表", required = true)
+        @Schema(name = "RoleUserList", title = "角色用户映射列表", required = true)
         @JsonProperty(value = "RoleUserList", required = true)
         @NotEmpty(message = "角色用户映射列表不能为空")
         private List<RoleUserIdRequest> roleUserList;

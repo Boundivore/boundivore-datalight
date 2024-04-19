@@ -27,6 +27,10 @@ public class TDlAlert extends TBasePo<TDlAlert> {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty("集群 ID")
+    @TableField("cluster_id")
+    private Long clusterId;
+
     @ApiModelProperty("告警配置名称")
     @TableField("alert_name")
     private String alertName;

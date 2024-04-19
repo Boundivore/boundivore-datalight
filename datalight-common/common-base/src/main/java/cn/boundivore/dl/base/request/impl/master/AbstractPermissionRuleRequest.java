@@ -37,12 +37,12 @@ public abstract class AbstractPermissionRuleRequest {
 
         private static final long serialVersionUID = 3576061572492713349L;
 
-        @ApiModelProperty(name = "PermissionId", value = "权限 ID", required = true)
+        @Schema(name = "PermissionId", title = "权限 ID", required = true)
         @JsonProperty(value = "PermissionId", required = true)
         @NotNull(message = "权限 ID 不能为空")
         private Long permissionId;
 
-        @ApiModelProperty(name = "RoleId", value = "角色 ID", required = true)
+        @Schema(name = "RoleId", title = "角色 ID", required = true)
         @JsonProperty(value = "RoleId", required = true)
         @NotNull(message = "角色 ID 不能为空")
         private Long roleId;
@@ -61,7 +61,7 @@ public abstract class AbstractPermissionRuleRequest {
 
         private static final long serialVersionUID = 2368545681642644579L;
 
-        @ApiModelProperty(name = "PermissionRoleIdList", value = "权限角色映射列表", required = true)
+        @Schema(name = "PermissionRoleIdList", title = "权限角色映射列表", required = true)
         @JsonProperty(value = "PermissionRoleIdList", required = true)
         @NotEmpty(message = "权限角色映射列表不能为空")
         private List<PermissionRoleIdRequest> permissionRoleIdList;
@@ -82,7 +82,7 @@ public abstract class AbstractPermissionRuleRequest {
 
         private static final long serialVersionUID = 6616348577672629228L;
 
-        @ApiModelProperty(name = "PermissionId", value = "权限类目常量 ID", required = true)
+        @Schema(name = "PermissionId", title = "权限类目常量 ID", required = true)
         @JsonProperty(value = "PermissionId", required = true)
         @NotNull(message = "权限类目常量 ID 不能为空")
         private Long permissionId;

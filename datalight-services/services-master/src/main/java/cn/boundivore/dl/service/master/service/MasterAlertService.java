@@ -57,6 +57,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -196,6 +197,7 @@ public class MasterAlertService {
         // 保存数据库
         TDlAlert tDlAlert = new TDlAlert();
         tDlAlert.setVersion(0L);
+        tDlAlert.setClusterId(request.getClusterId());
         tDlAlert.setAlertName(request.getAlertRuleName());
         tDlAlert.setAlertFileName(ruleFileName);
         tDlAlert.setAlertFilePath(ruleFilePath);
@@ -227,25 +229,75 @@ public class MasterAlertService {
         }
 
 
-        // 将文件写入到指定节点的指定目录
-        // 如果希望这部分告警规则的配置文件，别列入到配置文件管理中，则可以通过调用共用配置文件服务的函数来实现
-        final AbstractNodeVo.NodeDetailVo nodeDetailVo = this.writeAlertRuleFile2Target(
-                request.getClusterId(),
+        // 获取 Prometheus 所在节点的详细信息
+        TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
+                .getData();
+
+        // 将文件写入到指定节点的指定目录, 如果希望这部分告警规则的配置文件，被列入到配置文件管理中，则可以通过调用共用配置文件服务的函数来实现
+        this.writeAlertRuleFile2Target(
+                nodeDetailVo,
                 tDlAlert.getAlertFileName(),
                 tDlAlert.getAlertFilePath(),
                 tDlAlert.getAlertVersion(),
                 tDlAlert.getAlertRuleContent()
         );
 
-        // 读取 prometheus.yml 文件
         String prometheusFilePath = String.format(
                 PROMETHEUS_YML_FILE_PATH_FORMAT,
                 ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
         );
 
+        // 读取 prometheus.yml 文件, 解析 Prometheus YamlJavaBean
+        YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
+                request.getClusterId(),
+                prometheusFilePath,
+                nodeDetailVo
+        );
+        // 添加文件绝对路径到 rules 数组
+        yamlPrometheusConfig.getRuleFiles().add(tDlAlert.getAlertFilePath());
+
+
+        // 远程写入 prometheus.yml 配置文件
+        this.writePrometheusYml(
+                request.getClusterId(),
+                nodeDetailVo,
+                prometheusFilePath,
+                yamlPrometheusConfig
+        );
+
+
+        // 重载 Prometheus 配置，更新告警规则
+        this.remoteInvokePrometheusHandler.invokePrometheusReload(nodeDetailVo.getHostname());
+
+        // 组装返回报文
+        AbstractAlertVo.AlertRuleVo alertRuleVo = this.createAlertRuleVo(yamlPrometheusRulesConfig, tDlAlert);
+
+        return Result.success(alertRuleVo);
+    }
+
+    /**
+     * Description: 解析 Prometheus 文件
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId    集群 ID
+     * @param nodeDetailVo Prometheus 所在节点的详细信息
+     * @return YamlPrometheusConfig Prometheus YamlJavaBean
+     */
+    public YamlPrometheusConfig parseYamlPrometheusConfig(Long clusterId,
+                                                          String prometheusFilePath,
+                                                          AbstractNodeVo.NodeDetailVo nodeDetailVo) throws JsonProcessingException {
+
+
         ConfigListByGroupVo.ConfigGroupVo monitorServiceConfigGroupVo = this.masterConfigService
                 .getConfigListByGroup(
-                        request.getClusterId(),
+                        clusterId,
                         MONITOR_SERVICE_NAME,
                         prometheusFilePath
                 )
@@ -276,9 +328,29 @@ public class MasterAlertService {
                 decodeConfigContent,
                 YamlPrometheusConfig.class
         );
-        // 添加文件绝对路径到 rules 数组
-        yamlPrometheusConfig.getRuleFiles().add(tDlAlert.getAlertFilePath());
 
+        return yamlPrometheusConfig;
+    }
+
+    /**
+     * Description: 远程写入 Prometheus 配置文件到对端本地目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId            集群 ID
+     * @param nodeDetailVo         Prometheus 所在节点的详细信息
+     * @param prometheusFilePath   prometheus.yml 配置文件路径
+     * @param yamlPrometheusConfig YamlJavaBaean
+     */
+    public void writePrometheusYml(Long clusterId,
+                                   AbstractNodeVo.NodeDetailVo nodeDetailVo,
+                                   String prometheusFilePath,
+                                   YamlPrometheusConfig yamlPrometheusConfig) throws JsonProcessingException {
         // 反序列化为 Base64 字符串，并修改配置文件
         String newPrometheusYmlConfigBase64 = Base64.encode(
                 YamlDeserializer.toString(yamlPrometheusConfig),
@@ -289,12 +361,12 @@ public class MasterAlertService {
 
         // 保存 prometheus.yml 配置
         ConfigSaveRequest configSaveRequest = new ConfigSaveRequest();
-        configSaveRequest.setClusterId(request.getClusterId());
+        configSaveRequest.setClusterId(clusterId);
         configSaveRequest.setServiceName(MONITOR_SERVICE_NAME);
 
         boolean isSuccess = this.masterConfigSyncService.saveConfigOrUpdateBatch(
                 new ConfigSaveRequest(
-                        request.getClusterId(),
+                        clusterId,
                         MONITOR_SERVICE_NAME,
                         CollUtil.newArrayList(
                                 new ConfigSaveRequest.ConfigRequest(
@@ -312,16 +384,29 @@ public class MasterAlertService {
                 isSuccess,
                 () -> new BException("修改 prometheus.yml 配置文件失败")
         );
+    }
 
-        // 重载 Prometheus 配置，更新告警规则
-        this.remoteInvokePrometheusHandler.invokePrometheusReload(nodeDetailVo.getHostname());
+    /**
+     * Description: 创建告警规则详情响应体
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param yamlPrometheusRulesConfig 告警规则 YamlJavaBean
+     * @param tDlAlert                  告警规则数据库实体
+     * @return AbstractAlertVo.AlertRuleVo 告警规则详情响应体
+     */
+    public AbstractAlertVo.AlertRuleVo createAlertRuleVo(YamlPrometheusRulesConfig yamlPrometheusRulesConfig, TDlAlert tDlAlert) {
 
-
-        // 组装返回报文
         AbstractAlertVo.AlertRuleVo alertRuleVo = new AbstractAlertVo.AlertRuleVo();
         AbstractAlertVo.AlertRuleContentVo alertRuleContentVo = this.iAlertRuleConverter.convert2AlertRuleContentVo(
                 yamlPrometheusRulesConfig
         );
+
         alertRuleVo.setAlertRuleId(tDlAlert.getId());
         alertRuleVo.setAlertRuleName(tDlAlert.getAlertName());
         alertRuleVo.setAlertFilePath(tDlAlert.getAlertFilePath());
@@ -329,11 +414,10 @@ public class MasterAlertService {
         alertRuleVo.setAlertRuleContentBase64(tDlAlert.getAlertRuleContent());
         alertRuleVo.setEnabled(tDlAlert.getEnabled());
         alertRuleVo.setAlertVersion(tDlAlert.getAlertVersion());
-        alertRuleVo.setHandlerType(tDlAlert.getHandlerType());
-
+        alertRuleVo.setAlertHandlerTypeEnum(tDlAlert.getHandlerType());
         alertRuleVo.setAlertRuleContent(alertRuleContentVo);
 
-        return Result.success(alertRuleVo);
+        return alertRuleVo;
     }
 
 
@@ -354,7 +438,7 @@ public class MasterAlertService {
         checkForDuplicateAlertName(request.getAlertRuleName());
 
         // 检查关联配置信息是否存在
-        checkHandlerExistence(request);
+        checkHandlerExistence(request.getAlertHandlerTypeEnum(), request.getHandlerId());
     }
 
     /**
@@ -387,32 +471,38 @@ public class MasterAlertService {
      * Modification time:
      * Throws:
      *
-     * @param request 告警规则请求
+     * @param alertHandlerTypeEnum 告警触发后的处理类型
+     * @param handlerId            处理配置信息 ID
      */
-    private void checkHandlerExistence(AbstractAlertRequest.NewAlertRuleRequest request) {
-        String handlerType = request.getAlertHandlerTypeEnum().toString();
+    private void checkHandlerExistence(AlertHandlerTypeEnum alertHandlerTypeEnum, Long handlerId) {
 
-        switch (request.getAlertHandlerTypeEnum()) {
+        switch (alertHandlerTypeEnum) {
             case ALERT_INTERFACE:
-                checkNotNullHandler(request, "接口");
+                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "接口");
                 break;
             case ALERT_MAIL:
-                checkNotNullHandler(request, "邮件");
+                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "邮件");
                 break;
             case ALERT_WEICHAT:
-                checkNotNullHandler(request, "微信");
+                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "微信");
                 break;
             case ALERT_FEISHU:
-                checkNotNullHandler(request, "飞书");
+                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "飞书");
                 break;
             case ALERT_DINGDING:
-                checkNotNullHandler(request, "钉钉");
+                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "钉钉");
                 break;
             default:
-                Assert.isTrue(request.getHandlerId() == null, () -> new BException(
-                        String.format("%s 类型的告警处理不应存在处理配置信息 %s, 请置空",
-                                handlerType,
-                                request.getHandlerId())));
+                Assert.isTrue(
+                        handlerId == null,
+                        () -> new BException(
+                                String.format(
+                                        "%s 类型的告警处理不应存在处理配置信息 %s, 请置空",
+                                        alertHandlerTypeEnum,
+                                        handlerId
+                                )
+                        )
+                );
                 break;
         }
     }
@@ -428,15 +518,35 @@ public class MasterAlertService {
      * Modification time:
      * Throws:
      *
-     * @param request 告警规则请求
-     * @param type    告警处理类型
+     * @param alertHandlerTypeEnum 告警处理类型
+     * @param handlerId            处理配置信息 ID
+     * @param targetName           告警处理目标
      */
-    private void checkNotNullHandler(AbstractAlertRequest.NewAlertRuleRequest request, String type) {
-        IService<?> service = getServiceByHandlerType(request.getAlertHandlerTypeEnum());
-        Assert.notNull(service != null ? service.getById(request.getHandlerId()) : null,
-                () -> new BException(String.format(ERR_MSG_TEMPLATE, type)));
-        Assert.notNull(request.getHandlerId(),
-                () -> new BException(String.format(ERR_MSG_ID_REQUIRED, type)));
+    private void checkNotNullHandler(AlertHandlerTypeEnum alertHandlerTypeEnum,
+                                     Long handlerId,
+                                     String targetName) {
+
+        IService<?> service = this.getServiceByHandlerType(alertHandlerTypeEnum);
+
+        Assert.notNull(
+                service != null ? service.getById(handlerId) : null,
+                () -> new BException(
+                        String.format(
+                                ERR_MSG_TEMPLATE,
+                                targetName
+                        )
+                )
+        );
+
+        Assert.notNull(
+                handlerId,
+                () -> new BException(
+                        String.format(
+                                ERR_MSG_ID_REQUIRED,
+                                targetName
+                        )
+                )
+        );
     }
 
 
@@ -481,26 +591,21 @@ public class MasterAlertService {
      * Modification time:
      * Throws:
      *
-     * @param clusterId     集群 ID
+     * @param nodeDetailVo  Prometheus 所在节点的详细信息
      * @param filename      文件名称
      * @param filePath      文件绝对路径
      * @param configVersion 文件当前静态版本
      * @param contentBase64 文件内容 Base64
-     * @return String 节点 IP
      */
-    private AbstractNodeVo.NodeDetailVo writeAlertRuleFile2Target(Long clusterId,
-                                                                  String filename,
-                                                                  String filePath,
-                                                                  Long configVersion,
-                                                                  String contentBase64) {
+    private void writeAlertRuleFile2Target(AbstractNodeVo.NodeDetailVo nodeDetailVo,
+                                           String filename,
+                                           String filePath,
+                                           Long configVersion,
+                                           String contentBase64) {
         Assert.notEmpty(
                 contentBase64,
                 "配置文件 Base64 内容不能为空"
         );
-
-        TDlComponent tDlComponent = this.findPrometheusComponent(clusterId);
-        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
-                .getData();
 
         ConfigFileRequest configFileRequest = new ConfigFileRequest(
                 filePath,
@@ -523,8 +628,6 @@ public class MasterAlertService {
                         )
                 )
         );
-
-        return nodeDetailVo;
     }
 
     /**
@@ -574,9 +677,9 @@ public class MasterAlertService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> removeAlertRule(AbstractAlertRequest.AlertIdListRequest request) {
+    public Result<String> removeAlertRule(AbstractAlertRequest.AlertIdListRequest request) throws JsonProcessingException {
         // 检查 ID 是否全部存在
-        this.checkAlertIdExists(request.getAlertIdList());
+        this.checkAlertIdExists(request.getClusterId(), request.getAlertIdList());
 
         // 检查告警处理配置关联表是否存在关联，如果存在，则移除关联
         List<TDlAlertHandlerRelation> tDlAlertHandlerRelationList = this.tDlAlertHandlerRelationService.lambdaQuery()
@@ -591,10 +694,44 @@ public class MasterAlertService {
         );
 
         // 执行删除操作
+        List<TDlAlert> tDlAlertList = this.tDlAlertService.listByIds(request.getAlertIdList());
         Assert.isTrue(
-                this.tDlAlertService.removeBatchByIds(request.getAlertIdList()),
+                this.tDlAlertService.removeBatchByIds(tDlAlertList),
                 () -> new DatabaseException("移除告警信息失败")
         );
+
+
+        // 获取 Prometheus 所在节点的详细信息
+        TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
+                .getData();
+
+        String prometheusFilePath = String.format(
+                PROMETHEUS_YML_FILE_PATH_FORMAT,
+                ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
+        );
+
+        // 读取 prometheus.yml 文件， 解析 Prometheus YamlJavaBean
+        YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
+                request.getClusterId(),
+                prometheusFilePath,
+                nodeDetailVo
+        );
+
+        // 将告警文件绝对路径从 rules 数组中移除，删除 prometheus.yml 中的告警配置项
+        tDlAlertList.forEach(i -> yamlPrometheusConfig.getRuleFiles().remove(i.getAlertFilePath()));
+
+        // 远程写入 prometheus.yml 配置文件
+        this.writePrometheusYml(
+                request.getClusterId(),
+                nodeDetailVo,
+                prometheusFilePath,
+                yamlPrometheusConfig
+        );
+
+
+        // 重载 Prometheus 配置，更新告警规则
+        this.remoteInvokePrometheusHandler.invokePrometheusReload(nodeDetailVo.getHostname());
 
         return Result.success();
     }
@@ -609,9 +746,10 @@ public class MasterAlertService {
      * Modification time:
      * Throws:
      *
+     * @param clusterId   集群 ID
      * @param alertIdList 告警 ID 列表
      */
-    public void checkAlertIdExists(List<Long> alertIdList) {
+    public void checkAlertIdExists(Long clusterId, List<Long> alertIdList) {
         Assert.notEmpty(
                 alertIdList,
                 () -> new BException("告警 ID 列表不能为空")
@@ -624,6 +762,7 @@ public class MasterAlertService {
 
         List<TDlAlert> tDlAlertList = this.tDlAlertService.lambdaQuery()
                 .select()
+                .eq(TDlAlert::getClusterId, clusterId)
                 .in(
                         TBasePo::getId,
                         distinctAlertIdList
@@ -632,17 +771,193 @@ public class MasterAlertService {
 
         Assert.isTrue(
                 tDlAlertList.size() == distinctAlertIdList.size(),
-                () -> new BException("告警 ID 列表中不允许出现不存在的 ID")
+                () -> new BException("给定集群中告警 ID 列表中不允许出现不存在的 ID")
         );
     }
 
-    // 获取告警配置列表
 
-    // 获取告警配置详情
+    /**
+     * Description: 获取告警配置信息列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @return Result<AbstractAlertVo.AlertSimpleListVo> 告警配置信息列表
+     */
+    public Result<AbstractAlertVo.AlertSimpleListVo> getAlertSimpleList(Long clusterId) {
+        AbstractAlertVo.AlertSimpleListVo alertSimpleListVo = new AbstractAlertVo.AlertSimpleListVo();
 
-    // 查看历史版本
+        List<TDlAlert> tDlAlertList = this.tDlAlertService.lambdaQuery()
+                .select()
+                .eq(TDlAlert::getClusterId, clusterId)
+                .list();
 
-    // 启用\禁用告警配置
+        List<AbstractAlertVo.AlertSimpleVo> alertSimpleVoList = tDlAlertList.stream()
+                .map(i -> new AbstractAlertVo.AlertSimpleVo(
+                                i.getId(),
+                                i.getAlertName(),
+                                i.getEnabled(),
+                                i.getHandlerType()
+                        )
+                )
+                .collect(Collectors.toList());
+
+        alertSimpleListVo.setAlertSimpleList(alertSimpleVoList);
+
+
+        return Result.success(alertSimpleListVo);
+    }
+
+    /**
+     * Description: 根据 ID 获取告警配置详情
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertId 告警配置 ID
+     * @return Result<AbstractAlertVo.AlertRuleVo> 告警配置详情
+     */
+    public Result<AbstractAlertVo.AlertRuleVo> getAlertDetailById(Long alertId) throws JsonProcessingException {
+        TDlAlert tDlAlert = this.tDlAlertService.getById(alertId);
+        Assert.notNull(
+                tDlAlert,
+                () -> new BException("无法找到对应信息")
+        );
+
+        // 解析 Base64
+        String ruleYamlStr = Base64.decodeStr(
+                tDlAlert.getAlertRuleContent(),
+                CharsetUtil.UTF_8
+        );
+        // 解析到 Yaml Bean
+        YamlPrometheusRulesConfig yamlPrometheusRulesConfig = YamlSerializer.toObject(
+                ruleYamlStr,
+                YamlPrometheusRulesConfig.class
+        );
+
+        // 组装返回报文
+        AbstractAlertVo.AlertRuleVo alertRuleVo = this.createAlertRuleVo(
+                yamlPrometheusRulesConfig,
+                tDlAlert
+        );
+
+        return Result.success(alertRuleVo);
+
+    }
+
+
+    /**
+     * Description: 启用、禁用告警配置
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 启用停用响应体
+     * @return Result<String> 操作成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<String> switchAlertEnabled(AbstractAlertRequest.AlertSwitchEnabledListRequest request) {
+
+        Assert.notEmpty(
+                request.getAlertSwitchEnabledList(),
+                () -> new BException("操作列表不能为空")
+        );
+
+        // 读取数据库，并将实体转为映射关系: <AlertId, TDlAlert>
+        Map<Long, TDlAlert> tDlAlertMap = this.tDlAlertService.lambdaQuery()
+                .select()
+                .eq(TDlAlert::getClusterId, request.getClusterId())
+                .in(
+                        TBasePo::getId,
+                        request.getAlertSwitchEnabledList()
+                                .stream()
+                                .map(AbstractAlertRequest.AlertSwitchEnabledRequest::getAlertId)
+                                .collect(Collectors.toList())
+                )
+                .list()
+                .stream()
+                .collect(Collectors.toMap(TDlAlert::getId, alert -> alert));
+
+        // 检查集群 ID 与告警 ID 是否匹配
+        Assert.isTrue(
+                request.getAlertSwitchEnabledList().size() == tDlAlertMap.size(),
+                () -> new BException("操作列表信息不一致，同批次只能操作同集群的告警列表")
+        );
+
+        // 更新数据库实体的 Enabled 值
+        request.getAlertSwitchEnabledList().forEach(i -> {
+            tDlAlertMap.get(i.getAlertId()).setEnabled(i.getEnabled());
+        });
+
+        // 更新到数据库
+        Assert.isTrue(
+                this.tDlAlertService.updateBatchById(tDlAlertMap.values()),
+                () -> new DatabaseException("更新启用停用到数据库失败")
+        );
+
+        return Result.success();
+    }
+
+
+    /**
+     * Description: 修改告警规则信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警配置信息更新请求体
+     * @return Result<AbstractAlertVo.AlertRuleVo> 修改后的告警内容
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @LocalLock
+    public Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(AbstractAlertRequest.UpdateAlertRuleRequest request) {
+
+        return null;
+    }
+
+
+    /**
+     * Description: 检查新增的告警规则请求是否合理
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 新增的告警规则请求
+     */
+    private void checkUpdateAlertRuleRequest(AbstractAlertRequest.UpdateAlertRuleRequest request) {
+        // 检查是否存在同名告警名称
+        checkForDuplicateAlertName(request.getAlertRuleName());
+
+        // 检查关联配置信息是否存在
+        checkHandlerExistence(request.getAlertHandlerTypeEnum(), request.getHandlerId());
+    }
 
 
 }

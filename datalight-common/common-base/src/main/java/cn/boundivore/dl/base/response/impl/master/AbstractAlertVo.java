@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +79,7 @@ public abstract class AbstractAlertVo {
         @JsonProperty(value = "Sha256", required = true)
         private String sha256;
 
-        @ApiModelProperty(name = "AlertRuleContent", value = "告警规则配置解析后的实体", required = true)
+        @Schema(name = "AlertRuleContent", title = "告警规则配置解析后的实体", required = true)
         @JsonProperty(value = "AlertRuleContent", required = true)
         private AlertRuleContentVo alertRuleContent;
 
@@ -92,9 +91,9 @@ public abstract class AbstractAlertVo {
         @JsonProperty(value = "AlertVersion", required = true)
         private Long alertVersion;
 
-        @Schema(name = "HandlerType", title = "告警触发后处理告警的操作类型", required = true)
-        @JsonProperty(value = "HandlerType", required = true)
-        private AlertHandlerTypeEnum handlerType;
+        @Schema(name = "AlertHandlerTypeEnum", title = "告警触发后处理告警的操作类型", required = true)
+        @JsonProperty(value = "AlertHandlerTypeEnum", required = true)
+        private AlertHandlerTypeEnum alertHandlerTypeEnum;
 
     }
 
@@ -110,7 +109,7 @@ public abstract class AbstractAlertVo {
     public final static class AlertRuleContentVo implements IVo {
         private static final long serialVersionUID = -5838473919880577976L;
 
-        @ApiModelProperty(name = "Groups", value = "告警规则分组", required = true)
+        @Schema(name = "Groups", title = "告警规则分组", required = true)
         @JsonProperty(value = "Groups", required = true)
         @NotEmpty(message = "告警规则分组不能为空")
         private List<AbstractAlertVo.GroupVo> groups;
@@ -128,11 +127,11 @@ public abstract class AbstractAlertVo {
     public static class GroupVo implements IVo {
         private static final long serialVersionUID = -4561495605113571769L;
 
-        @ApiModelProperty(name = "Name", value = "告警规则分组名称", required = true)
+        @Schema(name = "Name", title = "告警规则分组名称", required = true)
         @JsonProperty(value = "Name")
         private String name;
 
-        @ApiModelProperty(name = "Rules", value = "告警规则", required = true)
+        @Schema(name = "Rules", title = "告警规则", required = true)
         @JsonProperty(value = "Rules")
         private List<AbstractAlertVo.RuleVo> rules;
     }
@@ -148,25 +147,75 @@ public abstract class AbstractAlertVo {
     public static class RuleVo implements IVo {
         private static final long serialVersionUID = -1194530752751114766L;
 
-        @ApiModelProperty(name = "Alert", value = "告警规则名称", required = true)
+        @Schema(name = "Alert", title = "告警规则名称", required = true)
         @JsonProperty(value = "Alert")
         private String alert;
 
-        @ApiModelProperty(name = "Expr", value = "告警规则判断表达式 [Base64 格式]", required = true)
+        @Schema(name = "Expr", title = "告警规则判断表达式 [Base64 格式]", required = true)
         @JsonProperty(value = "Expr")
         private String expr;
 
-        @ApiModelProperty(name = "For", value = "满足 Expr 表达式多久后执行告警", required = true)
+        @Schema(name = "For", title = "满足 Expr 表达式多久后执行告警", required = true)
         @JsonProperty(value = "For")
         private String duration;
 
-        @ApiModelProperty(name = "Labels", value = "告警规则标签", required = true)
+        @Schema(name = "Labels", title = "告警规则标签", required = true)
         @JsonProperty(value = "Labels")
         private Map<String, String> labels;
 
-        @ApiModelProperty(name = "Annotations", value = "告警规则注解", required = true)
+        @Schema(name = "Annotations", title = "告警规则注解", required = true)
         @JsonProperty(value = "Annotations")
         private Map<String, String> annotations;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractAlertVo.AlertSimpleListVo",
+            description = "AbstractAlertVo.AlertSimpleListVo 告警概览列表响应体"
+    )
+    public static class AlertSimpleListVo implements IVo {
+
+        private static final long serialVersionUID = -4638857133088137464L;
+
+        @Schema(name = "AlertSimpleList", title = "告警信息概览列表", required = true)
+        @JsonProperty(value = "AlertSimpleList", required = true)
+        private List<AlertSimpleVo> alertSimpleList;
+
+
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Schema(
+            name = "AbstractAlertVo.AlertSimpleVo",
+            description = "AbstractAlertVo.AlertSimpleVo 告警概览信息响应体"
+    )
+    public static class AlertSimpleVo implements IVo {
+
+
+        private static final long serialVersionUID = 8023120698837227077L;
+
+        @Schema(name = "AlertRuleId", title = "告警配置 ID", required = true)
+        @JsonProperty(value = "AlertRuleId", required = true)
+        private Long alertRuleId;
+
+        @Schema(name = "AlertRuleName", title = "告警配置名称", required = true)
+        @JsonProperty(value = "AlertRuleName", required = true)
+        private String alertRuleName;
+
+        @Schema(name = "Enabled", title = "是否启用", required = true)
+        @JsonProperty(value = "Enabled", required = true)
+        private Boolean enabled;
+
+        @Schema(name = "HandlerType", title = "告警触发后处理告警的操作类型", required = true)
+        @JsonProperty(value = "HandlerType", required = true)
+        private AlertHandlerTypeEnum handlerType;
+
     }
 
 

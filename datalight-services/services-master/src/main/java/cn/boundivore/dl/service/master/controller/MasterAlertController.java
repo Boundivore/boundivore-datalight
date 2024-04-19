@@ -57,4 +57,24 @@ public class MasterAlertController implements IMasterAlertAPI {
     public Result<String> removeAlertRule(AbstractAlertRequest.AlertIdListRequest request) throws Exception {
         return this.masterAlertService.removeAlertRule(request);
     }
+
+    @Override
+    public Result<AbstractAlertVo.AlertSimpleListVo> getAlertSimpleList(Long clusterId) throws Exception {
+        return this.masterAlertService.getAlertSimpleList(clusterId);
+    }
+
+    @Override
+    public Result<AbstractAlertVo.AlertRuleVo> getAlertDetailById(Long alertId) throws Exception {
+        return this.masterAlertService.getAlertDetailById(alertId);
+    }
+
+    @Override
+    public Result<String> switchAlertEnabled(AbstractAlertRequest.AlertSwitchEnabledListRequest request) throws Exception {
+        return this.masterAlertService.switchAlertEnabled(request);
+    }
+
+    @Override
+    public Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(AbstractAlertRequest.UpdateAlertRuleRequest request) throws Exception {
+        return this.masterAlertService.updateAlertRule(request);
+    }
 }

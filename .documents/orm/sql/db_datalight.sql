@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 18/04/2024 15:06:54
+ Date: 19/04/2024 16:34:45
 */
 
 SET NAMES utf8mb4;
@@ -26,6 +26,7 @@ CREATE TABLE `t_dl_alert`  (
   `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
   `alert_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警配置名称',
   `alert_file_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则配置文件路径',
   `alert_file_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则配置文件名称',
