@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
@@ -47,6 +48,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -71,8 +73,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MasterAlertService {
 
+    private static final String ERR_MSG_TEMPLATE = "暂时无法找到 [%s] 告警处理方式的配置 ID";
+    private static final String ERR_MSG_ID_REQUIRED = "类型为 %s 时告警处理配置 ID (HandlerId) 不能为空";
+
     private static final String MONITOR_SERVICE_NAME = "MONITOR";
-    public static final String ALERT_RULE_FILE_FORMAT = "RULE-CUSTOM-%s";
+    public static final String ALERT_RULE_FILE_FORMAT = "RULE-CUSTOM-%s.yaml";
     public static final String ALERT_RULE_FILE_PATH_FORMAT = "%s/MONITOR/prometheus/rules/custom/%s";
     public static final String PROMETHEUS_YML_FILE_PATH_FORMAT = "%s/MONITOR/prometheus/prometheus.yml";
 
@@ -131,7 +136,7 @@ public class MasterAlertService {
     /**
      * Description: 新建告警规则
      * 注：参数中 expr 表达式可能包含多种操作运算符和特殊字符，因此，此处传递时应该以 Base64 进行，
-     *  且入库时，需要再对整体字符串进行 Base64 编码
+     * 且入库时，需要再对整体字符串进行 Base64 编码
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/18
@@ -197,14 +202,17 @@ public class MasterAlertService {
         );
 
         // 关系保存到数据库
-        TDlAlertHandlerRelation tDlAlertHandlerRelation = new TDlAlertHandlerRelation();
-        tDlAlertHandlerRelation.setAlertId(tDlAlert.getId());
-        tDlAlertHandlerRelation.setHandlerId(request.getHandlerId());
+        if (request.getHandlerId() != null) {
+            TDlAlertHandlerRelation tDlAlertHandlerRelation = new TDlAlertHandlerRelation();
+            tDlAlertHandlerRelation.setAlertId(tDlAlert.getId());
+            tDlAlertHandlerRelation.setHandlerId(request.getHandlerId());
 
-        Assert.isTrue(
-                this.tDlAlertHandlerRelationService.save(tDlAlertHandlerRelation),
-                () -> new DatabaseException("保存告警规则关联关系到数据库失败")
-        );
+            Assert.isTrue(
+                    this.tDlAlertHandlerRelationService.save(tDlAlertHandlerRelation),
+                    () -> new DatabaseException("保存告警规则关联关系到数据库失败")
+            );
+        }
+
 
         // 将文件写入到指定节点的指定目录
         // 如果希望这部分告警规则的配置文件，别列入到配置文件管理中，则可以通过调用共用配置文件服务的函数来实现
@@ -215,7 +223,6 @@ public class MasterAlertService {
                 tDlAlert.getAlertVersion(),
                 tDlAlert.getAlertRuleContent()
         );
-
 
         // 读取 prometheus.yml 文件
         String prometheusFilePath = String.format(
@@ -316,8 +323,9 @@ public class MasterAlertService {
         return Result.success(alertRuleVo);
     }
 
+
     /**
-     * Description: 检查新增的是否合理告警规则请求是否合理
+     * Description: 检查新增的告警规则请求是否合理
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/18
@@ -330,86 +338,125 @@ public class MasterAlertService {
      */
     private void checkNewAlertRuleRequest(AbstractAlertRequest.NewAlertRuleRequest request) {
         // 检查是否存在同名告警名称
-        Assert.isFalse(
-                this.tDlAlertService.lambdaQuery()
-                        .select()
-                        .eq(TDlAlert::getAlertName, request.getAlertRuleName())
-                        .exists(),
-                () -> new BException("存在同名规则配置")
-        );
+        checkForDuplicateAlertName(request.getAlertRuleName());
 
         // 检查关联配置信息是否存在
-        String errMsgFormat = "暂时无法找到 [%s] 告警处理方式的配置 ID";
+        checkHandlerExistence(request);
+    }
+
+    /**
+     * Description: 检查是否存在同名的告警规则
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertName 告警名称
+     */
+    private void checkForDuplicateAlertName(String alertName) {
+        boolean exists = this.tDlAlertService.lambdaQuery()
+                .select()
+                .eq(TDlAlert::getAlertName, alertName)
+                .exists();
+        Assert.isFalse(exists, () -> new BException("存在同名规则配置"));
+    }
+
+    /**
+     * Description: 检查关联的处理器配置是否存在
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警规则请求
+     */
+    private void checkHandlerExistence(AbstractAlertRequest.NewAlertRuleRequest request) {
+        String handlerType = request.getAlertHandlerTypeEnum().toString();
+
         switch (request.getAlertHandlerTypeEnum()) {
             case ALERT_INTERFACE:
-                Assert.notNull(
-                        null,
-                        () -> new BException(
-                                String.format(
-                                        errMsgFormat,
-                                        "接口"
-                                )
-                        )
-                );
+                checkNotNullHandler(request, "接口");
                 break;
             case ALERT_MAIL:
-                Assert.notNull(
-                        this.tDlAlertHandlerMailService.getById(request.getHandlerId()),
-                        () -> new BException(
-                                String.format(
-                                        errMsgFormat,
-                                        "邮件"
-                                )
-                        )
-                );
+                checkNotNullHandler(request, "邮件");
                 break;
             case ALERT_WEICHAT:
-                Assert.notNull(
-                        null,
-                        () -> new BException(
-                                String.format(
-                                        errMsgFormat,
-                                        "微信"
-                                )
-                        )
-                );
+                checkNotNullHandler(request, "微信");
                 break;
             case ALERT_FEISHU:
-                Assert.notNull(
-                        null,
-                        () -> new BException(
-                                String.format(
-                                        errMsgFormat,
-                                        "飞书"
-                                )
-                        )
-                );
+                checkNotNullHandler(request, "飞书");
                 break;
             case ALERT_DINGDING:
-                Assert.notNull(
-                        null,
-                        () -> new BException(
-                                String.format(
-                                        errMsgFormat,
-                                        "钉钉"
-                                )
-                        )
-                );
+                checkNotNullHandler(request, "钉钉");
                 break;
             default:
-                Assert.isTrue(
-                        request.getHandlerId() == null,
-                        () -> new BException(
-                                String.format(
-                                        "%s 类型的告警处理不应存在处理配置信息 %s, 请置空",
-                                        request.getAlertHandlerTypeEnum(),
-                                        request.getHandlerId()
-                                )
-                        )
-                );
+                Assert.isTrue(request.getHandlerId() == null, () -> new BException(
+                        String.format("%s 类型的告警处理不应存在处理配置信息 %s, 请置空",
+                                handlerType,
+                                request.getHandlerId())));
                 break;
         }
     }
+
+
+    /**
+     * Description: 检查指定类型的处理器配置 ID 是否正确
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警规则请求
+     * @param type    告警处理类型
+     */
+    private void checkNotNullHandler(AbstractAlertRequest.NewAlertRuleRequest request, String type) {
+        IService<?> service = getServiceByHandlerType(request.getAlertHandlerTypeEnum());
+        Assert.notNull(service != null ? service.getById(request.getHandlerId()) : null,
+                () -> new BException(String.format(ERR_MSG_TEMPLATE, type)));
+        Assert.notNull(request.getHandlerId(),
+                () -> new BException(String.format(ERR_MSG_ID_REQUIRED, type)));
+    }
+
+
+    /**
+     * Description: 根据告警处理类型获取相应的数据库操作服务实例
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param type 告警处理类型
+     * @return IService<?> 对应的服务实例
+     */
+    private IService<?> getServiceByHandlerType(AlertHandlerTypeEnum type) {
+        switch (type) {
+            case ALERT_INTERFACE:
+                return null;
+            case ALERT_MAIL:
+                return this.tDlAlertHandlerMailService;
+            case ALERT_WEICHAT:
+                return null;
+            case ALERT_FEISHU:
+                return null;
+            case ALERT_DINGDING:
+                return null;
+            default:
+                return null;
+        }
+    }
+
 
     /**
      * Description: 将告警配置文件写入到指定节点的指定路径
