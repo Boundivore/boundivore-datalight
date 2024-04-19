@@ -64,4 +64,12 @@ public interface IMasterAlertAPI {
             @Valid
             AbstractAlertRequest.NewAlertRuleRequest request
     ) throws Exception;
+
+    @PostMapping(value = "/alert/removeAlertRule")
+    @ApiOperation(notes = "移除告警骨规则", value = "移除告警骨规则")
+    Result<String> removeAlertRule(
+            @RequestBody
+            @Valid
+            AbstractAlertRequest.AlertIdListRequest request
+    ) throws Exception;
 }

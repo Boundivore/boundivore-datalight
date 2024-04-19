@@ -169,4 +169,5 @@ public abstract class AbstractAlertVo {
         private Map<String, String> annotations;
     }
 
+
 }

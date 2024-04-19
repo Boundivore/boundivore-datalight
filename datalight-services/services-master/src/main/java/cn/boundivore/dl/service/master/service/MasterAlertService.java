@@ -32,6 +32,7 @@ import cn.boundivore.dl.base.utils.YamlSerializer;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlAlert;
 import cn.boundivore.dl.orm.po.single.TDlAlertHandlerRelation;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
@@ -556,7 +557,84 @@ public class MasterAlertService {
     }
 
 
-    // 删除告警配置
+    /**
+     * Description: 删除告警配置
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警 ID 列表请求体
+     * @return Result<String> 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    public Result<String> removeAlertRule(AbstractAlertRequest.AlertIdListRequest request) {
+        // 检查 ID 是否全部存在
+        this.checkAlertIdExists(request.getAlertIdList());
+
+        // 检查告警处理配置关联表是否存在关联，如果存在，则移除关联
+        List<TDlAlertHandlerRelation> tDlAlertHandlerRelationList = this.tDlAlertHandlerRelationService.lambdaQuery()
+                .select()
+                .in(TDlAlertHandlerRelation::getAlertId, request.getAlertIdList())
+                .list();
+
+        // 移除关联关系
+        Assert.isTrue(
+                this.tDlAlertHandlerRelationService.removeBatchByIds(tDlAlertHandlerRelationList),
+                () -> new DatabaseException("移除告警关联关系失败")
+        );
+
+        // 执行删除操作
+        Assert.isTrue(
+                this.tDlAlertService.removeBatchByIds(request.getAlertIdList()),
+                () -> new DatabaseException("移除告警信息失败")
+        );
+
+        return Result.success();
+    }
+
+    /**
+     * Description: 检查告警 ID 是否存在
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertIdList 告警 ID 列表
+     */
+    public void checkAlertIdExists(List<Long> alertIdList) {
+        Assert.notEmpty(
+                alertIdList,
+                () -> new BException("告警 ID 列表不能为空")
+        );
+
+        List<Long> distinctAlertIdList = alertIdList
+                .stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<TDlAlert> tDlAlertList = this.tDlAlertService.lambdaQuery()
+                .select()
+                .in(
+                        TBasePo::getId,
+                        distinctAlertIdList
+                )
+                .list();
+
+        Assert.isTrue(
+                tDlAlertList.size() == distinctAlertIdList.size(),
+                () -> new BException("告警 ID 列表中不允许出现不存在的 ID")
+        );
+    }
 
     // 获取告警配置列表
 

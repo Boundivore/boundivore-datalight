@@ -134,4 +134,21 @@ public abstract class AbstractAlertRequest {
         private Map<String, String> annotations;
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAlertRequest.AlertIdListRequest",
+            description = "AbstractAlertRequest.AlertIdListRequest: 告警规则 ID 列表 请求体"
+    )
+    public static class AlertIdListRequest implements IRequest {
+        private static final long serialVersionUID = -1194530752751114766L;
+
+        @ApiModelProperty(name = "AlertIdList", value = "告警 ID 列表", required = true)
+        @JsonProperty(value = "AlertIdList")
+        private List<Long> alertIdList;
+
+    }
+
 }

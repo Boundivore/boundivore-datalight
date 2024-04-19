@@ -52,4 +52,9 @@ public class MasterAlertController implements IMasterAlertAPI {
     public Result<AbstractAlertVo.AlertRuleVo> newAlertRule(AbstractAlertRequest.NewAlertRuleRequest request) throws Exception {
         return this.masterAlertService.newAlertRule(request);
     }
+
+    @Override
+    public Result<String> removeAlertRule(AbstractAlertRequest.AlertIdListRequest request) throws Exception {
+        return this.masterAlertService.removeAlertRule(request);
+    }
 }
