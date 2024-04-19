@@ -163,6 +163,18 @@ public class MasterAlertService {
         YamlPrometheusRulesConfig yamlPrometheusRulesConfig = this.iAlertRuleConverter.convert2YamlPrometheusRulesConfig(
                 request.getAlertRuleContent()
         );
+        // 解码 Expr Base64 格式的表达式的值
+        yamlPrometheusRulesConfig.getGroups()
+                .forEach(ruleGroup ->
+                        ruleGroup.getRules().forEach(rule -> {
+                                    String exprDecodeBase64 = Base64.decodeStr(
+                                            rule.getExpr(),
+                                            CharsetUtil.UTF_8
+                                    );
+                                    rule.setExpr(exprDecodeBase64);
+                                }
+                        )
+                );
 
         log.info("解析完毕:\n{}\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
 
