@@ -56,8 +56,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -82,6 +84,11 @@ public class MasterAlertService {
     public static final String ALERT_RULE_FILE_FORMAT = "RULE-CUSTOM-%s.yaml";
     public static final String ALERT_RULE_FILE_PATH_FORMAT = "%s/MONITOR/prometheus/rules/custom/%s";
     public static final String PROMETHEUS_YML_FILE_PATH_FORMAT = "%s/MONITOR/prometheus/prometheus.yml";
+
+    public static final String PROMETHEUS_CONFIG_FILE_PATH = String.format(
+            PROMETHEUS_YML_FILE_PATH_FORMAT,
+            ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
+    );
 
     private final RemoteInvokeWorkerService remoteInvokeWorkerService;
 
@@ -231,26 +238,22 @@ public class MasterAlertService {
                 tDlAlert.getAlertRuleContent()
         );
 
-        String prometheusFilePath = String.format(
-                PROMETHEUS_YML_FILE_PATH_FORMAT,
-                ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
-        );
 
         // 读取 prometheus.yml 文件, 解析 Prometheus YamlJavaBean
         YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
                 request.getClusterId(),
-                prometheusFilePath,
+                PROMETHEUS_CONFIG_FILE_PATH,
                 nodeDetailVo
         );
-        // 添加文件绝对路径到 rules 数组
-        yamlPrometheusConfig.getRuleFiles().add(tDlAlert.getAlertFilePath());
 
+        // 添加文件绝对路径到 rules 数组
+        this.resetPrometheusRuleList(request.getClusterId(), yamlPrometheusConfig);
 
         // 远程写入 prometheus.yml 配置文件
         this.writePrometheusYml(
                 request.getClusterId(),
                 nodeDetailVo,
-                prometheusFilePath,
+                PROMETHEUS_CONFIG_FILE_PATH,
                 yamlPrometheusConfig
         );
 
@@ -311,13 +314,67 @@ public class MasterAlertService {
                 CharsetUtil.UTF_8
         );
 
-        // 解析 prometheus.yml
-        YamlPrometheusConfig yamlPrometheusConfig = YamlSerializer.toObject(
+        // 解析并返回 prometheus.yml
+        return YamlSerializer.toObject(
                 decodeConfigContent,
                 YamlPrometheusConfig.class
         );
+    }
 
-        return yamlPrometheusConfig;
+    /**
+     * Description: 根据当前数据库中最新的已启用的告警配置列表，重置当前 Prometheus 配置文件中的 rule_files
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/22
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId            集群 ID
+     * @param yamlPrometheusConfig prometheus.yml JavaBean
+     */
+    private void resetPrometheusRuleList(Long clusterId,
+                                         YamlPrometheusConfig yamlPrometheusConfig) {
+
+        final String regexRulePath = "rules/RULE-.*\\.yaml";
+
+        // 获取当前启用的警报文件路径列表
+        List<String> alertRulePathList = this.getAlertSimpleList(clusterId)
+                .getData()
+                .getAlertSimpleList()
+                .stream()
+                .filter(AbstractAlertVo.AlertSimpleVo::getEnabled)
+                .map(AbstractAlertVo.AlertSimpleVo::getAlertFilePath)
+                .collect(Collectors.toList());
+
+        // 获取当前配置中所有规则文件
+        Set<String> currentRuleFiles = new LinkedHashSet<>(yamlPrometheusConfig.getRuleFiles());
+
+        // 准备新的规则文件集合
+        Set<String> newRuleFiles = currentRuleFiles.stream()
+                .filter(ruleFile -> ruleFile.matches(regexRulePath) || alertRulePathList.contains(ruleFile))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        // 找出所有符合 "rules/RULE-*.yaml" 的文件
+        List<String> rulePatternFiles = newRuleFiles.stream()
+                .filter(ruleFile -> ruleFile.matches(regexRulePath))
+                .collect(Collectors.toList());
+
+        // 找出其他的文件，并按字母顺序排序
+        List<String> otherFiles = newRuleFiles.stream()
+                .filter(ruleFile -> !ruleFile.matches(regexRulePath))
+                .sorted()
+                .collect(Collectors.toList());
+
+        // 清除原有的告警配置列表
+        yamlPrometheusConfig.getRuleFiles().clear();
+
+        // 首先添加符合 "rules/RULE-*.yaml" 的文件
+        yamlPrometheusConfig.getRuleFiles().addAll(rulePatternFiles);
+
+        // 然后添加其他文件
+        yamlPrometheusConfig.getRuleFiles().addAll(otherFiles);
     }
 
     /**
@@ -333,7 +390,7 @@ public class MasterAlertService {
      * @param clusterId            集群 ID
      * @param nodeDetailVo         Prometheus 所在节点的详细信息
      * @param prometheusFilePath   prometheus.yml 配置文件路径
-     * @param yamlPrometheusConfig YamlJavaBaean
+     * @param yamlPrometheusConfig Yaml JavaBean
      */
     public void writePrometheusYml(Long clusterId,
                                    AbstractNodeVo.NodeDetailVo nodeDetailVo,
@@ -691,26 +748,22 @@ public class MasterAlertService {
         AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
                 .getData();
 
-        String prometheusFilePath = String.format(
-                PROMETHEUS_YML_FILE_PATH_FORMAT,
-                ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
-        );
 
         // 读取 prometheus.yml 文件， 解析 Prometheus YamlJavaBean
         YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
                 request.getClusterId(),
-                prometheusFilePath,
+                PROMETHEUS_CONFIG_FILE_PATH,
                 nodeDetailVo
         );
 
-        // 将告警文件绝对路径从 rules 数组中移除，删除 prometheus.yml 中的告警配置项
-        tDlAlertList.forEach(i -> yamlPrometheusConfig.getRuleFiles().remove(i.getAlertFilePath()));
+        // 重置 prometheus.yml 中的 alert_rules
+        this.resetPrometheusRuleList(request.getClusterId(), yamlPrometheusConfig);
 
         // 远程写入 prometheus.yml 配置文件
         this.writePrometheusYml(
                 request.getClusterId(),
                 nodeDetailVo,
-                prometheusFilePath,
+                PROMETHEUS_CONFIG_FILE_PATH,
                 yamlPrometheusConfig
         );
 
@@ -786,6 +839,7 @@ public class MasterAlertService {
                 .map(i -> new AbstractAlertVo.AlertSimpleVo(
                                 i.getId(),
                                 i.getAlertName(),
+                                i.getAlertFilePath(),
                                 i.getEnabled(),
                                 i.getHandlerType()
                         )
@@ -857,7 +911,7 @@ public class MasterAlertService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public Result<String> switchAlertEnabled(AbstractAlertRequest.AlertSwitchEnabledListRequest request) {
+    public Result<String> switchAlertEnabled(AbstractAlertRequest.AlertSwitchEnabledListRequest request) throws JsonProcessingException {
 
         Assert.notEmpty(
                 request.getAlertSwitchEnabledList(),
@@ -886,15 +940,43 @@ public class MasterAlertService {
         );
 
         // 更新数据库实体的 Enabled 值
-        request.getAlertSwitchEnabledList().forEach(i -> {
-            tDlAlertMap.get(i.getAlertId()).setEnabled(i.getEnabled());
-        });
+        request.getAlertSwitchEnabledList().forEach(i ->
+                tDlAlertMap.get(i.getAlertId()).setEnabled(i.getEnabled())
+        );
 
         // 更新到数据库
         Assert.isTrue(
                 this.tDlAlertService.updateBatchById(tDlAlertMap.values()),
                 () -> new DatabaseException("更新启用停用到数据库失败")
         );
+
+
+        // 获取 Prometheus 所在节点的详细信息
+        TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
+                .getData();
+
+        // 读取 prometheus.yml 文件, 解析 Prometheus YamlJavaBean
+        YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
+                request.getClusterId(),
+                PROMETHEUS_CONFIG_FILE_PATH,
+                nodeDetailVo
+        );
+
+        // 添加文件绝对路径到 rules 数组
+        this.resetPrometheusRuleList(request.getClusterId(), yamlPrometheusConfig);
+
+        // 远程写入 prometheus.yml 配置文件
+        this.writePrometheusYml(
+                request.getClusterId(),
+                nodeDetailVo,
+                PROMETHEUS_CONFIG_FILE_PATH,
+                yamlPrometheusConfig
+        );
+
+
+        // 重载 Prometheus 配置，更新告警规则
+        this.remoteInvokePrometheusHandler.invokePrometheusReload(nodeDetailVo.getHostname());
 
         return Result.success();
     }
@@ -1031,10 +1113,6 @@ public class MasterAlertService {
                 () -> new BException("不允许修改告警配置名称")
         );
     }
-
-
-    // 设定告警与处理手段的绑定关系
-
 }
 
 

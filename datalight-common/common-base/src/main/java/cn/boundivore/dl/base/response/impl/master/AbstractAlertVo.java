@@ -208,6 +208,10 @@ public abstract class AbstractAlertVo {
         @JsonProperty(value = "AlertRuleName", required = true)
         private String alertRuleName;
 
+        @Schema(name = "AlertFilePath", title = "告警配置文件路径", required = true)
+        @JsonProperty(value = "AlertFilePath", required = true)
+        private String alertFilePath;
+
         @Schema(name = "Enabled", title = "是否启用", required = true)
         @JsonProperty(value = "Enabled", required = true)
         private Boolean enabled;
