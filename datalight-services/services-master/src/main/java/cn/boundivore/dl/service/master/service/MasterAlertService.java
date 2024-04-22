@@ -56,6 +56,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -85,11 +86,6 @@ public class MasterAlertService {
     public static final String ALERT_RULE_FILE_PATH_FORMAT = "%s/MONITOR/prometheus/rules/custom/%s";
     public static final String PROMETHEUS_YML_FILE_PATH_FORMAT = "%s/MONITOR/prometheus/prometheus.yml";
 
-    public static final String PROMETHEUS_CONFIG_FILE_PATH = String.format(
-            PROMETHEUS_YML_FILE_PATH_FORMAT,
-            ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
-    );
-
     private final RemoteInvokeWorkerService remoteInvokeWorkerService;
 
     private final MasterComponentService masterComponentService;
@@ -115,6 +111,26 @@ public class MasterAlertService {
 
     private final MasterAlertNoticeService masterAlertNoticeService;
 
+
+    /**
+     * Description: 获取 prometheus.yml 文件路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/22
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String prometheus.yml 文件路径
+     */
+    public String getPrometheusYmlFilePath(){
+        // 获取 Prometheus 配置文件路径
+        return String.format(
+                PROMETHEUS_YML_FILE_PATH_FORMAT,
+                ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getServiceDir()
+        );
+    }
 
     /**
      * Description: 接收 AlertManager 告警钩子函数
@@ -238,6 +254,8 @@ public class MasterAlertService {
                 tDlAlert.getAlertRuleContent()
         );
 
+        // 获取 Prometheus 配置文件路径
+        final String PROMETHEUS_CONFIG_FILE_PATH = this.getPrometheusYmlFilePath();
 
         // 读取 prometheus.yml 文件, 解析 Prometheus YamlJavaBean
         YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
@@ -748,6 +766,9 @@ public class MasterAlertService {
         AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
                 .getData();
 
+        // 获取 Prometheus 配置文件路径
+        final String PROMETHEUS_CONFIG_FILE_PATH = this.getPrometheusYmlFilePath();
+
 
         // 读取 prometheus.yml 文件， 解析 Prometheus YamlJavaBean
         YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
@@ -955,6 +976,9 @@ public class MasterAlertService {
         TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
         AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
                 .getData();
+
+        // 获取 Prometheus 配置文件路径
+        final String PROMETHEUS_CONFIG_FILE_PATH = this.getPrometheusYmlFilePath();
 
         // 读取 prometheus.yml 文件, 解析 Prometheus YamlJavaBean
         YamlPrometheusConfig yamlPrometheusConfig = this.parseYamlPrometheusConfig(
