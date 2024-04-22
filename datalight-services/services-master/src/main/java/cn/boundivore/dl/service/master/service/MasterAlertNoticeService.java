@@ -18,6 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.orm.po.single.TDlAlert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -51,10 +52,11 @@ public class MasterAlertNoticeService {
      * Modification time:
      * Throws:
      *
+     * @param tDlAlert 告警自定义规则数据库实体
      * @param request 告警请求体
      * @return Result<String> 成功或失败
      */
-    public Result<String> sendToWeiChat(AlertWebhookPayloadRequest request) {
+    public Result<String> sendToWeiChat(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
         return Result.success();
     }
 
@@ -68,10 +70,11 @@ public class MasterAlertNoticeService {
      * Modification time:
      * Throws:
      *
+     * @param tDlAlert 告警自定义规则数据库实体
      * @param request 告警请求体
      * @return Result<String> 成功或失败
      */
-    public Result<String> sendToDingDing(AlertWebhookPayloadRequest request) {
+    public Result<String> sendToDingDing(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
         return Result.success();
     }
 
@@ -85,10 +88,11 @@ public class MasterAlertNoticeService {
      * Modification time:
      * Throws:
      *
+     * @param tDlAlert 告警自定义规则数据库实体
      * @param request 告警请求体
      * @return Result<String> 成功或失败
      */
-    public Result<String> sendToFeiShu(AlertWebhookPayloadRequest request) {
+    public Result<String> sendToFeiShu(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
         return Result.success();
     }
 
@@ -102,10 +106,11 @@ public class MasterAlertNoticeService {
      * Modification time:
      * Throws:
      *
+     * @param tDlAlert 告警自定义规则数据库实体
      * @param request 告警请求体
      * @return Result<String> 成功或失败
      */
-    public Result<String> sendToEmail(AlertWebhookPayloadRequest request) {
+    public Result<String> sendToEmail(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("boundivore@foxmail.com");
@@ -128,10 +133,11 @@ public class MasterAlertNoticeService {
      * Modification time:
      * Throws:
      *
-     * @param request 告警请求体
+     * @param tDlAlert 告警自定义规则数据库实体
+     * @param request  告警请求体
      * @return Result<String> 成功或失败
      */
-    public Result<String> sendToTargetInterface(AlertWebhookPayloadRequest request) {
+    public Result<String> sendToTargetInterface(TDlAlert tDlAlert, String request) {
         return Result.success();
     }
 

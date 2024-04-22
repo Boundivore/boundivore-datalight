@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description: 用户相关信息响应体 Vo
+ * Description: 告警相关响应体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/17

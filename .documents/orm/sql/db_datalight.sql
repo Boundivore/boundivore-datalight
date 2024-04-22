@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 19/04/2024 16:34:45
+ Date: 22/04/2024 11:49:58
 */
 
 SET NAMES utf8mb4;
@@ -35,7 +35,20 @@ CREATE TABLE `t_dl_alert`  (
   `alert_version` bigint(20) NOT NULL DEFAULT 1 COMMENT '告警规则文件版本',
   `handler_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警触发时的处理手段类型 枚举：见代码',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警配置信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警配置信息表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Table structure for t_dl_alert_handler_interface
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_alert_handler_interface`;
+CREATE TABLE `t_dl_alert_handler_interface`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收告警的地址',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '处理告警接口配置信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_alert_handler_mail
@@ -48,7 +61,7 @@ CREATE TABLE `t_dl_alert_handler_mail`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `mail_account` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收件人地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '处理告警邮箱配置信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '处理告警邮箱配置信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_alert_handler_relation
@@ -62,7 +75,7 @@ CREATE TABLE `t_dl_alert_handler_relation`  (
   `alert_id` bigint(20) NOT NULL COMMENT '告警 ID',
   `handler_id` bigint(20) NOT NULL COMMENT '处理信息 ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警与处理告警信息关联表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警与处理告警信息关联表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_audit_log

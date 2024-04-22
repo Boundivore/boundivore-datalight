@@ -36,6 +36,7 @@ import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlAlert;
 import cn.boundivore.dl.orm.po.single.TDlAlertHandlerRelation;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
+import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerInterfaceServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
@@ -46,17 +47,19 @@ import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlDirectory;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -78,8 +81,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MasterAlertService {
 
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public static final String ANNOTATION_KEY_ALERT_TYPE = "alert_type";
+    public static final String ANNOTATION_VALUE_ALERT_TYPE = "CUSTOM";
+    public static final String ANNOTATION_KEY_ALERT_ID = "alert_id";
+
     private static final String ERR_MSG_TEMPLATE = "暂时无法找到 [%s] 告警处理方式的配置 ID";
-    private static final String ERR_MSG_ID_REQUIRED = "类型为 %s 时告警处理配置 ID (HandlerId) 不能为空";
+    private static final String ERR_MSG_ID_REQUIRED = "类型为 %s 时告警处理手段 ID (HandlerId) 不能为空";
 
     private static final String MONITOR_SERVICE_NAME = "MONITOR";
     public static final String ALERT_RULE_FILE_FORMAT = "RULE-CUSTOM-%s.yaml";
@@ -98,18 +107,19 @@ public class MasterAlertService {
 
     private final MasterConfigSyncService masterConfigSyncService;
 
+    private final MasterAlertNoticeService masterAlertNoticeService;
+
     private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
+
+    private final TDlAlertHandlerInterfaceServiceImpl tDlAlertHandlerInterfaceService;
+
+    private final TDlAlertServiceImpl tDlAlertService;
 
     private final IAlertRuleConverter iAlertRuleConverter;
 
 
-    private final TDlAlertServiceImpl tDlAlertService;
-
     private final TDlAlertHandlerRelationServiceImpl tDlAlertHandlerRelationService;
-
     private final TDlAlertHandlerMailServiceImpl tDlAlertHandlerMailService;
-
-    private final MasterAlertNoticeService masterAlertNoticeService;
 
 
     /**
@@ -124,7 +134,7 @@ public class MasterAlertService {
      *
      * @return String prometheus.yml 文件路径
      */
-    public String getPrometheusYmlFilePath(){
+    public String getPrometheusYmlFilePath() {
         // 获取 Prometheus 配置文件路径
         return String.format(
                 PROMETHEUS_YML_FILE_PATH_FORMAT,
@@ -146,16 +156,92 @@ public class MasterAlertService {
      * @return Result<String> 调用成功或失败
      */
     public Result<String> alertHook(AlertWebhookPayloadRequest request) {
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
         if (log.isDebugEnabled()) {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
         log.info("收到告警: {}", request);
 
+        // 如果是自定义的告警规则，则按照指定方式进行告警
+        request.getAlerts()
+                .stream()
+                .filter(alert -> {
+                    // 过滤掉系统自带的告警规则，即过滤掉 alert_type 为 STATIC
+                    Map<String, String> annotationMap = alert.getAnnotations();
+                    return annotationMap.get(ANNOTATION_KEY_ALERT_TYPE) != null
+                            && annotationMap.get(ANNOTATION_KEY_ALERT_TYPE).equals(ANNOTATION_VALUE_ALERT_TYPE);
+                })
+                .forEach(alert -> {
+                    Map<String, String> annotationMap = alert.getAnnotations();
+                    Long alertId = Long.parseLong(annotationMap.get(ANNOTATION_KEY_ALERT_ID));
+
+                    try {
+                        TDlAlert tDlAlert = this.tDlAlertService.getById(alertId);
+                        switch (tDlAlert.getHandlerType()) {
+                            case ALERT_INTERFACE:
+                                this.masterAlertNoticeService.sendToTargetInterface(
+                                        tDlAlert,
+                                        objectMapper.writeValueAsString(alert)
+                                );
+                                break;
+                            case ALERT_MAIL:
+                                this.masterAlertNoticeService.sendToEmail(
+                                        tDlAlert,
+                                        alert
+                                );
+                            case ALERT_LOG:
+                                log.warn("发生告警，日志记录: {}", alert.getAnnotations());
+                                break;
+                            case ALERT_IGNORE:
+                                break;
+                            default:
+                                break;
+                        }
+
+                    } catch (Exception e) {
+                        log.error(ExceptionUtil.stacktraceToString(e));
+                    }
+
+                });
+
         // 根据告警检查是否需要自动拉起服务组件
 //        this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
 
         return Result.success();
+    }
+
+    /**
+     * Description: 设置 annotations 集合中的必要字段
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/22
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param yamlPrometheusRulesConfig 解析后的告警规则配置 Bean
+     * @param tDlAlert                  保存数据库成功后的数据库实体
+     */
+    private void setAnnotationExtraKV(YamlPrometheusRulesConfig yamlPrometheusRulesConfig,
+                                      TDlAlert tDlAlert) {
+
+        yamlPrometheusRulesConfig.getGroups().forEach(ruleGroup -> {
+            ruleGroup.getRules().forEach(rule -> {
+                rule.getAnnotations().put(
+                        ANNOTATION_KEY_ALERT_TYPE,
+                        ANNOTATION_VALUE_ALERT_TYPE
+                );
+
+                rule.getAnnotations().put(
+                        ANNOTATION_KEY_ALERT_ID,
+                        String.valueOf(tDlAlert.getId())
+                );
+            });
+        });
+
     }
 
     /**
@@ -239,6 +325,9 @@ public class MasterAlertService {
                 () -> new DatabaseException("保存告警规则到数据库失败")
         );
 
+
+        // 设置额外字段信息(这部分信息不需要记录到数据库，只需要记录到告警规则配置文件中即可)
+        this.setAnnotationExtraKV(yamlPrometheusRulesConfig, tDlAlert);
 
         // 获取 Prometheus 所在节点的详细信息
         TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
@@ -532,7 +621,7 @@ public class MasterAlertService {
      * Throws:
      *
      * @param alertHandlerTypeEnum 告警触发后的处理类型
-     * @param handlerId            处理配置信息 ID
+     * @param handlerId            处理手段信息 ID
      */
     private void checkHandlerExistence(AlertHandlerTypeEnum alertHandlerTypeEnum, Long handlerId) {
 
@@ -557,7 +646,7 @@ public class MasterAlertService {
                         handlerId == null,
                         () -> new BException(
                                 String.format(
-                                        "%s 类型的告警处理不应存在处理配置信息 %s, 请置空",
+                                        "%s 类型的告警处理不应存在处理手段信息 %s, 请置空",
                                         alertHandlerTypeEnum,
                                         handlerId
                                 )
@@ -579,7 +668,7 @@ public class MasterAlertService {
      * Throws:
      *
      * @param alertHandlerTypeEnum 告警处理类型
-     * @param handlerId            处理配置信息 ID
+     * @param handlerId            处理手段信息 ID
      * @param targetName           告警处理目标
      */
     private void checkNotNullHandler(AlertHandlerTypeEnum alertHandlerTypeEnum,
@@ -741,7 +830,7 @@ public class MasterAlertService {
         // 检查 ID 是否全部存在
         this.checkAlertIdExists(request.getClusterId(), request.getAlertIdList());
 
-        // 检查告警处理配置关联表是否存在关联，如果存在，则移除关联
+        // 检查告警处理手段关联表是否存在关联，如果存在，则移除关联
         List<TDlAlertHandlerRelation> tDlAlertHandlerRelationList = this.tDlAlertHandlerRelationService.lambdaQuery()
                 .select()
                 .in(TDlAlertHandlerRelation::getAlertId, request.getAlertIdList())
@@ -1083,6 +1172,9 @@ public class MasterAlertService {
                 () -> new DatabaseException("更新告警规则到数据库失败")
         );
 
+        // 设置额外字段信息(这部分信息不需要记录到数据库，只需要记录到告警规则配置文件中即可)
+        this.setAnnotationExtraKV(yamlPrometheusRulesConfig, tDlAlert);
+
         // 获取 Prometheus 所在节点的详细信息
         TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
         AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(tDlComponent.getNodeId())
@@ -1137,6 +1229,8 @@ public class MasterAlertService {
                 () -> new BException("不允许修改告警配置名称")
         );
     }
+
+
 }
 
 

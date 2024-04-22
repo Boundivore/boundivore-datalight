@@ -64,7 +64,7 @@ public abstract class AbstractConfigLogic {
     protected void printFilename(String hostname, File file) {
         log.info(
                 String.format(
-                        "准备处理配置文件[%s]: %s",
+                        "准备处理手段文件[%s]: %s",
                         hostname,
                         file.getName()
                 )
