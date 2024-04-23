@@ -46,7 +46,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 )
 public interface IThirdHandlerInterfaceAPI {
 
-    @PostMapping(value = "")
+    @PostMapping(value = "", consumes = "application/json; charset=UTF-8")
     @ApiOperation(notes = "向任意 URI 发送 POST 请求", value = "向任意 URI 发送 POST 请求")
     Object sendPostRequest(
             @RequestBody

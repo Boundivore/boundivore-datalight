@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
 public class MasterAlertNoticeService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final JavaMailSenderImpl javaMailSender;
+//    private final JavaMailSenderImpl javaMailSender;
 
     private final TDlAlertHandlerRelationServiceImpl tDlAlertHandlerRelationService;
 
@@ -137,9 +137,11 @@ public class MasterAlertNoticeService {
         try {
             handlerInterfaceUriList.forEach(uri -> {
                         try {
+                            String preSendStr = this.objectMapper.writeValueAsString(request);
+                            log.info("发送前: {}", preSendStr);
                             this.remoteInvokeHandlerInterfaceService
                                     .iThirdHandlerInterfaceAPI(uri)
-                                        .sendPostRequest(this.objectMapper.writeValueAsString(request));
+                                        .sendPostRequest(preSendStr);
                         } catch (JsonProcessingException e) {
                             log.error(ExceptionUtil.stacktraceToString(e));
                         }
@@ -166,22 +168,22 @@ public class MasterAlertNoticeService {
      */
     public void sendToEmail(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
 
-        List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
-        List<String> handlerMailAccountList = this.getHandlerMailAccountList(handlerIdList);
-        try {
-            handlerMailAccountList.forEach(mail -> {
-                        SimpleMailMessage message = new SimpleMailMessage();
-                        message.setFrom(Objects.requireNonNull(javaMailSender.getUsername()));
-                        message.setTo(mail);
-                        message.setSubject(tDlAlert.getAlertName());
-                        message.setText(request.getAnnotations().toString());
-
-                        javaMailSender.send(message);
-                    }
-            );
-        } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-        }
+//        List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
+//        List<String> handlerMailAccountList = this.getHandlerMailAccountList(handlerIdList);
+//        try {
+//            handlerMailAccountList.forEach(mail -> {
+//                        SimpleMailMessage message = new SimpleMailMessage();
+//                        message.setFrom(Objects.requireNonNull(javaMailSender.getUsername()));
+//                        message.setTo(mail);
+//                        message.setSubject(tDlAlert.getAlertName());
+//                        message.setText(request.getAnnotations().toString());
+//
+//                        javaMailSender.send(message);
+//                    }
+//            );
+//        } catch (Exception e) {
+//            log.error(ExceptionUtil.stacktraceToString(e));
+//        }
     }
 
     /**
