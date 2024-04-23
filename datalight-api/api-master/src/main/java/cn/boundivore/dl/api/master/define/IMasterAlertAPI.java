@@ -57,7 +57,7 @@ public interface IMasterAlertAPI {
 
     @PostMapping(value = "/testAlertInterface")
     @ApiOperation(notes = "测试告警调用外部通知接口", value = "测试告警调用外部通知接口")
-    Result<String> testAlertInterface(
+    Object testAlertInterface(
             @RequestBody
             String body
     );

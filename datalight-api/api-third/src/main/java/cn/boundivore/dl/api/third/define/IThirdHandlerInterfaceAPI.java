@@ -48,7 +48,7 @@ public interface IThirdHandlerInterfaceAPI {
 
     @PostMapping(value = "")
     @ApiOperation(notes = "向任意 URI 发送 POST 请求", value = "向任意 URI 发送 POST 请求")
-    ResponseEntity<String> sendPostRequest(
+    Object sendPostRequest(
             @RequestBody
             Object requestBody
     );
