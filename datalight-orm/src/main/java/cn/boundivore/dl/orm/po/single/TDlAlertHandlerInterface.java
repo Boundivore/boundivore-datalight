@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("t_dl_alert_handler_interface")
 @ApiModel(value = "TDlAlertHandlerInterface对象", description = "处理告警接口配置信息表")
-public class TDlAlertHandlerInterface extends TBasePo {
+public class TDlAlertHandlerInterface extends TBasePo<TDlAlertHandlerInterface> {
 
     private static final long serialVersionUID = 1L;
 
