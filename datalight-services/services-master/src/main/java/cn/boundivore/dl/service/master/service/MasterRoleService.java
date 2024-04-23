@@ -234,6 +234,33 @@ public class MasterRoleService {
     }
 
     /**
+     * Description: 获取角色信息列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractRolePermissionRuleVo.RoleListVo> 角色信息列表
+     */
+    public Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleList() {
+        AbstractRolePermissionRuleVo.RoleListVo roleListVo = new AbstractRolePermissionRuleVo.RoleListVo();
+
+        roleListVo.setRoleList(this.tDlRoleService.lambdaQuery()
+                .select()
+                .eq(TDlRole::getEnabled, true)
+                .eq(TDlRole::getIsDeleted, false)
+                .list()
+                .stream()
+                .map(this.iRoleConverter::convert2RoleVo)
+                .collect(Collectors.toList()));
+
+        return Result.success(roleListVo);
+    }
+
+    /**
      * Description: 通过用户 ID 获取角色信息列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com

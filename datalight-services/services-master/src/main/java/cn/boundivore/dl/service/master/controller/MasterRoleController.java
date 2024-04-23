@@ -52,6 +52,11 @@ public class MasterRoleController implements IMasterRoleAPI {
     }
 
     @Override
+    public Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleList() throws Exception {
+        return this.masterRoleService.getRoleList();
+    }
+
+    @Override
     public Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleListByUserId(Long userId) throws Exception {
         return this.masterRoleService.getRoleListByUserId(userId);
     }

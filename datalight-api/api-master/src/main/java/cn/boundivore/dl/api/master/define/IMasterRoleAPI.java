@@ -67,6 +67,11 @@ public interface IMasterRoleAPI {
             Long roleId
     ) throws Exception;
 
+    @GetMapping(value = "/role/getRoleList")
+    @ApiOperation(notes = "获取角色信息列表", value = "获取角色信息列表")
+    Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleList() throws Exception;
+
+
     @GetMapping(value = "/role/getRoleListByUserId")
     @ApiOperation(notes = "根据用户 ID 获取角色信息列表", value = "根据用户 ID 获取角色信息列表")
     Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleListByUserId(
