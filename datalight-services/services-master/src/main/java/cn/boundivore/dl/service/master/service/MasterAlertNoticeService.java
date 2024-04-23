@@ -101,6 +101,7 @@ public class MasterAlertNoticeService {
                                     break;
                                 case ALERT_MAIL:
                                     this.sendToEmail(tDlAlert, request);
+                                    break;
                                 case ALERT_LOG:
                                     log.warn("发生告警，日志记录: {}", request);
                                     break;
