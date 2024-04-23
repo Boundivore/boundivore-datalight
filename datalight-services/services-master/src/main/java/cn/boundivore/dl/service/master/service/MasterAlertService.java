@@ -86,9 +86,8 @@ public class MasterAlertService {
     public static final String ANNOTATION_KEY_ALERT_TYPE = "alert_type";
     public static final String ANNOTATION_VALUE_ALERT_TYPE = "CUSTOM";
     public static final String ANNOTATION_KEY_ALERT_ID = "alert_id";
-
-    private static final String ERR_MSG_TEMPLATE = "暂时无法找到 [%s] 告警处理方式的配置 ID";
-    private static final String ERR_MSG_ID_REQUIRED = "类型为 %s 时告警处理手段 ID (HandlerId) 不能为空";
+    public static final String ANNOTATION_KEY_ALERT_JOB = "alert_job";
+    public static final String ANNOTATION_VALUE_ALERT_JOB = "{{ $labels.job }}";
 
     private static final String MONITOR_SERVICE_NAME = "MONITOR";
     public static final String ALERT_RULE_FILE_FORMAT = "RULE-CUSTOM-%s.yaml";
@@ -207,7 +206,7 @@ public class MasterAlertService {
                 });
 
         // 根据告警检查是否需要自动拉起服务组件
-//        this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
+        this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
 
         return Result.success();
     }
@@ -234,7 +233,10 @@ public class MasterAlertService {
                         ANNOTATION_KEY_ALERT_TYPE,
                         ANNOTATION_VALUE_ALERT_TYPE
                 );
-
+                rule.getAnnotations().put(
+                        ANNOTATION_KEY_ALERT_JOB,
+                        ANNOTATION_VALUE_ALERT_JOB
+                );
                 rule.getAnnotations().put(
                         ANNOTATION_KEY_ALERT_ID,
                         String.valueOf(tDlAlert.getId())
@@ -610,125 +612,6 @@ public class MasterAlertService {
         Assert.isFalse(exists, () -> new BException("存在同名规则配置"));
     }
 
-    /**
-     * Description: 检查关联的处理器配置是否存在
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/18
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param alertHandlerTypeEnum 告警触发后的处理类型
-     * @param handlerId            处理手段信息 ID
-     */
-    private void checkHandlerExistence(AlertHandlerTypeEnum alertHandlerTypeEnum, Long handlerId) {
-
-        switch (alertHandlerTypeEnum) {
-            case ALERT_INTERFACE:
-                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "接口");
-                break;
-            case ALERT_MAIL:
-                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "邮件");
-                break;
-            case ALERT_WEICHAT:
-                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "微信");
-                break;
-            case ALERT_FEISHU:
-                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "飞书");
-                break;
-            case ALERT_DINGDING:
-                this.checkNotNullHandler(alertHandlerTypeEnum, handlerId, "钉钉");
-                break;
-            default:
-                Assert.isTrue(
-                        handlerId == null,
-                        () -> new BException(
-                                String.format(
-                                        "%s 类型的告警处理不应存在处理手段信息 %s, 请置空",
-                                        alertHandlerTypeEnum,
-                                        handlerId
-                                )
-                        )
-                );
-                break;
-        }
-    }
-
-
-    /**
-     * Description: 检查指定类型的处理器配置 ID 是否正确
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/18
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param alertHandlerTypeEnum 告警处理类型
-     * @param handlerId            处理手段信息 ID
-     * @param targetName           告警处理目标
-     */
-    private void checkNotNullHandler(AlertHandlerTypeEnum alertHandlerTypeEnum,
-                                     Long handlerId,
-                                     String targetName) {
-
-        IService<?> service = this.getServiceByHandlerType(alertHandlerTypeEnum);
-
-        Assert.notNull(
-                service != null ? service.getById(handlerId) : null,
-                () -> new BException(
-                        String.format(
-                                ERR_MSG_TEMPLATE,
-                                targetName
-                        )
-                )
-        );
-
-        Assert.notNull(
-                handlerId,
-                () -> new BException(
-                        String.format(
-                                ERR_MSG_ID_REQUIRED,
-                                targetName
-                        )
-                )
-        );
-    }
-
-
-    /**
-     * Description: 根据告警处理类型获取相应的数据库操作服务实例
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/18
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param type 告警处理类型
-     * @return IService<?> 对应的服务实例
-     */
-    private IService<?> getServiceByHandlerType(AlertHandlerTypeEnum type) {
-        switch (type) {
-            case ALERT_INTERFACE:
-                return null;
-            case ALERT_MAIL:
-                return this.tDlAlertHandlerMailService;
-            case ALERT_WEICHAT:
-                return null;
-            case ALERT_FEISHU:
-                return null;
-            case ALERT_DINGDING:
-                return null;
-            default:
-                return null;
-        }
-    }
-
 
     /**
      * Description: 将告警配置文件写入到指定节点的指定路径
@@ -830,7 +713,7 @@ public class MasterAlertService {
         // 检查 ID 是否全部存在
         this.checkAlertIdExists(request.getClusterId(), request.getAlertIdList());
 
-        // 检查告警处理手段关联表是否存在关联，如果存在，则移除关联
+        // 检查告警处理方式关联表是否存在关联，如果存在，则移除关联
         List<TDlAlertHandlerRelation> tDlAlertHandlerRelationList = this.tDlAlertHandlerRelationService.lambdaQuery()
                 .select()
                 .in(TDlAlertHandlerRelation::getAlertId, request.getAlertIdList())

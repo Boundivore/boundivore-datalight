@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertHandlerRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
@@ -33,6 +34,7 @@ import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceIm
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
+import com.baomidou.mybatisplus.extension.service.IService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * Description: 告警处理手段相关逻辑
+ * Description: 告警处理方式相关逻辑
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/22
@@ -68,7 +70,7 @@ public class MasterAlertHandlerService {
 
 
     /**
-     * Description: 绑定或解绑告警与告警处理手段
+     * Description: 绑定或解绑告警与告警处理方式
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/22
@@ -110,15 +112,32 @@ public class MasterAlertHandlerService {
                 .distinct()
                 .collect(Collectors.toList());
 
-        // 批量查询处理手段和告警是否存在
-        Map<Long, Boolean> handlerIdExistsMap = getHandlerIdExistsMap(handlerIdList);
-        Map<Long, Boolean> alertIdExistsMap = getAlertIdExistsMap(alertIdList);
+        // 批量查询处理方式和告警是否存在
+        Map<Long, Boolean> handlerIdExistsMap = this.getHandlerIdExistsMap(handlerIdList);
+        Map<Long, Boolean> alertIdExistsMap = this.getAlertIdExistsMap(alertIdList);
 
         // 检查绑定列表中的 ID 是否存在
         bindingList.forEach(i -> {
-            Assert.isTrue(handlerIdExistsMap.get(i.getHandlerId()), () -> new BException(String.format("Handler Id: %s 不存在", i.getHandlerId())));
-            Assert.isTrue(alertIdExistsMap.get(i.getAlertId()), () -> new BException(String.format("Alert Id: %s 不存在", i.getAlertId())));
-        });
+                    Assert.isTrue(
+                            handlerIdExistsMap.get(i.getHandlerId()),
+                            () -> new BException(
+                                    String.format(
+                                            "Handler Id: %s 不存在",
+                                            i.getHandlerId()
+                                    )
+                            )
+                    );
+                    Assert.isTrue(
+                            alertIdExistsMap.get(i.getAlertId()),
+                            () -> new BException(
+                                    String.format(
+                                            "Alert Id: %s 不存在",
+                                            i.getAlertId()
+                                    )
+                            )
+                    );
+                }
+        );
 
         // 处理解绑
         if (!CollUtil.isEmpty(unbindingList)) {
@@ -159,7 +178,7 @@ public class MasterAlertHandlerService {
     }
 
     /**
-     * Description: 获取处理手段 ID 是否存在的映射
+     * Description: 获取处理方式 ID 是否存在的映射
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/22
@@ -168,8 +187,8 @@ public class MasterAlertHandlerService {
      * Modification time:
      * Throws:
      *
-     * @param handlerIdList 处理手段 ID 列表
-     * @return Map<Long, Boolean> 处理手段 ID 是否存在的映射
+     * @param handlerIdList 处理方式 ID 列表
+     * @return Map<Long, Boolean> 处理方式 ID 是否存在的映射
      */
     private Map<Long, Boolean> getHandlerIdExistsMap(List<Long> handlerIdList) {
         // 如果没有需要检查的 ID 列表,直接返回空 Map
@@ -177,7 +196,7 @@ public class MasterAlertHandlerService {
             return new HashMap<>();
         }
 
-        // 批量查询处理手段是否存在
+        // 批量查询处理方式是否存在
         List<TDlAlertHandlerInterface> handlerInterfaces = tDlAlertHandlerInterfaceService.lambdaQuery()
                 .select()
                 .in(TBasePo::getId, handlerIdList)

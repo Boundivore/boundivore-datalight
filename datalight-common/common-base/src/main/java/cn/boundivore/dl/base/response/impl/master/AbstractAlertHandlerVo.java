@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Description: 告警处理手段相关响应体
+ * Description: 告警处理方式相关响应体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/17
@@ -44,13 +44,13 @@ public abstract class AbstractAlertHandlerVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractAlertHandlerVo.AlertHandlerInterfaceListVo",
-            description = "AbstractAlertHandlerVo.AlertHandlerInterfaceListVo 告警接口处理手段列表响应体"
+            description = "AbstractAlertHandlerVo.AlertHandlerInterfaceListVo 告警接口处理方式列表响应体"
     )
     public static class AlertHandlerInterfaceListVo implements IVo {
 
         private static final long serialVersionUID = -1025953221547317564L;
 
-        @Schema(name = "AlertHandlerInterfaceList", title = "告警接口处理手段列表", required = true)
+        @Schema(name = "AlertHandlerInterfaceList", title = "告警接口处理方式列表", required = true)
         @JsonProperty(value = "AlertHandlerInterfaceList", required = true)
         private List<AlertHandlerInterfaceVo> alertHandlerInterfaceList;
 
@@ -62,13 +62,13 @@ public abstract class AbstractAlertHandlerVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractAlertHandlerVo.AlertHandlerMailListVo",
-            description = "AbstractAlertHandlerVo.AlertHandlerMailListVo 告警邮件处理手段列表响应体"
+            description = "AbstractAlertHandlerVo.AlertHandlerMailListVo 告警邮件处理方式列表响应体"
     )
     public static class AlertHandlerMailListVo implements IVo {
 
         private static final long serialVersionUID = -1025953221547317564L;
 
-        @Schema(name = "AlertHandlerMailList", title = "告警接口处理手段列表", required = true)
+        @Schema(name = "AlertHandlerMailList", title = "告警接口处理方式列表", required = true)
         @JsonProperty(value = "AlertHandlerMailList", required = true)
         private List<AlertHandlerMailVo> alertHandlerMailList;
 
@@ -80,13 +80,13 @@ public abstract class AbstractAlertHandlerVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractAlertHandlerVo.AlertHandlerInterfaceVo",
-            description = "AbstractAlertHandlerVo.AlertHandlerInterfaceVo 告警接口处理手段响应体"
+            description = "AbstractAlertHandlerVo.AlertHandlerInterfaceVo 告警接口处理方式响应体"
     )
     public static class AlertHandlerInterfaceVo implements IVo {
 
         private static final long serialVersionUID = -1025953221547317564L;
 
-        @Schema(name = "HandlerId", title = "告警处理手段 ID", required = true)
+        @Schema(name = "HandlerId", title = "告警处理方式 ID", required = true)
         @JsonProperty(value = "HandlerId", required = true)
         private Long handlerId;
 
@@ -102,13 +102,13 @@ public abstract class AbstractAlertHandlerVo {
     @AllArgsConstructor
     @Schema(
             name = "AbstractAlertHandlerVo.AlertHandlerMailVo",
-            description = "AbstractAlertHandlerVo.AlertHandlerMailVo 告警邮件处理手段响应体"
+            description = "AbstractAlertHandlerVo.AlertHandlerMailVo 告警邮件处理方式响应体"
     )
     public static class AlertHandlerMailVo implements IVo {
 
         private static final long serialVersionUID = -1025953221547317564L;
 
-        @Schema(name = "HandlerId", title = "告警处理手段 ID", required = true)
+        @Schema(name = "HandlerId", title = "告警处理方式 ID", required = true)
         @JsonProperty(value = "HandlerId", required = true)
         private Long handlerId;
 

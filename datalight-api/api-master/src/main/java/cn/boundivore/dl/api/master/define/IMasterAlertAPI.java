@@ -17,7 +17,9 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractAlertHandlerRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAlertHandlerVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
@@ -110,4 +112,71 @@ public interface IMasterAlertAPI {
             AbstractAlertRequest.UpdateAlertRuleRequest request
     ) throws Exception;
 
+    @PostMapping(value = "/alert/newAlertHandlerInterface")
+    @ApiOperation(notes = "新增接口告警处理方式", value = "新增接口告警处理方式")
+    Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> newAlertHandlerInterface(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.NewAlertHandlerInterfaceRequest request
+    ) throws Exception;
+
+    @GetMapping(value = "/alert/getAlertHandlerInterfaceDetailsById")
+    @ApiOperation(notes = "根据 ID 获取告警详细信息", value = "根据 ID 获取告警详细信息")
+    Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> getAlertHandlerInterfaceDetailsById(
+            @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
+            @RequestParam(value = "HandlerId", required = true)
+            Long handlerId
+    ) throws Exception;
+
+    @PostMapping(value = "/alert/updateAlertHandlerInterface")
+    @ApiOperation(notes = "更新告警接口处理方式", value = "更新告警接口处理方式")
+    Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> updateAlertHandlerInterface(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.UpdateAlertHandlerInterfaceRequest request
+    ) throws Exception;
+
+    @GetMapping(value = "/alert/getAlertHandlerInterfaceList")
+    @ApiOperation(notes = "获取告警接口处理方式列表", value = "获取告警接口处理方式列表")
+    Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceList(
+    ) throws Exception;
+
+
+    @PostMapping(value = "/alert/newAlertHandlerMail")
+    @ApiOperation(notes = "新增邮件告警处理方式", value = "新增邮件告警处理方式")
+    Result<AbstractAlertHandlerVo.AlertHandlerMailVo> newAlertHandlerMail(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.NewAlertHandlerMailRequest request
+    ) throws Exception;
+
+    @GetMapping(value = "/alert/getAlertHandlerMailDetailsById")
+    @ApiOperation(notes = "获取告警接口处理方式列表", value = "获取告警接口处理方式列表")
+    Result<AbstractAlertHandlerVo.AlertHandlerMailVo> getAlertHandlerMailDetailsById(
+            @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
+            @RequestParam(value = "HandlerId", required = true)
+            Long handlerId
+    ) throws Exception;
+
+    @PostMapping(value = "/alert/updateAlertHandlerMail")
+    @ApiOperation(notes = "更新告警邮件处理方式", value = "更新告警邮件处理方式")
+    Result<AbstractAlertHandlerVo.AlertHandlerMailVo> updateAlertHandlerMail(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.UpdateAlertHandlerMailRequest request
+    ) throws Exception;
+
+    @GetMapping(value = "/alert/getAlertHandlerMailList")
+    @ApiOperation(notes = "获取告警邮箱处理方式列表", value = "获取告警邮箱处理方式列表")
+    Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailList(
+    ) throws Exception;
+
+
+    @PostMapping(value = "/alert/bindAlertAndAlertHandler")
+    @ApiOperation(notes = "绑定或解绑告警与告警处理方式", value = "绑定或解绑告警与告警处理方式")
+    Result<String> bindAlertAndAlertHandler(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.AlertHandlerRelationListRequest request
+    )throws Exception;
 }

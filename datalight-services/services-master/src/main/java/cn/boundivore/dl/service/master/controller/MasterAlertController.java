@@ -18,9 +18,14 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterAlertAPI;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
+import cn.boundivore.dl.base.request.impl.master.AbstractAlertHandlerRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAlertHandlerVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.service.master.service.MasterAlertHandlerInterfaceService;
+import cn.boundivore.dl.service.master.service.MasterAlertHandlerMailService;
+import cn.boundivore.dl.service.master.service.MasterAlertHandlerService;
 import cn.boundivore.dl.service.master.service.MasterAlertService;
 import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +46,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class MasterAlertController implements IMasterAlertAPI {
 
     private final MasterAlertService masterAlertService;
+
+    private final MasterAlertHandlerInterfaceService masterAlertHandlerInterfaceService;
+    private final MasterAlertHandlerMailService masterAlertHandlerMailService;
+    private final MasterAlertHandlerService masterAlertHandlerService;
 
     @SaIgnore
     @Override
@@ -77,4 +86,50 @@ public class MasterAlertController implements IMasterAlertAPI {
     public Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(AbstractAlertRequest.UpdateAlertRuleRequest request) throws Exception {
         return this.masterAlertService.updateAlertRule(request);
     }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> newAlertHandlerInterface(AbstractAlertHandlerRequest.NewAlertHandlerInterfaceRequest request) throws Exception {
+        return this.masterAlertHandlerInterfaceService.newAlertHandlerInterface(request);
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> getAlertHandlerInterfaceDetailsById(Long handlerId) throws Exception {
+        return this.masterAlertHandlerInterfaceService.getAlertHandlerInterfaceDetailsById(handlerId);
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> updateAlertHandlerInterface(AbstractAlertHandlerRequest.UpdateAlertHandlerInterfaceRequest request) throws Exception {
+        return this.masterAlertHandlerInterfaceService.updateAlertHandlerInterface(request);
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceList() throws Exception {
+        return this.masterAlertHandlerInterfaceService.getAlertHandlerInterfaceList();
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerMailVo> newAlertHandlerMail(AbstractAlertHandlerRequest.NewAlertHandlerMailRequest request) throws Exception {
+        return this.masterAlertHandlerMailService.newAlertHandlerMail(request);
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerMailVo> getAlertHandlerMailDetailsById(Long handlerId) throws Exception {
+        return this.masterAlertHandlerMailService.getAlertHandlerMailDetailsById(handlerId);
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerMailVo> updateAlertHandlerMail(AbstractAlertHandlerRequest.UpdateAlertHandlerMailRequest request) throws Exception {
+        return null;
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailList() throws Exception {
+        return this.masterAlertHandlerMailService.getAlertHandlerMailList();
+    }
+
+    @Override
+    public Result<String> bindAlertAndAlertHandler(AbstractAlertHandlerRequest.AlertHandlerRelationListRequest request) throws Exception {
+        return this.masterAlertHandlerService.bindAlertAndAlertHandler(request);
+    }
+
 }

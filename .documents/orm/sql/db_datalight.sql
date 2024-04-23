@@ -33,7 +33,7 @@ CREATE TABLE `t_dl_alert`  (
   `alert_rule_content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则配置内容 Base64',
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
   `alert_version` bigint(20) NOT NULL DEFAULT 1 COMMENT '告警规则文件版本',
-  `handler_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警触发时的处理手段类型 枚举：见代码',
+  `handler_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警触发时的处理方式类型 枚举：见代码',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警配置信息表' ROW_FORMAT = DYNAMIC;
 

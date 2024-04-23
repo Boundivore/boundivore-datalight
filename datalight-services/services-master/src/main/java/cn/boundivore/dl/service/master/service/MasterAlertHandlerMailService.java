@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Description: 告警邮件处理手段处理相关逻辑
+ * Description: 告警邮件处理方式处理相关逻辑
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/22
@@ -52,7 +52,7 @@ public class MasterAlertHandlerMailService {
     private final TDlAlertHandlerMailServiceImpl tDlAlertHandlerMailService;
 
     /**
-     * Description: 新增邮件告警处理手段
+     * Description: 新增邮件告警处理方式
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/22
@@ -61,8 +61,8 @@ public class MasterAlertHandlerMailService {
      * Modification time:
      * Throws:
      *
-     * @param request 告警邮件处理手段新建请求体
-     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailVo> 告警邮件处理手段响应体
+     * @param request 告警邮件处理方式新建请求体
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailVo> 告警邮件处理方式响应体
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -99,7 +99,7 @@ public class MasterAlertHandlerMailService {
     }
 
     /**
-     * Description: 根据 ID 获取告警邮件处理手段详情
+     * Description: 根据 ID 获取告警邮件处理方式详情
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/22
@@ -108,8 +108,8 @@ public class MasterAlertHandlerMailService {
      * Modification time:
      * Throws:
      *
-     * @param handlerId 告警处理手段 ID
-     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailVo> 告警邮件处理手段响应体
+     * @param handlerId 告警处理方式 ID
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailVo> 告警邮件处理方式响应体
      */
     public Result<AbstractAlertHandlerVo.AlertHandlerMailVo> getAlertHandlerMailDetailsById(Long handlerId) {
         TDlAlertHandlerMail tDlAlertHandlerMail = this.tDlAlertHandlerMailService.getById(handlerId);
@@ -128,7 +128,7 @@ public class MasterAlertHandlerMailService {
     }
 
     /**
-     * Description: 更新告警邮件处理手段
+     * Description: 更新告警邮件处理方式
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/22
@@ -137,8 +137,8 @@ public class MasterAlertHandlerMailService {
      * Modification time:
      * Throws:
      *
-     * @param request 告警邮件处理手段更新请求体
-     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailVo> 告警邮件处理手段响应体
+     * @param request 告警邮件处理方式更新请求体
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailVo> 告警邮件处理方式响应体
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -170,7 +170,7 @@ public class MasterAlertHandlerMailService {
     }
 
     /**
-     * Description: 获取告警邮箱处理手段列表
+     * Description: 获取告警邮箱处理方式列表
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/22
@@ -179,7 +179,7 @@ public class MasterAlertHandlerMailService {
      * Modification time:
      * Throws:
      *
-     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> 告警邮箱处理手段列表响应体
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> 告警邮箱处理方式列表响应体
      */
     public Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailList() {
         List<TDlAlertHandlerMail> tDlAlertHandlerMailList = this.tDlAlertHandlerMailService.list();

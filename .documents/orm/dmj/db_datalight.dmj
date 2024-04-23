@@ -3818,7 +3818,7 @@
                   "Name": "handler_type",
                   "Memo": "枚举：见代码",
                   "OrderNo": 12,
-                  "DisplayName": "告警触发时的处理手段类型",
+                  "DisplayName": "告警触发时的处理方式类型",
                   "DataType": 1,
                   "Not_Nullable": true,
                   "DataLength": 255
@@ -4161,7 +4161,7 @@
                 "Name": "handler_type",
                 "Memo": "枚举：见代码",
                 "OrderNo": 12,
-                "DisplayName": "告警触发时的处理手段类型",
+                "DisplayName": "告警触发时的处理方式类型",
                 "DataType": 1,
                 "Not_Nullable": true,
                 "DataLength": 255

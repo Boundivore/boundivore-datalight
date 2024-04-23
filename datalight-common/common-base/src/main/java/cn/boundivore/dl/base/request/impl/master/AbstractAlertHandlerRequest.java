@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Description: 告警处理手段相关请求体
+ * Description: 告警处理方式相关请求体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/22
@@ -31,7 +31,7 @@ public abstract class AbstractAlertHandlerRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractAlertHandlerRequest.NewAlertHandlerInterfaceRequest",
-            description = "AbstractAlertHandlerRequest.NewAlertHandlerInterfaceRequest: 新建告警接口处理手段 请求体"
+            description = "AbstractAlertHandlerRequest.NewAlertHandlerInterfaceRequest: 新建告警接口处理方式 请求体"
     )
     public final static class NewAlertHandlerInterfaceRequest implements IRequest {
 
@@ -50,7 +50,7 @@ public abstract class AbstractAlertHandlerRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractAlertHandlerRequest.NewAlertHandlerMailRequest",
-            description = "AbstractAlertHandlerRequest.NewAlertHandlerMailRequest: 新建告警邮件处理手段 请求体"
+            description = "AbstractAlertHandlerRequest.NewAlertHandlerMailRequest: 新建告警邮件处理方式 请求体"
     )
     public final static class NewAlertHandlerMailRequest implements IRequest {
 
@@ -69,15 +69,15 @@ public abstract class AbstractAlertHandlerRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractAlertHandlerRequest.UpdateAlertHandlerInterfaceRequest",
-            description = "AbstractAlertHandlerRequest.UpdateAlertHandlerInterfaceRequest: 更新告警接口处理手段 请求体"
+            description = "AbstractAlertHandlerRequest.UpdateAlertHandlerInterfaceRequest: 更新告警接口处理方式 请求体"
     )
     public final static class UpdateAlertHandlerInterfaceRequest implements IRequest {
 
         private static final long serialVersionUID = -4330420182299664430L;
 
-        @Schema(name = "HandlerId", title = "处理手段 ID", required = true)
+        @Schema(name = "HandlerId", title = "处理方式 ID", required = true)
         @JsonProperty(value = "HandlerId", required = true)
-        @NotNull(message = "处理手段 ID 不能为空")
+        @NotNull(message = "处理方式 ID 不能为空")
         private Long handlerId;
 
         @Schema(name = "InterfaceUri", title = "告警外部调用接口地址", required = true)
@@ -93,15 +93,15 @@ public abstract class AbstractAlertHandlerRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractAlertHandlerRequest.UpdateAlertHandlerMailRequest",
-            description = "AbstractAlertHandlerRequest.UpdateAlertHandlerMailRequest: 更新告警邮件处理手段 请求体"
+            description = "AbstractAlertHandlerRequest.UpdateAlertHandlerMailRequest: 更新告警邮件处理方式 请求体"
     )
     public final static class UpdateAlertHandlerMailRequest implements IRequest {
 
         private static final long serialVersionUID = 1104669842717705459L;
 
-        @Schema(name = "HandlerId", title = "处理手段 ID", required = true)
+        @Schema(name = "HandlerId", title = "处理方式 ID", required = true)
         @JsonProperty(value = "HandlerId", required = true)
-        @NotNull(message = "处理手段 ID 不能为空")
+        @NotNull(message = "处理方式 ID 不能为空")
         private Long handlerId;
 
         @Schema(name = "MailAccount", title = "接收告警邮箱", required = true)
@@ -117,13 +117,13 @@ public abstract class AbstractAlertHandlerRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractAlertHandlerRequest.AlertHandlerRelationListRequest",
-            description = "AbstractAlertHandlerRequest.AlertHandlerRelationListRequest: 告警与处理手段绑定关系列表 请求体"
+            description = "AbstractAlertHandlerRequest.AlertHandlerRelationListRequest: 告警与处理方式绑定关系列表 请求体"
     )
     public final static class AlertHandlerRelationListRequest implements IRequest {
 
         private static final long serialVersionUID = 1104669842717705459L;
 
-        @Schema(name = "HandlerId", title = "处理手段 ID", required = true)
+        @Schema(name = "HandlerId", title = "处理方式 ID", required = true)
         @JsonProperty(value = "HandlerId", required = true)
         @NotEmpty(message = "绑定关系列表不能为空")
         private List<AlertHandlerRelationRequest> alertHandlerRelationList;
@@ -136,20 +136,20 @@ public abstract class AbstractAlertHandlerRequest {
     @Accessors(chain = true)
     @Schema(
             name = "AbstractAlertHandlerRequest.AlertHandlerRelationRequest",
-            description = "AbstractAlertHandlerRequest.AlertHandlerRelationRequest: 告警与处理手段绑定关系 请求体"
+            description = "AbstractAlertHandlerRequest.AlertHandlerRelationRequest: 告警与处理方式绑定关系 请求体"
     )
     public final static class AlertHandlerRelationRequest implements IRequest {
 
         private static final long serialVersionUID = 1104669842717705459L;
 
-        @Schema(name = "HandlerId", title = "告警处理手段 ID", required = true)
+        @Schema(name = "HandlerId", title = "告警处理方式 ID", required = true)
         @JsonProperty(value = "HandlerId", required = true)
-        @NotNull(message = "告警处理手段 ID 不能为空")
+        @NotNull(message = "告警处理方式 ID 不能为空")
         private Long handlerId;
 
-        @Schema(name = "AlertHandlerTypeEnum", title = "告警处理手段类型枚举", required = true)
+        @Schema(name = "AlertHandlerTypeEnum", title = "告警处理方式类型枚举", required = true)
         @JsonProperty(value = "AlertHandlerTypeEnum", required = true)
-        @NotNull(message = "告警处理手段类型不能为空")
+        @NotNull(message = "告警处理方式类型不能为空")
         private AlertHandlerTypeEnum alertHandlerTypeEnum;
 
         @Schema(name = "AlertId", title = "告警规则 ID", required = true)
