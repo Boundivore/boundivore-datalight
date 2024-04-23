@@ -24,6 +24,7 @@ import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
@@ -391,6 +392,7 @@ public class MasterComponentService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> saveComponentSelected(AbstractServiceComponentRequest.ComponentSelectRequest request) {
 
         // 组件公共检查项
@@ -1202,6 +1204,7 @@ public class MasterComponentService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> updateComponentRestartMark(AbstractServiceComponentRequest.UpdateNeedRestartRequest request) {
 
         // 读取对应的组件列表

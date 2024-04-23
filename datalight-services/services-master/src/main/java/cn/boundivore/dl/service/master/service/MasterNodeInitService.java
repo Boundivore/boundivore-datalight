@@ -26,6 +26,7 @@ import cn.boundivore.dl.base.response.impl.master.AbstractNodeInitVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.ParseHostnameVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -93,6 +94,7 @@ public class MasterNodeInitService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<ParseHostnameVo> parseHostname(ParseHostnameRequest request) {
 
         Long clusterId = request.getClusterId();
@@ -178,6 +180,7 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @LocalLock
     public Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -236,6 +239,7 @@ public class MasterNodeInitService {
      * @param request 初始化节点请求体
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @LocalLock
     public Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -385,6 +389,7 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @LocalLock
     public Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -443,6 +448,7 @@ public class MasterNodeInitService {
      * @param request 节点操作请求
      * @return Result<AbstractNodeJobVo.NodeJobIdVo> 返回集群 ID 与 NodeJobId
      */
+    @LocalLock
     public Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(NodeJobRequest request) throws Exception {
 
         Assert.isTrue(
@@ -507,6 +513,7 @@ public class MasterNodeInitService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public void switchNodeInitState(Long clusterId,
                                     Long nodeId,
                                     NodeStateEnum nodeStateEnum) {
@@ -538,6 +545,7 @@ public class MasterNodeInitService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public void updateNodeResourceInDatabase(Long nodeId, NodeResources nodeResources) throws Exception {
         TDlNodeInit tDlNodeInit = this.tDlNodeInitService.getById(nodeId);
         Assert.notNull(tDlNodeInit, () -> new DatabaseException("没有找到对应节点初始化信息"));

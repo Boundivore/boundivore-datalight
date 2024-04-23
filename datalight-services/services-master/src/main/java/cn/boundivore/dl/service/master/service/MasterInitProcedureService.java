@@ -417,6 +417,7 @@ public class MasterInitProcedureService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public void persistNodeInitProcedure(Long clusterId,
                                          Long nodeJobId,
                                          ProcedureStateEnum procedureStateEnum,
@@ -455,6 +456,7 @@ public class MasterInitProcedureService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public void persistServiceComponentProcedure(Long clusterId,
                                                  Long jobId,
                                                  ProcedureStateEnum procedureStateEnum) {

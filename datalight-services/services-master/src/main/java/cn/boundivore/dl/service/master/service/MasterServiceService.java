@@ -25,6 +25,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlService;
@@ -150,6 +151,7 @@ public class MasterServiceService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> saveServiceSelected(AbstractServiceComponentRequest.ServiceSelectRequest request) {
 
         // 服务公共检查
@@ -499,6 +501,7 @@ public class MasterServiceService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public void switchServiceState(Long clusterId,
                                    String serviceName,
                                    SCStateEnum scStateEnum) {
