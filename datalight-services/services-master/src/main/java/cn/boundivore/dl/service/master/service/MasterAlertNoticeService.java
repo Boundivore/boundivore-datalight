@@ -139,7 +139,7 @@ public class MasterAlertNoticeService {
                         try {
                             this.remoteInvokeHandlerInterfaceService
                                     .iThirdHandlerInterfaceAPI(uri)
-                                    .sendPostRequest(this.objectMapper.writeValueAsString(request));
+                                        .sendPostRequest(this.objectMapper.writeValueAsString(request));
                         } catch (JsonProcessingException e) {
                             log.error(ExceptionUtil.stacktraceToString(e));
                         }

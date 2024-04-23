@@ -26,6 +26,7 @@ import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.base.utils.TimeZoneConverter;
 import cn.boundivore.dl.base.utils.YamlDeserializer;
 import cn.boundivore.dl.base.utils.YamlSerializer;
 import cn.boundivore.dl.boot.lock.LocalLock;
@@ -175,6 +176,15 @@ public class MasterAlertService {
 
                                 // 如果需要在 TDlAlert 为 null 时输出错误日志，可改动此处
                                 if (tDlAlert != null) {
+                                    // 进行时区转换
+                                    alert.setStartsAt(
+                                            TimeZoneConverter.utcToBeijingTimeStr(alert.getStartsAt())
+                                    );
+                                    alert.setEndsAt(
+                                            TimeZoneConverter.utcToBeijingTimeStr(alert.getEndsAt())
+                                    );
+
+
                                     // 对告警进行具体处理
                                     this.masterAlertNoticeService.sendAlert(tDlAlert, alert);
                                 }
