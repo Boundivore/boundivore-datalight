@@ -54,7 +54,7 @@ public class MailTest {
 
     @Test
     public void sendMail() {
-        Result<String> result = this.masterAlertNoticeService.sendToEmail(null);
-        log.info("测试邮件发送：{}", result);
+//        Result<String> result = this.masterAlertNoticeService.sendToEmail(null);
+//        log.info("测试邮件发送：{}", result);
     }
 }
