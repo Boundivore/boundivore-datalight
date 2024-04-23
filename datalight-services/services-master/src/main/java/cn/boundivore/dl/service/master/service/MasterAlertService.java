@@ -17,7 +17,6 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
@@ -51,7 +50,6 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -272,22 +270,25 @@ public class MasterAlertService {
         // 检查请求参数是否合法
         this.checkNewAlertRuleRequest(request);
 
+        // 解码 Expr Base64 格式的表达式的值
+        request.getAlertRuleContent()
+                .getGroups()
+                .forEach(ruleGroup -> {
+                            ruleGroup.getRules()
+                                    .forEach(rule -> {
+                                        String exprDecodeBase64 = Base64.decodeStr(
+                                                rule.getExpr(),
+                                                CharsetUtil.UTF_8
+                                        );
+                                        rule.setExpr(exprDecodeBase64);
+                                    });
+                        }
+                );
+
         // 解析参数到 YamlBean
         YamlPrometheusRulesConfig yamlPrometheusRulesConfig = this.iAlertRuleConverter.convert2YamlPrometheusRulesConfig(
                 request.getAlertRuleContent()
         );
-        // 解码 Expr Base64 格式的表达式的值
-        yamlPrometheusRulesConfig.getGroups()
-                .forEach(ruleGroup ->
-                        ruleGroup.getRules().forEach(rule -> {
-                                    String exprDecodeBase64 = Base64.decodeStr(
-                                            rule.getExpr(),
-                                            CharsetUtil.UTF_8
-                                    );
-                                    rule.setExpr(exprDecodeBase64);
-                                }
-                        )
-                );
 
         log.info("解析完毕:\n{}\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
 
@@ -1001,22 +1002,25 @@ public class MasterAlertService {
         // 检查请求合法性
         this.checkUpdateAlertRuleRequest(request);
 
+        // 解码 Expr Base64 格式的表达式的值
+        request.getAlertRuleContent()
+                .getGroups()
+                .forEach(ruleGroup -> {
+                            ruleGroup.getRules()
+                                    .forEach(rule -> {
+                                        String exprDecodeBase64 = Base64.decodeStr(
+                                                rule.getExpr(),
+                                                CharsetUtil.UTF_8
+                                        );
+                                        rule.setExpr(exprDecodeBase64);
+                                    });
+                        }
+                );
+
         // 解析参数到 YamlBean
         YamlPrometheusRulesConfig yamlPrometheusRulesConfig = this.iAlertRuleConverter.convert2YamlPrometheusRulesConfig(
                 request.getAlertRuleContent()
         );
-        // 解码 Expr Base64 格式的表达式的值
-        yamlPrometheusRulesConfig.getGroups()
-                .forEach(ruleGroup ->
-                        ruleGroup.getRules().forEach(rule -> {
-                                    String exprDecodeBase64 = Base64.decodeStr(
-                                            rule.getExpr(),
-                                            CharsetUtil.UTF_8
-                                    );
-                                    rule.setExpr(exprDecodeBase64);
-                                }
-                        )
-                );
 
         log.info("解析完毕:\n{}\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
 

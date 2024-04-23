@@ -706,7 +706,7 @@ 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
 新增告警：
 {
     "AlertHandlerTypeEnum": "ALERT_INTERFACE",
-    "AlertName": "自定义告警信息",
+    "AlertRuleName": "MyAlert",
     "AlertRuleContent": {
         "Groups": [
             {
@@ -731,8 +731,6 @@ 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
                 ]
             }
         ]
-    }
-]
-},
-"HandlerId": 1
+    },
+    "ClusterId": 1782282473011208194
 }
