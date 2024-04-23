@@ -137,8 +137,9 @@ public class MasterAlertNoticeService {
         try {
             handlerInterfaceUriList.forEach(uri -> {
                         try {
+                            // Post Body
                             String preSendStr = this.objectMapper.writeValueAsString(request);
-                            log.info("发送前: {}", preSendStr);
+
                             this.remoteInvokeHandlerInterfaceService
                                     .iThirdHandlerInterfaceAPI(uri)
                                         .sendPostRequest(preSendStr);
