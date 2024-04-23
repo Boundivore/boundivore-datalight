@@ -50,6 +50,7 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -220,10 +221,10 @@ public class MasterAlertService {
      * Throws:
      *
      * @param yamlPrometheusRulesConfig 解析后的告警规则配置 Bean
-     * @param tDlAlert                  保存数据库成功后的数据库实体
+     * @param alertId                   告警 ID
      */
     private void setAnnotationExtraKV(YamlPrometheusRulesConfig yamlPrometheusRulesConfig,
-                                      TDlAlert tDlAlert) {
+                                      Long alertId) {
 
         yamlPrometheusRulesConfig.getGroups().forEach(ruleGroup -> {
             ruleGroup.getRules().forEach(rule -> {
@@ -237,7 +238,7 @@ public class MasterAlertService {
                 );
                 rule.getAnnotations().put(
                         ANNOTATION_KEY_ALERT_ID,
-                        String.valueOf(tDlAlert.getId())
+                        String.valueOf(alertId)
                 );
             });
         });
@@ -290,8 +291,6 @@ public class MasterAlertService {
                 request.getAlertRuleContent()
         );
 
-        log.info("解析完毕:\n{}\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
-
         String ruleFileName = String.format(
                 ALERT_RULE_FILE_FORMAT,
                 request.getAlertRuleName()
@@ -306,8 +305,15 @@ public class MasterAlertService {
         log.info("告警规则文件路径: {}", ruleFilePath);
 
 
+        // 手动创建告警 ID
+        Long alertId = IdWorker.getId();
+
+        // 设置额外字段信息(这部分信息不需要记录到数据库，只需要记录到告警规则配置文件中即可)
+        this.setAnnotationExtraKV(yamlPrometheusRulesConfig, alertId);
+
         // 保存数据库
         TDlAlert tDlAlert = new TDlAlert();
+        tDlAlert.setId(alertId);
         tDlAlert.setVersion(0L);
         tDlAlert.setClusterId(request.getClusterId());
         tDlAlert.setAlertName(request.getAlertRuleName());
@@ -329,8 +335,8 @@ public class MasterAlertService {
         );
 
 
-        // 设置额外字段信息(这部分信息不需要记录到数据库，只需要记录到告警规则配置文件中即可)
-        this.setAnnotationExtraKV(yamlPrometheusRulesConfig, tDlAlert);
+        log.info("解析完毕:\n{}\n", YamlDeserializer.toString(yamlPrometheusRulesConfig));
+
 
         // 获取 Prometheus 所在节点的详细信息
         TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());
@@ -1037,9 +1043,12 @@ public class MasterAlertService {
 
         log.info("告警规则文件路径: {}", ruleFilePath);
 
-
         // 更新数据库
         TDlAlert tDlAlert = this.tDlAlertService.getById(request.getAlertRuleId());
+
+        // 设置额外字段信息(这部分信息不需要记录到数据库，只需要记录到告警规则配置文件中即可)
+        this.setAnnotationExtraKV(yamlPrometheusRulesConfig, tDlAlert.getId());
+
         tDlAlert.setClusterId(request.getClusterId());
         tDlAlert.setAlertName(request.getAlertRuleName());
         tDlAlert.setAlertFileName(ruleFileName);
@@ -1059,8 +1068,6 @@ public class MasterAlertService {
                 () -> new DatabaseException("更新告警规则到数据库失败")
         );
 
-        // 设置额外字段信息(这部分信息不需要记录到数据库，只需要记录到告警规则配置文件中即可)
-        this.setAnnotationExtraKV(yamlPrometheusRulesConfig, tDlAlert);
 
         // 获取 Prometheus 所在节点的详细信息
         TDlComponent tDlComponent = this.findPrometheusComponent(request.getClusterId());

@@ -706,7 +706,7 @@ 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
 新增告警：
 {
     "AlertHandlerTypeEnum": "ALERT_INTERFACE",
-    "AlertRuleName": "MyAlert",
+    "AlertRuleName": "MyAlert2",
     "AlertRuleContent": {
         "Groups": [
             {
@@ -722,7 +722,7 @@ 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
                             "summary": "{{ $labels.job }} 进程在 {{ $labels.instance }} 宕机",
                             "description": ""
                         },
-                        "Expr": "dXAlN0Jqb2IlM0QlMjJZQVJOLU5vZGVNYW5hZ2VyJTIyJTdEJTIwJTNEJTNEJTIwMA==",
+                        "Expr": "dXB7am9iPSJZQVJOLU5vZGVNYW5hZ2VyIn0gPT0gMA==",
                         "For": "10s",
                         "Labels": {
                             "severity": "warning"
