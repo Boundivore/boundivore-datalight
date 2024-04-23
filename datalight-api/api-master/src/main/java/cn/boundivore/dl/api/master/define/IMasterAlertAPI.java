@@ -71,7 +71,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @PostMapping(value = "/alert/removeAlertRule")
-    @ApiOperation(notes = "移除告警骨规则", value = "移除告警骨规则")
+    @ApiOperation(notes = "移除告警规则", value = "移除告警规则")
     Result<String> removeAlertRule(
             @RequestBody
             @Valid
@@ -121,7 +121,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertHandlerInterfaceDetailsById")
-    @ApiOperation(notes = "根据 ID 获取告警详细信息", value = "根据 ID 获取告警详细信息")
+    @ApiOperation(notes = "根据 ID 获取告警接口处理方式详情", value = "根据 ID 获取告警接口处理方式详情")
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> getAlertHandlerInterfaceDetailsById(
             @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
             @RequestParam(value = "HandlerId", required = true)
@@ -151,7 +151,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertHandlerMailDetailsById")
-    @ApiOperation(notes = "获取告警接口处理方式列表", value = "获取告警接口处理方式列表")
+    @ApiOperation(notes = "根据 ID 获取告警邮件处理方式详情", value = "根据 ID 获取告警邮件处理方式详情")
     Result<AbstractAlertHandlerVo.AlertHandlerMailVo> getAlertHandlerMailDetailsById(
             @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
             @RequestParam(value = "HandlerId", required = true)
