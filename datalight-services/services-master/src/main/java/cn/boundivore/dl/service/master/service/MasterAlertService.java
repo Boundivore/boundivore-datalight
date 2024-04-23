@@ -52,17 +52,12 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -79,9 +74,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterAlertService {
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     public static final String ANNOTATION_KEY_ALERT_TYPE = "alert_type";
     public static final String ANNOTATION_VALUE_ALERT_TYPE = "CUSTOM";
     public static final String ANNOTATION_KEY_ALERT_ID = "alert_id";
@@ -154,13 +146,14 @@ public class MasterAlertService {
      * @return Result<String> 调用成功或失败
      */
     public Result<String> alertHook(AlertWebhookPayloadRequest request) {
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
         if (log.isDebugEnabled()) {
             log.debug("调用告警钩子接口成功: {}", request);
         }
 
         log.info("收到告警: {}", request);
+
+        // 缓存本次告警需要读取的告警信息 <AlertId, TDlAlert>
+        Map<Long, TDlAlert> tDlAlertMap = new HashMap<>();
 
         // 如果是自定义的告警规则，则按照指定方式进行告警
         request.getAlerts()
@@ -172,37 +165,26 @@ public class MasterAlertService {
                             && annotationMap.get(ANNOTATION_KEY_ALERT_TYPE).equals(ANNOTATION_VALUE_ALERT_TYPE);
                 })
                 .forEach(alert -> {
-                    Map<String, String> annotationMap = alert.getAnnotations();
-                    Long alertId = Long.parseLong(annotationMap.get(ANNOTATION_KEY_ALERT_ID));
+                            Map<String, String> annotationMap = alert.getAnnotations();
+                            Long alertId = Long.parseLong(annotationMap.get(ANNOTATION_KEY_ALERT_ID));
+                            try {
+                                TDlAlert tDlAlert = tDlAlertMap.putIfAbsent(
+                                        alertId,
+                                        this.tDlAlertService.getById(alertId)
+                                );
 
-                    try {
-                        TDlAlert tDlAlert = this.tDlAlertService.getById(alertId);
-                        switch (tDlAlert.getHandlerType()) {
-                            case ALERT_INTERFACE:
-                                this.masterAlertNoticeService.sendToTargetInterface(
-                                        tDlAlert,
-                                        objectMapper.writeValueAsString(alert)
-                                );
-                                break;
-                            case ALERT_MAIL:
-                                this.masterAlertNoticeService.sendToEmail(
-                                        tDlAlert,
-                                        alert
-                                );
-                            case ALERT_LOG:
-                                log.warn("发生告警，日志记录: {}", alert.getAnnotations());
-                                break;
-                            case ALERT_IGNORE:
-                                break;
-                            default:
-                                break;
+                                // 如果需要在 TDlAlert 为 null 时输出错误日志，可改动此处
+                                if (tDlAlert != null) {
+                                    // 对告警进行具体处理
+                                    this.masterAlertNoticeService.sendAlert(tDlAlert, alert);
+                                }
+
+                            } catch (Exception e) {
+                                log.error(ExceptionUtil.stacktraceToString(e));
+                            }
+
                         }
-
-                    } catch (Exception e) {
-                        log.error(ExceptionUtil.stacktraceToString(e));
-                    }
-
-                });
+                );
 
         // 根据告警检查是否需要自动拉起服务组件
         this.masterManageService.checkAndPullServiceComponent(request.getAlerts());
@@ -327,7 +309,6 @@ public class MasterAlertService {
         );
         tDlAlert.setEnabled(true);
         tDlAlert.setAlertVersion(1L);
-        tDlAlert.setHandlerType(request.getAlertHandlerTypeEnum());
 
         Assert.isTrue(
                 tDlAlertService.save(tDlAlert),
@@ -569,7 +550,6 @@ public class MasterAlertService {
         alertRuleVo.setAlertRuleContentBase64(tDlAlert.getAlertRuleContent());
         alertRuleVo.setEnabled(tDlAlert.getEnabled());
         alertRuleVo.setAlertVersion(tDlAlert.getAlertVersion());
-        alertRuleVo.setAlertHandlerTypeEnum(tDlAlert.getHandlerType());
         alertRuleVo.setAlertRuleContent(alertRuleContentVo);
 
         return alertRuleVo;
@@ -834,8 +814,7 @@ public class MasterAlertService {
                                 i.getId(),
                                 i.getAlertName(),
                                 i.getAlertFilePath(),
-                                i.getEnabled(),
-                                i.getHandlerType()
+                                i.getEnabled()
                         )
                 )
                 .collect(Collectors.toList());
@@ -1055,7 +1034,6 @@ public class MasterAlertService {
         );
         tDlAlert.setEnabled(request.getEnabled());
         tDlAlert.setAlertVersion(tDlAlert.getAlertVersion() + 1L);
-        tDlAlert.setHandlerType(request.getAlertHandlerTypeEnum());
 
         Assert.isTrue(
                 tDlAlertService.updateById(tDlAlert),

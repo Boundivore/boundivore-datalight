@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-0.64,823.02,1.70,0,",
+      "CustomAttr1": "DVS:-280.05,794.78,1.70,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -3703,7 +3703,7 @@
             "OrderNo": 29,
             "GraphDesc": "Left=15.41\r\nTop=2668.41",
             "MetaFields": {
-              "Count": 12,
+              "Count": 11,
               "items": [
                 {
                   "ID": 1,
@@ -3812,16 +3812,6 @@
                   "DefaultValue": "1",
                   "Not_Nullable": true,
                   "DataLength": 20
-                },
-                {
-                  "ID": 10,
-                  "Name": "handler_type",
-                  "Memo": "枚举：见代码",
-                  "OrderNo": 12,
-                  "DisplayName": "告警触发时的处理方式类型",
-                  "DataType": 1,
-                  "Not_Nullable": true,
-                  "DataLength": 255
                 }
               ]
             }
@@ -3832,9 +3822,9 @@
             "Caption": "告警与处理告警信息关联表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 30,
-            "GraphDesc": "Left=417.29\r\nTop=2670.00",
+            "GraphDesc": "Left=326.11\r\nTop=2671.18",
             "MetaFields": {
-              "Count": 6,
+              "Count": 7,
               "items": [
                 {
                   "ID": 1,
@@ -3895,6 +3885,16 @@
                   "DataType": 2,
                   "Not_Nullable": true,
                   "DataLength": 20
+                },
+                {
+                  "ID": 10,
+                  "Name": "handler_type",
+                  "Memo": "枚举：见代码",
+                  "OrderNo": 7,
+                  "DisplayName": "告警触发时的处理手段类型",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
                 }
               ]
             }
@@ -3905,7 +3905,7 @@
             "Caption": "处理告警邮箱配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 31,
-            "GraphDesc": "Left=825.94\r\nTop=2789.12",
+            "GraphDesc": "Left=743.59\r\nTop=2785.58",
             "MetaFields": {
               "Count": 5,
               "items": [
@@ -3969,7 +3969,7 @@
             "Caption": "处理告警接口配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 32,
-            "GraphDesc": "Left=825.35\r\nTop=2670.88",
+            "GraphDesc": "Left=738.88\r\nTop=2672.64",
             "MetaFields": {
               "Count": 5,
               "items": [
@@ -4046,7 +4046,7 @@
           "OrderNo": 1,
           "GraphDesc": "Left=10.00\r\nTop=10.00\r\n",
           "MetaFields": {
-            "Count": 12,
+            "Count": 11,
             "items": [
               {
                 "ID": 1,
@@ -4155,16 +4155,6 @@
                 "DefaultValue": "1",
                 "Not_Nullable": true,
                 "DataLength": 20
-              },
-              {
-                "ID": 10,
-                "Name": "handler_type",
-                "Memo": "枚举：见代码",
-                "OrderNo": 12,
-                "DisplayName": "告警触发时的处理方式类型",
-                "DataType": 1,
-                "Not_Nullable": true,
-                "DataLength": 255
               }
             ]
           }

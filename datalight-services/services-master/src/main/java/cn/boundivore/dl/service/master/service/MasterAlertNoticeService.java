@@ -17,7 +17,6 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
-import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlAlert;
 import cn.boundivore.dl.orm.po.single.TDlAlertHandlerInterface;
@@ -28,12 +27,16 @@ import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -53,6 +56,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class MasterAlertNoticeService {
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final JavaMailSenderImpl javaMailSender;
 
@@ -64,26 +68,13 @@ public class MasterAlertNoticeService {
 
     private final RemoteInvokeHandlerInterfaceService remoteInvokeHandlerInterfaceService;
 
-    /**
-     * Description: 发送告警信息到微信
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/4/16
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @param tDlAlert 告警自定义规则数据库实体
-     * @param request  告警请求体
-     * @return Result<String> 成功或失败
-     */
-    public Result<String> sendToWeiChat(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
-        return Result.success();
+    @PostConstruct
+    public void init() {
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     /**
-     * Description: 发送告警信息到钉钉
+     * Description: 发送告警信息到指定接口
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/16
@@ -94,14 +85,36 @@ public class MasterAlertNoticeService {
      *
      * @param tDlAlert 告警自定义规则数据库实体
      * @param request  告警请求体
-     * @return Result<String> 成功或失败
      */
-    public Result<String> sendToDingDing(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
-        return Result.success();
+    public void sendAlert(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
+        // 根据告警 ID 读取本次需要对告警处理的方式
+        List<TDlAlertHandlerRelation> tDlAlertHandlerRelationList = this.tDlAlertHandlerRelationService.lambdaQuery()
+                .select()
+                .eq(TDlAlertHandlerRelation::getAlertId, tDlAlert.getId())
+                .list();
+
+        tDlAlertHandlerRelationList.parallelStream()
+                .forEach(i -> {
+                            switch (i.getHandlerType()) {
+                                case ALERT_INTERFACE:
+                                    this.sendToTargetInterface(tDlAlert, request);
+                                    break;
+                                case ALERT_MAIL:
+                                    this.sendToEmail(tDlAlert, request);
+                                case ALERT_LOG:
+                                    log.warn("发生告警，日志记录: {}", request);
+                                    break;
+                                case ALERT_IGNORE:
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                );
     }
 
     /**
-     * Description: 发送告警信息到飞书
+     * Description: 发送告警信息到指定接口
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/16
@@ -112,10 +125,26 @@ public class MasterAlertNoticeService {
      *
      * @param tDlAlert 告警自定义规则数据库实体
      * @param request  告警请求体
-     * @return Result<String> 成功或失败
      */
-    public Result<String> sendToFeiShu(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
-        return Result.success();
+    public void sendToTargetInterface(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
+        List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
+        List<String> handlerInterfaceUriList = this.getHandlerInterfaceUriList(handlerIdList);
+
+        try {
+            handlerInterfaceUriList.forEach(uri -> {
+                        try {
+                            this.remoteInvokeHandlerInterfaceService
+                                    .iThirdHandlerInterfaceAPI(uri)
+                                    .sendPostRequest(objectMapper.writeValueAsString(request));
+                        } catch (JsonProcessingException e) {
+                            log.error(ExceptionUtil.stacktraceToString(e));
+                        }
+                    }
+            );
+
+        } catch (Exception e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+        }
     }
 
     /**
@@ -130,9 +159,8 @@ public class MasterAlertNoticeService {
      *
      * @param tDlAlert 告警自定义规则数据库实体
      * @param request  告警请求体
-     * @return Result<String> 成功或失败
      */
-    public Result<String> sendToEmail(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
+    public void sendToEmail(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
 
         List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
         List<String> handlerMailAccountList = this.getHandlerMailAccountList(handlerIdList);
@@ -150,12 +178,10 @@ public class MasterAlertNoticeService {
         } catch (Exception e) {
             log.error(ExceptionUtil.stacktraceToString(e));
         }
-
-        return Result.success();
     }
 
     /**
-     * Description: 发送告警信息到指定接口
+     * Description: 发送告警信息到微信
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/16
@@ -166,24 +192,40 @@ public class MasterAlertNoticeService {
      *
      * @param tDlAlert 告警自定义规则数据库实体
      * @param request  告警请求体
-     * @return Result<String> 成功或失败
      */
-    public Result<String> sendToTargetInterface(TDlAlert tDlAlert, String request) {
-        List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
-        List<String> handlerInterfaceUriList = this.getHandlerInterfaceUriList(handlerIdList);
+    public void sendToWeiChat(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
+    }
 
-        try {
-            handlerInterfaceUriList.forEach(uri -> {
-                        this.remoteInvokeHandlerInterfaceService
-                                .iThirdHandlerInterfaceAPI(uri)
-                                .sendPostRequest(request);
-                    }
-            );
+    /**
+     * Description: 发送告警信息到钉钉
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/16
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlAlert 告警自定义规则数据库实体
+     * @param request  告警请求体
+     */
+    public void sendToDingDing(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
+    }
 
-        } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
-        }
-        return Result.success();
+    /**
+     * Description: 发送告警信息到飞书
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/16
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlAlert 告警自定义规则数据库实体
+     * @param request  告警请求体
+     */
+    public void sendToFeiShu(TDlAlert tDlAlert, AlertWebhookPayloadRequest request) {
     }
 
     /**

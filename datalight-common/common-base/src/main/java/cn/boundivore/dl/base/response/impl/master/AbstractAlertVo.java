@@ -90,11 +90,6 @@ public abstract class AbstractAlertVo {
         @Schema(name = "AlertVersion", title = "当前规则文件版本号", required = true)
         @JsonProperty(value = "AlertVersion", required = true)
         private Long alertVersion;
-
-        @Schema(name = "AlertHandlerTypeEnum", title = "告警触发后处理告警的操作类型", required = true)
-        @JsonProperty(value = "AlertHandlerTypeEnum", required = true)
-        private AlertHandlerTypeEnum alertHandlerTypeEnum;
-
     }
 
 
@@ -215,10 +210,6 @@ public abstract class AbstractAlertVo {
         @Schema(name = "Enabled", title = "是否启用", required = true)
         @JsonProperty(value = "Enabled", required = true)
         private Boolean enabled;
-
-        @Schema(name = "HandlerType", title = "告警触发后处理告警的操作类型", required = true)
-        @JsonProperty(value = "HandlerType", required = true)
-        private AlertHandlerTypeEnum handlerType;
 
     }
 

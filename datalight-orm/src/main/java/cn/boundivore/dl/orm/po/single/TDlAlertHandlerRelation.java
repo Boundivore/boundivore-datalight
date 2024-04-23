@@ -1,5 +1,6 @@
 package cn.boundivore.dl.orm.po.single;
 
+import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -35,5 +36,8 @@ public class TDlAlertHandlerRelation extends TBasePo<TDlAlertHandlerRelation> {
     @TableField("handler_id")
     private Long handlerId;
 
+    @ApiModelProperty("告警处理类型")
+    @TableField("handler_type")
+    private AlertHandlerTypeEnum handlerType;
 
 }

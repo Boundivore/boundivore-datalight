@@ -54,10 +54,4 @@ public class TDlAlert extends TBasePo<TDlAlert> {
     @ApiModelProperty("告警规则文件版本")
     @TableField("alert_version")
     private Long alertVersion;
-
-    @ApiModelProperty("告警处理类型")
-    @TableField("handler_type")
-    private AlertHandlerTypeEnum handlerType;
-
-
 }

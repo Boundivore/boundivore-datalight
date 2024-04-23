@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 22/04/2024 11:49:58
+ Date: 23/04/2024 15:56:28
 */
 
 SET NAMES utf8mb4;
@@ -33,7 +33,6 @@ CREATE TABLE `t_dl_alert`  (
   `alert_rule_content` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '规则配置内容 Base64',
   `enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否启用',
   `alert_version` bigint(20) NOT NULL DEFAULT 1 COMMENT '告警规则文件版本',
-  `handler_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警触发时的处理方式类型 枚举：见代码',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警配置信息表' ROW_FORMAT = DYNAMIC;
 
@@ -48,7 +47,7 @@ CREATE TABLE `t_dl_alert_handler_interface`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `interface_uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '接收告警的地址',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '处理告警接口配置信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '处理告警接口配置信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_alert_handler_mail
@@ -74,6 +73,7 @@ CREATE TABLE `t_dl_alert_handler_relation`  (
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `alert_id` bigint(20) NOT NULL COMMENT '告警 ID',
   `handler_id` bigint(20) NOT NULL COMMENT '处理信息 ID',
+  `handler_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '告警触发时的处理手段类型 枚举：见代码',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '告警与处理告警信息关联表' ROW_FORMAT = DYNAMIC;
 

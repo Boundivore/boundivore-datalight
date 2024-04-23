@@ -139,7 +139,7 @@ public class MasterAlertHandlerService {
                 }
         );
 
-        // 处理解绑
+        // 解绑
         if (!CollUtil.isEmpty(unbindingList)) {
             List<Long> unbindingRelationIds = unbindingList.stream()
                     .flatMap(i -> tDlAlertHandlerRelationService.lambdaQuery()
@@ -155,7 +155,7 @@ public class MasterAlertHandlerService {
             );
         }
 
-        // 处理绑定
+        // 绑定
         if (!CollUtil.isEmpty(bindingList)) {
             List<TDlAlertHandlerRelation> bindingRelations = bindingList.stream()
                     .map(i -> {
@@ -163,6 +163,7 @@ public class MasterAlertHandlerService {
                         relation.setVersion(0L);
                         relation.setHandlerId(i.getHandlerId());
                         relation.setAlertId(i.getAlertId());
+                        relation.setHandlerType(i.getAlertHandlerTypeEnum());
                         return relation;
                     })
                     .collect(Collectors.toList());
