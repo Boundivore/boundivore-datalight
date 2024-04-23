@@ -34,7 +34,6 @@ import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceIm
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
-import com.baomidou.mybatisplus.extension.service.IService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -88,6 +87,42 @@ public class MasterAlertHandlerService {
     )
     @LocalLock
     public Result<String> bindAlertAndAlertHandler(AbstractAlertHandlerRequest.AlertHandlerRelationListRequest request) {
+        // 检查处理方式是否合理
+        List<AlertHandlerTypeEnum> noNeedalertHandlerTypeEnumList = CollUtil.newArrayList(
+                AlertHandlerTypeEnum.ALERT_IGNORE,
+                AlertHandlerTypeEnum.ALERT_LOG
+        );
+
+        List<AlertHandlerTypeEnum> unsupportedHandlerTypeEnumList = CollUtil.newArrayList(
+                AlertHandlerTypeEnum.ALERT_WEICHAT,
+                AlertHandlerTypeEnum.ALERT_DINGDING,
+                AlertHandlerTypeEnum.ALERT_FEISHU
+        );
+
+        request.getAlertHandlerRelationList()
+                .forEach(i -> {
+                            Assert.isFalse(
+                                    noNeedalertHandlerTypeEnumList.contains(i.getAlertHandlerTypeEnum()),
+                                    () -> new IllegalArgumentException(
+                                            String.format(
+                                                    "%s 类型无需绑定告警处理方式",
+                                                    i.getAlertHandlerTypeEnum()
+                                            )
+                                    )
+                            );
+
+                            Assert.isFalse(
+                                    unsupportedHandlerTypeEnumList.contains(i.getAlertHandlerTypeEnum()),
+                                    () -> new IllegalArgumentException(
+                                            String.format(
+                                                    "%s 类型暂未开通支持",
+                                                    i.getAlertHandlerTypeEnum()
+                                            )
+                                    )
+                            );
+                        }
+                );
+
         // 获取需要绑定和解绑的列表
         List<AbstractAlertHandlerRequest.AlertHandlerRelationRequest> bindingList = request.getAlertHandlerRelationList().stream()
                 .filter(AbstractAlertHandlerRequest.AlertHandlerRelationRequest::getIsBinding)

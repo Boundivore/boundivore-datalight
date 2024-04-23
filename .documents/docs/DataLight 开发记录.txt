@@ -705,15 +705,14 @@ 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
 
 新增告警：
 {
-    "AlertHandlerTypeEnum": "ALERT_INTERFACE",
-    "AlertRuleName": "MyAlert2",
+    "AlertRuleName": "MyAlert1",
     "AlertRuleContent": {
         "Groups": [
             {
                 "Name": "Custom",
                 "Rules": [
                     {
-                        "Alert": "NodeManager ShutDown",
+                        "Alert": "NodeManager ShutDown TEST",
                         "Annotations": {
                             "alert_type": "",
                             "alert_id": "",
