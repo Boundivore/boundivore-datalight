@@ -58,8 +58,7 @@ public class LocalLockAspect {
         String principal = "defaultPrincipal";
         try {
             principal = StpUtil.getSession().get("principal", "defaultPrincipal");
-        } catch (Exception e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
+        } catch (Exception ignored) {
         }
 
         Object[] args = joinPoint.getArgs();
