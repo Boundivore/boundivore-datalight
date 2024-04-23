@@ -54,6 +54,14 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterAlertAPI {
 
+
+    @PostMapping(value = "/testAlertInterface")
+    @ApiOperation(notes = "测试告警调用外部通知接口", value = "测试告警调用外部通知接口")
+    Result<String> testAlertInterface(
+            @RequestBody
+            String body
+    );
+
     @PostMapping(value = "/alert/alertHook")
     @ApiOperation(notes = "接收原始告警信息", value = "接收原始告警信息")
     Result<String> alertHook(

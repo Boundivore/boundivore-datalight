@@ -29,6 +29,7 @@ import cn.boundivore.dl.service.master.service.MasterAlertHandlerService;
 import cn.boundivore.dl.service.master.service.MasterAlertService;
 import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -43,6 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class MasterAlertController implements IMasterAlertAPI {
 
     private final MasterAlertService masterAlertService;
@@ -50,6 +52,12 @@ public class MasterAlertController implements IMasterAlertAPI {
     private final MasterAlertHandlerInterfaceService masterAlertHandlerInterfaceService;
     private final MasterAlertHandlerMailService masterAlertHandlerMailService;
     private final MasterAlertHandlerService masterAlertHandlerService;
+
+    @Override
+    public Result<String> testAlertInterface(String body) {
+        log.info("告警外部接口调用: {}", body);
+        return Result.success();
+    }
 
     @SaIgnore
     @Override
