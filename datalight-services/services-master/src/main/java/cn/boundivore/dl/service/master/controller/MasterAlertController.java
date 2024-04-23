@@ -53,6 +53,7 @@ public class MasterAlertController implements IMasterAlertAPI {
     private final MasterAlertHandlerMailService masterAlertHandlerMailService;
     private final MasterAlertHandlerService masterAlertHandlerService;
 
+    @SaIgnore
     @Override
     public Result<String> testAlertInterface(String body) {
         log.info("告警外部接口调用: {}", body);
