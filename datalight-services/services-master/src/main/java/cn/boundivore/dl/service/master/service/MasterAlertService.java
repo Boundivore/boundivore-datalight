@@ -453,9 +453,9 @@ public class MasterAlertService {
     private void resetPrometheusRuleList(Long clusterId,
                                          YamlPrometheusConfig yamlPrometheusConfig) {
 
-        final String regexRulePath = "rules/RULE-.*\\.yaml";
+        final String staticRulePath = "rules/RULE-";
 
-        // 获取当前启用的警报文件路径列表
+        // 获取当前启用的告警文件路径列表
         List<String> alertRulePathList = this.getAlertSimpleList(clusterId)
                 .getData()
                 .getAlertSimpleList()
@@ -467,19 +467,13 @@ public class MasterAlertService {
         // 获取当前配置中所有规则文件
         Set<String> currentRuleFiles = new LinkedHashSet<>(yamlPrometheusConfig.getRuleFiles());
 
-        // 准备新的规则文件集合
-        Set<String> newRuleFiles = currentRuleFiles.stream()
-                .filter(ruleFile -> ruleFile.matches(regexRulePath) || alertRulePathList.contains(ruleFile))
+        // 找出所有符合 "rules/RULE-*.yaml" 的文件
+        Set<String> staticRuleFiles = currentRuleFiles.stream()
+                .filter(ruleFile -> ruleFile.contains(staticRulePath))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        // 找出所有符合 "rules/RULE-*.yaml" 的文件
-        List<String> rulePatternFiles = newRuleFiles.stream()
-                .filter(ruleFile -> ruleFile.matches(regexRulePath))
-                .collect(Collectors.toList());
-
         // 找出其他的文件，并按字母顺序排序
-        List<String> otherFiles = newRuleFiles.stream()
-                .filter(ruleFile -> !ruleFile.matches(regexRulePath))
+        List<String> otherFiles = alertRulePathList.stream()
                 .sorted()
                 .collect(Collectors.toList());
 
@@ -487,7 +481,7 @@ public class MasterAlertService {
         yamlPrometheusConfig.getRuleFiles().clear();
 
         // 首先添加符合 "rules/RULE-*.yaml" 的文件
-        yamlPrometheusConfig.getRuleFiles().addAll(rulePatternFiles);
+        yamlPrometheusConfig.getRuleFiles().addAll(staticRuleFiles);
 
         // 然后添加其他文件
         yamlPrometheusConfig.getRuleFiles().addAll(otherFiles);
