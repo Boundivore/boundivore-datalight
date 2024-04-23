@@ -733,3 +733,21 @@ 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
     },
     "ClusterId": 1782282473011208194
 }
+
+
+{
+    "HandlerId": [
+        {
+            "AlertHandlerTypeEnum": "ALERT_INTERFACE",
+            "AlertId": 1782689258691895297,
+            "HandlerId": 1782689479211622401,
+            "IsBinding": true
+        },
+        {
+            "AlertHandlerTypeEnum": "ALERT_MAIL",
+            "AlertId": 1782689258691895297,
+            "HandlerId": 1782689488892076034,
+            "IsBinding": true
+        }
+    ]
+}

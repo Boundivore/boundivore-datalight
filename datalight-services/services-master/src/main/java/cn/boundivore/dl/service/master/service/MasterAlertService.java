@@ -168,9 +168,9 @@ public class MasterAlertService {
                             Map<String, String> annotationMap = alert.getAnnotations();
                             Long alertId = Long.parseLong(annotationMap.get(ANNOTATION_KEY_ALERT_ID));
                             try {
-                                TDlAlert tDlAlert = tDlAlertMap.putIfAbsent(
+                                TDlAlert tDlAlert = tDlAlertMap.computeIfAbsent(
                                         alertId,
-                                        this.tDlAlertService.getById(alertId)
+                                        this.tDlAlertService::getById
                                 );
 
                                 // 如果需要在 TDlAlert 为 null 时输出错误日志，可改动此处
