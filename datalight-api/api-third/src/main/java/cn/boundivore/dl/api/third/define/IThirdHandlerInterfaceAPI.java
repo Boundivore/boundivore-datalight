@@ -50,6 +50,6 @@ public interface IThirdHandlerInterfaceAPI {
     @ApiOperation(notes = "向任意 URI 发送 POST 请求", value = "向任意 URI 发送 POST 请求")
     Object sendPostRequest(
             @RequestBody
-            Object requestBody
+            String requestBody
     );
 }

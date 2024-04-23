@@ -27,6 +27,9 @@ import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -136,7 +139,7 @@ public class MasterAlertNoticeService {
                         try {
                             this.remoteInvokeHandlerInterfaceService
                                     .iThirdHandlerInterfaceAPI(uri)
-                                    .sendPostRequest(objectMapper.writeValueAsString(request));
+                                    .sendPostRequest(this.objectMapper.writeValueAsString(request));
                         } catch (JsonProcessingException e) {
                             log.error(ExceptionUtil.stacktraceToString(e));
                         }
