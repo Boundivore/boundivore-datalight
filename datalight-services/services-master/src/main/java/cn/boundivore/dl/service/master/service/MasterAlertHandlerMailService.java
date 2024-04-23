@@ -85,7 +85,7 @@ public class MasterAlertHandlerMailService {
         tDlAlertHandlerMail.setMailAccount(request.getMailAccount());
 
         // 保存到数据库
-        Assert.isFalse(
+        Assert.isTrue(
                 this.tDlAlertHandlerMailService.save(tDlAlertHandlerMail),
                 () -> new DatabaseException("保存到数据库失败")
         );

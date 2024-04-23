@@ -85,7 +85,7 @@ public class MasterAlertHandlerInterfaceService {
         tDlAlertHandlerInterface.setInterfaceUri(request.getInterfaceUri());
 
         // 保存到数据库
-        Assert.isFalse(
+        Assert.isTrue(
                 this.tDlAlertHandlerInterfaceService.save(tDlAlertHandlerInterface),
                 () -> new DatabaseException("保存到数据库失败")
         );
