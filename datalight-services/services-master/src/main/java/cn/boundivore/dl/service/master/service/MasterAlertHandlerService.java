@@ -89,8 +89,7 @@ public class MasterAlertHandlerService {
     public Result<String> bindAlertAndAlertHandler(AbstractAlertHandlerRequest.AlertHandlerRelationListRequest request) {
         // 检查处理方式是否合理
         List<AlertHandlerTypeEnum> noNeedalertHandlerTypeEnumList = CollUtil.newArrayList(
-                AlertHandlerTypeEnum.ALERT_IGNORE,
-                AlertHandlerTypeEnum.ALERT_LOG
+                AlertHandlerTypeEnum.ALERT_IGNORE
         );
 
         List<AlertHandlerTypeEnum> unsupportedHandlerTypeEnumList = CollUtil.newArrayList(
