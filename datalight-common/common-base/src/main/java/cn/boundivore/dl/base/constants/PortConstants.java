@@ -45,22 +45,22 @@ public class PortConstants {
             put("MONITOR-MySQLExporter", "9104");
             put("MONITOR-NodeExporter", "9100");
 
-            put("ZOOKEEPER-QuarumPeermain", "17001");
+            put("ZOOKEEPER-QuarumPeermain", "18001");
 
-            put("HDFS-JournalNode", "17002");
-            put("HDFS-NameNode", "17003");
-            put("HDFS-ZKFailoverController", "17004");
-            put("HDFS-DataNode", "17005");
-            put("HDFS-HttpFS", "17006");
+            put("HDFS-JournalNode", "18002");
+            put("HDFS-NameNode", "18003");
+            put("HDFS-ZKFailoverController", "18004");
+            put("HDFS-DataNode", "18005");
+            put("HDFS-HttpFS", "18006");
 
-            put("YARN-ResourceManager", "17007");
-            put("YARN-NodeManager", "17008");
-            put("YARN-TimelineServer", "17009");
-            put("YARN-HistoryServer", "17010");
+            put("YARN-ResourceManager", "18007");
+            put("YARN-NodeManager", "18008");
+            put("YARN-TimelineServer", "18009");
+            put("YARN-HistoryServer", "18010");
 
-            put("HIVE-MetaStore", "17011");
-            put("HIVE-HiveServer2", "17012");
-            put("HIVE-TezUI", "17013");
+            put("HIVE-MetaStore", "18011");
+            put("HIVE-HiveServer2", "18012");
+            put("HIVE-TezUI", "18013");
 
         }
     };

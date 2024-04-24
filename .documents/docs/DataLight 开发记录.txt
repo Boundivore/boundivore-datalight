@@ -44,6 +44,8 @@ hadoop202.com
 bm9kZVsxLTNdCm5vZGVbMDEtMTJdClsxLTRdbm9kZQpub2RlW2EtY10KbGludXhbMS0zXS5jb20KbGludXgtYWRtaW5bMS0zXS5jb20Kbm9kZTEwOQpsaW51eDEwMy5jb20KaGFkb29wMjAyLmNvbQ==
 
 
+!connect jdbc:hive2://node01:10000
+
 node[01-05]
 node-[1-3]
 
