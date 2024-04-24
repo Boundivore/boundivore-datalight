@@ -13,7 +13,7 @@ start_exporter() {
 
 stop_exporter() {
     local pids
-    pids=$(ps aux | grep "node_exporter" | grep -v grep | awk '{print $2}')
+    pids=$(ps aux | grep "MONITOR/exporter/node/node_exporter" | grep -v grep | awk '{print $2}')
     if [ -n "$pids" ]; then
         kill -9 "${pids}"
         echo "Node Exporter stopped successfully."
