@@ -98,7 +98,7 @@ start_tezui() {
   if [ -f "${TEZUI_PID_FILE}" ]; then
     echo "TezUI is already running."
   else
-    su datalight -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/startup.sh"
+    su "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/startup.sh"
     echo $! > "${TEZUI_PID_FILE}"
     chown "${USER_NAME}":"${USER_NAME}" "${TEZUI_PID_FILE}"
     echo "TezUI started with PID $(cat "${TEZUI_PID_FILE}")."
@@ -108,7 +108,7 @@ start_tezui() {
 stop_tezui() {
   if [ -f "${TEZUI_PID_FILE}" ]; then
     pid=$(cat "${TEZUI_PID_FILE}")
-    su datalight -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/shutdown.sh"
+    su "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/shutdown.sh"
     if kill -0 "$pid" 2>/dev/null; then
       kill "$pid" && rm -f "${TEZUI_PID_FILE}"
       echo "TezUI stopped."
