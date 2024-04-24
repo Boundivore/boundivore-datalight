@@ -47,3 +47,9 @@ datalight:
       port: '8188'
       path: '/applicationhistory'
       button-name-suffix: '-Web UI'
+
+    - service: HIVE
+      component: TezUI
+      port: '9999'
+      path: '/tez-ui'
+      button-name-suffix: '-Web UI'
