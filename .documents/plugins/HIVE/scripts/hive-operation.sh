@@ -100,6 +100,7 @@ start_tezui() {
   else
     su datalight -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/startup.sh"
     echo $! > "${TEZUI_PID_FILE}"
+    chown "${USER_NAME}":"${USER_NAME}" "${TEZUI_PID_FILE}"
     echo "TezUI started with PID $(cat "${TEZUI_PID_FILE}")."
   fi
 }
