@@ -77,5 +77,5 @@ export HIVE_SERVER2_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Dcom.sun.management.jmxremote.ssl=false \
 -Dcom.sun.management.jmxremote.local.only=false \
--Dcom.sun.management.jmxremote.port={{jmxRemotePort_Hiv eServer2}} \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HiveServer2}} \
 -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HiveServer2}}:${SERVICE_DIR}/HIVE/exporter/conf/jmx_config_HiveServer2.yaml"
