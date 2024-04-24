@@ -52,7 +52,7 @@ public enum SCStateEnum implements IBaseEnum {
      * 服务的枚举
      */
     // 已部署的服务，在其下新增组件时，将处于 SELECTED_ADDITION 状态
-    SELECTED_ADDITION("8", "选择增量部署"),
+    SELECTED_ADDITION("8", "增量部署中"),
     // 无论是第一次部署还是增量部署，部署过程中，服务处于：CHANGING
     CHANGING("9", "变更中"),
     // 当服务部署完成时，处于该状态
