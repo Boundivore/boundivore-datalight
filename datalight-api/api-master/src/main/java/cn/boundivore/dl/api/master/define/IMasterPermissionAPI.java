@@ -59,6 +59,10 @@ public interface IMasterPermissionAPI {
             Long permissionId
     ) throws Exception;
 
+    @GetMapping(value = "/permission/getPermissionList")
+    @ApiOperation(notes = "获取所有权限列表", value = "获取所有权限列表")
+    Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionList() throws Exception;
+
     @GetMapping(value = "/permission/getPermissionListByUserId")
     @ApiOperation(notes = "查询当前用户权限列表", value = "查询当前用户权限列表")
     Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByUserId(

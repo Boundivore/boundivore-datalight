@@ -51,6 +51,11 @@ public class MasterPermissionController implements IMasterPermissionAPI {
     }
 
     @Override
+    public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionList() throws Exception {
+        return this.masterPermissionService.getPermissionList();
+    }
+
+    @Override
     public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionListByUserId(Long userId) throws Exception {
         return this.masterPermissionService.getPermissionListByUserId(userId);
     }

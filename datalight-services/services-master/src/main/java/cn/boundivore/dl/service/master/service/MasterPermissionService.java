@@ -297,6 +297,37 @@ public class MasterPermissionService {
     }
 
     /**
+     * Description: 获取所有权限列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Result<AbstractRolePermissionRuleVo.PermissionListVo> 权限列表
+     */
+    public Result<AbstractRolePermissionRuleVo.PermissionListVo> getPermissionList() {
+        AbstractRolePermissionRuleVo.PermissionListVo permissionListVo = new AbstractRolePermissionRuleVo.PermissionListVo();
+        permissionListVo.setPermissionList(new ArrayList<>());
+
+        // 获取权限列表
+        List<TDlPermission> tDlPermissionList = this.tDlPermissionService.lambdaQuery()
+                .select()
+                .eq(TDlPermission::getIsDeleted, false)
+                .list();
+
+        permissionListVo.setPermissionList(
+                tDlPermissionList.stream()
+                        .map(this.iPermissionRuleConverter::convert2PermissionVo)
+                        .collect(Collectors.toList())
+        );
+
+        return Result.success(permissionListVo);
+    }
+
+    /**
      * Description: 根据用户 ID 获取权限信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -405,5 +436,4 @@ public class MasterPermissionService {
                 .map(this.iPermissionRuleConverter::convert2PermissionVo)
                 .collect(Collectors.toList());
     }
-
 }
