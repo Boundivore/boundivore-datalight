@@ -45,6 +45,31 @@ public class PortConstants {
             put("MONITOR-MySQLExporter", "9104");
             put("MONITOR-NodeExporter", "9100");
 
+            put("ZOOKEEPER-QuarumPeermain", "19001");
+
+            put("HDFS-JournalNode", "19002");
+            put("HDFS-NameNode", "19003");
+            put("HDFS-ZKFailoverController", "19004");
+            put("HDFS-DataNode", "19005");
+            put("HDFS-HttpFS", "19006");
+
+            put("YARN-ResourceManager", "19007");
+            put("YARN-NodeManager", "19008");
+            put("YARN-TimelineServer", "19009");
+            put("YARN-HistoryServer", "19010");
+
+            put("HIVE-MetaStore", "19011");
+            put("HIVE-HiveServer2", "19012");
+            put("HIVE-TezUI", "19013");
+
+        }
+    };
+
+    // <ServiceName-ComponentName, RemotePort>
+    public final static Map<String, String> REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
+        private static final long serialVersionUID = -6792272135600528315L;
+
+        {
             put("ZOOKEEPER-QuarumPeermain", "18001");
 
             put("HDFS-JournalNode", "18002");
@@ -61,31 +86,6 @@ public class PortConstants {
             put("HIVE-MetaStore", "18011");
             put("HIVE-HiveServer2", "18012");
             put("HIVE-TezUI", "18013");
-
-        }
-    };
-
-    // <ServiceName-ComponentName, RemotePort>
-    public final static Map<String, String> REMOTE_PORT_MAP = new LinkedHashMap<String, String>() {
-        private static final long serialVersionUID = -6792272135600528315L;
-
-        {
-            put("ZOOKEEPER-QuarumPeermain", "16001");
-
-            put("HDFS-JournalNode", "16002");
-            put("HDFS-NameNode", "16003");
-            put("HDFS-ZKFailoverController", "16004");
-            put("HDFS-DataNode", "16005");
-            put("HDFS-HttpFS", "16006");
-
-            put("YARN-ResourceManager", "16007");
-            put("YARN-NodeManager", "16008");
-            put("YARN-TimelineServer", "16009");
-            put("YARN-HistoryServer", "16010");
-
-            put("HIVE-MetaStore", "16011");
-            put("HIVE-HiveServer2", "16012");
-            put("HIVE-TezUI", "16013");
         }
     };
 
