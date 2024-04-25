@@ -22,8 +22,6 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 
-import static cn.boundivore.dl.plugin.hdfs.config.ConfigLogicJmxYaml.SERVICE_NAME;
-
 /**
  * Description: 配置 hadoop-env.sh 文件
  * Created by: Boundivore
@@ -57,14 +55,14 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 .replace(
                         "{{jmxRemotePort_JournalNode}}",
                         PortConstants.getRemotePort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "JournalNode"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_JournalNode}}",
                         PortConstants.getExporterPort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "JournalNode"
                         )
                 )
@@ -72,14 +70,14 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 .replace(
                         "{{jmxRemotePort_NameNode}}",
                         PortConstants.getRemotePort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "NameNode"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_NameNode}}",
                         PortConstants.getExporterPort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "NameNode"
                         )
                 )
@@ -87,14 +85,14 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 .replace(
                         "{{jmxRemotePort_ZKFailoverController}}",
                         PortConstants.getRemotePort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "ZKFailoverController"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_ZKFailoverController}}",
                         PortConstants.getExporterPort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "ZKFailoverController"
                         )
                 )
@@ -102,14 +100,14 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 .replace(
                         "{{jmxRemotePort_DataNode}}",
                         PortConstants.getRemotePort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "DataNode"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_DataNode}}",
                         PortConstants.getExporterPort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "DataNode"
                         )
                 )
@@ -117,14 +115,14 @@ public class ConfigLogicHadoopEnvSh extends AbstractConfigLogic {
                 .replace(
                         "{{jmxRemotePort_HttpFS}}",
                         PortConstants.getRemotePort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "HttpFS"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_HttpFS}}",
                         PortConstants.getExporterPort(
-                                SERVICE_NAME,
+                                ConfigLogicJmxYaml.SERVICE_NAME,
                                 "HttpFS"
                         )
                 )

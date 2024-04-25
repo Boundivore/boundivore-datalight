@@ -59,6 +59,14 @@ public interface IMasterRoleAPI {
             AbstractRoleRequest.NewRoleRequest request
     ) throws Exception;
 
+    @PostMapping(value = "/role/switchRoleEnabled")
+    @ApiOperation(notes = "切换角色是否启用", value = "切换角色是否启用")
+    Result<AbstractRolePermissionRuleVo.RoleVo> switchRoleEnabled(
+            @RequestBody
+            @Valid
+            AbstractRoleRequest.SwitchRoleEnabledRequest request
+    ) throws Exception;
+
     @GetMapping(value = "/role/getRoleById")
     @ApiOperation(notes = "根据角色 ID 获取角色信息", value = "根据角色 ID 获取角色信息")
     Result<AbstractRolePermissionRuleVo.RoleVo> getRoleById(

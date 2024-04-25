@@ -1,0 +1,367 @@
+datalight:
+  service:
+    name: HBASE
+    version: 3.5.9
+    tgz: dlc-hbase-3.5.9.tar.gz
+    conf-dirs:
+      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/exporter/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HBASE/templated/exporter/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HBASE/templated/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/HBASE/templated/conf'
+
+    # TODO FOR TEST
+    #      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/exporter/conf'
+    #        templated-dir: 'D:/datalight/plugins/HBASE/templated/exporter/conf'
+    #
+    #      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/bin'
+    #        templated-dir: 'D:/datalight/plugins/HBASE/templated/bin'
+    #
+    #      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/conf'
+    #        templated-dir: 'D:/datalight/plugins/HBASE/templated/conf'
+
+    config-event-handler-jar: 'plugins-HBASE-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.hbase.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-HBASE-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.hbase.config.ConfigHBASE'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
+    components:
+      - name: HMaster1
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ 'HMaster2' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 HMaster1'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 HMaster1'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 HMaster1'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 HMaster1'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: HMaster2
+        priority: 2
+        max: 1
+        min: 1
+        mutexes: [ 'HMaster1' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 HMaster2'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 HMaster2'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 HMaster2'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 HMaster2'
+                shell: 'hbase-operation.sh'
+                args: [ 'HMaster', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: HRegionServer
+        priority: 3
+        max: -1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 HRegionServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HRegionServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 HRegionServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HRegionServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 HRegionServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HRegionServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 HRegionServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HRegionServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: HThriftServer
+        priority: 4
+        max: -1
+        min: 1
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 HThriftServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HThriftServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 HThriftServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HRegionServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 HThriftServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HThriftServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 HThriftServer'
+                shell: 'hbase-operation.sh'
+                args: [ 'HThriftServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: HBASEClient
+        priority: 5
+        max: -1
+        min: 0
+        mutexes: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: COMMAND
+                name: '正在完成 HBASEClient 部署'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '启动 HBASEClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: COMMAND
+                name: '停止 HBASEClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '重启 HBASEClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+

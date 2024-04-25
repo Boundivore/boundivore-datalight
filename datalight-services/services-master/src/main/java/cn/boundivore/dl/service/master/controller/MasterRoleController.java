@@ -47,6 +47,11 @@ public class MasterRoleController implements IMasterRoleAPI {
     }
 
     @Override
+    public Result<AbstractRolePermissionRuleVo.RoleVo> switchRoleEnabled(AbstractRoleRequest.SwitchRoleEnabledRequest request) throws Exception {
+        return this.masterRoleService.switchRoleEnabled(request);
+    }
+
+    @Override
     public Result<AbstractRolePermissionRuleVo.RoleVo> getRoleById(Long roleId) throws Exception {
         return this.masterRoleService.getRoleById(roleId);
     }

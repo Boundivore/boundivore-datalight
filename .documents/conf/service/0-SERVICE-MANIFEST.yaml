@@ -38,4 +38,10 @@ datalight:
         priority: 6
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
         relatives: [ 'MONITOR' ]
+      - name: HBASE
+        type: STORAGE
+        desc: '大型分布式非结构化数据库'
+        priority: 7
+        dependencies: [ 'ZOOKEEPER', 'HDFS' ]
+        relatives: [ 'MONITOR' ]
 

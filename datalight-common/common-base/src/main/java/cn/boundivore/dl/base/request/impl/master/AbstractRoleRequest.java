@@ -3,7 +3,6 @@ package cn.boundivore.dl.base.request.impl.master;
 import cn.boundivore.dl.base.enumeration.impl.RoleTypeEnum;
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -119,6 +118,30 @@ public abstract class AbstractRoleRequest {
         @NotEmpty(message = "角色用户映射列表不能为空")
         private List<RoleUserIdRequest> roleUserList;
 
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractRoleRequest.SwitchRoleEnabledRequest",
+            description = "AbstractRoleRequest.SwitchRoleEnabledRequest: 切换角色是否启用 请求体"
+    )
+    public final static class SwitchRoleEnabledRequest implements IRequest {
+
+        private static final long serialVersionUID = 6699051197741306573L;
+
+        @Schema(name = "RoleId", title = "角色 ID", required = true)
+        @JsonProperty(value = "RoleId", required = true)
+        @NotNull(message = "角色 ID 不能为空")
+        private Long roleId;
+
+        @Schema(name = "Enabled", title = "是否启用标记", required = true)
+        @JsonProperty(value = "Enabled", required = true)
+        @NotNull(message = "是否启用标记不能为空")
+        private Boolean enabled;
 
     }
 

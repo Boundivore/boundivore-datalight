@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.enumeration.impl.StaticRoleTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -106,7 +107,7 @@ public class MasterRoleService {
             adminRole.setIsDeleted(false);
             adminRole.setEditEnabled(false);
             adminRole.setRoleName(StaticRoleTypeEnum.ADMIN.name());
-            adminRole.setRoleCode("ROLE00001");
+            adminRole.setRoleCode("ROLE_00001");
             adminRole.setEnabled(true);
             adminRole.setRoleType(RoleTypeEnum.ROLE_STATIC);
             adminRole.setRoleComment("内置超级角色，不可编辑，不可删除");
@@ -166,6 +167,7 @@ public class MasterRoleService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<AbstractRolePermissionRuleVo.RoleVo> newRole(AbstractRoleRequest.NewRoleRequest request) {
         IdUtil.fastSimpleUUID();
 
@@ -195,6 +197,12 @@ public class MasterRoleService {
         tDlRole.setRoleType(request.getRoleType());
         tDlRole.setEnabled(request.getEnabled());
         tDlRole.setRoleComment(request.getRoleComment());
+        tDlRole.setRoleCode(
+                String.format(
+                        "ROLE_%s",
+                        IdUtil.fastSimpleUUID()
+                )
+        );
 
         tDlRole.setIsDeleted(false);
         tDlRole.setEditEnabled(true);
@@ -204,6 +212,46 @@ public class MasterRoleService {
                 () -> new DatabaseException("新建角色失败")
         );
 
+
+        return Result.success(this.iRoleConverter.convert2RoleVo(tDlRole));
+    }
+
+    /**
+     * Description: 切换角色是否启用
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 角色是否启用请求体
+     * @return Result<AbstractRolePermissionRuleVo.RoleVo> 角色详情
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @LocalLock
+    public Result<AbstractRolePermissionRuleVo.RoleVo> switchRoleEnabled(AbstractRoleRequest.SwitchRoleEnabledRequest request) {
+        // 检查是否为静态角色，静态角色不可设置是否启用
+        TDlRole tDlRole = this.tDlRoleService.getById(request.getRoleId());
+        Assert.notNull(
+                tDlRole,
+                () -> new BException("无法找到对应角色")
+        );
+        Assert.isTrue(
+                tDlRole.getRoleType() != RoleTypeEnum.ROLE_STATIC,
+                () -> new BException("静态角色不支持此操作")
+        );
+
+        tDlRole.setEnabled(request.getEnabled());
+
+        Assert.isTrue(
+                this.tDlRoleService.updateById(tDlRole),
+                () -> new DatabaseException("更新数据库失败")
+        );
 
         return Result.success(this.iRoleConverter.convert2RoleVo(tDlRole));
     }
@@ -250,7 +298,6 @@ public class MasterRoleService {
 
         roleListVo.setRoleList(this.tDlRoleService.lambdaQuery()
                 .select()
-                .eq(TDlRole::getEnabled, true)
                 .eq(TDlRole::getIsDeleted, false)
                 .list()
                 .stream()
@@ -290,7 +337,6 @@ public class MasterRoleService {
             roleListVo.setRoleList(this.tDlRoleService.lambdaQuery()
                     .select()
                     .in(TBasePo::getId, roleIdList)
-                    .eq(TDlRole::getEnabled, true)
                     .eq(TDlRole::getIsDeleted, false)
                     .list()
                     .stream()
@@ -396,6 +442,4 @@ public class MasterRoleService {
 
         return Result.success();
     }
-
-
 }
