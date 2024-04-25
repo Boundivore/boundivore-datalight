@@ -163,7 +163,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "TezUI",
+          "alias": "HiveServer2",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -231,7 +231,7 @@
           "refId": "A"
         }
       ],
-      "title": "TezUI Live State",
+      "title": "HiveServer2 Live State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
@@ -315,7 +315,7 @@
           "type": "prometheus",
           "uid": "MONITOR-Prometheus"
         },
-        "definition": "label_values({job='HIVE-TezUI'},job)",
+        "definition": "label_values({job='HIVE-HiveServer2'},job)",
         "hide": 0,
         "includeAll": false,
         "label": "JobName",
@@ -323,7 +323,7 @@
         "name": "JobName",
         "options": [],
         "query": {
-          "query": "label_values({job='HIVE-TezUI'},job)",
+          "query": "label_values({job='HIVE-HiveServer2'},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -363,8 +363,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "HIVE-TezUI",
-  "uid": "HIVE-TezUI",
+  "title": "HIVE-HiveServer2",
+  "uid": "HIVE-HiveServer2",
   "version": 1,
   "weekStart": ""
 }
