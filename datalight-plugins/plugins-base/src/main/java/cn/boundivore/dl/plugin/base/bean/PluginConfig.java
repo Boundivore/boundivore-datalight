@@ -68,6 +68,7 @@ public class PluginConfig implements Serializable {
     public static class UnixEnv implements Serializable {
         private static final long serialVersionUID = 5729312354089392214L;
 
+        String JAVA_HOME;
         String DATALIGHT_DIR;
         String SERVICE_DIR;
         String LOG_DIR;

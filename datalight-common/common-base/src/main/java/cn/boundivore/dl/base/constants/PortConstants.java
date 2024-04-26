@@ -63,6 +63,7 @@ public class PortConstants {
             put("HIVE-TezUI", "19013");
             put("HBASE-HMaster", "19014");
             put("HBASE-HRegionServer", "19015");
+            put("HBASE-HThriftServer", "19016");
         }
     };
 
@@ -89,6 +90,7 @@ public class PortConstants {
             put("HIVE-TezUI", "18013");
             put("HBASE-HMaster", "18014");
             put("HBASE-HRegionServer", "18015");
+            put("HBASE-HThriftServer", "18016");
         }
     };
 

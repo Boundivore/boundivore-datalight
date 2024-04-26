@@ -38,6 +38,7 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
 
     public static final String JMX_CONFIG_FILE_HMaster = "jmx_config_HMaster.yaml";
     public static final String JMX_CONFIG_FILE_HRegionServer = "jmx_config_HRegionServer.yaml";
+    public static final String JMX_CONFIG_FILE_HThriftServer = "jmx_config_HThriftServer.yaml";
     public static final String SERVICE_NAME = "HBASE";
 
 
@@ -64,6 +65,12 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
                 jmxRemotePort = PortConstants.getRemotePort(
                         SERVICE_NAME,
                         "HRegionServer"
+                );
+                break;
+            case JMX_CONFIG_FILE_HThriftServer:
+                jmxRemotePort = PortConstants.getRemotePort(
+                        SERVICE_NAME,
+                        "HThriftServer"
                 );
                 break;
             default:

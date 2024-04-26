@@ -524,6 +524,7 @@ public class JobService {
         YamlDirectory.Directory directoryYaml = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
         pluginConfig.setUnixEnv(
                 new PluginConfig.UnixEnv(
+                        directoryYaml.getJavaHome(),
                         directoryYaml.getDatalightDir(),
                         directoryYaml.getServiceDir(),
                         directoryYaml.getLogDir(),

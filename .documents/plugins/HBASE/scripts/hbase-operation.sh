@@ -6,7 +6,6 @@
 # PID_DIR="/data/datalight/pids"
 # DATA_DIR="/data/datalight/data"
 
-
 set -e
 
 # 检查是否以 root 身份运行脚本
@@ -15,18 +14,16 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# shellcheck disable=SC2034
+# 用户和组名
 USER_NAME="datalight"
-# shellcheck disable=SC2034
 GROUP_NAME="datalight"
 
 SERVICE_NAME="HBASE"
-
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
 # 检查参数是否为空
 if [ -z "$1" ]; then
-  echo "Usage: $0 <JournalNode|NameNode|ZKFailoverController|DataNode|HttpFS> <start|stop|restart>"
+  echo "Usage: $0 <HMaster|HRegionServer|HThriftServer2> <start|stop|restart>"
   exit 1
 fi
 
@@ -38,72 +35,66 @@ OPERATION="$2"
 # 输出操作提醒
 echo "To ${OPERATION} ${COMPONENT_NAME} ..."
 
-# new cmd: su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start journalnode" "${USER_NAME}"
-
-shift
-
 case "${COMPONENT_NAME}" in
 "HMaster")
-  case "$1" in
+  case "${OPERATION}" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start master" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh start master" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon stop master" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh stop master" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon stop master" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh stop master" "${USER_NAME}"
     sleep 3
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start master" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh start master" "${USER_NAME}"
     ;;
   *)
-    echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
+    echo "Invalid operation for HMaster. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
     exit 1
     ;;
   esac
   ;;
 "HRegionServer")
-  case "$1" in
+  case "${OPERATION}" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start regionserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh start regionserver" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon stop regionserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh stop regionserver" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon stop regionserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh stop regionserver" "${USER_NAME}"
     sleep 3
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start regionserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh start regionserver" "${USER_NAME}"
     ;;
   *)
-    echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
+    echo "Invalid operation for HRegionServer. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
     exit 1
     ;;
   esac
   ;;
-
-"HThriftServer")
-  case "$1" in
+"HThriftServer2")
+  case "${OPERATION}" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start thriftserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh start thrift2 --port 29090" "${USER_NAME}"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon stop thriftserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh stop thrift2" "${USER_NAME}"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon stop thriftserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh stop thrift2" "${USER_NAME}"
     sleep 3
-    su -c "${CURRENT_SERVICE_DIR}/bin/hbase --daemon start thriftserver" "${USER_NAME}"
+    su -c "${CURRENT_SERVICE_DIR}/bin/hbase-daemon.sh start thrift2 --port 29090" "${USER_NAME}"
     ;;
   *)
-    echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
+    echo "Invalid operation for HThriftServer2. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
     exit 1
     ;;
   esac
   ;;
-
 *)
-  echo "Invalid component name. Supported components: <HMaster|HRegionServer|HThriftServer>"
+  echo "Invalid component name. Supported components: <HMaster|HRegionServer|HThriftServer2>"
   exit 1
   ;;
 esac

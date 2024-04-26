@@ -28,17 +28,12 @@
 
     <property>
         <name>hbase.rootdir</name>
-        <value>{{hbase.rootdir}}</value>
+        <value>hdfs://{{fs.defaultFS}}/hbase</value>
     </property>
 
     <property>
         <name>hbase.tmp.dir</name>
         <value>{{hbase.tmp.dir}}</value>
-    </property>
-
-    <property>
-        <name>hbase.thrift.port</name>
-        <value>29090</value>
     </property>
 
     <property>

@@ -11,6 +11,9 @@ public class YamlDirectory {
 
     @Data
     public static class Directory {
+        @JsonProperty("java-home")
+        private String javaHome;
+
         @JsonProperty("datalight-dir")
         private String datalightDir;
 

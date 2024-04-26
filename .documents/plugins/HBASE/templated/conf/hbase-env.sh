@@ -227,3 +227,9 @@ export HBASE_HREGIONSERVER_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
 -Dcom.sun.management.jmxremote.port={{jmxRemotePort_HRegionServer}} \
 -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HRegionServer}}:${SERVICE_DIR}/HBASE/exporter/conf/jmx_config_HRegionServer.yaml"
 
+export HBASE_THRIFT2_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
+-Dcom.sun.management.jmxremote.authenticate=false \
+-Dcom.sun.management.jmxremote.ssl=false \
+-Dcom.sun.management.jmxremote.local.only=false \
+-Dcom.sun.management.jmxremote.port={{jmxRemotePort_HThriftServer2}} \
+-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_HThriftServer2}}:${SERVICE_DIR}/HBASE/exporter/conf/jmx_config_HThriftServer2.yaml"

@@ -24,6 +24,7 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.single.TDlPermissionRoleRelation;
 import cn.boundivore.dl.orm.service.single.impl.TDlPermissionRoleRelationServiceImpl;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -143,12 +144,12 @@ public class MasterPermissionRoleBindingService {
                 .in(TDlPermissionRoleRelation::getRoleId, request.getRoleIdList())
                 .list();
 
-        Assert.isTrue(
-                this.tDlPermissionRoleRelationService.removeBatchByIds(tDlPermissionRoleRelationList),
-                () -> new DatabaseException("移除权限角色绑定关系失败")
-        );
-
-
+        if (CollUtil.isNotEmpty(tDlPermissionRoleRelationList)) {
+            Assert.isTrue(
+                    this.tDlPermissionRoleRelationService.removeBatchByIds(tDlPermissionRoleRelationList),
+                    () -> new DatabaseException("移除权限角色绑定关系失败")
+            );
+        }
         return Result.success();
     }
 }

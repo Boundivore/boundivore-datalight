@@ -627,12 +627,12 @@ elif [ "$COMMAND" = "snapshot" ] ; then
 elif [ "$COMMAND" = "master" ] ; then
   CLASS='org.apache.hadoop.hbase.master.HMaster'
   if [ "$1" != "stop" ] && [ "$1" != "clear" ] ; then
-    HBASE_OPTS="$HBASE_OPTS $HBASE_MASTER_OPTS"
+    HBASE_OPTS="$HBASE_OPTS $HBASE_MASTER_OPTS $HBASE_HMASTER_JMX_OPTS"
   fi
 elif [ "$COMMAND" = "regionserver" ] ; then
   CLASS='org.apache.hadoop.hbase.regionserver.HRegionServer'
   if [ "$1" != "stop" ] ; then
-    HBASE_OPTS="$HBASE_OPTS $HBASE_REGIONSERVER_OPTS"
+    HBASE_OPTS="$HBASE_OPTS $HBASE_REGIONSERVER_OPTS $HBASE_HREGIONSERVER_JMX_OPTS"
   fi
 elif [ "$COMMAND" = "thrift" ] ; then
   CLASS='org.apache.hadoop.hbase.thrift.ThriftServer'
@@ -642,7 +642,7 @@ elif [ "$COMMAND" = "thrift" ] ; then
 elif [ "$COMMAND" = "thrift2" ] ; then
   CLASS='org.apache.hadoop.hbase.thrift2.ThriftServer'
   if [ "$1" != "stop" ] ; then
-    HBASE_OPTS="$HBASE_OPTS $HBASE_THRIFT_OPTS"
+    HBASE_OPTS="$HBASE_OPTS $HBASE_THRIFT_OPTS $HBASE_THRIFT2_JMX_OPTS"
   fi
 elif [ "$COMMAND" = "rest" ] ; then
   CLASS='org.apache.hadoop.hbase.rest.RESTServer'

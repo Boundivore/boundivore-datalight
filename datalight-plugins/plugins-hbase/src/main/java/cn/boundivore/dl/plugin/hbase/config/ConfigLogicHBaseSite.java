@@ -20,6 +20,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+import java.util.Comparator;
 
 /**
  * Description: 配置 hbase-site.xml 文件
@@ -45,32 +46,98 @@ public class ConfigLogicHBaseSite extends AbstractConfigLogic {
                 file
         );
 
+        // 获取 {{hbase.zookeeper.quorum}}
+        String hbaseZookeeperQuorum = this.hbaseZookeeperQuorum();
+
         // 获取 {{fs.defaultFS}}
         String fsDefaultFS = this.fsDefaultFS();
+
+        // 获取 {{hbase.tmp.dir}}
+        String hbaseTmpDir = this.hbaseTmpDir();
 
 
         return replacedTemplated
                 .replace(
+                        "{{hbase.zookeeper.quorum}}",
+                        hbaseZookeeperQuorum
+                )
+                .replace(
                         "{{fs.defaultFS}}",
                         fsDefaultFS
+                )
+                .replace(
+                        "{{hbase.tmp.dir}}",
+                        hbaseTmpDir
                 )
                 ;
     }
 
     /**
-     * Description: 获取 {{fs.defaultFS}}
+     * Description: 获取 Zookeeper 集群地址
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/7/28
+     * Creation time: 2024/4/26
      * Modification description:
      * Modified by:
      * Modification time:
      * Throws:
      *
-     * @return {{fs.defaultFS}} 真实值
+     * @return String Zookeeper 集群地址
+     */
+    private String hbaseZookeeperQuorum() {
+        PluginConfig.MetaService zookeeperMetaService = super.pluginConfig
+                .getMetaServiceMap()
+                .get("ZOOKEEPER");
+
+        StringBuilder sb = new StringBuilder();
+
+        zookeeperMetaService.getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(i -> i.getComponentName().equals("QuarumPeermain"))
+                .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
+                .forEach(c -> sb.append(c.getHostname()).append(":2181,"));
+
+        sb.deleteCharAt(sb.length() - 1);
+
+        return sb.toString();
+    }
+
+    /**
+     * Description: 获取 HDFS 的 fs.defaultFS
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String HDFS 的 fs.defaultFS
      */
     private String fsDefaultFS() {
-        return super.currentMetaService.getPluginClusterMeta().getClusterName();
+        PluginConfig.MetaService hdfsMetaService = super.pluginConfig.getMetaServiceMap().get("HDFS");
+        return hdfsMetaService.getPluginClusterMeta().getClusterName();
     }
+
+    /**
+     * Description: 获取 HBase 本地临时缓存目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String HBase 本地临时缓存目录
+     */
+    private String hbaseTmpDir() {
+        return String.format(
+                "%s/HBASE/tmp",
+                super.dataDir()
+        );
+    }
+
 
 }

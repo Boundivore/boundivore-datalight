@@ -1,4 +1,5 @@
 datalight:
+  java-home: /opt/jdk1.8.0_202
   datalight-dir: /opt/datalight
   service-dir: /srv/datalight
   # 以下基础目录不要修改，否则请检查所有可能的引用，要保持一致

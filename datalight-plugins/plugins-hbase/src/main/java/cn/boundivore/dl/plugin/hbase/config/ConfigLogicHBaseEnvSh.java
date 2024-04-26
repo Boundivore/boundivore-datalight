@@ -45,7 +45,22 @@ public class ConfigLogicHBaseEnvSh extends AbstractConfigLogic {
                 file
         );
 
+        String hbaseLogDir = this.hbaseLogDir();
+        String hbasePidDir = this.hbasePidDir();
+
         return replacedTemplated
+                .replace(
+                        "{{JAVA_HOME}}",
+                        super.javaHomeDir()
+                )
+                .replace(
+                        "{{HBASE_LOG_DIR}}",
+                        hbaseLogDir
+                )
+                .replace(
+                        "{{HBASE_PID_DIR}}",
+                        hbasePidDir
+                )
                 // HMaster
                 .replace(
                         "{{jmxRemotePort_HMaster}}",
@@ -76,7 +91,60 @@ public class ConfigLogicHBaseEnvSh extends AbstractConfigLogic {
                                 "HRegionServer"
                         )
                 )
+                // HThriftServer2
+                .replace(
+                        "{{jmxRemotePort_HThriftServer2}}",
+                        PortConstants.getRemotePort(
+                                ConfigLogicJmxYaml.SERVICE_NAME,
+                                "HThriftServer2"
+                        )
+                )
+                .replace(
+                        "{{jmxExporterPort_HThriftServer2}}",
+                        PortConstants.getExporterPort(
+                                ConfigLogicJmxYaml.SERVICE_NAME,
+                                "HThriftServer2"
+                        )
+                )
                 ;
+    }
+
+    /**
+     * Description: 获取 HBase Pid 目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String 返回 HBase Pid 目录
+     */
+    private String hbasePidDir() {
+        return String.format(
+                "%s/HBASE",
+                super.pidDir()
+        );
+    }
+
+    /**
+     * Description: 获取 HBase Log 目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/4/26
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String 返回 HBase Log 目录
+     */
+    private String hbaseLogDir() {
+        return String.format(
+                "%s/HBASE",
+                super.logDir()
+        );
     }
 
 }

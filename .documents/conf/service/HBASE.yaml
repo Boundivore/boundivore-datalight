@@ -242,7 +242,7 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: HThriftServer
+      - name: HThriftServer2
         priority: 4
         max: -1
         min: 1
@@ -268,9 +268,9 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: SCRIPT
-                name: '启动 HThriftServer'
+                name: '启动 HThriftServer2'
                 shell: 'hbase-operation.sh'
-                args: [ 'HRegionServer', 'start' ]
+                args: [ 'HThriftServer2', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -282,9 +282,9 @@ datalight:
             fail-state: STARTED
             steps:
               - type: SCRIPT
-                name: '停止 HThriftServer'
+                name: '停止 HThriftServer2'
                 shell: 'hbase-operation.sh'
-                args: [ 'HThriftServer', 'stop' ]
+                args: [ 'HThriftServer2', 'stop' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -298,7 +298,7 @@ datalight:
               - type: SCRIPT
                 name: '重启 HThriftServer'
                 shell: 'hbase-operation.sh'
-                args: [ 'HThriftServer', 'restart' ]
+                args: [ 'HThriftServer2', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000

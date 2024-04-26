@@ -54,6 +54,8 @@ public class ConfigHBASE extends AbstractConfig {
                 return new ConfigLogicHBaseSite(super.pluginConfig).config(file, replacedTemplate);
             case "hbase-env.sh":
                 return new ConfigLogicHBaseEnvSh(super.pluginConfig).config(file, replacedTemplate);
+            case "log4j2.properties":
+                return new ConfigLogicLog4jProperties(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HMaster:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HRegionServer:
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);

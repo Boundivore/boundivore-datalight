@@ -72,6 +72,27 @@ public abstract class AbstractConfigLogic {
     }
 
     /**
+     * Description: 获取 {{JAVA_HOME}}
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/7/28
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return {{JAVA_HOME}} 真实值
+     */
+    protected String javaHomeDir() {
+        String javaHome = this.pluginConfig.getUnixEnv().getJAVA_HOME();
+        Assert.notNull(
+                javaHome,
+                () -> new RuntimeException("无法读取环境变量 JAVA_HOME")
+        );
+        return javaHome;
+    }
+
+    /**
      * Description: 获取 {{DATALIGHT_DIR}}
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
