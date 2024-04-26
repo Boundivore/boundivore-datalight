@@ -29,6 +29,7 @@ import cn.boundivore.dl.orm.po.single.TDlUser;
 import cn.boundivore.dl.orm.service.single.impl.TDlRoleServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlRoleUserRelationServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlUserServiceImpl;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -216,6 +217,12 @@ public class MasterRoleUserBindingService {
                 .in(TDlRoleUserRelation::getUserId, userIdList)
                 .list();
 
+        Assert.notEmpty(
+                tDlRoleUserRelationList,
+                () -> new BException("未找到对应绑定关系")
+        );
+
+
         // 检查是否存在指定映射关系
         Assert.isTrue(
                 tDlRoleUserRelationList.size() == roleIdList.size(),
@@ -263,11 +270,14 @@ public class MasterRoleUserBindingService {
                 .in(TDlRoleUserRelation::getUserId, request.getUserIdList())
                 .list();
 
-        // 移除角色与用户的绑定关系
-        Assert.isTrue(
-                this.tDlRoleUserRelationService.removeBatchByIds(tDlRoleUserRelationList),
-                () -> new DatabaseException("移除角色用户映射关系失败")
-        );
+        if (CollUtil.isNotEmpty(tDlRoleUserRelationList)) {
+            // 移除角色与用户的绑定关系
+            Assert.isTrue(
+                    this.tDlRoleUserRelationService.removeBatchByIds(tDlRoleUserRelationList),
+                    () -> new DatabaseException("移除角色用户映射关系失败")
+            );
+        }
+
 
         return Result.success();
     }

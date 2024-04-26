@@ -208,8 +208,7 @@ public class MasterUserService {
         Assert.isTrue(
                 this.masterRoleUserBindingService.detachRoleUser(
                         new AbstractUserRequest.UserIdListRequest(
-                                CollUtil.newArrayList(request.getUserId()
-                                )
+                                CollUtil.newArrayList(request.getUserId())
                         )
                 ).isSuccess(),
                 () -> new BException("调用解绑用户角色接口失败")
