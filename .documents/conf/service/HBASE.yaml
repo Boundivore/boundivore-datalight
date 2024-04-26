@@ -23,7 +23,7 @@ datalight:
     #      - service-conf-dir: '{{SERVICE_DIR}}/HBASE/conf'
     #        templated-dir: 'D:/datalight/plugins/HBASE/templated/conf'
 
-    config-event-handler-jar: 'plugins-HBASE-1.0.0.jar'
+    config-event-handler-jar: 'plugins-hbase-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.hbase.config.event.ConfigEventHandler'
 
     initialize:
