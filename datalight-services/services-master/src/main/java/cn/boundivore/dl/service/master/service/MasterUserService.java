@@ -161,7 +161,7 @@ public class MasterUserService {
     public Result<String> removeById(AbstractUserRequest.UserIdRequest request) {
         // 检查是否删除超级用户，如果是，则抛出异常
         Assert.isTrue(
-                request.getUserId() == 1L,
+                request.getUserId() != 1L,
                 () -> new BException("admin 用户无法删除")
         );
 
