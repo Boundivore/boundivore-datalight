@@ -53,3 +53,9 @@ datalight:
       port: '9999'
       path: '/tez-ui'
       button-name-suffix: '-Web UI'
+
+    - service: HBASE
+      component: HMaster
+      port: '16010'
+      path: '/master-status'
+      button-name-suffix: '-Web UI'
