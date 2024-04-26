@@ -96,7 +96,7 @@ public class ConfigLogicHBaseSite extends AbstractConfigLogic {
                 .stream()
                 .filter(i -> i.getComponentName().equals("QuarumPeermain"))
                 .sorted(Comparator.comparing(PluginConfig.MetaComponent::getHostname))
-                .forEach(c -> sb.append(c.getHostname()).append(":2181,"));
+                .forEach(c -> sb.append(c.getHostname()).append(","));
 
         sb.deleteCharAt(sb.length() - 1);
 
