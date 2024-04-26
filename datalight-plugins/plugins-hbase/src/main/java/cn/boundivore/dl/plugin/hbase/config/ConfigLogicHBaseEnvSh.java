@@ -66,14 +66,14 @@ public class ConfigLogicHBaseEnvSh extends AbstractConfigLogic {
                         "{{jmxRemotePort_HMaster}}",
                         PortConstants.getRemotePort(
                                 ConfigLogicJmxYaml.SERVICE_NAME,
-                                "JournalNode"
+                                "HMaster"
                         )
                 )
                 .replace(
                         "{{jmxExporterPort_HMaster}}",
                         PortConstants.getExporterPort(
                                 ConfigLogicJmxYaml.SERVICE_NAME,
-                                "JournalNode"
+                                "HMaster"
                         )
                 )
                 // HRegionServer
