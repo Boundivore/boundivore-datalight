@@ -37,6 +37,11 @@
     </property>
 
     <property>
+        <name>hbase.thrift.port</name>
+        <value>29090</value>
+    </property>
+
+    <property>
         <name>hbase.cluster.distributed</name>
         <value>true</value>
     </property>
