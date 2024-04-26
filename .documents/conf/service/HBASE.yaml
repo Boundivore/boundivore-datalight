@@ -254,9 +254,9 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: SCRIPT
-                name: '部署后启动 HThriftServer'
+                name: '部署后启动 HThriftServer2'
                 shell: 'hbase-operation.sh'
-                args: [ 'HThriftServer', 'start' ]
+                args: [ 'HThriftServer2', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -296,7 +296,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: SCRIPT
-                name: '重启 HThriftServer'
+                name: '重启 HThriftServer2'
                 shell: 'hbase-operation.sh'
                 args: [ 'HThriftServer2', 'restart' ]
                 interactions: [ ]
