@@ -32,28 +32,8 @@
     </property>
 
     <property>
-        <name>hbase.regionserver.wal.codec</name>
-        <value>org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec</value>
-    </property>
-
-    <property>
         <name>hbase.rpc.timeout</name>
         <value>120000</value>
-    </property>
-
-    <property>
-        <name>hbase.rpc.controllerfactory.class</name>
-        <value>org.apache.hadoop.hbase.ipc.controller.ServerRpcControllerFactory</value>
-    </property>
-
-    <property>
-        <name>hbase.thrift.info.port</name>
-        <value>9096</value>
-    </property>
-
-    <property>
-        <name>hbase.regionserver.thrift.port</name>
-        <value>9097</value>
     </property>
 
     <property>
@@ -85,6 +65,16 @@
         <name>hadoop.proxyuser.hadoop.groups</name>
         <value>*</value>
     </property>
+
+<!--    <property>-->
+<!--        <name>hbase.regionserver.wal.codec</name>-->
+<!--        <value>org.apache.hadoop.hbase.regionserver.wal.IndexedWALEditCodec</value>-->
+<!--    </property>-->
+
+<!--    <property>-->
+<!--        <name>hbase.rpc.controllerfactory.class</name>-->
+<!--        <value>org.apache.hadoop.hbase.ipc.controller.ServerRpcControllerFactory</value>-->
+<!--    </property>-->
 
 <!--    <property>-->
 <!--        <name>phoenix.schema.isNamespaceMappingEnabled</name>-->
