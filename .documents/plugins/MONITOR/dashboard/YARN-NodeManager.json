@@ -170,7 +170,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "HttpFS",
+          "alias": "NodeManager",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -238,7 +238,7 @@
           "refId": "A"
         }
       ],
-      "title": "HttpFS Live State",
+      "title": "NodeManager Live State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
