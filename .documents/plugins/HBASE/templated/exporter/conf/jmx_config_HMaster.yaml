@@ -2,10 +2,20 @@
 startDelaySeconds: 0
 #hostPort: localhost:{{jmxRemotePort}}
 ssl: false
-lowercaseOutputName: false  # 是否将输出的指标名称转为小写，默认为false
-lowercaseOutputLabelNames: false  # 是否将输出的标签名称转为小写，默认为false
+lowercaseOutputName: false # 是否将输出的指标名称转为小写，默认为 false
+lowercaseOutputLabelNames: false # 是否将输出的标签名称转为小写，默认为false
 
 rules:
+  - pattern: 'Hadoop<service=HBase, name=Master, sub=Server><>tag.isActiveMaster:.*?true.*?'
+    name: HBase_Master_HAState
+    value: 1
+    valueFactor: 1
+
+  - pattern: 'Hadoop<service=HBase, name=Master, sub=Server><>tag.isActiveMaster:.*?false.*?'
+    name: HBase_Master_HAState
+    value: 0
+    valueFactor: 1
+
   - pattern: '.*'
     attrNameSnakeCase: false  # 是否将JMX属性名称转为蛇形命名，默认为false
     attrNameCamelCase: false  # 是否将JMX属性名称转为驼峰命名，默认为false
