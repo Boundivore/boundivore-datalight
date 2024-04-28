@@ -72,6 +72,10 @@ public abstract class AbstractUserVo {
         @JsonProperty(value = "UserId", required = true)
         private Long userId;
 
+        @Schema(name = "Principal", title = "用户认证主体", required = true)
+        @JsonProperty(value = "Principal", required = true)
+        private String principal;
+
         @Schema(name = "CreateTime", title = "创建时间", required = true)
         @JsonProperty(value = "CreateTime", required = true)
         private Long createTime;

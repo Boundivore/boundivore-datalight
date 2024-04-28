@@ -561,6 +561,24 @@ public class MasterUserService {
             userInfoVo.setLastLogin(-1L);
         }
 
+        // 设置用户认证主体
+        TDlUserAuth tDlUserAuth = this.tDlUserAuthService.lambdaQuery()
+                .select()
+                .eq(TDlUserAuth::getUserId, userId)
+                .one();
+
+        Assert.notNull(
+                tDlUserAuth,
+                () -> new BException(
+                        String.format(
+                                "用户 %s 认证主体丢失",
+                                tDlUser.getId()
+                        )
+                )
+        );
+
+        userInfoVo.setPrincipal(tDlUserAuth.getPrincipal());
+
         return Result.success(userInfoVo);
     }
 
@@ -588,6 +606,11 @@ public class MasterUserService {
                 .stream()
                 .collect(Collectors.toMap(TDlLoginEvent::getUserId, event -> event));
 
+        // 读取用户身份认证数据集合 Map<用户 ID, TDlUserAuth>
+        Map<Long, TDlUserAuth> userIdTDlUserAuthMap = this.tDlUserAuthService.list()
+                .stream()
+                .collect(Collectors.toMap(TDlUserAuth::getUserId, auth -> auth));
+
         // 组装返回实体
         List<AbstractUserVo.UserInfoVo> userInfoList = this.tDlUserService.list()
                 .stream()
@@ -599,10 +622,26 @@ public class MasterUserService {
                             // 如果当前登录的用户不是超级用户，则不需要建议修改密码
                             userInfoVo.setIsNeedChangePassword(false);
 
+
+                            // 设置登录事件事件
                             TDlLoginEvent tDlLoginEvent = userIdTDlLoginEventMap.get(tDlUser.getId());
                             if (tDlLoginEvent == null || tDlLoginEvent.getLastLogin() == null) {
                                 userInfoVo.setLastLogin(-1L);
                             }
+
+                            // 设置用户认证主体
+                            TDlUserAuth tDlUserAuth = userIdTDlUserAuthMap.get(tDlUser.getId());
+                            Assert.notNull(
+                                    tDlUserAuth,
+                                    () -> new BException(
+                                            String.format(
+                                                    "用户 %s 认证主体丢失",
+                                                    tDlUser.getId()
+                                            )
+                                    )
+                            );
+
+                            userInfoVo.setPrincipal(tDlUserAuth.getPrincipal());
 
                             return userInfoVo;
                         }
