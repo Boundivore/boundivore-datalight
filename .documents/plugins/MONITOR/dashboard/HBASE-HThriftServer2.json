@@ -286,7 +286,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_TimeInQueue_min",
+      "title": "TimeInQueue_min",
       "type": "timeseries"
     },
     {
@@ -380,7 +380,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_TimeInQueue_median",
+      "title": "TimeInQueue_median",
       "type": "timeseries"
     },
     {
@@ -474,7 +474,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_TimeInQueue_max",
+      "title": "TimeInQueue_max",
       "type": "timeseries"
     },
     {

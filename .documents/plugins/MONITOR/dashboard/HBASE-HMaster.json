@@ -503,7 +503,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_GcCount_Rate",
+      "title": "GcCount_Rate",
       "type": "timeseries"
     },
     {
@@ -738,7 +738,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_numOpenConnections",
+      "title": "NumOpenConnections",
       "type": "timeseries"
     },
     {
@@ -1374,7 +1374,7 @@
           "refId": "A"
         }
       ],
-      "title": "Avg_Hadoop_HBase_QueueCallTime_num_ops",
+      "title": "AvgQueueCallTime_num_ops",
       "type": "timeseries"
     },
     {
@@ -1468,7 +1468,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_numActiveScanHandler",
+      "title": "NumActiveScanHandler",
       "type": "timeseries"
     },
     {
@@ -1562,7 +1562,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_numActiveReadHandler",
+      "title": "NumActiveReadHandler",
       "type": "timeseries"
     },
     {
@@ -1656,7 +1656,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_numActiveWriteHandler",
+      "title": "NumActiveWriteHandler",
       "type": "timeseries"
     },
     {
@@ -1750,7 +1750,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_numActiveReplicationHandler",
+      "title": "NumActiveReplicationHandler",
       "type": "timeseries"
     },
     {
@@ -1799,7 +1799,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1843,7 +1844,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_AppendTime_mean",
+      "title": "AppendTime_mean",
       "type": "timeseries"
     },
     {
@@ -1892,7 +1893,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1937,7 +1939,7 @@
           "refId": "A"
         }
       ],
-      "title": "Avg_Hadoop_HBase_GcTimeMillis",
+      "title": "AvgGcTimeMillis",
       "type": "timeseries"
     },
     {
@@ -1986,7 +1988,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2031,7 +2034,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_averageLoad",
+      "title": "AverageLoad",
       "type": "timeseries"
     },
     {
@@ -2080,7 +2083,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -2125,7 +2129,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hadoop_HBase_MergeTime_mean",
+      "title": "MergeTime_mean",
       "type": "timeseries"
     }
   ],
