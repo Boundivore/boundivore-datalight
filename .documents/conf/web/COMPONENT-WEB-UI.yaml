@@ -55,7 +55,13 @@ datalight:
       button-name-suffix: '-Web UI'
 
     - service: HBASE
-      component: HMaster
+      component: HMaster1
+      port: '16010'
+      path: '/master-status'
+      button-name-suffix: '-Web UI'
+
+    - service: HBASE
+      component: HMaster2
       port: '16010'
       path: '/master-status'
       button-name-suffix: '-Web UI'
