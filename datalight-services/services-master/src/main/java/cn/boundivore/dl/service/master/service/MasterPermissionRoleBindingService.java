@@ -20,10 +20,16 @@ import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.TBasePo;
+import cn.boundivore.dl.orm.po.single.TDlPermission;
 import cn.boundivore.dl.orm.po.single.TDlPermissionRoleRelation;
+import cn.boundivore.dl.orm.po.single.TDlRole;
 import cn.boundivore.dl.orm.service.single.impl.TDlPermissionRoleRelationServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlPermissionServiceImpl;
+import cn.boundivore.dl.orm.service.single.impl.TDlRoleServiceImpl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +57,10 @@ public class MasterPermissionRoleBindingService {
 
     private final TDlPermissionRoleRelationServiceImpl tDlPermissionRoleRelationService;
 
+    private final TDlRoleServiceImpl tDlRoleService;
+
+    private final TDlPermissionServiceImpl tDlPermissionService;
+
     /**
      * Description: 绑定权限到指定角色
      * Created by: Boundivore
@@ -64,11 +74,69 @@ public class MasterPermissionRoleBindingService {
      * @param request 权限与角色映射关系列表
      * @return Result<String> 成功或失败
      */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @LocalLock
     public Result<String> attachPermissionRoleByPermissionRoleId(AbstractPermissionRuleRequest.PermissionRoleIdListRequest request) {
 
         // 检查是否存在指定权限及角色 ID
+        List<Long> roleIdList = request.getPermissionRoleIdList()
+                .stream()
+                .map(AbstractPermissionRuleRequest.PermissionRoleIdRequest::getRoleId)
+                .distinct()
+                .collect(Collectors.toList());
 
-        // 幂等性提交绑定关系
+        List<TDlRole> tDlRoleList = this.tDlRoleService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, roleIdList)
+                .list();
+
+        Assert.isTrue(
+                roleIdList.size() == tDlRoleList.size(),
+                () -> new BException("部分角色 ID 不存在")
+        );
+
+        List<Long> permissionIdList = request.getPermissionRoleIdList()
+                .stream()
+                .map(AbstractPermissionRuleRequest.PermissionRoleIdRequest::getPermissionId)
+                .distinct()
+                .collect(Collectors.toList());
+
+        List<TDlPermission> tDlPermissionList = this.tDlPermissionService.lambdaQuery()
+                .select()
+                .in(TBasePo::getId, permissionIdList)
+                .list();
+
+        Assert.isTrue(
+                permissionIdList.size() == tDlPermissionList.size(),
+                () -> new BException("部分权限 ID 不存在")
+        );
+
+        request.getPermissionRoleIdList()
+                .forEach(i -> {
+                            TDlPermissionRoleRelation tDlPermissionRoleRelation = this.tDlPermissionRoleRelationService.lambdaQuery()
+                                    .select()
+                                    .eq(TDlPermissionRoleRelation::getRoleId, i.getRoleId())
+                                    .eq(TDlPermissionRoleRelation::getPermissionId, i.getPermissionId())
+                                    .one();
+
+                            if (tDlPermissionRoleRelation == null) {
+                                tDlPermissionRoleRelation = new TDlPermissionRoleRelation();
+                                tDlPermissionRoleRelation.setVersion(0L);
+
+                                tDlPermissionRoleRelation.setRoleId(i.getRoleId());
+                                tDlPermissionRoleRelation.setPermissionId(i.getPermissionId());
+
+                                Assert.isTrue(
+                                        this.tDlPermissionRoleRelationService.save(tDlPermissionRoleRelation),
+                                        () -> new DatabaseException("保存到数据库失败")
+                                );
+                            }
+
+                        }
+                );
 
 
         return Result.success();
@@ -87,6 +155,7 @@ public class MasterPermissionRoleBindingService {
      * @param request 权限与角色映射关系列表
      * @return Result<String> 成功或失败
      */
+    @LocalLock
     public Result<String> detachPermissionRoleByPermissionRoleId(AbstractPermissionRuleRequest.PermissionRoleIdListRequest request) {
 
         List<Long> permissionIdList = request.getPermissionRoleIdList()
