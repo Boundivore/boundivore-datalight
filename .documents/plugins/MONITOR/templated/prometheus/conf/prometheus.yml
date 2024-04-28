@@ -131,15 +131,11 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'HBASE-HThriftServer2'
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'KAFKA-KafkaBroker'
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'PRESTO-PrestoCoordinator'
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'PRESTO-PrestoWorker'
     static_configs:
       - targets: [ ]
 

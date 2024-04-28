@@ -1,7 +1,7 @@
 {
   "__inputs": [
     {
-      "name": "DS_MONITOR-PROMETHEUS",
+      "name": "MONITOR-Prometheus",
       "label": "MONITOR-Prometheus",
       "description": "",
       "type": "datasource",
@@ -34,6 +34,12 @@
       "id": "table-old",
       "name": "Table (old)",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
     }
   ],
   "annotations": {
@@ -62,7 +68,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
       "fieldConfig": {
         "defaults": {
@@ -89,7 +95,7 @@
         "x": 0,
         "y": 0
       },
-      "id": 2,
+      "id": 1,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -109,11 +115,12 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "exemplar": false,
           "expr": "java_lang_Runtime_StartTime{instance=\"$instance\"}",
+          "format": "time_series",
           "instant": true,
           "legendFormat": "{{instance}}",
           "range": false,
@@ -126,8 +133,9 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -153,7 +161,7 @@
         "x": 3,
         "y": 0
       },
-      "id": 3,
+      "id": 2,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -173,7 +181,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -188,19 +196,301 @@
       "type": "stat"
     },
     {
-      "columns": [],
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
-      "fontSize": "100%",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 4,
-        "w": 9,
+        "h": 8,
+        "w": 6,
         "x": 6,
         "y": 0
       },
       "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "MONITOR-Prometheus"
+          },
+          "editorMode": "code",
+          "expr": "Hadoop_HBase_TimeInQueue_min{job=\"$JobName\"}",
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Hadoop_HBase_TimeInQueue_min",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "MONITOR-Prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "MONITOR-Prometheus"
+          },
+          "editorMode": "code",
+          "expr": "Hadoop_HBase_TimeInQueue_median{job=\"$JobName\"}",
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Hadoop_HBase_TimeInQueue_median",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "MONITOR-Prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "MONITOR-Prometheus"
+          },
+          "editorMode": "code",
+          "expr": "Hadoop_HBase_TimeInQueue_max{job=\"$JobName\"}",
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Hadoop_HBase_TimeInQueue_max",
+      "type": "timeseries"
+    },
+    {
+      "columns": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "MONITOR-Prometheus"
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
+      "id": 3,
       "links": [],
       "pluginVersion": "6.7.0",
       "showHeader": true,
@@ -226,7 +516,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "HMaster",
+          "alias": "HThriftServer2",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -268,12 +558,12 @@
           "unit": "none",
           "valueMaps": [
             {
-              "$$hashKey": "object:297",
+              "$$hashKey": "object:490",
               "text": "Dead",
               "value": "0"
             },
             {
-              "$$hashKey": "object:317",
+              "$$hashKey": "object:510",
               "text": "Alive",
               "value": "1"
             }
@@ -284,7 +574,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
           "expr": "up{job=\"$JobName\"}",
@@ -294,130 +584,218 @@
           "refId": "A"
         }
       ],
-      "title": "HMaster Live State",
+      "title": "HThriftServer2 Live State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
     {
-      "columns": [],
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_MONITOR-PROMETHEUS}"
+        "uid": "MONITOR-Prometheus"
       },
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 4,
-        "w": 9,
-        "x": 15,
-        "y": 0
-      },
-      "id": 5,
-      "links": [],
-      "pluginVersion": "6.7.0",
-      "showHeader": true,
-      "sort": {
-        "col": 1,
-        "desc": false
-      },
-      "styles": [
-        {
-          "$$hashKey": "object:531",
-          "alias": "",
-          "align": "right",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:938",
-          "alias": "HMaster",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Metric",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:993",
-          "alias": "HA Status",
-          "align": "auto",
-          "colorMode": "cell",
-          "colors": [
-            "#FA6400",
-            "#FA6400",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [
-            "0",
-            "1"
-          ],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "$$hashKey": "object:1054",
-              "text": "Active",
-              "value": "1"
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            {
-              "$$hashKey": "object:1096",
-              "text": "Standby",
-              "value": "0"
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
-          ]
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
         }
-      ],
+      },
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_MONITOR-PROMETHEUS}"
+            "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
-          "expr": "HBase_Master_HAState",
-          "instant": true,
-          "interval": "",
+          "exemplar": false,
+          "expr": "jvm_memory_bytes_used{job=\"$JobName\", area=\"heap\"}",
+          "instant": false,
           "legendFormat": "{{instance}}",
+          "range": true,
           "refId": "A"
         }
       ],
-      "title": "HA State",
-      "transform": "timeseries_to_rows",
-      "type": "table-old"
+      "title": "jvm_memory_bytes_used_heap",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "MONITOR-Prometheus"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "MONITOR-Prometheus"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "jvm_memory_bytes_used{job=\"$JobName\", area=\"nonheap\"}",
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "jvm_memory_bytes_used_nonheap",
+      "type": "timeseries"
     }
   ],
   "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "HBASE"
+  ],
   "templating": {
     "list": [
       {
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MONITOR-PROMETHEUS}"
+          "uid": "MONITOR-Prometheus"
         },
-        "definition": "label_values({job='HBASE-HMaster'},job)",
+        "definition": "label_values({job='HBASE-HThriftServer2'},job)",
         "hide": 0,
         "includeAll": false,
         "label": "JobName",
@@ -425,7 +803,7 @@
         "name": "JobName",
         "options": [],
         "query": {
-          "query": "label_values({job='HBASE-HMaster'},job)",
+          "query": "label_values({job='HBASE-HThriftServer2'},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -438,7 +816,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_MONITOR-PROMETHEUS}"
+          "uid": "MONITOR-Prometheus"
         },
         "definition": "label_values({job=~\"$JobName\"},instance)",
         "hide": 0,
@@ -465,8 +843,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "HBASE-HMaster",
-  "uid": "a40a59c6-9455-47ae-9d10-ec4d72e23c02",
-  "version": 5,
+  "title": "HBASE-HThriftServer2",
+  "uid": "HBASE-HThriftServer2",
+  "version": 1,
   "weekStart": ""
 }
