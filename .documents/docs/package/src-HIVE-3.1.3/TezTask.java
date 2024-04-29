@@ -763,9 +763,9 @@ public class TezTask extends Task<TezWork> {
     }
 
     // DLC-FIX
-//    @Override
-//    public String getWebUIAddress() throws IOException, TezException {
-//      return dagClient.getWebUIAddress();
-//    }
+    @Override
+    public String getWebUIAddress() throws IOException, TezException {
+      return dagClient.getWebUIAddress();
+    }
   }
 }

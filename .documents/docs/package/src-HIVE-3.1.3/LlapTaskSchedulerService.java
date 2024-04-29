@@ -1085,9 +1085,9 @@ public class LlapTaskSchedulerService extends TaskScheduler {
     try {
       if (!dagRunning && metrics != null && id != null) {
         // DLC-FIX
-        metrics.setDagId(id.getTaskID().getVertexID().getDAGId().toString());
+//        metrics.setDagId(id.getTaskID().getVertexID().getDAGId().toString());
         // DLC-FIX
-//        metrics.setDagId(id.getTaskID().getVertexID().getDAGID().toString());
+        metrics.setDagId(id.getTaskID().getVertexID().getDAGID().toString());
       }
       dagRunning = true;
       dagStats.registerTaskRequest(hosts, racks);
@@ -1112,9 +1112,9 @@ public class LlapTaskSchedulerService extends TaskScheduler {
     try {
       if (!dagRunning && metrics != null && id != null) {
         // DLC-FIX
-        metrics.setDagId(id.getTaskID().getVertexID().getDAGId().toString());
+//        metrics.setDagId(id.getTaskID().getVertexID().getDAGId().toString());
         // DLC-FIX
-//        metrics.setDagId(id.getTaskID().getVertexID().getDAGID().toString());
+        metrics.setDagId(id.getTaskID().getVertexID().getDAGID().toString());
       }
       dagRunning = true;
       dagStats.registerTaskRequest(null, null);
@@ -1130,8 +1130,8 @@ public class LlapTaskSchedulerService extends TaskScheduler {
     // TODO: why does Tez API use "Object" for this?
     if (task instanceof TaskAttempt) {
       // DLC-FIX
-      return ((TaskAttempt)task).getID();
-//      return ((TaskAttempt)task).getTaskAttemptID();
+//      return ((TaskAttempt)task).getID();
+      return ((TaskAttempt)task).getTaskAttemptID();
     }
     throw new AssertionError("LLAP plugin can only schedule task attempts");
   }
@@ -2048,9 +2048,9 @@ public class LlapTaskSchedulerService extends TaskScheduler {
           }
           Map<Integer,Set<Integer>> depInfo = getDependencyInfo(
               // DLC-FIX
-              taskInfo.attemptId.getTaskID().getVertexID().getDAGId());
+//              taskInfo.attemptId.getTaskID().getVertexID().getDAGId());
               // DLC-FIX
-//                  taskInfo.attemptId.getTaskID().getVertexID().getDAGID());
+                  taskInfo.attemptId.getTaskID().getVertexID().getDAGID());
           Set<Integer> vertexDepInfo = null;
           if (depInfo != null) {
             vertexDepInfo = depInfo.get(forVertex);

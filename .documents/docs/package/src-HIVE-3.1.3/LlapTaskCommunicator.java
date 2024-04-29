@@ -324,9 +324,9 @@ public class LlapTaskCommunicator extends TezTaskCommunicatorImpl {
                 .setIsGuaranteed(newState).setFragmentIdentifierString(attemptId.toString())
                 .setQueryIdentifier(constructQueryIdentifierProto(
                         // DLC-FIX
-                        attemptId.getTaskID().getVertexID().getDAGId().getId())).build();
+//                        attemptId.getTaskID().getVertexID().getDAGId().getId())).build();
         // DLC-FIX
-//                        attemptId.getTaskID().getVertexID().getDAGID().getId())).build();
+                        attemptId.getTaskID().getVertexID().getDAGID().getId())).build();
 
         communicator.sendUpdateFragment(request, nodeId.getHostname(), nodeId.getPort(),
                 new LlapProtocolClientProxy.ExecuteRequestCallback<UpdateFragmentResponseProto>() {
@@ -354,9 +354,9 @@ public class LlapTaskCommunicator extends TezTaskCommunicatorImpl {
         super.registerRunningTaskAttempt(containerId, taskSpec, additionalResources, credentials,
                 credentialsChanged, priority);
         // DLC-FIX
-        int dagId = taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGId().getId();
+//        int dagId = taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGId().getId();
         // DLC-FIX
-//        int dagId = taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGID().getId();
+        int dagId = taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGID().getId();
         if (currentQueryIdentifierProto == null || (dagId != currentQueryIdentifierProto.getDagIndex())) {
             // TODO HiveQueryId extraction by parsing the Processor payload is ugly. This can be improved
             // once TEZ-2672 is fixed.
@@ -513,9 +513,9 @@ public class LlapTaskCommunicator extends TezTaskCommunicatorImpl {
                     TerminateFragmentRequestProto.newBuilder().setQueryIdentifier(
                                     constructQueryIdentifierProto(
                                             // DLC-FIX
-                                            taskAttemptId.getTaskID().getVertexID().getDAGId().getId()))
+//                                            taskAttemptId.getTaskID().getVertexID().getDAGId().getId()))
                                             // DLC-FIX
-//                                            taskAttemptId.getTaskID().getVertexID().getDAGID().getId()))
+                                            taskAttemptId.getTaskID().getVertexID().getDAGID().getId()))
                             .setFragmentIdentifierString(taskAttemptId.toString()).build();
             communicator.sendTerminateFragment(request, nodeId.getHostname(), nodeId.getPort(),
                     new LlapProtocolClientProxy.ExecuteRequestCallback<TerminateFragmentResponseProto>() {
@@ -658,9 +658,9 @@ public class LlapTaskCommunicator extends TezTaskCommunicatorImpl {
     private String constructLlapLogUrl(final TezTaskAttemptID attemptID, final String containerIdString,
                                        final boolean isDone, final String nmAddress) {
         // DLC-FIX
-        String dagId = attemptID.getTaskID().getVertexID().getDAGId().toString();
+//        String dagId = attemptID.getTaskID().getVertexID().getDAGId().toString();
         // DLC-FIX
-//        String dagId = attemptID.getTaskID().getVertexID().getDAGID().toString();
+        String dagId = attemptID.getTaskID().getVertexID().getDAGID().toString();
         String filename = JOINER.join(currentHiveQueryId, "-", dagId, ".log", (isDone ? ".done" : ""),
                 "?nm.id=", nmAddress);
         String url = PATH_JOINER.join(timelineServerUri, "ws", "v1", "applicationhistory", "containers",
@@ -806,9 +806,9 @@ public class LlapTaskCommunicator extends TezTaskCommunicatorImpl {
 
         Preconditions.checkState(currentQueryIdentifierProto.getDagIndex() ==
                 // DLC-FIX
-                taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGId().getId());
+//                taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGId().getId());
         // DLC-FIX
-//                taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGID().getId());
+                taskSpec.getTaskAttemptID().getTaskID().getVertexID().getDAGID().getId());
         ByteBuffer credentialsBinary = credentialMap.get(currentQueryIdentifierProto);
         if (credentialsBinary == null) {
             credentialsBinary = serializeCredentials(getContext().getCurrentDagInfo().getCredentials());

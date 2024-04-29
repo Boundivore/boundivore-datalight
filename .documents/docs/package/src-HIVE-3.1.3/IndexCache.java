@@ -25,11 +25,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.tez.runtime.library.common.Constants;
 import org.apache.tez.runtime.library.common.sort.impl.TezIndexRecord;
 import org.apache.tez.runtime.library.common.sort.impl.TezSpillRecord;
+
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 
 class IndexCache {
 
@@ -39,20 +41,26 @@ class IndexCache {
   private static final Logger LOG = LoggerFactory.getLogger(IndexCache.class);
 
   private final ConcurrentHashMap<String,IndexInformation> cache =
-          new ConcurrentHashMap<String,IndexInformation>();
+      new ConcurrentHashMap<String,IndexInformation>();
 
   private final LinkedBlockingQueue<String> queue =
-          new LinkedBlockingQueue<String>();
+      new LinkedBlockingQueue<String>();
+
+  // DLC-FIX
   private FileSystem fs;
   public static final String INDEX_CACHE_MB = "llap.shuffle.indexcache.mb";
+  // DLC-FIX
 
   public IndexCache(Configuration conf) {
     this.conf = conf;
+    // DLC-FIX
     totalMemoryAllowed = conf.getInt(INDEX_CACHE_MB, 10) * 1024 * 1024;
     LOG.info("IndexCache created with max memory = " + totalMemoryAllowed);
     initLocalFs();
+    // DLC-FIX
   }
 
+  // DLC-FIX
   private void initLocalFs() {
     try {
       this.fs = FileSystem.getLocal(conf).getRaw();
@@ -60,6 +68,7 @@ class IndexCache {
       throw new RuntimeException(e);
     }
   }
+  // DLC-FIX
 
   /**
    * This method gets the index information for the given mapId and reduce.
@@ -73,8 +82,8 @@ class IndexCache {
    * @throws IOException
    */
   public TezIndexRecord getIndexInformation(String mapId, int reduce,
-                                            Path fileName, String expectedIndexOwner)
-          throws IOException {
+                                         Path fileName, String expectedIndexOwner)
+      throws IOException {
 
     IndexInformation info = cache.get(mapId);
 
@@ -94,10 +103,10 @@ class IndexCache {
     }
 
     if (info.mapSpillRecord.size() == 0 ||
-            info.mapSpillRecord.size() <= reduce) {
+        info.mapSpillRecord.size() <= reduce) {
       throw new IOException("Invalid request " +
-              " Map Id = " + mapId + " Reducer = " + reduce +
-              " Index Info Length = " + info.mapSpillRecord.size());
+          " Map Id = " + mapId + " Reducer = " + reduce +
+          " Index Info Length = " + info.mapSpillRecord.size());
     }
     return info.mapSpillRecord.getIndex(reduce);
   }
@@ -111,7 +120,7 @@ class IndexCache {
   private IndexInformation readIndexFileToCache(Path indexFileName,
                                                 String mapId,
                                                 String expectedIndexOwner)
-          throws IOException {
+      throws IOException {
     IndexInformation info;
     IndexInformation newInd = new IndexInformation();
     if ((info = cache.putIfAbsent(mapId, newInd)) != null) {
@@ -130,7 +139,10 @@ class IndexCache {
     LOG.debug("IndexCache MISS: MapId " + mapId + " not found") ;
     TezSpillRecord tmp = null;
     try {
+      // DLC-FIX
+//      tmp = new TezSpillRecord(indexFileName, conf, expectedIndexOwner);
       tmp = new TezSpillRecord(indexFileName, fs, expectedIndexOwner);
+      // DLC-FIX
     } catch (Throwable e) {
       tmp = new TezSpillRecord(0);
       cache.remove(mapId);
@@ -204,8 +216,8 @@ class IndexCache {
 
     int getSize() {
       return mapSpillRecord == null
-              ? 0
-              : mapSpillRecord.size() * Constants.MAP_OUTPUT_INDEX_RECORD_LENGTH;
+          ? 0
+          : mapSpillRecord.size() * Constants.MAP_OUTPUT_INDEX_RECORD_LENGTH;
     }
   }
 }
