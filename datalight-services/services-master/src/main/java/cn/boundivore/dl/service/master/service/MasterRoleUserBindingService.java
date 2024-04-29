@@ -195,8 +195,8 @@ public class MasterRoleUserBindingService {
 
         // 检查是否为解除超级用户的绑定关系，如果是，则抛出异常（不允许解除超级用户与超级角色的绑定关系）
         request.getRoleUserList().forEach(i -> {
-            Assert.isTrue(
-                    i.getUserId() + i.getRoleId() != 2,
+            Assert.isFalse(
+                    i.getUserId() == 1L && i.getRoleId() == 1L,
                     () -> new BException("ADMIN 角色不允许与 admin 用户解绑")
             );
         });
