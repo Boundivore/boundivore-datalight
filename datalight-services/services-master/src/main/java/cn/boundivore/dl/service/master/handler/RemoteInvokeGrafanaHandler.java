@@ -342,7 +342,8 @@ public class RemoteInvokeGrafanaHandler {
             List<TDlComponent> tDlComponentList = this.masterComponentService.getTDlComponentListByServiceName(
                             clusterId,
                             "MONITOR"
-                    ).stream()
+                    )
+                    .stream()
                     .filter(i -> i.getComponentName().equals("Prometheus") && i.getComponentState() != SCStateEnum.REMOVED)
                     .collect(Collectors.toList());
             TDlComponent tDlComponent = CollUtil.getFirst(tDlComponentList);
