@@ -58,6 +58,7 @@ public class ConfigHBASE extends AbstractConfig {
                 return new ConfigLogicLog4jProperties(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HMaster:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HRegionServer:
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HThriftServer2:
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {
