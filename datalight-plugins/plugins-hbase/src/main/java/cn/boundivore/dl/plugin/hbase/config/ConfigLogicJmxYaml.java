@@ -70,7 +70,7 @@ public class ConfigLogicJmxYaml extends AbstractConfigLogic {
             case JMX_CONFIG_FILE_HThriftServer:
                 jmxRemotePort = PortConstants.getRemotePort(
                         SERVICE_NAME,
-                        "HThriftServer"
+                        "HThriftServer2"
                 );
                 break;
             default:
