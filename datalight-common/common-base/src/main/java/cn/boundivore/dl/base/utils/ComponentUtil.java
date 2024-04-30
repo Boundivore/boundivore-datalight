@@ -40,7 +40,7 @@ public class ComponentUtil {
      * Throws:
      *
      * @param componentName 可能带有数字结尾的组件名，如：NameNode1 NameNode2，
-     *                      但是 HiveServer2 这种组件名称末尾的数字不可去除，
+     *                      但是 HiveServer2、HThriftServer2 等这种组件名称末尾的数字不可去除，
      *                      该数字并不表示同类型组件的逻辑区分，而是名字本身。
      * @return 返回修剪后的组件名：如：NameNode
      */
@@ -50,6 +50,10 @@ public class ComponentUtil {
         }
 
         if (componentName.equals("HiveServer2")) {
+            return componentName;
+        }
+
+        if (componentName.equals("HThriftServer2")) {
             return componentName;
         }
 
