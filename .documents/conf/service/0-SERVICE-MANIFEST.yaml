@@ -25,7 +25,7 @@ datalight:
         priority: 4
         desc: 'Hadoop 分布式存储服务'
         dependencies: [ 'ZOOKEEPER' ]
-        relatives: [ 'MONITOR' ]
+        relatives: [ 'MONITOR', 'HIVE', 'HBASE', 'SPARK', 'FLINK' ]
       - name: YARN
         type: COMPUTE
         desc: 'Hadoop 分布式计算资源管理服务'
@@ -43,5 +43,29 @@ datalight:
         desc: '大型分布式非结构化数据库'
         priority: 7
         dependencies: [ 'ZOOKEEPER', 'HDFS' ]
+        relatives: [ 'MONITOR' ]
+      - name: KAFKA
+        type: STORAGE
+        desc: '分布式高吞吐消息队列'
+        priority: 8
+        dependencies: [ 'ZOOKEEPER' ]
+        relatives: [ 'MONITOR' ]
+      - name: SPARK
+        type: COMPUTE
+        desc: '流批一体计算框架'
+        priority: 9
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        relatives: [ 'MONITOR' ]
+      - name: FLINK
+        type: COMPUTE
+        desc: '流批一体计算框架'
+        priority: 10
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        relatives: [ 'MONITOR' ]
+      - name: ZKUI
+        type: COMPUTE
+        desc: 'Zookeeper 可视化操作终端'
+        priority: 11
+        dependencies: [ 'ZOOKEEPER' ]
         relatives: [ 'MONITOR' ]
 

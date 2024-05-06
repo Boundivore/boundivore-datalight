@@ -64,6 +64,7 @@ public class PortConstants {
             put("HBASE-HMaster", "19014");
             put("HBASE-HRegionServer", "19015");
             put("HBASE-HThriftServer2", "19016");
+            put("SPARK-SparkHistoryServer", "19017");
         }
     };
 
@@ -91,6 +92,7 @@ public class PortConstants {
             put("HBASE-HMaster", "18014");
             put("HBASE-HRegionServer", "18015");
             put("HBASE-HThriftServer2", "18016");
+            put("SPARK-SparkHistoryServer", "18017");
         }
     };
 
