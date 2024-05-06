@@ -249,7 +249,7 @@ public abstract class AbstractTask implements ITask {
                 stepMeta.getArgs().clear();
                 stepMeta.getArgs().add(taskMeta.getServiceName());
                 break;
-            case "service-check-spark-log-dir.sh":
+            case "spark-check-hdfs-dir.sh":
                 // 存储计算分离的场景中，不同集群中的 Spark 在 HDFS 中存在不同的日志存储目录
                 stepMeta.getArgs().clear();
                 stepMeta.getArgs().add(

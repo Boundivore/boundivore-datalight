@@ -76,7 +76,7 @@ datalight:
             steps:
               - type: SCRIPT
                 name: '检查并初始化 Spark 日志目录'
-                shell: 'service-check-spark-log-dir.sh'
+                shell: 'spark-check-hdfs-dir.sh'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
