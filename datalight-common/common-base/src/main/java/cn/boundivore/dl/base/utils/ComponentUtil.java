@@ -49,14 +49,14 @@ public class ComponentUtil {
             throw new IllegalArgumentException("组件名称不能为空");
         }
 
-        if (componentName.equals("HiveServer2")) {
-            return componentName;
+        switch (componentName) {
+            case "HiveServer2":
+            case "HThriftServer2":
+            case "SparkThriftServer2":
+                return componentName;
+            default:
+                return componentName.replaceAll("\\d+$", "");
         }
 
-        if (componentName.equals("HThriftServer2")) {
-            return componentName;
-        }
-
-        return componentName.replaceAll("\\d+$", "");
     }
 }

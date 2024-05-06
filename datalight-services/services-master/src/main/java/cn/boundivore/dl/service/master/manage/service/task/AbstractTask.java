@@ -190,6 +190,9 @@ public abstract class AbstractTask implements ITask {
      * @return boolean 成功返回 true 失败返回 false
      */
     protected String script(StepMeta stepMeta) throws BException {
+        // 为脚本动态设置必要参数
+        this.setExtraArgs(stepMeta);
+
         stepMeta.setShell(
                 this.pluginAbsoluteCommandPath(stepMeta)
         );
@@ -209,20 +212,8 @@ public abstract class AbstractTask implements ITask {
      * @return boolean 成功返回 true 失败返回 false
      */
     protected String commonScript(StepMeta stepMeta) throws BException {
-
-        if (stepMeta.getShell().equals("service-init-env.sh")) {
-            stepMeta.getArgs().clear();
-            stepMeta.getArgs().add(taskMeta.getServiceName());
-            stepMeta.getArgs().add(ResolverYamlServiceDetail.SERVICE_MAP
-                    .get(taskMeta.getServiceName())
-                    .getTgz()
-            );
-        }
-
-        if (stepMeta.getShell().equals("service-remove.sh")) {
-            stepMeta.getArgs().clear();
-            stepMeta.getArgs().add(taskMeta.getServiceName());
-        }
+        // 为脚本动态设置必要参数
+        this.setExtraArgs(stepMeta);
 
         stepMeta.setShell(
                 this.commonAbsoluteCommandPath(stepMeta)
@@ -230,6 +221,46 @@ public abstract class AbstractTask implements ITask {
 
 
         return this.command(stepMeta);
+    }
+
+    /**
+     * Description: 为脚本动态设置额外参数
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/6
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param stepMeta 步骤元数据信息
+     */
+    private void setExtraArgs(StepMeta stepMeta) {
+        switch (stepMeta.getShell()) {
+            case "service-init-env.sh":
+                stepMeta.getArgs().clear();
+                stepMeta.getArgs().add(taskMeta.getServiceName());
+                stepMeta.getArgs().add(ResolverYamlServiceDetail.SERVICE_MAP
+                        .get(taskMeta.getServiceName())
+                        .getTgz()
+                );
+                break;
+            case "service-remove.sh":
+                stepMeta.getArgs().clear();
+                stepMeta.getArgs().add(taskMeta.getServiceName());
+                break;
+            case "service-check-spark-log-dir.sh":
+                // 存储计算分离的场景中，不同集群中的 Spark 在 HDFS 中存在不同的日志存储目录
+                stepMeta.getArgs().clear();
+                stepMeta.getArgs().add(
+                        taskMeta.getStageMeta()
+                                .getJobMeta()
+                                .getClusterMeta()
+                                .getCurrentClusterName()
+                );
+                break;
+
+        }
     }
 
     /**
