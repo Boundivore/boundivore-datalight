@@ -13,6 +13,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/SPARK/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/SPARK/templated/conf'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/SPARK/sbin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/SPARK/templated/sbin'
+
 
 #       TODO FOR TEST
 #      - service-conf-dir: '{{SERVICE_DIR}}/SPARK/exporter/conf'
@@ -24,6 +27,8 @@ datalight:
 #      - service-conf-dir: '{{SERVICE_DIR}}/SPARK/conf'
 #        templated-dir: 'D:/datalight/plugins/SPARK/templated/conf'
 
+#      - service-conf-dir: '{{SERVICE_DIR}}/SPARK/sbin'
+#        templated-dir: 'D:/datalight/plugins/SPARK/templated/sbin'
 
     config-event-handler-jar: 'plugins-spark-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.spark.config.event.ConfigEventHandler'
