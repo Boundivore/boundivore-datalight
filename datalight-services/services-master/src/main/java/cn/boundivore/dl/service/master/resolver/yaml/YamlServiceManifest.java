@@ -47,6 +47,9 @@ public class YamlServiceManifest {
         @JsonProperty("dependencies")
         private List<String> dependencies;
 
+        @JsonProperty("optional-dependencies")
+        private List<String> optionalDependencies;
+
         @JsonProperty("relatives")
         private List<String> relatives;
     }

@@ -61,10 +61,14 @@ public class PortConstants {
             put("HIVE-MetaStore", "19011");
             put("HIVE-HiveServer2", "19012");
             put("HIVE-TezUI", "19013");
+
             put("HBASE-HMaster", "19014");
             put("HBASE-HRegionServer", "19015");
             put("HBASE-HThriftServer2", "19016");
+
             put("SPARK-SparkHistoryServer", "19017");
+
+            put("FLINK-FlinkHistoryServer", "19018");
         }
     };
 
@@ -89,10 +93,14 @@ public class PortConstants {
             put("HIVE-MetaStore", "18011");
             put("HIVE-HiveServer2", "18012");
             put("HIVE-TezUI", "18013");
+
             put("HBASE-HMaster", "18014");
             put("HBASE-HRegionServer", "18015");
             put("HBASE-HThriftServer2", "18016");
+
             put("SPARK-SparkHistoryServer", "18017");
+
+            put("FLINK-FlinkHistoryServer", "18018");
         }
     };
 

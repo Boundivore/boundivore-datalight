@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.plugin.spark.config;
+package cn.boundivore.dl.plugin.flink.config;
 
 import cn.boundivore.dl.plugin.base.config.AbstractConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import java.io.File;
  * Version: V1.0
  */
 @Slf4j
-public class ConfigSPARK extends AbstractConfig {
+public class ConfigFLINK extends AbstractConfig {
     /**
      * Description: 根据配置文件执行不同的配置修改逻辑
      * Created by: Boundivore
@@ -50,11 +50,13 @@ public class ConfigSPARK extends AbstractConfig {
     @Override
     public String configLogic(File file, String replacedTemplate) {
         switch (file.getName()) {
-            case "spark-defaults.conf":
-                return new ConfigLogicSparkDefaults(super.pluginConfig).config(file, replacedTemplate);
-            case "spark-env.sh":
-                return new ConfigLogicSparkEnvSh(super.pluginConfig).config(file, replacedTemplate);
-            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_SparkHistoryServer:
+            case "config.sh":
+                return new ConfigLogicFlinkConfigSh(super.pluginConfig).config(file, replacedTemplate);
+            case "config.yaml":
+                return new ConfigLogicFlinkConfigYaml(super.pluginConfig).config(file, replacedTemplate);
+            case "historyserver.sh":
+                return new ConfigLogicFlinkHistoryServerSh(super.pluginConfig).config(file, replacedTemplate);
+            case ConfigLogicJmxYaml.JMX_CONFIG_FILE_FlinkHistoryServer:
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {

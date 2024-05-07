@@ -36,6 +36,8 @@ import static cn.boundivore.dl.plugin.spark.config.ConfigLogicJmxYaml.SERVICE_NA
  */
 public class ConfigLogicSparkEnvSh extends AbstractConfigLogic {
 
+    private final String DEPENDENCY_SERVICE_NAME = "YARN";
+
 
     public ConfigLogicSparkEnvSh(PluginConfig pluginConfig) {
         super(pluginConfig);
@@ -155,9 +157,9 @@ public class ConfigLogicSparkEnvSh extends AbstractConfigLogic {
      */
     private String hadoopConfDir() {
         return String.format(
-                "%s/%s/conf",
+                "%s/%s/etc/hadoop",
                 super.serviceDir(),
-                SERVICE_NAME
+                this.DEPENDENCY_SERVICE_NAME
         );
     }
 

@@ -14,35 +14,46 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.plugin.spark.config.event;
+package cn.boundivore.dl.plugin.flink.config;
 
-import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
-import cn.boundivore.dl.plugin.base.bean.PluginConfigSelf;
-import cn.boundivore.dl.plugin.base.config.event.AbstractConfigEventHandler;
-import lombok.extern.slf4j.Slf4j;
+import cn.boundivore.dl.plugin.base.bean.PluginConfig;
+import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
-import java.util.List;
+import java.io.File;
 
 /**
- * Description: SPARK 关联的服务发生变动时，检查是否需要联动修改自身的配置文件
+ * Description: 配置 config.yaml 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2024/5/6
+ * Creation time: 2024/5/7
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-@Slf4j
-public class ConfigEventHandler extends AbstractConfigEventHandler {
+public class ConfigLogicFlinkConfigYaml extends AbstractConfigLogic {
 
-    @Override
-    public List<String> getRelativeConfigPathList(List<String> configPathList) {
-        return super.getRelativeConfigPathList(configPathList);
+    private final String DEPENDENCY_SERVICE_NAME = "YARN";
+
+
+    public ConfigLogicFlinkConfigYaml(PluginConfig pluginConfig) {
+        super(pluginConfig);
     }
 
     @Override
-    public PluginConfigResult configByEvent(PluginConfigSelf pluginConfigSelf) {
-        return super.configByEvent(pluginConfigSelf);
+    public String config(File file, String replacedTemplated) {
+        super.printFilename(
+                pluginConfig.getCurrentMetaComponent().getHostname(),
+                file
+        );
+
+
+        return replacedTemplated
+                .replace(
+                        "{{}}",
+                        ""
+                )
+                ;
     }
+
 }

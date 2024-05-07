@@ -77,6 +77,7 @@ datalight:
         max: 1
         min: 1
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -157,6 +158,7 @@ datalight:
         max: 2
         min: 1
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -219,6 +221,7 @@ datalight:
         max: 1
         min: 1
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -281,6 +284,7 @@ datalight:
         max: -1
         min: 0
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING

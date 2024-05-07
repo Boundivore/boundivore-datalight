@@ -138,6 +138,9 @@ public class YamlServiceDetail {
         @JsonProperty("mutexes")
         private List<String> mutexes;
 
+        @JsonProperty("dependencies")
+        private List<String> dependencies;
+
         @JsonProperty("actions")
         private List<Action> actions;
     }

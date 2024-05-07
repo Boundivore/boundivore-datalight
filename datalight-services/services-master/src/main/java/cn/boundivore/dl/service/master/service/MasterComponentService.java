@@ -716,7 +716,8 @@ public class MasterComponentService {
                 }
         );
 
-        // 检查组件是否在某些节点存在互斥
+        // 1、检查组件是否在指定节点存在互斥
+        // 2、检查组件是否在指定节点是否未部署其依赖组件
         componentNameAllTDlComponentListMap.forEach(
                 (componentName, tdlComponentList) -> {
 
@@ -729,7 +730,8 @@ public class MasterComponentService {
 
                     // 获取当前组件静态配置
                     YamlServiceDetail.Component yamlComponent = ResolverYamlServiceDetail.COMPONENT_MAP.get(componentName);
-                    // 遍历当前组件对应的互斥组件名称
+
+                    // 1、检查组件互斥：遍历当前组件对应的互斥组件名称
                     yamlComponent.getMutexes()
                             .forEach(mutexComponentName -> {
                                         // 根据互斥的组件名称，获取该互斥组件在集群节点中的分布情况
@@ -739,7 +741,7 @@ public class MasterComponentService {
                                                 .map(TDlComponent::getNodeId)
                                                 .collect(Collectors.toList());
 
-                                        // 遍历互斥组件所在的节点 ID，判断当前组件所分布的节点 ID 是否包含了互斥组件所在的节点 ID
+                                        // 遍历互斥组件所在的节点 ID，检查当前组件所分布的节点 ID 是否包含了互斥组件所在的节点 ID
                                         Assert.isFalse(
                                                 mutexNodeIdList.stream().anyMatch(newNodeIdList::contains),
                                                 () -> new BException(
@@ -750,6 +752,31 @@ public class MasterComponentService {
                                                         )
                                                 )
                                         );
+                                    }
+                            );
+
+                    // 2、检查组件依赖：遍历当前组件对应的依赖组件名称
+                    yamlComponent.getDependencies()
+                            .forEach(dependencyComponentName -> {
+                                        // 根据被依赖的组件名称，获取该被依赖的组件在集群节点中的分布情况
+                                        List<Long> dependencyNodeIdList = componentNameAllTDlComponentListMap.get(dependencyComponentName)
+                                                .stream()
+                                                .filter(i -> i.getComponentState() != UNSELECTED && i.getComponentState() != REMOVED)
+                                                .map(TDlComponent::getNodeId)
+                                                .collect(Collectors.toList());
+
+                                        // 遍历被依赖组件所在的节点 ID，检查当前组件所在节点是否部署了其依赖的组件
+                                        Assert.isTrue(
+                                                dependencyNodeIdList.containsAll(newNodeIdList),
+                                                () -> new BException(
+                                                        String.format(
+                                                                "在同节点中，组件 %s 依赖组件 %s，请确认并满足该依赖关系",
+                                                                componentName,
+                                                                dependencyComponentName
+                                                        )
+                                                )
+                                        );
+
                                     }
                             );
                 }

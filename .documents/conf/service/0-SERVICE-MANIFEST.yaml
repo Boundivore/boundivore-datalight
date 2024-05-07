@@ -7,65 +7,76 @@ datalight:
         priority: 1
         desc: '监控与告警基础服务'
         dependencies: [ ]
+        optional-dependencies: [ ]
         relatives: [ ]
       - name: KUBESPHERE
         type: BASE
         priority: 2
         desc: 'K8S 云原生平台'
         dependencies: [ ]
+        optional-dependencies: [ ]
         relatives: [ ]
       - name: ZOOKEEPER
         type: BASE
         priority: 3
         desc: '高吞吐的 CP 模式注册中心'
         dependencies: [ ]
+        optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: HDFS
         type: STORAGE
         priority: 4
         desc: 'Hadoop 分布式存储服务'
         dependencies: [ 'ZOOKEEPER' ]
-        relatives: [ 'MONITOR', 'HIVE', 'HBASE', 'SPARK', 'FLINK' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR', 'HIVE', 'HBASE']
       - name: YARN
         type: COMPUTE
         desc: 'Hadoop 分布式计算资源管理服务'
         priority: 5
         dependencies: [ 'ZOOKEEPER', 'HDFS' ]
-        relatives: [ 'MONITOR' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR', 'SPARK', 'FLINK']
       - name: HIVE
         type: COMPUTE
         desc: 'HQL 任务生成与计算框架'
         priority: 6
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
-        relatives: [ 'MONITOR' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR' , 'SPARK', "FLINK"]
       - name: HBASE
         type: STORAGE
         desc: '大型分布式非结构化数据库'
         priority: 7
         dependencies: [ 'ZOOKEEPER', 'HDFS' ]
-        relatives: [ 'MONITOR' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR', "FLINK" ]
       - name: KAFKA
         type: STORAGE
         desc: '分布式高吞吐消息队列'
         priority: 8
         dependencies: [ 'ZOOKEEPER' ]
+        optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: SPARK
         type: COMPUTE
         desc: '流批一体计算框架'
         priority: 9
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: FLINK
         type: COMPUTE
         desc: '流批一体计算框架'
         priority: 10
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: ZKUI
         type: COMPUTE
         desc: 'Zookeeper 可视化操作终端'
         priority: 11
         dependencies: [ 'ZOOKEEPER' ]
+        optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
 

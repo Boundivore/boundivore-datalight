@@ -67,6 +67,7 @@ datalight:
         max: -1
         min: 3
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -129,6 +130,7 @@ datalight:
         max: 1
         min: 1
         mutexes: [ 'NameNode2' ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -200,6 +202,7 @@ datalight:
         max: 1
         min: 1
         mutexes: [ 'NameNode1' ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -271,6 +274,7 @@ datalight:
         max: 1
         min: 1
         mutexes: [ ]
+        dependencies: [ 'NameNode1' ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -342,6 +346,7 @@ datalight:
         max: 1
         min: 1
         mutexes: [ ]
+        dependencies: [ 'NameNode2' ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -405,6 +410,7 @@ datalight:
         max: -1
         min: 1
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -467,6 +473,7 @@ datalight:
         max: 2
         min: 2
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -529,6 +536,7 @@ datalight:
         max: -1
         min: 0
         mutexes: [ ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
