@@ -35,9 +35,6 @@ import java.util.Map;
  */
 public class ConfigLogicFlinkConfigYaml extends AbstractConfigLogic {
 
-    private final String DEPENDENCY_SERVICE_NAME = "YARN";
-
-
     public ConfigLogicFlinkConfigYaml(PluginConfig pluginConfig) {
         super(pluginConfig);
     }

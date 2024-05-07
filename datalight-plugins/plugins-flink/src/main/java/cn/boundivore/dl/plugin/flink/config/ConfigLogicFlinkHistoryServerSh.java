@@ -36,9 +36,6 @@ import static cn.boundivore.dl.plugin.flink.config.ConfigLogicJmxYaml.SERVICE_NA
  */
 public class ConfigLogicFlinkHistoryServerSh extends AbstractConfigLogic {
 
-    private final String DEPENDENCY_SERVICE_NAME = "YARN";
-
-
     public ConfigLogicFlinkHistoryServerSh(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
