@@ -710,18 +710,22 @@ public class MasterAlertService {
                 .in(TDlAlertHandlerRelation::getAlertId, request.getAlertIdList())
                 .list();
 
-        // 移除关联关系
-        Assert.isTrue(
-                this.tDlAlertHandlerRelationService.removeBatchByIds(tDlAlertHandlerRelationList),
-                () -> new DatabaseException("移除告警关联关系失败")
-        );
+        if (CollUtil.isNotEmpty(tDlAlertHandlerRelationList)) {
+            // 移除关联关系
+            Assert.isTrue(
+                    this.tDlAlertHandlerRelationService.removeBatchByIds(tDlAlertHandlerRelationList),
+                    () -> new DatabaseException("移除告警关联关系失败")
+            );
+        }
 
         // 执行删除操作
         List<TDlAlert> tDlAlertList = this.tDlAlertService.listByIds(request.getAlertIdList());
-        Assert.isTrue(
-                this.tDlAlertService.removeBatchByIds(tDlAlertList),
-                () -> new DatabaseException("移除告警信息失败")
-        );
+        if (CollUtil.isNotEmpty(tDlAlertList)) {
+            Assert.isTrue(
+                    this.tDlAlertService.removeBatchByIds(tDlAlertList),
+                    () -> new DatabaseException("移除告警信息失败")
+            );
+        }
 
 
         // 获取 Prometheus 所在节点的详细信息
