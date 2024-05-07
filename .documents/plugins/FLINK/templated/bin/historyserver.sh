@@ -28,7 +28,15 @@ bin=`cd "$bin"; pwd`
 . "$bin"/config.sh
 
 if [[ $STARTSTOP == "start" ]] || [[ $STARTSTOP == "start-foreground" ]]; then
-    export FLINK_ENV_JAVA_OPTS="${FLINK_ENV_JAVA_OPTS} ${FLINK_ENV_JAVA_OPTS_HS}"
+    export FLINK_HISTORY_SERVER_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
+    -Dcom.sun.management.jmxremote.authenticate=false \
+    -Dcom.sun.management.jmxremote.ssl=false \
+    -Dcom.sun.management.jmxremote.local.only=false \
+    -Dcom.sun.management.jmxremote.port={{jmxRemotePort_FlinkHistoryServer}} \
+    -javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_FlinkHistoryServer}}:${SERVICE_DIR}/FLINK/exporter/conf/jmx_config_FlinkHistoryServer.yaml"
+
+
+    export FLINK_ENV_JAVA_OPTS="${FLINK_ENV_JAVA_OPTS} ${FLINK_ENV_JAVA_OPTS_HS} ${FLINK_HISTORY_SERVER_JMX_OPTS}"
 	args=("--configDir" "${FLINK_CONF_DIR}")
 fi
 

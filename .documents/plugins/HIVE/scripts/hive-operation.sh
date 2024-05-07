@@ -34,7 +34,13 @@ METASTORE_PID_FILE="${HIVE_PID_DIR}/hive-metastore.pid"
 HIVESERVER2_PID_FILE="${HIVE_PID_DIR}/hiveserver2.pid"
 TEZUI_PID_FILE="${HIVE_PID_DIR}/tez-ui.pid"
 
+# 确保日志和 PID 目录存在
+mkdir -p "${LOG_DIR}/${SERVICE_NAME}"
+mkdir -p "${PID_DIR}/${SERVICE_NAME}"
 
+chown ${USER_NAME}:${GROUP_NAME} -R "${LOG_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${PID_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${DATA_DIR}"
 
 # 检查参数是否为空
 if [ -z "$1" ]; then

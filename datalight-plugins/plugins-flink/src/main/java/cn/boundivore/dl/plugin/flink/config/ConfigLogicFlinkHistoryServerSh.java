@@ -16,13 +16,16 @@
  */
 package cn.boundivore.dl.plugin.flink.config;
 
+import cn.boundivore.dl.base.constants.PortConstants;
 import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 
+import static cn.boundivore.dl.plugin.flink.config.ConfigLogicJmxYaml.SERVICE_NAME;
+
 /**
- * Description: 配置 config.yaml 文件
+ * Description: 配置 historyserver.sh 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/5/7
@@ -50,8 +53,18 @@ public class ConfigLogicFlinkHistoryServerSh extends AbstractConfigLogic {
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{jmxRemotePort_FlinkHistoryServer}}",
+                        PortConstants.getRemotePort(
+                                SERVICE_NAME,
+                                "FlinkHistoryServer"
+                        )
+                )
+                .replace(
+                        "{{jmxExporterPort_FlinkHistoryServer}}",
+                        PortConstants.getExporterPort(
+                                SERVICE_NAME,
+                                "FlinkHistoryServer"
+                        )
                 )
                 ;
     }

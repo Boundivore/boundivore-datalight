@@ -8,13 +8,15 @@
 # DATA_DIR="/data/datalight/data"
 
 YARN_HOME="${SERVICE_DIR}/YARN"
-FLINK_HDFS_DIR="$1"
+CLUSTER_NAME="$1"
+
+FLINK_HDFS_DIR="/${CLUSTER_NAME}/completed-jobs"
 
 "${YARN_HOME}/bin/hadoop" fs -test -e "${FLINK_HDFS_DIR}"
 
 if [ $? -eq 0 ] ;then
     echo "${FLINK_HDFS_DIR} already exists."
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${FLINK_HDFS_DIR}"
+    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 /${FLINK_HDFS_DIR}/"
 else
     echo "${FLINK_HDFS_DIR} does not exist.Creating..."
     su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -mkdir -p ${FLINK_HDFS_DIR}"

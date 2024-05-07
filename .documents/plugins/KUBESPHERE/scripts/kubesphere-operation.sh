@@ -24,6 +24,16 @@ SERVICE_NAME="KUBESPHERE"
 
 HARBOR_DIR="/opt/harbor"
 
+# 确保日志和 PID 目录存在
+mkdir -p "${LOG_DIR}/${SERVICE_NAME}"
+mkdir -p "${PID_DIR}/${SERVICE_NAME}"
+mkdir -p "${HARBOR_DIR}"
+
+chown ${USER_NAME}:${GROUP_NAME} -R "${LOG_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${PID_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${DATA_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${HARBOR_DIR}"
+
 # 检查参数是否为空
 if [ -z "$1" ]; then
   echo "Usage: $0 <Harbor|K8S> <start|stop|restart>"

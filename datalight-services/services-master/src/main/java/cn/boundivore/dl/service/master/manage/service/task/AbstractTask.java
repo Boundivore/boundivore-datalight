@@ -259,6 +259,16 @@ public abstract class AbstractTask implements ITask {
                                 .getCurrentClusterName()
                 );
                 break;
+            case "flink-check-hdfs-dir.sh":
+                // 存储计算分离的场景中，不同集群中的 Spark 在 HDFS 中存在不同的日志存储目录
+                stepMeta.getArgs().clear();
+                stepMeta.getArgs().add(
+                        taskMeta.getStageMeta()
+                                .getJobMeta()
+                                .getClusterMeta()
+                                .getCurrentClusterName()
+                );
+                break;
 
         }
     }

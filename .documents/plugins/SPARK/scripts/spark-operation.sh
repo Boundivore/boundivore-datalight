@@ -24,9 +24,6 @@ SERVICE_NAME="SPARK"
 
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
-SPARK_LOG_DIR="${LOG_DIR}/${SERVICE_NAME}"
-SPARK_PID_DIR="${PID_DIR}/${SERVICE_NAME}"
-
 SPARK_ENV_SCRIPT="${CURRENT_SERVICE_DIR}/conf/spark-env.sh"
 
 # 检查参数是否为空
@@ -36,9 +33,13 @@ if [ -z "$1" ]; then
 fi
 
 
-# 确保日志和PID目录存在
-mkdir -p "${SPARK_LOG_DIR}"
-mkdir -p "${SPARK_PID_DIR}"
+# 确保日志和 PID 目录存在
+mkdir -p "${LOG_DIR}/${SERVICE_NAME}"
+mkdir -p "${PID_DIR}/${SERVICE_NAME}"
+
+chown ${USER_NAME}:${GROUP_NAME} -R "${LOG_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${PID_DIR}"
+chown ${USER_NAME}:${GROUP_NAME} -R "${DATA_DIR}"
 
 # 获取第一个参数（组件名称）
 COMPONENT_NAME="$1"

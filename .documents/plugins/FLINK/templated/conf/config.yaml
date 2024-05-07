@@ -283,16 +283,16 @@ rest:
 #       # monitored directories of the HistoryServer as well (see below).
 #       dir: hdfs:///completed-jobs/
 
-# historyserver:
-#   web:
-#     # The address under which the web-based HistoryServer listens.
-#     address: 0.0.0.0
-#     # The port under which the web-based HistoryServer listens.
-#     port: 8082
-#   archive:
-#     fs:
-#       # Comma separated list of directories to monitor for completed jobs.
-#       dir: hdfs:///completed-jobs/
-#       # Interval in milliseconds for refreshing the monitored directories.
-#       fs.refresh-interval: 10000
+historyserver:
+ web:
+   # The address under which the web-based HistoryServer listens.
+   address: {{historyserver.web.address}}
+   # The port under which the web-based HistoryServer listens.
+   port: 8082
+ archive:
+   fs:
+     # Comma separated list of directories to monitor for completed jobs.
+     dir: {{historyserver.archive.fs.dir}}
+     # Interval in milliseconds for refreshing the monitored directories.
+     fs.refresh-interval: 10000
 

@@ -1,0 +1,192 @@
+datalight:
+  service:
+    name: FLINK
+    version: 3.1.3
+    tgz: dlc-flink-3.1.3.tar.gz
+    conf-dirs:
+      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/exporter/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/FLINK/templated/exporter/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/FLINK/templated/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/FLINK/templated/conf'
+
+
+#       TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/exporter/conf'
+#        templated-dir: 'D:/datalight/plugins/FLINK/templated/exporter/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/bin'
+#        templated-dir: 'D:/datalight/plugins/FLINK/templated/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/conf'
+#        templated-dir: 'D:/datalight/plugins/FLINK/templated/conf'
+
+    config-event-handler-jar: 'plugins-flink-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.flink.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-flink-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.flink.config.ConfigFLINK'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
+    components:
+      - name: FlinkHistoryServer
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ 'YARNClient' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '检查并初始化 Flink 日志目录'
+                shell: 'flink-check-hdfs-dir.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 FlinkHistoryServer'
+                shell: 'flink-operation.sh'
+                args: [ 'FlinkHistoryServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 FlinkHistoryServer'
+                shell: 'flink-operation.sh'
+                args: [ 'FlinkHistoryServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 FlinkHistoryServer'
+                shell: 'flink-operation.sh'
+                args: [ 'FlinkHistoryServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 FlinkHistoryServer'
+                shell: 'flink-operation.sh'
+                args: [ 'FlinkHistoryServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: FLINKClient
+        priority: 2
+        max: -1
+        min: 0
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: COMMAND
+                name: '正在完成 FLINKClient 部署'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '启动 FLINKClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: COMMAND
+                name: '停止 FLINKClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '重启 FLINKClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0

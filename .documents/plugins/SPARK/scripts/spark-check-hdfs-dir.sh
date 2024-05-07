@@ -8,7 +8,9 @@
 # DATA_DIR="/data/datalight/data"
 
 YARN_HOME="${SERVICE_DIR}/YARN"
-SPARK_HDFS_DIR="$1"
+CLUSTER_NAME="$1"
+SPARK_HDFS_DIR="/${CLUSTER_NAME}/spark-logs"
+
 
 "${YARN_HOME}/bin/hadoop" fs -test -e "${SPARK_HDFS_DIR}"
 

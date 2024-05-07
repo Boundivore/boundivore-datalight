@@ -137,6 +137,8 @@ HADOOP_HOME="{{HADOOP_HOME}}"
 HBASE_HOME="{{HBASE_HOME}}"
 FLINK_PID_DIR="${DEFAULT_ENV_PID_DIR}"
 DEFAULT_FLINK_LOG_DIR={{DEFAULT_FLINK_LOG_DIR}}
+HADOOP_CLASSPATH=$(${HADOOP_HOME}/bin/hadoop classpath)
+export HADOOP_CLASSPATH
 
 
 ########################################################################################################################
