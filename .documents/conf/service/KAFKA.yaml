@@ -1,31 +1,31 @@
 datalight:
   service:
-    name: FLINK
-    version: 1.19.0
-    tgz: dlc-flink-1.19.0.tar.gz
+    name: KAFKA
+    version: 2.6.0
+    tgz: dlc-kafka-2.6.0.tar.gz
     conf-dirs:
-      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/exporter/conf'
-        templated-dir: '{{DATALIGHT_DIR}}/plugins/FLINK/templated/exporter/conf'
+      - service-conf-dir: '{{SERVICE_DIR}}/KAFKA/exporter/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/KAFKA/templated/exporter/conf'
 
-      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/bin'
-        templated-dir: '{{DATALIGHT_DIR}}/plugins/FLINK/templated/bin'
+      - service-conf-dir: '{{SERVICE_DIR}}/KAFKA/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/KAFKA/templated/bin'
 
-      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/conf'
-        templated-dir: '{{DATALIGHT_DIR}}/plugins/FLINK/templated/conf'
-
+      - service-conf-dir: '{{SERVICE_DIR}}/KAFKA/config'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/KAFKA/templated/config'
 
 #       TODO FOR TEST
-#      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/exporter/conf'
-#        templated-dir: 'D:/datalight/plugins/FLINK/templated/exporter/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/KAFKA/exporter/conf'
+#        templated-dir: 'D:/datalight/plugins/KAFKA/templated/exporter/conf'
 #
-#      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/bin'
-#        templated-dir: 'D:/datalight/plugins/FLINK/templated/bin'
+#      - service-conf-dir: '{{SERVICE_DIR}}/KAFKA/bin'
+#        templated-dir: 'D:/datalight/plugins/KAFKA/templated/bin'
 #
-#      - service-conf-dir: '{{SERVICE_DIR}}/FLINK/conf'
-#        templated-dir: 'D:/datalight/plugins/FLINK/templated/conf'
+#      - service-conf-dir: '{{SERVICE_DIR}}/KAFKA/config'
+#        templated-dir: 'D:/datalight/plugins/KAFKA/templated/config'
 
-    config-event-handler-jar: 'plugins-flink-1.0.0.jar'
-    config-event-handler-clazz: 'cn.boundivore.dl.plugin.flink.config.event.ConfigEventHandler'
+
+    config-event-handler-jar: 'plugins-kafka-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.kafka.config.event.ConfigEventHandler'
 
     initialize:
       steps:
@@ -49,20 +49,20 @@ datalight:
 
         - type: JAR
           name: '初始化服务配置文件'
-          jar: 'plugins-flink-1.0.0.jar'
-          clazz: 'cn.boundivore.dl.plugin.flink.config.ConfigFLINK'
+          jar: 'plugins-kafka-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.kafka.config.ConfigKafka'
           args: [ ]
           interactions: [ ]
           exits: '0'
           sleep: 0
 
     components:
-      - name: FlinkHistoryServer
+      - name: KafkaBroker
         priority: 1
-        max: 1
-        min: 1
+        max: -1
+        min: 3
         mutexes: [ ]
-        dependencies: [ 'YARNClient' ]
+        dependencies: [ ]
         actions:
           - type: DEPLOY
             start-state: DEPLOYING
@@ -70,18 +70,9 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: SCRIPT
-                name: '检查并初始化 Flink 日志目录'
-                shell: 'flink-check-hdfs-dir.sh'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                timeout: 60000
-                sleep: 0
-
-              - type: SCRIPT
-                name: '部署后启动 FlinkHistoryServer'
-                shell: 'flink-operation.sh'
-                args: [ 'FlinkHistoryServer', 'start' ]
+                name: '部署后启动 KafkaBroker'
+                shell: 'kafka-operation.sh'
+                args: [ 'KafkaBroker', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -93,12 +84,11 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: SCRIPT
-                name: '启动 FlinkHistoryServer'
-                shell: 'flink-operation.sh'
-                args: [ 'FlinkHistoryServer', 'start' ]
+                name: '启动 KafkaBroker'
+                shell: 'kafka-operation.sh'
+                args: [ 'KafkaBroker', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
                 sleep: 1000
 
           - type: STOP
@@ -107,29 +97,27 @@ datalight:
             fail-state: STARTED
             steps:
               - type: SCRIPT
-                name: '停止 FlinkHistoryServer'
-                shell: 'flink-operation.sh'
-                args: [ 'FlinkHistoryServer', 'stop' ]
+                name: '停止 KafkaBroker'
+                shell: 'kafka-operation.sh'
+                args: [ 'KafkaBroker', 'stop' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
                 sleep: 1000
 
           - type: RESTART
             start-state: RESTARTING
             success-state: STARTED
-            fail-state: STOPPED
+            fail-state: STARTED
             steps:
               - type: SCRIPT
-                name: '重启 FlinkHistoryServer'
-                shell: 'flink-operation.sh'
-                args: [ 'FlinkHistoryServer', 'restart' ]
+                name: '重启 KafkaBroker'
+                shell: 'kafka-operation.sh'
+                args: [ 'KafkaBroker', 'restart' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
                 sleep: 1000
 
-      - name: FlinkClient
+      - name: KafkaClient
         priority: 2
         max: -1
         min: 0
@@ -142,7 +130,7 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 FLINKClient 部署'
+                name: '正在完成 KafkaClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -155,7 +143,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '启动 FLINKClient'
+                name: '启动 KafkaClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -169,7 +157,7 @@ datalight:
             fail-state: STARTED
             steps:
               - type: COMMAND
-                name: '停止 FLINKClient'
+                name: '停止 KafkaClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -183,7 +171,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '重启 FLINKClient'
+                name: '重启 KafkaClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]

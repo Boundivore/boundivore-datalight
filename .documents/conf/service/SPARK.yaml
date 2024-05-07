@@ -135,7 +135,7 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: SPARKClient
+      - name: SparkClient
         priority: 2
         max: -1
         min: 0

@@ -66,11 +66,13 @@ public class PortConstants {
             put("HBASE-HRegionServer", "19015");
             put("HBASE-HThriftServer2", "19016");
 
-            put("SPARK-SparkHistoryServer", "19017");
+            put("KAFKA-KafkaBroker", "19017");
 
-            put("FLINK-FlinkHistoryServer", "19018");
+            put("SPARK-SparkHistoryServer", "19018");
 
-            put("ZKUI-ZKUIServer", "19019");
+            put("FLINK-FlinkHistoryServer", "19019");
+
+            put("ZKUI-ZKUIServer", "19020");
         }
     };
 
@@ -100,11 +102,13 @@ public class PortConstants {
             put("HBASE-HRegionServer", "18015");
             put("HBASE-HThriftServer2", "18016");
 
-            put("SPARK-SparkHistoryServer", "18017");
+            put("KAFKA-KafkaBroker", "18017");
 
-            put("FLINK-FlinkHistoryServer", "18018");
+            put("SPARK-SparkHistoryServer", "18018");
 
-            put("ZKUI-ZKUIServer", "18019");
+            put("FLINK-FlinkHistoryServer", "18019");
+
+            put("ZKUI-ZKUIServer", "18020");
         }
     };
 

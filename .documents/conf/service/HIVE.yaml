@@ -279,7 +279,7 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: HIVEClient
+      - name: HiveClient
         priority: 4
         max: -1
         min: 0
