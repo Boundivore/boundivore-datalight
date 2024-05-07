@@ -44,37 +44,30 @@ public abstract class AbstractInitProcedureVo {
 
         @Schema(name = "ProcedureId", title = "步骤 ID", required = true)
         @JsonProperty(value = "ProcedureId", required = true)
-        @NotNull
         private Long procedureId;
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
         private Long clusterId;
 
         @Schema(name = "ProcedureName", title = "初始化步骤名称", required = true)
         @JsonProperty(value = "ProcedureName", required = true)
-        @NotNull
         private String procedureName;
 
         @Schema(name = "ProcedureState", title = "初始化步骤状态", required = true)
         @JsonProperty(value = "ProcedureState", required = true)
-        @NotNull
         private ProcedureStateEnum procedureState;
 
         @Schema(name = "NodeJobId", title = "NodeJob Id", required = true)
         @JsonProperty(value = "NodeJobId", required = true)
-        @NotNull
         private Long nodeJobId;
 
         @Schema(name = "NodeInfoList", title = "节点信息列表", required = true)
         @JsonProperty(value = "NodeInfoList", required = true)
-        @NotNull
         private List<NodeInfoListVo> nodeInfoList;
 
         @Schema(name = "JobId", title = "JobId", required = true)
         @JsonProperty(value = "JobId", required = true)
-        @NotNull
         private Long jobId;
 
     }
@@ -92,12 +85,10 @@ public abstract class AbstractInitProcedureVo {
 
         @Schema(name = "NodeId", title = "节点 Id", required = true)
         @JsonProperty(value = "NodeId", required = true)
-        @NotNull
         private Long nodeId;
 
         @Schema(name = "Hostname", title = "主机名", required = true)
         @JsonProperty(value = "Hostname", required = true)
-        @NotNull
         private String hostname;
     }
 }

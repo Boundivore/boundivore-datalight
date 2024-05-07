@@ -94,17 +94,17 @@ public interface IMasterNodeJobAPI {
     Result<AbstractNodeJobVo.NodeJobLogListVo> getNodeJobLogList(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
-            @NotNull
+            @NotNull(message = "集群 ID 不能为空")
             Long clusterId,
 
             @ApiParam(name = "NodeJobId", value = "节点作业 ID")
             @RequestParam(value = "NodeJobId", required = true)
-            @NotNull
+            @NotNull(message = "节点作业 ID 不能为空")
             Long nodeJobId,
 
             @ApiParam(name = "NodeId", value = "节点 ID")
             @RequestParam(value = "NodeId", required = false)
-            @NotNull
+            @NotNull(message = "节点 ID 不能为空")
             Long nodeId,
 
             @ApiParam(name = "NodeTaskId", value = "节点任务 ID")

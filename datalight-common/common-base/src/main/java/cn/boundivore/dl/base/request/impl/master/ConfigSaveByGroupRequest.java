@@ -53,17 +53,17 @@ public class ConfigSaveByGroupRequest implements IRequest {
 
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
+    @NotNull(message = "集群 ID 不能为空")
     private Long clusterId;
 
     @Schema(name = "ServiceName", title = "服务名称", required = true)
     @JsonProperty(value = "ServiceName", required = true)
-    @NotNull
+    @NotNull(message = "服务名称不能为空")
     private String serviceName;
 
     @Schema(name = "ConfigGroupList", title = "配置信息分组列表", required = true)
     @JsonProperty(value = "ConfigGroupList", required = true)
-    @NotEmpty
+    @NotEmpty(message = "配置信息分组列表不能为空")
     private List<ConfigGroupRequest> configGroupList;
 
     @Data
@@ -88,27 +88,27 @@ public class ConfigSaveByGroupRequest implements IRequest {
 
         @Schema(name = "Sha256", title = "配置文件唯一信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)
-        @NotNull
+        @NotNull(message = "配置文件唯一信息摘要不能为空")
         private String sha256;
 
         @Schema(name = "Filename", title = "配置文件名称", required = true)
         @JsonProperty(value = "Filename", required = true)
-        @NotNull
+        @NotNull(message = "配置文件名称不能为空")
         private String filename;
 
         @Schema(name = "ConfigPath", title = "配置文件绝对路径", required = true)
         @JsonProperty(value = "ConfigPath", required = true)
-        @NotNull
+        @NotNull(message = "配置文件绝对路径不能为空")
         private String configPath;
 
         @Schema(name = "ConfigData", title = "配置文件内容(Base64)", required = true)
         @JsonProperty(value = "ConfigData", required = true)
-        @NotNull
+        @NotNull(message = "配置文件内容(Base64)不能为空")
         private String configData;
 
         @Schema(name = "ConfigNodeList", title = "配置文件所在节点", required = true)
         @JsonProperty(value = "ConfigNodeList", required = true)
-        @NotEmpty
+        @NotEmpty(message = "配置文件所在节点不能为空")
         private List<ConfigNodeRequest> configNodeList;
     }
 
@@ -127,22 +127,22 @@ public class ConfigSaveByGroupRequest implements IRequest {
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
-        @NotNull
+        @NotNull(message = "节点 ID 不能为空")
         private Long nodeId;
 
         @Schema(name = "Hostname", title = "节点主机名", required = true)
         @JsonProperty(value = "Hostname", required = true)
-        @NotNull
+        @NotNull(message = "节点主机名不能为空")
         private String hostname;
 
         @Schema(name = "NodeIp", title = "节点 IP 地址", required = true)
         @JsonProperty(value = "NodeIp", required = true)
-        @NotNull
+        @NotNull(message = "节点 IP 地址不能为空")
         private String nodeIp;
 
         @Schema(name = "ConfigVersion", title = "配置文件当前版本", required = true)
         @JsonProperty(value = "ConfigVersion", required = true)
-        @NotNull
+        @NotNull(message = "配置文件当前版本不能为空")
         private Long configVersion;
     }
 

@@ -52,7 +52,7 @@ public class ConfigPreSaveRequest implements IRequest {
 
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
+    @NotNull(message = "集群 ID 不能为空")
     private Long clusterId;
 
     @Schema(name = "ServiceList", title = "多个服务的预配置列表", required = true)
@@ -74,7 +74,7 @@ public class ConfigPreSaveRequest implements IRequest {
 
         @Schema(name = "ServiceName", title = "当前服务", required = true)
         @JsonProperty(value = "ServiceName", required = true)
-        @NotNull
+        @NotNull(message = "当前服务不能为空")
         private String serviceName;
 
         @Schema(name = "PlaceholderInfoList", title = "预配置占位信息列表", required = true)
@@ -117,12 +117,12 @@ public class ConfigPreSaveRequest implements IRequest {
 
         @Schema(name = "Placeholder", title = "占位符", required = true)
         @JsonProperty(value = "Placeholder", required = true)
-        @NotNull
+        @NotNull(message = "占位符不能为空")
         private String placeholder;
 
         @Schema(name = "Value", title = "占位符修改后的值", required = true)
         @JsonProperty(value = "Value", required = true)
-        @NotNull
+        @NotNull(message = "占位符修改后的值不能为空")
         private String value;
 
         @Schema(name = "Describe", title = "描述", required = true)

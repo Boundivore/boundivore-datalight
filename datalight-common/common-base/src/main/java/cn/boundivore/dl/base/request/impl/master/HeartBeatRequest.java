@@ -18,21 +18,16 @@ package cn.boundivore.dl.base.request.impl.master;
 
 import cn.boundivore.dl.base.request.IRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 /**
- HeartBeatRequest * Created by: Boundivore
+ * HeartBeatRequest * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/8/1
  * Modification description:
@@ -44,17 +39,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@Schema(
-        name = "HeartBeatRequest",
-        description = "Worker 发送给 Master 的心跳包 请求体"
-)
+@Schema(name = "HeartBeatRequest", description = "Worker 发送给 Master 的心跳包 请求体")
 public class HeartBeatRequest implements IRequest {
 
     private static final long serialVersionUID = 4032050046405228278L;
 
     @Schema(name = "Ip", title = "Worker 所在节点 IP", required = true)
     @JsonProperty(value = "Ip", required = true)
-    @NotNull
+    @NotNull(message = "Worker 所在节点 IP 不能为空")
     private String ip;
 
 }

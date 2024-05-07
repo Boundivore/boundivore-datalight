@@ -137,7 +137,7 @@ public abstract class AbstractAlertRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId")
-        @NotEmpty(message = "集群 ID 不能为空")
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "AlertIdList", title = "告警 ID 列表", required = true)
@@ -161,7 +161,7 @@ public abstract class AbstractAlertRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId")
-        @NotEmpty(message = "集群 ID 不能为空")
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "AlertSwitchEnabledList", title = "告警规则启用停用列表", required = true)

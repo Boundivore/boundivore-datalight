@@ -49,7 +49,7 @@ public class TestRequest implements IRequest {
 
     @Schema(name = "Name", title = "测试名称", required = true)
     @JsonProperty(value = "Name", required = true)
-    @NotNull
+    @NotNull(message = "测试名称不能为空")
     private String name;
 
 }

@@ -52,17 +52,17 @@ public class ParseHostnameRequest implements IRequest {
 
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
+    @NotNull(message = "集群 ID 不能为空")
     private Long clusterId;
 
     @Schema(name = "HostnameBase64", title = "节点名称，换行符分割每一项(Base64)", required = true)
     @JsonProperty(value = "HostnameBase64", required = true)
-    @NotNull
+    @NotNull(message = "节点名称，换行符分割每一项(Base64)不能为空")
     private String hostnameBase64;
 
     @Schema(name = "SshPort", title = "SSH 端口号", required = true)
     @JsonProperty(value = "SshPort", required = true)
-    @NotNull
+    @NotNull(message = "SSH 端口号不能为空")
     private Long sshPort;
 
 }

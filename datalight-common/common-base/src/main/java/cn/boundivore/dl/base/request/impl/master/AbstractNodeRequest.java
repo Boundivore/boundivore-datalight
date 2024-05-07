@@ -58,7 +58,7 @@ public class AbstractNodeRequest {
 
         @Schema(name = "NodeIdList", title = "节点 ID 列表", required = true)
         @JsonProperty(value = "NodeIdList", required = true)
-        @NotEmpty
+        @NotEmpty(message = "节点 ID 列表不能为空")
         private List<NodeIdRequest> nodeIdList;
     }
 

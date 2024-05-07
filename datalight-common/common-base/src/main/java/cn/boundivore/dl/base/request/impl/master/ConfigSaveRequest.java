@@ -54,17 +54,17 @@ public class ConfigSaveRequest implements IRequest {
 
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
+    @NotNull(message = "集群 ID 不能为空")
     private Long clusterId;
 
     @Schema(name = "ServiceName", title = "当前服务", required = true)
     @JsonProperty(value = "ServiceName", required = true)
-    @NotNull
+    @NotNull(message = "当前服务不能为空")
     private String serviceName;
 
-    @Schema(name = "ConfigList", title = "服务组件配置信息列表", required = true)
+    @Schema(name = "ConfigList", title = "", required = true)
     @JsonProperty(value = "ConfigList", required = true)
-    @NotEmpty
+    @NotEmpty(message = "服务组件配置信息列表不能为空")
     private List<ConfigRequest> configList;
 
 
@@ -82,27 +82,27 @@ public class ConfigSaveRequest implements IRequest {
 
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
-        @NotNull
+        @NotNull(message = "节点 ID 不能为空")
         private Long nodeId;
 
         @Schema(name = "Filename", title = "配置文件名称", required = true)
         @JsonProperty(value = "Filename", required = true)
-        @NotNull
+        @NotNull(message = "配置文件名称不能为空")
         private String filename;
 
         @Schema(name = "ConfigData", title = "配置文件内容(Base64)", required = true)
         @JsonProperty(value = "ConfigData", required = true)
-        @NotNull
+        @NotNull(message = "配置文件内容(Base64)不能为空")
         private String configData;
 
         @Schema(name = "Sha256", title = "配置文件内容信息摘要", required = true)
         @JsonProperty(value = "Sha256", required = true)
-        @NotNull
+        @NotNull(message = "配置文件内容信息摘要不能为空")
         private String sha256;
 
-        @Schema(name = "ConfigPath", title = "配置文件内容信息摘要", required = true)
+        @Schema(name = "ConfigPath", title = "配置文件路径", required = true)
         @JsonProperty(value = "ConfigPath", required = true)
-        @NotNull
+        @NotNull(message = "配置文件路径不能为空")
         private String configPath;
 
     }

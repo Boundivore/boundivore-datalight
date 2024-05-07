@@ -24,6 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -52,12 +53,12 @@ public abstract class AbstractNodeInitRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "NodeInfoList", title = "初始化状态下的节点列表", required = true)
         @JsonProperty(value = "NodeInfoList", required = true)
-        @NotNull
+        @NotEmpty(message = "初始化状态下的节点列表不能为空")
         private List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList;
 
     }

@@ -51,11 +51,9 @@ public class NodeInfoVo implements IVo {
     private static final long serialVersionUID = 4040678227325952572L;
     @Schema(name = "NodeId", title = "节点 ID", required = true)
     @JsonProperty(value = "NodeId", required = true)
-    @NotNull
     private Long nodeId;
 
     @Schema(name = "Hostname", title = "主机名", required = true)
     @JsonProperty(value = "Hostname", required = true)
-    @NotNull
     private String hostname;
 }

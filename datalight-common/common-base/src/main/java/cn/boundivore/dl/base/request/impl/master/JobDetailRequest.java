@@ -63,7 +63,7 @@ public class JobDetailRequest implements IRequest {
 
     @Schema(name = "JobDetailServiceList", title = "待执行操作的服务列表", required = true)
     @JsonProperty(value = "JobDetailServiceList", required = true)
-    @NotEmpty
+    @NotEmpty(message = "待执行操作的服务列表不能为空")
     private List<JobDetailServiceRequest> jobDetailServiceList;
 
 
@@ -90,7 +90,7 @@ public class JobDetailRequest implements IRequest {
 
         @Schema(name = "JobDetailComponentList", title = "待操作组件列表", required = true)
         @JsonProperty(value = "JobDetailComponentList", required = true)
-        @NotEmpty
+        @NotEmpty(message = "待操作组件列表不能为空")
         private List<JobDetailComponentRequest> jobDetailComponentList;
 
     }
@@ -113,7 +113,7 @@ public class JobDetailRequest implements IRequest {
 
         @Schema(name = "JobDetailNodeList", title = "涉及到的节点列表", required = true)
         @JsonProperty(value = "JobDetailNodeList", required = true)
-        @NotEmpty
+        @NotEmpty(message = "涉及到的节点列表不能为空")
         private List<JobDetailNodeRequest> jobDetailNodeList;
 
     }

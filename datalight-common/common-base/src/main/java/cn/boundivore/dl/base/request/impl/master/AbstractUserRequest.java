@@ -59,17 +59,17 @@ public abstract class AbstractUserRequest {
 
         @Schema(name = "IdentityType", title = "认证类型", required = true, example = "枚举：EMAIL, PHONE, USERNAME")
         @JsonProperty(value = "IdentityType", required = true)
-        @NotNull
+        @NotNull(message = "认证类型不能为空")
         private IdentityTypeEnum identityType;
 
         @Schema(name = "Principal", title = "认证主体", required = true)
         @JsonProperty(value = "Principal", required = true)
-        @NotBlank
+        @NotBlank(message = "认证主体不能为空")
         private String principal;
 
         @Schema(name = "Credential", title = "登录凭证", required = true)
         @JsonProperty(value = "Credential", required = true)
-        @NotBlank
+        @NotBlank(message = "登录凭证不能为空")
         @Pattern(regexp = "^[a-f0-9]{32}$", message = "密码格式不正确")
         private String credential;
 

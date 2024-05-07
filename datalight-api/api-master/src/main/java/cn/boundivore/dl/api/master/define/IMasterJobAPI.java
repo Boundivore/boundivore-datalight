@@ -70,22 +70,22 @@ public interface IMasterJobAPI {
     Result<AbstractJobVo.JobLogListVo> getJobLogList(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
-            @NotNull
+            @NotNull(message = "集群 ID 不能为空")
             Long clusterId,
 
             @ApiParam(name = "JobId", value = "作业 ID")
             @RequestParam(value = "JobId", required = true)
-            @NotNull
+            @NotNull(message = "作业 ID 不能为空")
             Long jobId,
 
             @ApiParam(name = "NodeId", value = "节点 ID")
             @RequestParam(value = "NodeId", required = false)
-            @NotNull
+            @NotNull(message = "节点 ID 不能为空")
             Long nodeId,
 
             @ApiParam(name = "StageId", value = "阶段 ID")
             @RequestParam(value = "StageId", required = false)
-            @NotNull
+            @NotNull(message = "阶段 ID 不能为空")
             Long stageId,
 
             @ApiParam(name = "TaskId", value = "任务 ID")

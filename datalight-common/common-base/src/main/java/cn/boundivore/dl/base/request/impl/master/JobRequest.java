@@ -55,17 +55,17 @@ public class JobRequest implements IRequest {
 
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
+    @NotNull(message = "集群 ID 不能为空")
     private Long clusterId;
 
     @Schema(name = "ActionTypeEnum", title = "执行操作的类型", required = true)
     @JsonProperty(value = "ActionTypeEnum", required = true)
-    @NotNull
+    @NotNull(message = "执行操作的类型不能为空")
     private ActionTypeEnum actionTypeEnum;
 
     @Schema(name = "ServiceNameList", title = "待执行操作的服务列表", required = true)
     @JsonProperty(value = "ServiceNameList", required = true)
-    @NotEmpty
+    @NotEmpty(message = "待执行操作的服务列表不能为空")
     private List<String> serviceNameList;
 
     @Schema(name = "IsOneByOne", title = "是否为滚动操作依次执行", required = true)

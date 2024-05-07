@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -50,22 +51,22 @@ public class ServiceMetaRequest implements IRequest {
 
     @Schema(name = "NodeId", title = "Worker 当前节点 ID", required = true)
     @JsonProperty("NodeId")
-    @NotNull
+    @NotNull(message = "Worker 当前节点 ID 不能为空")
     private Long nodeId;
 
     @Schema(name = "Hostname", title = "Worker 当前节点主机名", required = true)
     @JsonProperty("Hostname")
-    @NotNull
+    @NotNull(message = "Worker 当前节点主机名不能为空")
     private String hostname;
 
     @Schema(name = "Ip", title = "Worker 当前节点 IP", required = true)
     @JsonProperty("Ip")
-    @NotNull
+    @NotNull(message = "Worker 当前节点 IP 不能为空")
     private String ip;
 
     @Schema(name = "MetaServiceList", title = "服务元信息列表", required = true)
     @JsonProperty("MetaServiceList")
-    @NotNull
+    @NotEmpty(message = "服务元信息列表不能为空")
     private List<MetaServiceRequest> metaServiceList;
 
     @Data
@@ -82,27 +83,27 @@ public class ServiceMetaRequest implements IRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
-        @NotNull
+        @NotNull(message = "服务名称不能为空")
         private String serviceName;
 
         @Schema(name = "Priority", title = "服务部署时优先级", required = true)
         @JsonProperty(value = "Priority", required = true)
-        @NotNull
+        @NotNull(message = "服务部署时优先级不能为空")
         private Long priority;
 
         @Schema(name = "SCStateEnum", title = "服务状态", required = true)
         @JsonProperty(value = "SCStateEnum", required = true)
-        @NotNull
+        @NotNull(message = "服务状态不能为空")
         private SCStateEnum scStateEnum;
 
-        @Schema(name = "MetaComponentList", title = "服务名称", required = true)
+        @Schema(name = "MetaComponentList", title = "组件原信息列表", required = true)
         @JsonProperty(value = "MetaComponentList", required = true)
-        @NotNull
+        @NotEmpty(message = "组件原信息列表不能为空")
         private List<MetaComponentRequest> metaComponentList;
 
     }
@@ -121,27 +122,27 @@ public class ServiceMetaRequest implements IRequest {
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty("ComponentName")
-        @NotNull
+        @NotNull(message = "组件名称不能为空")
         private String componentName;
 
         @Schema(name = "Priority", title = "组件部署时优先级", required = true)
         @JsonProperty(value = "Priority", required = true)
-        @NotNull
+        @NotNull(message = "组件部署时优先级不能为空")
         private Long priority;
 
         @Schema(name = "SCStateEnum", title = "组件状态", required = true)
         @JsonProperty("SCStateEnum")
-        @NotNull
+        @NotNull(message = "组件状态不能为空")
         private SCStateEnum scStateEnum;
 
         @Schema(name = "CheckAndStartShell", title = "可执行脚本：检查并启动组件", required = true)
         @JsonProperty("CheckAndStartShell")
-        @NotNull
+        @NotNull(message = "检查可执行脚本不能为空")
         private String checkAndStartShell;
 
         @Schema(name = "StopShell", title = "可执行脚本：组件停止", required = true)
         @JsonProperty("StopShell")
-        @NotNull
+        @NotNull(message = "停止可执行脚本不能为空")
         private String stopShell;
 
     }

@@ -46,12 +46,10 @@ public abstract class AbstractNodeVo {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
         private Long clusterId;
 
         @Schema(name = "NodeDetailList", title = "节点信息详情列表", required = true)
         @JsonProperty(value = "NodeDetailList", required = true)
-        @NotNull
         private List<NodeDetailVo> nodeDetailList;
 
     }
@@ -70,47 +68,38 @@ public abstract class AbstractNodeVo {
 
         @Schema(name = "NodeId", title = "节点主键 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
-        @NotNull
         private Long nodeId;
 
         @Schema(name = "Hostname", title = "主机名", required = true)
         @JsonProperty(value = "Hostname", required = true)
-        @NotNull
         private String hostname;
 
         @Schema(name = "NodeIp", title = "节点 IP 地址", required = true)
         @JsonProperty(value = "NodeIp", required = true)
-        @NotNull
         private String nodeIp;
 
         @Schema(name = "SshPort", title = "SSH 端口号", required = true)
         @JsonProperty(value = "SshPort", required = true)
-        @NotNull
         private Long sshPort;
 
         @Schema(name = "CpuArch", title = "CPU 架构", required = true)
         @JsonProperty(value = "CpuArch", required = true)
-        @NotNull
         private String cpuArch;
 
         @Schema(name = "CpuCores", title = "CPU 核数", required = true)
         @JsonProperty(value = "CpuCores", required = true)
-        @NotNull
         private Long cpuCores;
 
         @Schema(name = "Ram", title = "内存总大小（MB）", required = true)
         @JsonProperty(value = "Ram", required = true)
-        @NotNull
         private Long ram;
 
         @Schema(name = "DiskTotal", title = "磁盘总大小（MB）", required = true)
         @JsonProperty(value = "DiskTotal", required = true)
-        @NotNull
         private Long diskTotal;
 
         @Schema(name = "NodeState", title = "节点状态", required = true)
         @JsonProperty(value = "NodeState", required = true)
-        @NotNull
         private NodeStateEnum nodeState;
 
     }
@@ -129,12 +118,10 @@ public abstract class AbstractNodeVo {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
         private Long clusterId;
 
         @Schema(name = "NodeWithComponentList", title = "节点信息详情与组件分布信息列表", required = true)
         @JsonProperty(value = "NodeWithComponentList", required = true)
-        @NotNull
         private List<NodeWithComponentVo> nodeWithComponentList;
 
     }
@@ -153,12 +140,10 @@ public abstract class AbstractNodeVo {
 
         @Schema(name = "NodeDetail", title = "节点信息详情", required = true)
         @JsonProperty(value = "NodeDetail", required = true)
-        @NotNull
         private NodeDetailVo nodeDetail;
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)
-        @NotNull
         private List<String> componentName;
 
     }

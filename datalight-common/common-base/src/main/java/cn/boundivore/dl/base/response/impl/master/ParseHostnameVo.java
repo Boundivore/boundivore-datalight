@@ -52,22 +52,18 @@ public class ParseHostnameVo implements IVo {
     private static final long serialVersionUID = 3938701059683711284L;
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
     private Long clusterId;
 
     @Schema(name = "SshPort", title = "SSH 端口号", required = true)
     @JsonProperty(value = "SshPort", required = true)
-    @NotNull
     private Long sshPort;
 
     @Schema(name = "ValidHostnameList", title = "合法主机名列表", required = true)
     @JsonProperty(value = "ValidHostnameList", required = true)
-    @NotNull
     private List<String> validHostnameList;
 
     @Schema(name = "InvalidHostnameList", title = "非法主机名列表", required = true)
     @JsonProperty(value = "InvalidHostnameList", required = true)
-    @NotNull
     private List<String> invalidHostnameList;
 
 }

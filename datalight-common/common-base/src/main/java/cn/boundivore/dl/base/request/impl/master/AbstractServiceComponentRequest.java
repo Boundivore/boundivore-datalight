@@ -56,17 +56,17 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
-        @NotNull
+        @NotNull(message = "服务名称不能为空")
         private String serviceName;
 
         @Schema(name = "ComponentIdList", title = "组件 ID 列表", required = true)
         @JsonProperty(value = "ComponentIdList", required = true)
-        @NotEmpty
+        @NotEmpty(message = "组件 ID 列表不能为空")
         private List<ComponentIdRequest> componentIdList;
     }
 
@@ -84,7 +84,7 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ComponentId", title = "组件 ID", required = true)
         @JsonProperty(value = "ComponentId", required = true)
-        @NotNull
+        @NotNull(message = "组件 ID不能为空")
         private Long componentId;
     }
 
@@ -104,12 +104,12 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "ServiceList", title = "服务列表", required = true)
         @JsonProperty(value = "ServiceList", required = true)
-        @NotNull
+        @NotEmpty(message = "服务列表不能为空")
         private List<ServiceRequest> serviceList;
 
     }
@@ -128,12 +128,12 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
-        @NotNull
+        @NotNull(message = "服务名称不能为空")
         private String serviceName;
 
         @Schema(name = "SCStateEnum", title = "服务状态", required = true)
         @JsonProperty(value = "SCStateEnum", required = true)
-        @NotNull
+        @NotNull(message = "服务状态不能为空")
         private SCStateEnum scStateEnum;
 
     }
@@ -152,12 +152,12 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "ComponentList", title = "组件分布列表", required = true)
         @JsonProperty(value = "ComponentList", required = true)
-        @NotNull
+        @NotEmpty(message = "组件分布列表不能为空")
         private List<ComponentRequest> componentList;
 
     }
@@ -176,22 +176,22 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
-        @NotNull
+        @NotNull(message = "服务名称不能为空")
         private String serviceName;
 
         @Schema(name = "ComponentName", title = "组件名称", required = true)
         @JsonProperty(value = "ComponentName", required = true)
-        @NotNull
+        @NotNull(message = "组件名称不能为空")
         private String componentName;
 
         @Schema(name = "SCStateEnum", title = "组件状态", required = true)
         @JsonProperty(value = "SCStateEnum", required = true)
-        @NotNull
+        @NotNull(message = "组件状态不能为空")
         private SCStateEnum scStateEnum;
 
         @Schema(name = "NodeIdList", title = "组件分布在哪些节点", required = true)
         @JsonProperty(value = "NodeIdList", required = true)
-        @NotNull
+        @NotEmpty(message = "组件分布在哪些节点不能为空")
         private List<Long> nodeIdList;
 
     }
@@ -210,22 +210,22 @@ public abstract class AbstractServiceComponentRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
 
         @Schema(name = "ServiceName", title = "服务名称", required = true)
         @JsonProperty(value = "ServiceName", required = true)
-        @NotNull
+        @NotNull(message = "服务名称不能为空")
         private String serviceName;
 
         @Schema(name = "NodeIdList", title = "节点 ID 列表", required = true)
         @JsonProperty(value = "NodeIdList", required = true)
-        @NotNull
+        @NotNull(message = "节点 ID 列表不能为空")
         private List<Long> nodeIdList;
 
         @Schema(name = "NeedRestart", title = "是否需要重启标记", required = true)
         @JsonProperty(value = "NeedRestart", required = true)
-        @NotNull
+        @NotNull(message = "是否需要重启标记不能为空")
         private Boolean needRestart;
 
     }

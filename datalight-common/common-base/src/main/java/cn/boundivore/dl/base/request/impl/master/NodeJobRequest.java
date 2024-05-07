@@ -25,6 +25,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -52,22 +53,22 @@ public class NodeJobRequest implements IRequest {
 
     @Schema(name = "ClusterId", title = "集群 ID", required = true)
     @JsonProperty(value = "ClusterId", required = true)
-    @NotNull
+    @NotNull(message = "集群 ID不能为空")
     private Long clusterId;
 
     @Schema(name = "SshPort", title = "SSH 端口号", required = true)
     @JsonProperty(value = "SshPort", required = true)
-    @NotNull
+    @NotNull(message = "SSH 端口号不能为空")
     private Long sshPort;
 
     @Schema(name = "NodeActionTypeEnum", title = "节点执行操作的类型", required = true)
     @JsonProperty(value = "NodeActionTypeEnum", required = true)
-    @NotNull
+    @NotNull(message = "节点执行操作的类型不能为空")
     private NodeActionTypeEnum nodeActionTypeEnum;
 
     @Schema(name = "NodeInfoList", title = "选择的节点列表", required = true)
     @JsonProperty(value = "NodeInfoList", required = true)
-    @NotNull
+    @NotEmpty(message = "选择的节点列表不能为空")
     private List<AbstractNodeRequest.NodeInfoRequest> nodeInfoList;
 
 }

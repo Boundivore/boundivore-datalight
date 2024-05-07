@@ -53,7 +53,7 @@ public abstract class AbstractClusterRequest {
 
         @Schema(name = "ClusterId", title = "集群 ID", required = true)
         @JsonProperty(value = "ClusterId", required = true)
-        @NotNull
+        @NotNull(message = "集群 ID 不能为空")
         private Long clusterId;
     }
 
@@ -71,22 +71,22 @@ public abstract class AbstractClusterRequest {
 
         @Schema(name = "DlcVersion", title = "DataLight 服务组件包版本", required = true)
         @JsonProperty(value = "DlcVersion", required = true)
-        @NotNull
+        @NotNull(message = "DataLight 服务组件包版本不能为空")
         private String dlcVersion;
 
         @Schema(name = "ClusterName", title = "集群名称", required = true)
         @JsonProperty(value = "ClusterName", required = true)
-        @NotNull
+        @NotNull(message = "集群名称不能为空")
         private String clusterName;
 
         @Schema(name = "ClusterType", title = "集群类型", required = true)
         @JsonProperty(value = "ClusterType", required = true)
-        @NotNull
+        @NotNull(message = "集群类型不能为空")
         private ClusterTypeEnum clusterTypeEnum;
 
 //        @Schema(name = "ClusterState", title = "集群状态", required = true)
 //        @JsonProperty(value = "ClusterState", required = true)
-//        @NotNull
+//        @NotNull(message = "集群状态不能为空")
 //        private ClusterStateEnum clusterStateEnum;
 
         @Schema(name = "ClusterDesc", title = "集群描述", required = true)
