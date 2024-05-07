@@ -65,3 +65,15 @@ datalight:
       port: '16010'
       path: '/master-status'
       button-name-suffix: '-Web UI'
+
+    - service: SPARK
+      component: SparkHistoryServer
+      port: '4000'
+      path: '/'
+      button-name-suffix: '-Web UI'
+
+    - service: FLINK
+      component: FlinkHistoryServer
+      port: '8082'
+      path: '/'
+      button-name-suffix: '-Web UI'

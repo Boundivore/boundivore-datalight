@@ -6,7 +6,6 @@
 # PID_DIR="/data/datalight/pids"
 # DATA_DIR="/data/datalight/data"
 
-
 set -e
 
 # 检查是否以 root 身份运行脚本
