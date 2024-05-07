@@ -52,6 +52,10 @@ public class PluginConfig implements Serializable {
     private MetaService currentMetaService;
     private MetaComponent currentMetaComponent;
 
+    private Long currentNodeId;
+    private String currentNodeIp;
+    private String currentNodeHostname;
+
     // 根据 0-SERVICE-MANIFEST.yaml 中 dependencies 服务列表，
     // 传入当前服务，以及所依赖的服务的配置信息（包括当前服务自己），由开发者自行决定如何配置接下来的服务和组件
     // 注意：其中的服务可能存在于不同的集群，

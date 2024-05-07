@@ -50,6 +50,10 @@ public class ConfigKAFKA extends AbstractConfig {
     @Override
     public String configLogic(File file, String replacedTemplate) {
         switch (file.getName()) {
+            case "server.properties":
+                return new ConfigLogicServerProperties(super.pluginConfig).config(file, replacedTemplate);
+            case "kafka-run-class.sh":
+                return new ConfigLogicKafkaRunClassSh(super.pluginConfig).config(file, replacedTemplate);
             case "kafka-server-start.sh":
                 return new ConfigLogicKafkaServerStartSh(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_KafkaBroker:

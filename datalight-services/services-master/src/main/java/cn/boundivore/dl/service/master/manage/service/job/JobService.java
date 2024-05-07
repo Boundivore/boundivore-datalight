@@ -508,6 +508,10 @@ public class JobService {
         final String currentComponentName = taskMeta.getComponentName();
         // 获取任务元数据中的当前节点 ID
         final Long currentNodeId = taskMeta.getNodeId();
+        // 获取任务元数据中的当前节点 IP
+        final String currentNodeIp = taskMeta.getNodeIp();
+        // 获取任务元数据中的当前节点主机名
+        final String currentNodeHostname = taskMeta.getHostname();
 
         // 获取当前集群下，当前服务所依赖服务和组件的分布情况，
         // 如果为 COMPUTE 集群，则 COMPUTE 集群中所依赖的 STORAGE 类型的服务将会被关联到 MIXED 集群中
@@ -554,6 +558,12 @@ public class JobService {
 
         // 设置服务列表
         pluginConfig.setMetaServiceMap(metaServiceMap);
+
+        // 设置当前节点信息
+        pluginConfig.setCurrentNodeId(currentNodeId);
+        pluginConfig.setCurrentNodeIp(currentNodeIp);
+        pluginConfig.setCurrentNodeHostname(currentNodeHostname);
+
         // 设置当前服务的元数据
         pluginConfig.setCurrentMetaService(
                 this.findMetaService(

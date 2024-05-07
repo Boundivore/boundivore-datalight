@@ -37,13 +37,20 @@ public abstract class AbstractConfigLogic {
     protected PluginConfig pluginConfig;
 
     protected PluginConfig.MetaService currentMetaService;
-
     protected PluginConfig.MetaComponent currentMetaComponent;
+    protected Long currentNodeId;
+    protected String currentNodeIp;
+    protected String currentNodeHostname;
 
     public AbstractConfigLogic(PluginConfig pluginConfig) {
         this.pluginConfig = pluginConfig;
-        this.currentMetaService = pluginConfig.getCurrentMetaService();
+
+        this.currentMetaService = this.pluginConfig.getCurrentMetaService();
         this.currentMetaComponent = this.pluginConfig.getCurrentMetaComponent();
+
+        this.currentNodeId = this.pluginConfig.getCurrentNodeId();
+        this.currentNodeIp = this.pluginConfig.getCurrentNodeIp();
+        this.currentNodeHostname = this.pluginConfig.getCurrentNodeHostname();
     }
 
     public abstract String config(File file, String replacedTemplated);
