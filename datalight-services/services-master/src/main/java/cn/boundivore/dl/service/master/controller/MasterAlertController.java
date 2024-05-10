@@ -141,4 +141,9 @@ public class MasterAlertController implements IMasterAlertAPI {
         return this.masterAlertHandlerService.bindAlertAndAlertHandler(request);
     }
 
+    @Override
+    public Result<String> removeBatchAlertHandler(AbstractAlertHandlerRequest.AlertHandlerIdTypeListRequest request) throws Exception {
+        return this.masterAlertHandlerService.removeBatchAlertHandler(request);
+    }
+
 }

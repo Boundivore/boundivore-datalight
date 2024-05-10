@@ -187,4 +187,12 @@ public interface IMasterAlertAPI {
             @Valid
             AbstractAlertHandlerRequest.AlertHandlerRelationListRequest request
     )throws Exception;
+
+    @PostMapping(value = "/alert/removeBatchAlertHandler")
+    @ApiOperation(notes = "批量删除告警处理方式", value = "批量删除告警处理方式")
+    Result<String> removeBatchAlertHandler(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.AlertHandlerIdTypeListRequest request
+    )throws Exception;
 }

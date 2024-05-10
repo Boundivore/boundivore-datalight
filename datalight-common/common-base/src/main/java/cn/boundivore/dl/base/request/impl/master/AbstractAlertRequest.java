@@ -224,11 +224,6 @@ public abstract class AbstractAlertRequest {
         @NotNull(message = "是否启用不能为空")
         private Boolean enabled;
 
-        @Schema(name = "AlertHandlerTypeEnum", title = "告警触发时的处理类型", required = true)
-        @JsonProperty(value = "AlertHandlerTypeEnum", required = true)
-        @NotNull(message = "告警处理类型不能为空")
-        private AlertHandlerTypeEnum alertHandlerTypeEnum;
-
         @Schema(name = "AlertRuleContent", title = "告警规则配置解析后的实体", required = true)
         @JsonProperty(value = "AlertRuleContent", required = true)
         @NotNull(message = "规则实体不能为空")

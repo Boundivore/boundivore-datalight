@@ -17,6 +17,7 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
+import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
@@ -36,8 +37,6 @@ import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlAlert;
 import cn.boundivore.dl.orm.po.single.TDlAlertHandlerRelation;
 import cn.boundivore.dl.orm.po.single.TDlComponent;
-import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerInterfaceServiceImpl;
-import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertServiceImpl;
 import cn.boundivore.dl.plugin.base.bean.config.YamlPrometheusConfig;
@@ -102,15 +101,11 @@ public class MasterAlertService {
 
     private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
 
-    private final TDlAlertHandlerInterfaceServiceImpl tDlAlertHandlerInterfaceService;
-
     private final TDlAlertServiceImpl tDlAlertService;
 
     private final IAlertRuleConverter iAlertRuleConverter;
 
-
     private final TDlAlertHandlerRelationServiceImpl tDlAlertHandlerRelationService;
-    private final TDlAlertHandlerMailServiceImpl tDlAlertHandlerMailService;
 
 
     /**
@@ -828,7 +823,8 @@ public class MasterAlertService {
                                 i.getId(),
                                 i.getAlertName(),
                                 i.getAlertFilePath(),
-                                i.getEnabled()
+                                i.getEnabled(),
+                                this.getAlertHandlerIdTypeListByAlertId(i.getId())
                         )
                 )
                 .collect(Collectors.toList());
@@ -837,6 +833,43 @@ public class MasterAlertService {
 
 
         return Result.success(alertSimpleListVo);
+    }
+
+    /**
+     * Description: 根据告警 ID 获取存在绑定的告警处理方式列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertId 告警 ID
+     * @return List<AbstractAlertVo.AlertHandlerIdTypeListVo> 告警处理方式 ID 与类型列表
+     */
+    private List<AbstractAlertVo.AlertHandlerVo> getAlertHandlerIdTypeListByAlertId(Long alertId) {
+        // 直接查询并按处理类型分组，避免中间变量的使用
+        Map<AlertHandlerTypeEnum, List<Long>> handlerTypeMap = this.tDlAlertHandlerRelationService.lambdaQuery()
+                .select(TDlAlertHandlerRelation::getHandlerType, TDlAlertHandlerRelation::getHandlerId)
+                .eq(TDlAlertHandlerRelation::getAlertId, alertId)
+                .list()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        TDlAlertHandlerRelation::getHandlerType,
+                        LinkedHashMap::new,
+                        Collectors.mapping(TDlAlertHandlerRelation::getHandlerId, Collectors.toList())
+                ));
+
+        // 构造结果列表
+        return handlerTypeMap.entrySet()
+                .stream()
+                .map(entry -> new AbstractAlertVo.AlertHandlerVo(
+                                entry.getKey(),
+                                entry.getValue()
+                        )
+                )
+                .collect(Collectors.toList());
     }
 
     /**

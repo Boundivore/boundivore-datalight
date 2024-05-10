@@ -164,4 +164,47 @@ public abstract class AbstractAlertHandlerRequest {
 
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAlertHandlerRequest.AlertHandlerIdTypeListRequest",
+            description = "AbstractAlertHandlerRequest.AlertHandlerIdTypeListRequest: 告警处理方式列表 请求体"
+    )
+    public final static class AlertHandlerIdTypeListRequest implements IRequest {
+
+        private static final long serialVersionUID = 8962944832002331696L;
+
+        @Schema(name = "AlertHandlerIdTypeList", title = "告警处理方式列表", required = true)
+        @JsonProperty(value = "AlertHandlerIdTypeList", required = true)
+        @NotEmpty(message = "告警处理方式 ID 列表不能为空")
+        private List<AlertHandlerIdTypeRequest> alertHandlerIdTypeList;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAlertHandlerRequest.AlertHandlerIdTypeRequest",
+            description = "AbstractAlertHandlerRequest.AlertHandlerIdTypeRequest: 告警处理方式 请求体"
+    )
+    public final static class AlertHandlerIdTypeRequest implements IRequest {
+
+        private static final long serialVersionUID = 481731623663092215L;
+
+        @Schema(name = "AlertHandlerType", title = "告警处理类型", required = true)
+        @JsonProperty(value = "AlertHandlerType", required = true)
+        @NotEmpty(message = "告警处理类型不能为空")
+        private AlertHandlerTypeEnum alertHandlerTypeEnum;
+
+        @Schema(name = "AlertHandlerIdList", title = "告警处理方式 ID 列表", required = true)
+        @JsonProperty(value = "AlertHandlerIdList", required = true)
+        @NotEmpty(message = "告警处理方式 ID 列表不能为空")
+        private List<Long> alertHandlerIdList;
+
+    }
+
 }

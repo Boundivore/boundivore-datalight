@@ -291,4 +291,184 @@ public class MasterAlertHandlerService {
                 );
     }
 
+
+    /**
+     * Description: 批量删除告警处理方式
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警处理方式列表
+     * @return Result<String> 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @LocalLock
+    public Result<String> removeBatchAlertHandler(AbstractAlertHandlerRequest.AlertHandlerIdTypeListRequest request) {
+        request.getAlertHandlerIdTypeList()
+                .forEach(
+                        i -> {
+                            // 检查 ID 是否合法
+                            this.checkRemoveHandlerList(
+                                    i.getAlertHandlerTypeEnum(),
+                                    i.getAlertHandlerIdList()
+                            );
+
+                            // 执行删除
+                            this.removeHandlerBatch(
+                                    i.getAlertHandlerTypeEnum(),
+                                    i.getAlertHandlerIdList()
+                            );
+                        }
+                );
+
+        return Result.success();
+    }
+
+    /**
+     * Description: 批量删除告警处理方式
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertHandlerTypeEnum 告警处理类型
+     * @param alertHandlerList     告警处理类型列表
+     */
+    private void removeHandlerBatch(AlertHandlerTypeEnum alertHandlerTypeEnum, List<Long> alertHandlerList) {
+        switch (alertHandlerTypeEnum) {
+            case ALERT_INTERFACE:
+                Assert.isTrue(
+                        this.tDlAlertHandlerInterfaceService.removeBatchByIds(alertHandlerList),
+                        () -> new DatabaseException("删除数据失败")
+                );
+
+                break;
+            case ALERT_MAIL:
+                Assert.isTrue(
+                        this.tDlAlertHandlerMailService.removeBatchByIds(alertHandlerList),
+                        () -> new DatabaseException("删除数据失败")
+                );
+                break;
+            default:
+                throw new BException(
+                        String.format(
+                                "暂未支持的告警处理方式: %s",
+                                alertHandlerTypeEnum.getMessage()
+                        )
+                );
+        }
+    }
+
+    /**
+     * Description: 检查 ID 是否存在
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertHandlerTypeEnum 告警处理类型
+     * @param alertHandlerList     告警处理类型列表
+     */
+    private void checkRemoveHandlerList(AlertHandlerTypeEnum alertHandlerTypeEnum, List<Long> alertHandlerList) {
+        List<Long> tDlAlertHandlerIdFromDbList;
+
+        switch (alertHandlerTypeEnum) {
+            case ALERT_INTERFACE:
+                tDlAlertHandlerIdFromDbList = this.tDlAlertHandlerInterfaceService.lambdaQuery()
+                        .select()
+                        .in(TBasePo::getId, alertHandlerList)
+                        .list()
+                        .stream()
+                        .map(TBasePo::getId)
+                        .collect(Collectors.toList());
+                break;
+            case ALERT_MAIL:
+                tDlAlertHandlerIdFromDbList = this.tDlAlertHandlerMailService.lambdaQuery()
+                        .select()
+                        .in(TBasePo::getId, alertHandlerList)
+                        .list()
+                        .stream()
+                        .map(TBasePo::getId)
+                        .collect(Collectors.toList());
+                break;
+            default:
+                throw new BException(
+                        String.format(
+                                "暂未支持的告警处理方式: %s",
+                                alertHandlerTypeEnum.getMessage()
+                        )
+                );
+        }
+
+        // 检查是否存在绑定关系，如果存在则不允许删除
+        List<Long> tDlAlertHandlerRelationHandlerIdList = this.tDlAlertHandlerRelationService.lambdaQuery()
+                .select()
+                .in(TDlAlertHandlerRelation::getHandlerId, tDlAlertHandlerIdFromDbList)
+                .list()
+                .stream()
+                .map(TDlAlertHandlerRelation::getHandlerId)
+                .collect(Collectors.toList());
+
+        Assert.isTrue(
+                tDlAlertHandlerRelationHandlerIdList.isEmpty(),
+                () -> new BException(
+                        String.format(
+                                "删除前，请先解绑: %s",
+                                tDlAlertHandlerRelationHandlerIdList
+                        )
+                )
+        );
+
+
+        // 检查待移除的告警处理方式是否存在
+        this.checkRemoveHandlerListExist(
+                alertHandlerList,
+                tDlAlertHandlerIdFromDbList
+        );
+    }
+
+    /**
+     * Description: 检查待移除的 ID 是否全部存在
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param listFromRequestList 请求报文中的 ID 列表
+     * @param listFromDbList      从数据库中获取的 ID 列表
+     */
+    private void checkRemoveHandlerListExist(List<Long> listFromRequestList, List<Long> listFromDbList) {
+
+        List<Long> differences = listFromRequestList.stream()
+                .filter(element -> !listFromDbList.contains(element))
+                .collect(Collectors.toList());
+
+        Assert.isTrue(
+                differences.isEmpty(),
+                () -> new BException(
+                        String.format(
+                                "部分 ID 不存在: %s",
+                                differences
+                        )
+                )
+
+        );
+    }
+
 }
