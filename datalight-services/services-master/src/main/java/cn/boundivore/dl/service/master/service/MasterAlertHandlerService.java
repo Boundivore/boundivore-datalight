@@ -19,6 +19,7 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertHandlerRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAlertHandlerVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
@@ -40,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -470,5 +472,100 @@ public class MasterAlertHandlerService {
 
         );
     }
+
+    /**
+     * Description: 根据告警 ID 获取告警与处理方式的绑定关系
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertId 告警 ID
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerListVo> 告警处理方式列表
+     */
+    public Result<AbstractAlertHandlerVo.AlertHandlerListVo> getBindingAlertHandlerByAlertId(Long alertId) {
+        return Result.success(
+                new AbstractAlertHandlerVo.AlertHandlerListVo(
+                        alertId,
+                        this.getAlertHandlerIdTypeListByAlertId(alertId)
+                )
+        );
+    }
+
+    /**
+     * Description: 根据处理方式 ID 获取告警与处理方式的绑定关系
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param handlerId 处理方式 ID
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerListVo> 告警处理方式列表
+     */
+    public Result<AbstractAlertHandlerVo.HandlerAndAlertIdListVo> getBindingAlertHandlerByHandlerId(Long handlerId) {
+
+        AbstractAlertHandlerVo.HandlerAndAlertIdListVo handlerAndAlertIdListVo = new AbstractAlertHandlerVo.HandlerAndAlertIdListVo();
+        handlerAndAlertIdListVo.setHandlerId(handlerId);
+        handlerAndAlertIdListVo.setHandlerAndAlertIdList(
+                this.tDlAlertHandlerRelationService.lambdaQuery()
+                        .select()
+                        .eq(TDlAlertHandlerRelation::getHandlerId, handlerId)
+                        .list()
+                        .stream()
+                        .map(i -> new AbstractAlertHandlerVo.HandlerAndAlertIdVo(
+                                        i.getHandlerType(),
+                                        i.getAlertId()
+                                )
+                        )
+                        .collect(Collectors.toList())
+        );
+
+
+        return Result.success(handlerAndAlertIdListVo);
+    }
+
+    /**
+     * Description: 根据告警 ID 获取存在绑定的告警处理方式列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param alertId 告警 ID
+     * @return List<AbstractAlertVo.AlertHandlerIdTypeListVo> 告警处理方式 ID 与类型列表
+     */
+    public List<AbstractAlertHandlerVo.AlertHandlerVo> getAlertHandlerIdTypeListByAlertId(Long alertId) {
+        // 直接查询并按处理类型分组，避免中间变量的使用
+        Map<AlertHandlerTypeEnum, List<Long>> handlerTypeMap = this.tDlAlertHandlerRelationService.lambdaQuery()
+                .select(TDlAlertHandlerRelation::getHandlerType, TDlAlertHandlerRelation::getHandlerId)
+                .eq(TDlAlertHandlerRelation::getAlertId, alertId)
+                .list()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        TDlAlertHandlerRelation::getHandlerType,
+                        LinkedHashMap::new,
+                        Collectors.mapping(TDlAlertHandlerRelation::getHandlerId, Collectors.toList())
+                ));
+
+        // 构造结果列表
+        return handlerTypeMap.entrySet()
+                .stream()
+                .map(entry -> new AbstractAlertHandlerVo.AlertHandlerVo(
+                                entry.getKey(),
+                                entry.getValue()
+                        )
+                )
+                .collect(Collectors.toList());
+    }
+
 
 }

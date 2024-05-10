@@ -146,4 +146,14 @@ public class MasterAlertController implements IMasterAlertAPI {
         return this.masterAlertHandlerService.removeBatchAlertHandler(request);
     }
 
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerListVo> getBindingAlertHandlerByAlertId(Long alertId) throws Exception {
+        return this.masterAlertHandlerService.getBindingAlertHandlerByAlertId(alertId);
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.HandlerAndAlertIdListVo> getBindingAlertHandlerByHandlerId(Long handlerId) throws Exception {
+        return this.masterAlertHandlerService.getBindingAlertHandlerByHandlerId(handlerId);
+    }
+
 }

@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.base.response.impl.master;
 
-import cn.boundivore.dl.base.enumeration.impl.AlertHandlerTypeEnum;
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -89,6 +88,10 @@ public abstract class AbstractAlertVo {
         @Schema(name = "AlertVersion", title = "当前规则文件版本号", required = true)
         @JsonProperty(value = "AlertVersion", required = true)
         private Long alertVersion;
+
+        @Schema(name = "AlertHandlerList", title = "告警处理方式列表", required = true)
+        @JsonProperty(value = "AlertHandlerList", required = true)
+        private List<AbstractAlertHandlerVo.AlertHandlerVo> alertHandlerList;
     }
 
 
@@ -211,29 +214,8 @@ public abstract class AbstractAlertVo {
 
         @Schema(name = "AlertHandlerList", title = "告警处理方式列表", required = true)
         @JsonProperty(value = "AlertHandlerList", required = true)
-        private List<AbstractAlertVo.AlertHandlerVo> alertHandlerList;
+        private List<AbstractAlertHandlerVo.AlertHandlerVo> alertHandlerList;
 
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Schema(
-            name = "AbstractAlertVo.AlertAndHandlerVo",
-            description = "AbstractAlertVo.AlertAndHandlerVo 告警处理方式实体响应体"
-    )
-    public static class AlertHandlerVo implements IVo {
-
-        private static final long serialVersionUID = 436326579514859506L;
-
-        @Schema(name = "AlertHandlerType", title = "告警处理类型", required = true)
-        @JsonProperty(value = "AlertHandlerType", required = true)
-        private AlertHandlerTypeEnum alertHandlerTypeEnum;
-
-        @Schema(name = "AlertHandlerIdList", title = "告警处理方式 ID 列表", required = true)
-        @JsonProperty(value = "AlertHandlerIdList", required = true)
-        private List<Long> alertHandlerIdList;
     }
 
 

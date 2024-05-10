@@ -33,6 +33,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 
@@ -195,4 +197,21 @@ public interface IMasterAlertAPI {
             @Valid
             AbstractAlertHandlerRequest.AlertHandlerIdTypeListRequest request
     )throws Exception;
+
+    @GetMapping(value = "/alert/getBindingAlertHandlerByAlertId")
+    @ApiOperation(notes = "根据告警 ID 获取告警与处理方式的绑定关系", value = "根据告警 ID 获取告警与处理方式的绑定关系")
+    Result<AbstractAlertHandlerVo.AlertHandlerListVo> getBindingAlertHandlerByAlertId(
+            @ApiParam(name = "AlertId", value = "告警 ID")
+            @RequestParam(value = "AlertId", required = true)
+            Long alertId
+    ) throws Exception;
+
+    @GetMapping(value = "/alert/getBindingAlertHandlerByHandlerId")
+    @ApiOperation(notes = "根据处理方式 ID 获取告警与处理方式的绑定关系", value = "根据处理方式 ID 获取告警与处理方式的绑定关系")
+    Result<AbstractAlertHandlerVo.HandlerAndAlertIdListVo> getBindingAlertHandlerByHandlerId(
+            @ApiParam(name = "HandlerId", value = "处理方式 ID")
+            @RequestParam(value = "HandlerId", required = true)
+            Long handlerId
+    ) throws Exception;
+
 }
