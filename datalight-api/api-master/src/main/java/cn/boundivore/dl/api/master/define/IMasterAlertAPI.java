@@ -209,7 +209,7 @@ public interface IMasterAlertAPI {
     @GetMapping(value = "/alert/getBindingAlertHandlerByHandlerId")
     @ApiOperation(notes = "根据处理方式 ID 获取告警与处理方式的绑定关系", value = "根据处理方式 ID 获取告警与处理方式的绑定关系")
     Result<AbstractAlertHandlerVo.HandlerAndAlertIdListVo> getBindingAlertHandlerByHandlerId(
-            @ApiParam(name = "HandlerId", value = "处理方式 ID")
+            @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
             @RequestParam(value = "HandlerId", required = true)
             Long handlerId
     ) throws Exception;
