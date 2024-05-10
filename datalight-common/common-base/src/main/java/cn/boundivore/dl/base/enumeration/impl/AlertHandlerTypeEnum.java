@@ -30,13 +30,13 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  */
 public enum AlertHandlerTypeEnum implements IBaseEnum {
 
-    ALERT_IGNORE("0", "静默告警信息"),
-    ALERT_LOG("1", "打印告警日志"),
-    ALERT_INTERFACE("2", "发送到指定接口"),
-    ALERT_MAIL("3", "打印告警日志"),
-    ALERT_WEICHAT("4", "发送到微信"),
-    ALERT_FEISHU("6", "发送到飞书"),
-    ALERT_DINGDING("6", "发送到钉钉");
+    ALERT_IGNORE("0", "静默告警"),
+    ALERT_LOG("1", "日志告警"),
+    ALERT_INTERFACE("2", "接口告警"),
+    ALERT_MAIL("3", "邮件告警"),
+    ALERT_WEICHAT("4", "微信告警"),
+    ALERT_FEISHU("6", "飞书告警"),
+    ALERT_DINGDING("6", "钉钉告警");
 
     private final String code;
     private final String message;
