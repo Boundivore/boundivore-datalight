@@ -135,6 +135,10 @@ public abstract class AbstractAlertHandlerVo {
         @JsonProperty(value = "AlertId", required = true)
         private Long alertId;
 
+        @Schema(name = "AlertName", title = "告警名称", required = true)
+        @JsonProperty(value = "AlertName", required = true)
+        private String alertName;
+
         @Schema(name = "AlertHandlerList", title = "告警处理方式列表", required = true)
         @JsonProperty(value = "AlertHandlerList", required = true)
         private List<AbstractAlertHandlerVo.AlertHandlerVo> alertHandlerList;
@@ -202,6 +206,10 @@ public abstract class AbstractAlertHandlerVo {
         @Schema(name = "AlertId", title = "告警处理方式 ID 列表", required = true)
         @JsonProperty(value = "AlertId", required = true)
         private Long alertId;
+
+        @Schema(name = "AlertName", title = "告警名称", required = true)
+        @JsonProperty(value = "AlertName", required = true)
+        private String alertName;
     }
 
 }

@@ -151,6 +151,14 @@ public interface IMasterAlertAPI {
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceList(
     ) throws Exception;
 
+    @PostMapping(value = "/alert/getAlertHandlerInterfaceListByIdList")
+    @ApiOperation(notes = "根据 ID 列表获取告警接口处理方式列表", value = "根据 ID 列表获取告警接口处理方式列表")
+    Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceListByIdList(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.AlertHandlerIdListRequest request
+    ) throws Exception;
+
 
     @PostMapping(value = "/alert/newAlertHandlerMail")
     @ApiOperation(notes = "新增邮件告警处理方式", value = "新增邮件告警处理方式")
@@ -179,6 +187,14 @@ public interface IMasterAlertAPI {
     @GetMapping(value = "/alert/getAlertHandlerMailList")
     @ApiOperation(notes = "获取告警邮箱处理方式列表", value = "获取告警邮箱处理方式列表")
     Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailList(
+    ) throws Exception;
+
+    @PostMapping(value = "/alert/getAlertHandlerMailListIdList")
+    @ApiOperation(notes = "根据 ID 列表获取告警邮件处理方式列表", value = "根据 ID 列表获取告警邮件处理方式列表")
+    Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailListIdList(
+            @RequestBody
+            @Valid
+            AbstractAlertHandlerRequest.AlertHandlerIdListRequest request
     ) throws Exception;
 
 

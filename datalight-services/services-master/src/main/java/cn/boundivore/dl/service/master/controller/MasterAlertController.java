@@ -117,6 +117,11 @@ public class MasterAlertController implements IMasterAlertAPI {
     }
 
     @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceListByIdList(AbstractAlertHandlerRequest.AlertHandlerIdListRequest request) throws Exception {
+        return this.masterAlertHandlerInterfaceService.getAlertHandlerInterfaceListByIdList(request);
+    }
+
+    @Override
     public Result<AbstractAlertHandlerVo.AlertHandlerMailVo> newAlertHandlerMail(AbstractAlertHandlerRequest.NewAlertHandlerMailRequest request) throws Exception {
         return this.masterAlertHandlerMailService.newAlertHandlerMail(request);
     }
@@ -128,12 +133,17 @@ public class MasterAlertController implements IMasterAlertAPI {
 
     @Override
     public Result<AbstractAlertHandlerVo.AlertHandlerMailVo> updateAlertHandlerMail(AbstractAlertHandlerRequest.UpdateAlertHandlerMailRequest request) throws Exception {
-        return null;
+        return this.masterAlertHandlerMailService.updateAlertHandlerMail(request);
     }
 
     @Override
     public Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailList() throws Exception {
         return this.masterAlertHandlerMailService.getAlertHandlerMailList();
+    }
+
+    @Override
+    public Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailListIdList(AbstractAlertHandlerRequest.AlertHandlerIdListRequest request) throws Exception {
+        return this.masterAlertHandlerMailService.getAlertHandlerMailListIdList(request);
     }
 
     @Override

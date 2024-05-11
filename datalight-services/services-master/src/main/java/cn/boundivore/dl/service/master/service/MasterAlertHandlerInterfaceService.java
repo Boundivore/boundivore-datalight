@@ -23,6 +23,7 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlAlertHandlerInterface;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerInterfaceServiceImpl;
 import cn.hutool.core.lang.Assert;
@@ -197,5 +198,37 @@ public class MasterAlertHandlerInterfaceService {
                 )
         );
 
+    }
+
+    /**
+     * Description: 根据 ID 列表获取告警接口处理方式列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警处理方式 ID 列表
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> 接口处理方式详情列表
+     */
+    public Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceListByIdList(AbstractAlertHandlerRequest.AlertHandlerIdListRequest request) {
+
+        return Result.success(
+                new AbstractAlertHandlerVo.AlertHandlerInterfaceListVo(
+                        this.tDlAlertHandlerInterfaceService.lambdaQuery()
+                                .select()
+                                .in(TBasePo::getId, request.getHandlerIdList())
+                                .list()
+                                .stream()
+                                .map(i -> new AbstractAlertHandlerVo.AlertHandlerInterfaceVo(
+                                                i.getId(),
+                                                i.getInterfaceUri()
+                                        )
+                                )
+                                .collect(Collectors.toList())
+                )
+        );
     }
 }

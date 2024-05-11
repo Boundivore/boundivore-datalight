@@ -207,4 +207,23 @@ public abstract class AbstractAlertHandlerRequest {
 
     }
 
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAlertHandlerRequest.AlertHandlerIdListRequest",
+            description = "AbstractAlertHandlerRequest.AlertHandlerIdListRequest: 告警处理方式 ID 列表 请求体"
+    )
+    public final static class AlertHandlerIdListRequest implements IRequest {
+
+        private static final long serialVersionUID = -8903130644894913306L;
+
+        @Schema(name = "HandlerIdList", title = "告警处理方式 ID 列表", required = true)
+        @JsonProperty(value = "HandlerIdList", required = true)
+        @NotEmpty(message = "告警处理方式 ID 列表不能为空")
+        private List<Long> handlerIdList;
+
+    }
+
 }

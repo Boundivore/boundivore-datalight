@@ -40,10 +40,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -487,9 +484,17 @@ public class MasterAlertHandlerService {
      * @return Result<AbstractAlertHandlerVo.AlertHandlerListVo> 告警处理方式列表
      */
     public Result<AbstractAlertHandlerVo.AlertHandlerListVo> getBindingAlertHandlerByAlertId(Long alertId) {
+
+        TDlAlert tDlAlert = this.tDlAlertService.getById(alertId);
+        Assert.notNull(
+                tDlAlert,
+                () -> new BException("告警信息不存在")
+        );
+
         return Result.success(
                 new AbstractAlertHandlerVo.AlertHandlerListVo(
                         alertId,
+                        tDlAlert.getAlertName(),
                         this.getAlertHandlerIdTypeListByAlertId(alertId)
                 )
         );
@@ -509,23 +514,42 @@ public class MasterAlertHandlerService {
      * @return Result<AbstractAlertHandlerVo.AlertHandlerListVo> 告警处理方式列表
      */
     public Result<AbstractAlertHandlerVo.HandlerAndAlertIdListVo> getBindingAlertHandlerByHandlerId(Long handlerId) {
-
         AbstractAlertHandlerVo.HandlerAndAlertIdListVo handlerAndAlertIdListVo = new AbstractAlertHandlerVo.HandlerAndAlertIdListVo();
         handlerAndAlertIdListVo.setHandlerId(handlerId);
-        handlerAndAlertIdListVo.setAlertIdAndTypeList(
-                this.tDlAlertHandlerRelationService.lambdaQuery()
-                        .select()
-                        .eq(TDlAlertHandlerRelation::getHandlerId, handlerId)
-                        .list()
-                        .stream()
-                        .map(i -> new AbstractAlertHandlerVo.AlertIdAndTypeVo(
-                                        i.getHandlerType(),
-                                        i.getAlertId()
-                                )
-                        )
-                        .collect(Collectors.toList())
-        );
 
+        // 获取所有相关的告警处理关系
+        List<TDlAlertHandlerRelation> relations = this.tDlAlertHandlerRelationService.lambdaQuery()
+                .eq(TDlAlertHandlerRelation::getHandlerId, handlerId)
+                .list();
+
+        // 如果没有绑定关系，则直接返回
+        if (relations.isEmpty()) {
+            return Result.success(handlerAndAlertIdListVo);
+        }
+
+        // 提取所有的告警ID
+        Set<Long> alertIds = relations.stream()
+                .map(TDlAlertHandlerRelation::getAlertId)
+                .collect(Collectors.toSet());
+
+        // 批量查询所有告警信息
+        Map<Long, String> alertIdToNameMap = this.tDlAlertService.lambdaQuery()
+                .in(TDlAlert::getId, alertIds)
+                .list()
+                .stream()
+                .collect(Collectors.toMap(TDlAlert::getId, TDlAlert::getAlertName));
+
+        // 设置告警ID和类型列表
+        List<AbstractAlertHandlerVo.AlertIdAndTypeVo> alertIdAndTypeList = relations.stream()
+                .map(relation -> new AbstractAlertHandlerVo.AlertIdAndTypeVo(
+                                relation.getHandlerType(),
+                                relation.getAlertId(),
+                                alertIdToNameMap.get(relation.getAlertId())
+                        )
+                )
+                .collect(Collectors.toList());
+
+        handlerAndAlertIdListVo.setAlertIdAndTypeList(alertIdAndTypeList);
 
         return Result.success(handlerAndAlertIdListVo);
     }

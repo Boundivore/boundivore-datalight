@@ -23,6 +23,7 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.single.TDlAlertHandlerMail;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.hutool.core.lang.Assert;
@@ -197,4 +198,34 @@ public class MasterAlertHandlerMailService {
 
     }
 
+    /**
+     * Description: 根据 ID 列表获取告警邮件处理方式列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 告警处理方式 ID 列表
+     * @return Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> 邮件处理方式详情列表
+     */
+    public Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailListIdList(AbstractAlertHandlerRequest.AlertHandlerIdListRequest request) {
+        return Result.success(
+                new AbstractAlertHandlerVo.AlertHandlerMailListVo(
+                        this.tDlAlertHandlerMailService.lambdaQuery()
+                                .select()
+                                .in(TBasePo::getId, request.getHandlerIdList())
+                                .list()
+                                .stream()
+                                .map(i -> new AbstractAlertHandlerVo.AlertHandlerMailVo(
+                                                i.getId(),
+                                                i.getMailAccount()
+                                        )
+                                )
+                                .collect(Collectors.toList())
+                )
+        );
+    }
 }
