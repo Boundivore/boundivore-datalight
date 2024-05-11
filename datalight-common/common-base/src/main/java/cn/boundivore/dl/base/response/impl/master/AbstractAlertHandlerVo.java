@@ -178,9 +178,9 @@ public abstract class AbstractAlertHandlerVo {
         @JsonProperty(value = "HandlerId", required = true)
         private Long handlerId;
 
-        @Schema(name = "HandlerAndAlertIdList", title = "告警与处理方式列表", required = true)
-        @JsonProperty(value = "HandlerAndAlertIdList", required = true)
-        private List<HandlerAndAlertIdVo> handlerAndAlertIdList;
+        @Schema(name = "AlertIdAndTypeList", title = "告警与处理方式列表", required = true)
+        @JsonProperty(value = "AlertIdAndTypeList", required = true)
+        private List<AlertIdAndTypeVo> alertIdAndTypeList;
     }
 
     @Data
@@ -188,10 +188,10 @@ public abstract class AbstractAlertHandlerVo {
     @NoArgsConstructor
     @AllArgsConstructor
     @Schema(
-            name = "AbstractAlertHandlerVo.HandlerAndAlertIdVo",
-            description = "AbstractAlertHandlerVo.HandlerAndAlertIdVo 告警处理方式关联的告警信息实体响应体"
+            name = "AbstractAlertHandlerVo.AlertIdAndTypeVo",
+            description = "AbstractAlertHandlerVo.AlertIdAndTypeVo 告警信息实体响应体"
     )
-    public static class HandlerAndAlertIdVo implements IVo {
+    public static class AlertIdAndTypeVo implements IVo {
 
         private static final long serialVersionUID = -2087590179140631111L;
 
@@ -199,8 +199,8 @@ public abstract class AbstractAlertHandlerVo {
         @JsonProperty(value = "AlertHandlerType", required = true)
         private AlertHandlerTypeEnum alertHandlerTypeEnum;
 
-        @Schema(name = "AlertHandlerIdList", title = "告警处理方式 ID 列表", required = true)
-        @JsonProperty(value = "AlertHandlerIdList", required = true)
+        @Schema(name = "AlertId", title = "告警处理方式 ID 列表", required = true)
+        @JsonProperty(value = "AlertId", required = true)
         private Long alertId;
     }
 

@@ -512,13 +512,13 @@ public class MasterAlertHandlerService {
 
         AbstractAlertHandlerVo.HandlerAndAlertIdListVo handlerAndAlertIdListVo = new AbstractAlertHandlerVo.HandlerAndAlertIdListVo();
         handlerAndAlertIdListVo.setHandlerId(handlerId);
-        handlerAndAlertIdListVo.setHandlerAndAlertIdList(
+        handlerAndAlertIdListVo.setAlertIdAndTypeList(
                 this.tDlAlertHandlerRelationService.lambdaQuery()
                         .select()
                         .eq(TDlAlertHandlerRelation::getHandlerId, handlerId)
                         .list()
                         .stream()
-                        .map(i -> new AbstractAlertHandlerVo.HandlerAndAlertIdVo(
+                        .map(i -> new AbstractAlertHandlerVo.AlertIdAndTypeVo(
                                         i.getHandlerType(),
                                         i.getAlertId()
                                 )
