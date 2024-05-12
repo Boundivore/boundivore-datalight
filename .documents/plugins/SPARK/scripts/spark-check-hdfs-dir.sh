@@ -16,9 +16,9 @@ SPARK_HDFS_DIR="/${CLUSTER_NAME}/spark-logs"
 
 if [ $? -eq 0 ] ;then
     echo "${SPARK_HDFS_DIR} already exists."
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${SPARK_HDFS_DIR}"
+    su -s /bin/bash datalight -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${SPARK_HDFS_DIR}"
 else
     echo "${SPARK_HDFS_DIR} does not exist.Creating..."
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -mkdir -p ${SPARK_HDFS_DIR}"
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${SPARK_HDFS_DIR}"
+    su -s /bin/bash datalight -c "${YARN_HOME}/bin/hadoop fs -mkdir -p ${SPARK_HDFS_DIR}"
+    su -s /bin/bash datalight -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${SPARK_HDFS_DIR}"
 fi

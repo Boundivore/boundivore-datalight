@@ -16,9 +16,9 @@ FLINK_HDFS_DIR="/${CLUSTER_NAME}/completed-jobs"
 
 if [ $? -eq 0 ] ;then
     echo "${FLINK_HDFS_DIR} already exists."
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 /${FLINK_HDFS_DIR}/"
+    su -s /bin/bash datalight -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 /${FLINK_HDFS_DIR}/"
 else
     echo "${FLINK_HDFS_DIR} does not exist.Creating..."
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -mkdir -p ${FLINK_HDFS_DIR}"
-    su -s /bin/bash hadoop -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${FLINK_HDFS_DIR}"
+    su -s /bin/bash datalight -c "${YARN_HOME}/bin/hadoop fs -mkdir -p ${FLINK_HDFS_DIR}"
+    su -s /bin/bash datalight -c "${YARN_HOME}/bin/hadoop fs -chmod  -R 777 ${FLINK_HDFS_DIR}"
 fi
