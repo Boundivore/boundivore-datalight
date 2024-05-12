@@ -77,3 +77,9 @@ datalight:
       port: '8082'
       path: '/'
       button-name-suffix: '-Web UI'
+
+    - service: ZKUI
+      component: ZKUIServer
+      port: '5181'
+      path: '/'
+      button-name-suffix: '-Web UI'

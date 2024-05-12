@@ -20,6 +20,8 @@ bin_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 jar_path="${bin_dir}/zkui-2.0.0.jar"
 log_config_path="${bin_dir}/log4j.properties"
 
+cd "${bin_dir}"
+
 # 确保 PID 和日志目录存在
 mkdir -p "$(dirname "${PID_FILE}")"
 mkdir -p "$(dirname "${LOG_FILE}")"
