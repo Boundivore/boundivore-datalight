@@ -38,6 +38,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 public class BashResult implements Serializable {
+    private static final long serialVersionUID = -1378450199046008637L;
+
     private boolean isSuccess;
     private String execLog;
     private String result;
