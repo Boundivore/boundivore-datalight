@@ -200,11 +200,11 @@ if [ -z "$_FLINK_HOME_DETERMINED" ]; then
 fi
 
 export FLINK_HOME="{{FLINK_HOME}}"
+cd "${FLINK_HOME}" || exit 1
 
 if [ -z "$FLINK_LIB_DIR" ]; then FLINK_LIB_DIR=$FLINK_HOME/lib; fi
 if [ -z "$FLINK_PLUGINS_DIR" ]; then FLINK_PLUGINS_DIR=$FLINK_HOME/plugins; fi
 if [ -z "$FLINK_OPT_DIR" ]; then FLINK_OPT_DIR=$FLINK_HOME/opt; fi
-
 
 # These need to be mangled because they are directly passed to java.
 # The above lib path is used by the shell script to retrieve jars in a
@@ -214,7 +214,6 @@ if [ -z "$FLINK_CONF_DIR" ]; then FLINK_CONF_DIR=$FLINK_HOME_DIR_MANGLED/conf; f
 FLINK_BIN_DIR=$FLINK_HOME_DIR_MANGLED/bin
 
 ### Exported environment variables ###
-export FLINK_HOME="{{FLINK_HOME}}"
 export FLINK_CONF_DIR="${FLINK_HOME}/conf"
 export FLINK_BIN_DIR="${FLINK_HOME}/bin"
 export FLINK_PLUGINS_DIR="${FLINK_HOME}/plugins"
