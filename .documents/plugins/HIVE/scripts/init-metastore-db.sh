@@ -26,10 +26,8 @@ initMetaStore() {
   # 执行初始化操作，并将输出重定向到日志文件
   if su -s /bin/bash datalight -c "${SCHEMATOOL_SCRIPT} -dbType mysql -initSchema" &>> "${LOG_FILE}"; then
     echo "MetaStore initialized successfully." | tee -a "${LOG_FILE}"
-    exit 0
   else
     echo "Failed to initialize MetaStore." | tee -a "${LOG_FILE}"
-    exit 0
   fi
 
   chown datalight:datalight "${LOG_FILE}"
@@ -37,3 +35,5 @@ initMetaStore() {
 
 # 调用初始化函数
 initMetaStore
+
+exit 0
