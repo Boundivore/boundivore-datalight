@@ -56,6 +56,8 @@ public class ConfigLogicFlinkConfigSh extends AbstractConfigLogic {
 
         String defaultFlinkLogDir = this.defaultFlinkLogDir();
 
+        String flinkHome = this.flinkHome();
+
 
         return replacedTemplated
                 .replace(
@@ -77,6 +79,10 @@ public class ConfigLogicFlinkConfigSh extends AbstractConfigLogic {
                 .replace(
                         "{{DEFAULT_FLINK_LOG_DIR}}",
                         defaultFlinkLogDir
+                )
+                .replace(
+                        "{{FLINK_HOME}}",
+                        flinkHome
                 )
                 ;
     }
@@ -120,7 +126,7 @@ public class ConfigLogicFlinkConfigSh extends AbstractConfigLogic {
     }
 
     /**
-     * Description: 获取 Hadoop 根目录
+     * Description: 获取 Hadoop 家目录
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/5/7
@@ -139,7 +145,7 @@ public class ConfigLogicFlinkConfigSh extends AbstractConfigLogic {
     }
 
     /**
-     * Description: 获取 HBase 配置文件目录
+     * Description: 获取 HBase 家目录
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/5/7
@@ -174,6 +180,26 @@ public class ConfigLogicFlinkConfigSh extends AbstractConfigLogic {
                 "%s/%s",
                 super.logDir(),
                 SERVICE_NAME
+        );
+    }
+
+
+    /**
+     * Description: 获取 Flink 配置文件目录
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/7
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String HBase 配置文件目录
+     */
+    private String flinkHome() {
+        return String.format(
+                "%s/FLINK",
+                super.serviceDir()
         );
     }
 

@@ -211,6 +211,7 @@ if [ -z "$FLINK_CONF_DIR" ]; then FLINK_CONF_DIR=$FLINK_HOME_DIR_MANGLED/conf; f
 FLINK_BIN_DIR=$FLINK_HOME_DIR_MANGLED/bin
 
 ### Exported environment variables ###
+export FLINK_HOME="{{FLINK_HOME}}"
 export FLINK_CONF_DIR
 export FLINK_BIN_DIR
 export FLINK_PLUGINS_DIR
