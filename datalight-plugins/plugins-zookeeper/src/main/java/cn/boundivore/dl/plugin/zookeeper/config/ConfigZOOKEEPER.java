@@ -16,12 +16,10 @@
  */
 package cn.boundivore.dl.plugin.zookeeper.config;
 
-import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.AbstractConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
-import java.util.LinkedHashMap;
 
 /**
  * Description: 参考父类中的注释
@@ -34,7 +32,7 @@ import java.util.LinkedHashMap;
  * Version: V1.0
  */
 @Slf4j
-public class ConfigZookeeper extends AbstractConfig {
+public class ConfigZOOKEEPER extends AbstractConfig {
 
     /**
      * Description: 根据配置文件执行不同的配置修改逻辑
