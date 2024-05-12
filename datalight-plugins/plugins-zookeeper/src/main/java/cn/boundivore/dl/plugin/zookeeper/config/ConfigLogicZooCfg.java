@@ -62,7 +62,7 @@ public class ConfigLogicZooCfg extends AbstractConfigLogic {
                             serversSb.append(
                                     String.format(
                                             "server.%s=%s:2888:3888",
-                                            metaComponent.getNodeId(),
+                                            super.pluginConfig.getCurrentNodeSerialNum().toString(),
                                             metaComponent.getHostname()
                                     )
                             );
