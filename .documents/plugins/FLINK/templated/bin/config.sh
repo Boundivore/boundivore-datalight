@@ -198,6 +198,9 @@ SYMLINK_RESOLVED_BIN=`cd "$bin"; pwd -P`
 if [ -z "$_FLINK_HOME_DETERMINED" ]; then
     FLINK_HOME=`dirname "$SYMLINK_RESOLVED_BIN"`
 fi
+
+export FLINK_HOME="{{FLINK_HOME}}"
+
 if [ -z "$FLINK_LIB_DIR" ]; then FLINK_LIB_DIR=$FLINK_HOME/lib; fi
 if [ -z "$FLINK_PLUGINS_DIR" ]; then FLINK_PLUGINS_DIR=$FLINK_HOME/plugins; fi
 if [ -z "$FLINK_OPT_DIR" ]; then FLINK_OPT_DIR=$FLINK_HOME/opt; fi
@@ -212,13 +215,13 @@ FLINK_BIN_DIR=$FLINK_HOME_DIR_MANGLED/bin
 
 ### Exported environment variables ###
 export FLINK_HOME="{{FLINK_HOME}}"
-export FLINK_CONF_DIR
-export FLINK_BIN_DIR
-export FLINK_PLUGINS_DIR
+export FLINK_CONF_DIR="${FLINK_HOME}/conf"
+export FLINK_BIN_DIR="${FLINK_HOME}/bin"
+export FLINK_PLUGINS_DIR="${FLINK_HOME}/plugins"
 # export /lib dir to access it during deployment of the Yarn staging files
-export FLINK_LIB_DIR
+export FLINK_LIB_DIR="${FLINK_HOME}/lib"
 # export /opt dir to access it for the SQL client
-export FLINK_OPT_DIR
+export FLINK_OPT_DIR="${FLINK_HOME}/opt"
 
 source "${FLINK_BIN_DIR}/bash-java-utils.sh"
 setJavaRun "$FLINK_CONF_DIR"
