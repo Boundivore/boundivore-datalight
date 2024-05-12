@@ -141,6 +141,10 @@ public class ServiceDependenciesVo implements IVo {
         @JsonProperty(value = "Hostname", required = true)
         private String hostname;
 
+        @Schema(name = "SerialNum", title = "节点递增序列", required = true)
+        @JsonProperty(value = "SerialNum", required = true)
+        private Integer serialNum;
+
         @Schema(name = "Ram", title = "内存字节数 单位 MB", required = true)
         @JsonProperty(value = "Ram", required = true)
         private Long ram;

@@ -134,6 +134,8 @@ public class PluginConfig implements Serializable {
 
         private String hostname;
 
+        private Integer serialNum;
+
         // 内存字节数 单位 MB
         private Long ram;
 

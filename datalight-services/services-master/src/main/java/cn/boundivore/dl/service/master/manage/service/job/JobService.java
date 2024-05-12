@@ -579,7 +579,8 @@ public class JobService {
         pluginConfig.setCurrentMetaComponent(
                 this.findMetaComponent(
                         pluginConfig.getCurrentMetaService(),
-                        currentComponentName, currentNodeId
+                        currentComponentName,
+                        currentNodeId
                 )
         );
 
@@ -639,6 +640,7 @@ public class JobService {
                                 .setNodeId(componentDetail.getNodeId())
                                 .setNodeIp(componentDetail.getNodeIp())
                                 .setHostname(componentDetail.getHostname())
+                                .setSerialNum(componentDetail.getSerialNum())
                                 .setRam(componentDetail.getRam())
                                 .setCpuCores(componentDetail.getCpuCores())
                 )

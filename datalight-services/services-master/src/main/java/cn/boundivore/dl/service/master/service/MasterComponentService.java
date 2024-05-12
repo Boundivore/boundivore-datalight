@@ -1025,6 +1025,7 @@ public class MasterComponentService {
                                                             i.getNodeId(),
                                                             i.getIpv4(),
                                                             i.getHostname(),
+                                                            i.getSerialNum(),
                                                             i.getRam(),
                                                             i.getCpuCores()
                                                     )
