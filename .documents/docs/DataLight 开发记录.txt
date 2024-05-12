@@ -139,12 +139,16 @@ sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh Prometheus stop; 
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh AlertManager stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh NodeExporter stop; \
 sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh MySQLExporter stop; \
+sh /opt/datalight/plugins/ZKUI/scripts/zkui-operation.sh ZKUIServer stop; \
+sh /opt/datalight/plugins/KAFKA/scripts/kafka-operation.sh KafkaBroker stop; \
+sh /opt/datalight/plugins/SPARK/scripts/spark-operation.sh SparkHistoryServer stop; \
+sh /opt/datalight/plugins/SPARK/scripts/flink-operation.sh FlinkHistoryServer stop; \
 sh /opt/datalight/plugins/HBASE/scripts/hbase-operation.sh HMaster stop; \
 sh /opt/datalight/plugins/HBASE/scripts/hbase-operation.sh HRegionServer stop; \
 sh /opt/datalight/plugins/HBASE/scripts/hbase-operation.sh HThriftServer2 stop; \
+sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh TezUI stop; \
 sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh MetaStore stop; \
 sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh HiveServer2 stop; \
-sh /opt/datalight/plugins/HIVE/scripts/hive-operation.sh TezUI stop; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh ResourceManager stop; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh NodeManager stop; \
 sh /opt/datalight/plugins/YARN/scripts/yarn-operation.sh TimelineServer stop; \
