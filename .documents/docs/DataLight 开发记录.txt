@@ -142,7 +142,7 @@ sh /opt/datalight/plugins/MONITOR/scripts/monitor-operation.sh MySQLExporter sto
 sh /opt/datalight/plugins/ZKUI/scripts/zkui-operation.sh ZKUIServer stop; \
 sh /opt/datalight/plugins/KAFKA/scripts/kafka-operation.sh KafkaBroker stop; \
 sh /opt/datalight/plugins/SPARK/scripts/spark-operation.sh SparkHistoryServer stop; \
-sh /opt/datalight/plugins/SPARK/scripts/flink-operation.sh FlinkHistoryServer stop; \
+sh /opt/datalight/plugins/FLINK/scripts/flink-operation.sh FlinkHistoryServer stop; \
 sh /opt/datalight/plugins/HBASE/scripts/hbase-operation.sh HMaster stop; \
 sh /opt/datalight/plugins/HBASE/scripts/hbase-operation.sh HRegionServer stop; \
 sh /opt/datalight/plugins/HBASE/scripts/hbase-operation.sh HThriftServer2 stop; \
