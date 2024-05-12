@@ -23,7 +23,7 @@ SERVICE_NAME="SPARK"
 
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
-SPARK_ENV_SCRIPT="${CURRENT_SERVICE_DIR}/conf/spark-env.sh"
+#SPARK_ENV_SCRIPT="${CURRENT_SERVICE_DIR}/conf/spark-env.sh"
 
 # 检查参数是否为空
 if [ -z "$1" ]; then
@@ -47,7 +47,7 @@ OPERATION="$2"
 
 # 加载 Hive 配置
 # shellcheck source=/srv/datalight/SPARK/conf/spark-env.sh
-source "${SPARK_ENV_SCRIPT}"
+#source "${SPARK_ENV_SCRIPT}"
 
 # 输出操作提醒
 echo "To ${OPERATION} ${COMPONENT_NAME} ..."

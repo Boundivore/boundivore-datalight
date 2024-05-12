@@ -165,6 +165,9 @@ rm -rf /data/logs/*; \
 rm -rf /srv/datalight/*; \
 rm -rf /tmp/hsperfdata_*
 
+ps aux | grep 'datalight' | grep -v grep | awk '{print $2}' | xargs -r kill -9
+
+
 docker stop $(docker ps -aq)
 docker rm -f $(docker ps -aq)
 docker rmi -f $(docker images -q)

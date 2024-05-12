@@ -18,7 +18,7 @@ USER_NAME="datalight"
 # shellcheck disable=SC2034
 GROUP_NAME="datalight"
 
-SERVICE_NAME="ZKUIServer"
+SERVICE_NAME="ZKUI"
 
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 

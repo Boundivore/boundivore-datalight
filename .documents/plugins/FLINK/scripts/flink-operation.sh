@@ -21,8 +21,6 @@ SERVICE_NAME="FLINK"
 
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
-FLINK_ENV_SCRIPT="${CURRENT_SERVICE_DIR}/bin/config.sh"
-
 # 检查参数是否为空
 if [ -z "$1" ]; then
   echo "Usage: $0 <FlinkHistoryServer> <start|stop|restart>"
@@ -41,9 +39,6 @@ chown ${USER_NAME}:${GROUP_NAME} -R "${DATA_DIR}"
 COMPONENT_NAME="$1"
 # 获取第二个参数（操作类型）
 OPERATION="$2"
-
-# 加载 Flink 配置
-source "${FLINK_ENV_SCRIPT}"
 
 # 输出操作提醒
 echo "To ${OPERATION} ${COMPONENT_NAME} ..."
