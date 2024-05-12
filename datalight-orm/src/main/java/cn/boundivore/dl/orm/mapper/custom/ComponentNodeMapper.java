@@ -64,6 +64,7 @@ public interface ComponentNodeMapper extends BaseMapper<ComponentNodeDto> {
             "    t1.component_state,\n" +
             "    t1.priority AS component_priority,\n" +
             "    t2.hostname,\n" +
+            "    t2.serial_num,\n" +
             "    t2.ipv4, \n" +
             "    t2.ipv6, \n" +
             "    t2.ssh_port, \n" +
@@ -119,6 +120,7 @@ public interface ComponentNodeMapper extends BaseMapper<ComponentNodeDto> {
             "    t1.component_state,\n" +
             "    t1.priority AS component_priority,\n" +
             "    t2.hostname,\n" +
+            "    t2.serial_num,\n" +
             "    t2.ipv4, \n" +
             "    t2.ipv6, \n" +
             "    t2.ssh_port, \n" +

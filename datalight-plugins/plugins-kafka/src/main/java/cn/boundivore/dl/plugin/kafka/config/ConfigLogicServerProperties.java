@@ -94,9 +94,7 @@ public class ConfigLogicServerProperties extends AbstractConfigLogic {
      * @return String Kafka BrokerId
      */
     private String brokerId() {
-        return String.valueOf(
-                super.currentNodeId
-        );
+        return super.pluginConfig.getCurrentNodeSerialNum().toString();
     }
 
     /**

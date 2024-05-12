@@ -81,6 +81,8 @@ public class TaskMeta extends TimeMeta {
 
     private long nodeId;
 
+    private Integer serialNum;
+
     private long ram;
 
     private String serviceName;

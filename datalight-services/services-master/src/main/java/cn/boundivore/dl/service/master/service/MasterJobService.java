@@ -448,7 +448,9 @@ public class MasterJobService {
                                 .map(c -> new Intention.Node()
                                         .setNodeId(c.getNodeId())
                                         .setNodeIp(c.getIpv4())
-                                        .setHostname(c.getHostname()))
+                                        .setHostname(c.getHostname())
+                                        .setSerialNum(c.getSerialNum())
+                                )
                                 .collect(Collectors.toList())
                 );
     }
@@ -495,7 +497,9 @@ public class MasterJobService {
                                 .map(c -> new Intention.Node()
                                         .setNodeId(c.getNodeId())
                                         .setNodeIp(c.getIpv4())
-                                        .setHostname(c.getHostname()))
+                                        .setHostname(c.getHostname())
+                                        .setSerialNum(c.getSerialNum())
+                                )
                                 .collect(Collectors.toList())
                 );
     }

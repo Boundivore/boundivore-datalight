@@ -513,6 +513,9 @@ public class JobService {
         // 获取任务元数据中的当前节点主机名
         final String currentNodeHostname = taskMeta.getHostname();
 
+        // 当前节点的计数序列
+        final Integer serialNum = taskMeta.getSerialNum();
+
         // 获取当前集群下，当前服务所依赖服务和组件的分布情况，
         // 如果为 COMPUTE 集群，则 COMPUTE 集群中所依赖的 STORAGE 类型的服务将会被关联到 MIXED 集群中
         final ServiceDependenciesVo serviceDependenciesVo = this.masterComponentService.getServiceDependencies(
@@ -563,6 +566,7 @@ public class JobService {
         pluginConfig.setCurrentNodeId(currentNodeId);
         pluginConfig.setCurrentNodeIp(currentNodeIp);
         pluginConfig.setCurrentNodeHostname(currentNodeHostname);
+        pluginConfig.setCurrentNodeSerialNum(serialNum);
 
         // 设置当前服务的元数据
         pluginConfig.setCurrentMetaService(

@@ -46,7 +46,7 @@ public class ConfigLogicMyId extends AbstractConfigLogic {
         );
         return replacedTemplated.replace(
                 "{{zk-id}}",
-                super.currentMetaComponent.getNodeId().toString()
+                super.pluginConfig.getCurrentNodeSerialNum().toString()
         );
     }
 }

@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 23/04/2024 15:56:28
+ Date: 12/05/2024 15:55:11
 */
 
 SET NAMES utf8mb4;
@@ -283,18 +283,19 @@ CREATE TABLE `t_dl_node`  (
   `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
   `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
   `cluster_id` bigint(20) NOT NULL COMMENT '集群 ID',
-  `hostname` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '主机名',
-  `ipv4` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IPV4 地址',
-  `ipv6` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'IPV6 地址',
+  `hostname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主机名',
+  `ipv4` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'IPV4 地址',
+  `ipv6` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'IPV6 地址',
   `ssh_port` bigint(20) NULL DEFAULT 22 COMMENT 'SSH 端口 默认为 22 端口，可自定义修改',
-  `cpu_arch` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'CPU 架构',
+  `cpu_arch` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'CPU 架构',
   `cpu_cores` bigint(20) NOT NULL COMMENT 'CPU 核心数 单位：个',
   `ram` bigint(20) NOT NULL COMMENT '内存总大小 单位：K-bytes',
   `disk` bigint(20) NOT NULL COMMENT '磁盘总容量 单位：K-bytes',
-  `node_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '节点状态 状态枚举，见代码',
-  `os_version` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '系统版本',
+  `node_state` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '节点状态 状态枚举，见代码',
+  `os_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '系统版本',
+  `serial_num` int(11) NOT NULL COMMENT '节点计数 当前为第几个增加的节点，唯一且仅递增，不可回退，同时用于部分组件唯一部署 ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '节点信息表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_dl_node_init

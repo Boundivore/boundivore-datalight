@@ -345,6 +345,7 @@ public class Job extends Thread {
                                     .setHostname(i.getHostname())
                                     .setNodeIp(i.getNodeIp())
                                     .setNodeId(i.getNodeId())
+                                    .setSerialNum(i.getSerialNum())
 
                                     .setActionTypeEnum(jobMeta.getActionTypeEnum())
                                     .setPriority(priority)

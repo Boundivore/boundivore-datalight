@@ -70,6 +70,10 @@ public class ComponentNodeDto extends TBasePo<ComponentNodeDto> {
     @TableField("hostname")
     private String hostname;
 
+    @Schema(name = "主机名")
+    @TableField("serial_num")
+    private Integer serialNum;
+
     @Schema(name = "IPV4 地址")
     @TableField("ipv4")
     private String ipv4;

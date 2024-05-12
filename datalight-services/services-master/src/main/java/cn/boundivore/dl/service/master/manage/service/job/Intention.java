@@ -88,5 +88,7 @@ public class Intention {
         private String nodeIp;
 
         private String hostname;
+
+        private Integer serialNum;
     }
 }

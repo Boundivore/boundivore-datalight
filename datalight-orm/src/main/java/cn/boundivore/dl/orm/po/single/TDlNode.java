@@ -72,5 +72,8 @@ public class TDlNode extends TBasePo<TDlNode> {
     @TableField("os_version")
     private String osVersion;
 
+    @Schema(name = "节点计数 当前为第几个增加的节点，唯一且仅递增，不可回退，同时用于部分组件唯一部署 ID")
+    @TableField("serial_num")
+    private Integer serialNum;
 
 }

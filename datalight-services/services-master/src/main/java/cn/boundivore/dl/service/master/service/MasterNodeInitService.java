@@ -47,7 +47,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -121,26 +123,28 @@ public class MasterNodeInitService {
         //保存本批次的节点数据
         List<TDlNodeInit> tDlNodeInitList = validHostnameList.stream()
                 .map(hostname -> {
-                    TDlNodeInit tDlNodeInit = new TDlNodeInit();
-                    tDlNodeInit.setVersion(0L);
-                    tDlNodeInit.setClusterId(clusterId);
-                    tDlNodeInit.setHostname(hostname);
-                    tDlNodeInit.setSshPort(sshPort);
-                    tDlNodeInit.setNodeInitState(NodeStateEnum.RESOLVED);
+                            TDlNodeInit tDlNodeInit = new TDlNodeInit();
+                            tDlNodeInit.setVersion(0L);
+                            tDlNodeInit.setClusterId(clusterId);
+                            tDlNodeInit.setHostname(hostname);
+                            tDlNodeInit.setSshPort(sshPort);
+                            tDlNodeInit.setNodeInitState(NodeStateEnum.RESOLVED);
 
-                    String na = "";
-                    Long naLong = 0L;
+                            String na = "";
+                            Long naLong = 0L;
 
-                    tDlNodeInit.setIpv4(na);
-                    tDlNodeInit.setIpv6(na);
-                    tDlNodeInit.setCpuArch(na);
-                    tDlNodeInit.setCpuCores(naLong);
-                    tDlNodeInit.setRam(naLong);
-                    tDlNodeInit.setDisk(naLong);
-                    tDlNodeInit.setOsVersion(na);
+                            tDlNodeInit.setIpv4(na);
+                            tDlNodeInit.setIpv6(na);
+                            tDlNodeInit.setCpuArch(na);
+                            tDlNodeInit.setCpuCores(naLong);
+                            tDlNodeInit.setRam(naLong);
+                            tDlNodeInit.setDisk(naLong);
+                            tDlNodeInit.setOsVersion(na);
 
-                    return tDlNodeInit;
-                })
+                            return tDlNodeInit;
+                        }
+                )
+                .sorted(Comparator.comparing(TDlNodeInit::getHostname))
                 .collect(Collectors.toList());
 
         Assert.isTrue(
@@ -848,7 +852,22 @@ public class MasterNodeInitService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> addNode(AbstractNodeInitRequest.NodeInitInfoListRequest request) {
+
+        // 已服役节点计数器
+        final AtomicInteger serialNum = new AtomicInteger(0);
+
+        // 获取数据库已服役 Node 列表中 SerialNum 最大的记录
+        TDlNode maxSerialNumTDlNode = this.tDlNodeService.lambdaQuery()
+                .select()
+                .orderByDesc(TDlNode::getSerialNum)
+                .last("LIMIT 1")
+                .one();
+
+        if (maxSerialNumTDlNode != null) {
+            serialNum.set(maxSerialNumTDlNode.getSerialNum());
+        }
 
         List<TDlNode> tDlNodeList = this.tDlNodeInitService.lambdaQuery()
                 .select()
@@ -860,6 +879,7 @@ public class MasterNodeInitService {
                                 .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
                                 .collect(Collectors.toList())
                 )
+                .orderByAsc(TDlNodeInit::getHostname)
                 .list()
                 .stream()
                 .map(i -> {
@@ -889,6 +909,7 @@ public class MasterNodeInitService {
                     tDlNode.setDisk(i.getDisk());
                     tDlNode.setNodeState(NodeStateEnum.STARTED);
                     tDlNode.setOsVersion(i.getOsVersion());
+                    tDlNode.setSerialNum(serialNum.incrementAndGet());
 
                     return tDlNode;
 
@@ -921,13 +942,13 @@ public class MasterNodeInitService {
 
 
         Assert.isTrue(
-                tDlNodeService.saveBatch(tDlNodeList),
+                this.tDlNodeService.saveBatch(tDlNodeList),
                 () -> new DatabaseException("添加节点到服役列表失败")
         );
 
         // 删除 NodeInit 表信息
         Assert.isTrue(
-                tDlNodeInitService.removeBatchByIds(
+                this.tDlNodeInitService.removeBatchByIds(
                         request.getNodeInfoList()
                                 .stream()
                                 .map(AbstractNodeRequest.NodeInfoRequest::getNodeId)
