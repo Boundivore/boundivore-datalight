@@ -42,7 +42,7 @@ start() {
             exit 1
         fi
     fi
-    nohup java -jar -Dlog4j.configuration="${log_config_path}" "${jar_path}" > "${LOG_FILE}" 2>&1 < /dev/null &
+    nohup java "${ZKUIServer_JMX_OPTS}" -jar -Dlog4j.configuration="${log_config_path}" "${jar_path}" > "${LOG_FILE}" 2>&1 < /dev/null &
     echo $! > "${PID_FILE}"
     echo "${SERVICE_NAME} started successfully."
 }

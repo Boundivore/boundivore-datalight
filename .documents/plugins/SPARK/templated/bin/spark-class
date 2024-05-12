@@ -67,8 +67,18 @@ fi
 #
 # The exit code of the launcher is appended to the output, so the parent shell removes it from the
 # command array and checks the value to see if the launcher succeeded.
+#build_command() {
+#  "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"
+#  printf "%d\0" $?
+#}
+
 build_command() {
-  "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"
+  if [[ "$@" =~ "org.apache.spark.deploy.history.HistoryServer" ]]; then
+    "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "${SPARK_HISTORY_SERVER_JMX_OPTS}" "$@"
+  else
+    "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"
+  fi
+
   printf "%d\0" $?
 }
 
