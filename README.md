@@ -7,7 +7,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 详情介绍可访问
 
 ~~~http
-http://boundivore.datalight.com
+http://boundivore.datalight.cn
 ~~~
 
 ## 二、软件架构
