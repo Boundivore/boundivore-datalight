@@ -18,7 +18,7 @@ LOG_FILE="${LOG_DIR}/${SERVICE_NAME}/zkui.out"
 bin_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 
 jar_path="${bin_dir}/zkui-2.0.0.jar"
-log_config_path="${bin_dir}/log4j.properties"
+log_config_path="file:${bin_dir}/log4j.properties"
 
 cd "${bin_dir}"
 
@@ -42,7 +42,7 @@ start() {
             exit 1
         fi
     fi
-    nohup java "${ZKUIServer_JMX_OPTS}" -jar "${jar_path}" -Dlog4j.configuration="${log_config_path}" > "${LOG_FILE}" 2>&1 < /dev/null &
+    nohup java "${ZKUIServer_JMX_OPTS}" -jar -Dlog4j.configuration="${log_config_path}" "${jar_path}" > "${LOG_FILE}" 2>&1 < /dev/null &
     echo $! > "${PID_FILE}"
     echo "${SERVICE_NAME} started successfully."
 }
