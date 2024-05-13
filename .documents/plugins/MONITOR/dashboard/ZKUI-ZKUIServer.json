@@ -304,7 +304,9 @@
   "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "ZKUI"
+  ],
   "templating": {
     "list": [
       {
@@ -363,6 +365,6 @@
   "timezone": "",
   "title": "ZKUI-ZKUIServer",
   "uid": "ZKUI-ZKUIServer",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
