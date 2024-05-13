@@ -73,8 +73,9 @@ fi
 #}
 
 build_command() {
-  if [[ "$@" =~ "org.apache.spark.deploy.history.HistoryServer" ]]; then
-    "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "${SPARK_HISTORY_SERVER_JMX_OPTS}" "$@"
+  if [[ "$*" =~ "org.apache.spark.deploy.history.HistoryServer" ]]; then
+    IFS=' ' read -r -a jmx_opts_array <<< "$SPARK_HISTORY_SERVER_JMX_OPTS"
+        "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "${jmx_opts_array[@]}" "$@"
   else
     "$RUNNER" -Xmx128m $SPARK_LAUNCHER_OPTS -cp "$LAUNCH_CLASSPATH" org.apache.spark.launcher.Main "$@"
   fi

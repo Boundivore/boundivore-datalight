@@ -147,19 +147,11 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'ZKUI-ZKUIServer'
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'ELASTICSEARCH-ElasticSearch'
     metrics_path: "/_prometheus/metrics"
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'LIVY-LivyServer'
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'KYLIN-KylinServer'
-    static_configs:
-      - targets: [ ]
-
-  - job_name: 'RANGER-RangerAdmin'
     static_configs:
       - targets: [ ]
