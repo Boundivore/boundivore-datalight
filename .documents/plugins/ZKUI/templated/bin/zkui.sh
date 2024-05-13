@@ -28,26 +28,28 @@ cd "${bin_dir}"
 mkdir -p "$(dirname "${PID_FILE}")"
 mkdir -p "$(dirname "${LOG_FILE}")"
 
-export ZKUIServer_JMX_OPTS="-Djava.net.preferIPv4Stack=true \
--Dcom.sun.management.jmxremote.authenticate=false \
--Dcom.sun.management.jmxremote.ssl=false \
--Dcom.sun.management.jmxremote.local.only=false \
--Dcom.sun.management.jmxremote.port={{jmxRemotePort_ZKUIServer}} \
--javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ZKUIServer}}:${SERVICE_DIR}/ZKUI/exporter/conf/jmx_config_ZKUIServer.yaml"
-
+ZKUIServer_JMX_OPTS=(
+    "-Djava.net.preferIPv4Stack=true"
+    "-Dcom.sun.management.jmxremote.authenticate=false"
+    "-Dcom.sun.management.jmxremote.ssl=false"
+    "-Dcom.sun.management.jmxremote.local.only=false"
+    "-Dcom.sun.management.jmxremote.port={{jmxRemotePort_ZKUIServer}}"
+    "-javaagent:${DATALIGHT_DIR}/exporter/jar/jmx_exporter.jar={{jmxExporterPort_ZKUIServer}}:${SERVICE_DIR}/ZKUI/exporter/conf/jmx_config_ZKUIServer.yaml"
+)
 
 start() {
-    echo "Starting ${SERVICE_NAME} ..."
+    echo "Starting ${SERVICE_NAME}..."
     if [ -f "${PID_FILE}" ]; then
         if kill -9 "$(cat "${PID_FILE}")" > /dev/null 2>&1; then
             echo "${SERVICE_NAME} was already started."
             exit 1
         fi
     fi
-    nohup java "${ZKUIServer_JMX_OPTS}" -jar -Dlog4j.configuration="${log_config_path}" "${jar_path}" > "${LOG_FILE}" 2>&1 < /dev/null &
-    echo $! > "${PID_FILE}"
+
+    nohup java "${ZKUIServer_JMX_OPTS[@]}" -jar -Dlog4j.configuration="${log_config_path}" "${jar_path}" > "${LOG_FILE}" 2>&1 < /dev/null &
     echo "${SERVICE_NAME} started successfully."
 }
+
 
 stop() {
   echo "Stopping ${SERVICE_NAME} ..."
