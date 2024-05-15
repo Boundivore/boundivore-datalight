@@ -65,30 +65,32 @@ public class SaTokenConfigure implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 注册路由拦截器，自定义认证规则
         registry.addInterceptor(
-                new SaInterceptor(handler -> {
+                        new SaInterceptor(handler -> {
 
-                    // 登录校验，拦截所有路由，并排除登录 URI
-                    SaRouter.match(
-                            MASTER_URL_PREFIX + "/**",
-                            r -> StpUtil.checkLogin()
-                    );
+                            // 登录校验，拦截所有路由，并排除登录 URI
+                            SaRouter.match(
+                                    MASTER_URL_PREFIX + "/**",
+                                    r -> StpUtil.checkLogin()
+                            );
 
-                    // <PermissionCode, PermissionBean> 动态加载当前所有接口权限
-                    Map<String, PermissionBean> permissionTemplatedMap = this.masterPermissionHandlerService.getPermissionBeanMap();
+                            // <PermissionCode, PermissionBean> 动态加载当前所有接口权限
+                            Map<String, PermissionBean> permissionTemplatedMap = this.masterPermissionHandlerService.getPermissionBeanMap();
 
-                    // 遍历添加权限校检
-                    permissionTemplatedMap.forEach((permissionCode, permissionBean) -> {
-                                SaRouter.match(
-                                        permissionBean.getPath(),
-                                        r -> SaTokenCheckUtil.checkRoleOrPermission(
-                                                CollUtil.newArrayList(StaticRoleTypeEnum.ADMIN.name()),
-                                                CollUtil.newArrayList(permissionBean.getCode())
-                                        )
-                                );
-                            }
-                    );
-                })
-        ).addPathPatterns("/**");
+                            // 遍历添加权限校检
+                            permissionTemplatedMap.forEach((permissionCode, permissionBean) -> {
+                                        SaRouter.match(
+                                                permissionBean.getPath(),
+                                                r -> SaTokenCheckUtil.checkRoleOrPermission(
+                                                        CollUtil.newArrayList(StaticRoleTypeEnum.ADMIN.name()),
+                                                        CollUtil.newArrayList(permissionBean.getCode())
+                                                )
+                                        );
+                                    }
+                            );
+                        })
+                ).addPathPatterns("/**")
+                // 放行 Druid 的所有 URL;
+                .excludePathPatterns("/druid/**");
     }
 
 //    @Bean
