@@ -65,7 +65,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param orgName 组织名称
-     * @return Result<String> 包含创建组织请求结果的Result对象
+     * @return Result<String> 包含创建组织请求结果的 Result 对象
      */
     public Result<String> createOrgRequest(String orgName) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -92,7 +92,7 @@ public class GrafanaHandler {
      * @param userName  用户名称
      * @param loginName 用户登录名
      * @param password  用户密码
-     * @return Result<String> 包含创建用户请求结果的Result对象
+     * @return Result<String> 包含创建用户请求结果的 Result 对象
      */
     public Result<String> createUserRequest(String userName, String loginName, String password) {
 
@@ -122,7 +122,7 @@ public class GrafanaHandler {
      * @param loginName 用户登录名或邮箱
      * @param role      用户在组织中的角色
      * @param orgId     组织ID
-     * @return Result<String> 包含添加用户到组织请求结果的Result对象
+     * @return Result<String> 包含添加用户到组织请求结果的 Result 对象
      */
     public Result<String> addUser2OrgRequest(String loginName, String role, String orgId) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -149,7 +149,7 @@ public class GrafanaHandler {
      *
      * @param orgId  组织ID
      * @param userId 用户ID
-     * @return Result<String> 包含从组织中删除用户请求结果的Result对象
+     * @return Result<String> 包含从组织中删除用户请求结果的 Result 对象
      */
     public Result<String> deleteUserFromOrgRequest(String orgId, String userId) {
         return delete(String.format("/api/orgs/%s/users/%s", orgId, userId));
@@ -169,7 +169,7 @@ public class GrafanaHandler {
      * @param prometheusBaseUri Prometheus的基础URI
      * @param loginName         登录名
      * @param password          密码
-     * @return Result<String> 包含创建Prometheus数据源请求结果的Result对象
+     * @return Result<String> 包含创建Prometheus数据源请求结果的 Result 对象
      */
     public Result<String> createPrometheusDataSourcesRequest(String orgId, String prometheusBaseUri, String loginName, String password) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -215,7 +215,7 @@ public class GrafanaHandler {
      * @param influxDBBaseUri InfluxDB的基础URI
      * @param loginName       登录名
      * @param password        密码
-     * @return Result<String> 包含创建InfluxDB数据源请求结果的Result对象
+     * @return Result<String> 包含创建InfluxDB数据源请求结果的 Result 对象
      */
     public Result<String> createInfluxDBDataSourcesRequest(String orgId, String influxDBBaseUri, String loginName, String password) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -260,7 +260,7 @@ public class GrafanaHandler {
      * @param dashboard 仪表盘的JSON字符串
      * @param loginName 登录名
      * @param password  密码
-     * @return Result<String> 包含更新仪表盘请求结果的Result对象
+     * @return Result<String> 包含更新仪表盘请求结果的 Result 对象
      */
     public Result<String> updateDashboardRequest(String dashboard, String loginName, String password) {
         return this.post("/api/dashboards/db", dashboard, loginName, password);
@@ -280,7 +280,7 @@ public class GrafanaHandler {
      * @param userId    用户ID
      * @param loginName 用户登录名或邮箱
      * @param role      用户在组织中的角色
-     * @return Result<String> 包含更新用户信息请求结果的Result对象
+     * @return Result<String> 包含更新用户信息请求结果的 Result 对象
      */
     public Result<String> updateUserInOrgRequest(String orgId, String userId, String loginName, String role) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -306,7 +306,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param orgId 组织ID
-     * @return Result<String> 包含获取用户信息请求结果的Result对象
+     * @return Result<String> 包含获取用户信息请求结果的 Result 对象
      */
     public Result<String> getUserInOrg(String orgId) {
         return this.get(String.format("/api/orgs/%s/users", orgId));
@@ -323,7 +323,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param orgName 组织名称
-     * @return Result<String> 包含获取组织信息请求结果的Result对象
+     * @return Result<String> 包含获取组织信息请求结果的 Result 对象
      */
     public Result<String> getOrgByName(String orgName) {
         return this.get(String.format("/api/orgs/name/%s", orgName));
@@ -341,7 +341,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param loginName 用户登录名或邮箱
-     * @return Result<String> 包含获取用户信息请求结果的Result对象
+     * @return Result<String> 包含获取用户信息请求结果的 Result 对象
      */
     public Result<String> getUserByName(String loginName) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -364,7 +364,7 @@ public class GrafanaHandler {
      * Modification time:
      * Throws:
      *
-     * @return Result<String> 包含获取所有用户信息请求结果的Result对象
+     * @return Result<String> 包含获取所有用户信息请求结果的 Result 对象
      */
     public Result<String> searchAllUsers() {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -388,7 +388,7 @@ public class GrafanaHandler {
      * Modification time:
      * Throws:
      *
-     * @return Result<String> 包含获取所有组织信息请求结果的Result对象
+     * @return Result<String> 包含获取所有组织信息请求结果的 Result 对象
      */
     public Result<String> searchAllOrgs() {
         return this.get("/api/orgs");
@@ -406,7 +406,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param userId 用户ID
-     * @return Result<String> 包含删除用户请求结果的Result对象
+     * @return Result<String> 包含删除用户请求结果的 Result 对象
      */
     public Result<String> deleteUser(String userId) {
         return this.delete(String.format("/api/admin/users/%s", userId));
@@ -423,7 +423,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param orgId 组织ID
-     * @return Result<String> 包含删除组织请求结果的Result对象
+     * @return Result<String> 包含删除组织请求结果的 Result 对象
      */
     public Result<String> deleteOrg(String orgId) {
         return this.delete(String.format("/api/orgs/%s", orgId));
@@ -442,7 +442,7 @@ public class GrafanaHandler {
      * @param loginName   用户登录名
      * @param oldPassword 旧密码
      * @param newPassword 新密码
-     * @return Result<String> 包含修改密码请求结果的Result对象
+     * @return Result<String> 包含修改密码请求结果的 Result 对象
      */
     public Result<String> changePassword(String loginName, String oldPassword, String newPassword) {
         Map<String, Object> map = new HashMap<String, Object>() {
@@ -474,7 +474,7 @@ public class GrafanaHandler {
      *
      * @param relativePath 相对路径
      * @param bodyMap      请求体参数
-     * @return Result<String> 包含POST请求结果的Result对象
+     * @return Result<String> 包含POST请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> post(String relativePath, Map<String, Object> bodyMap) {
@@ -493,7 +493,7 @@ public class GrafanaHandler {
      *
      * @param relativePath 相对路径
      * @param body         请求体内容
-     * @return Result<String> 包含POST请求结果的Result对象
+     * @return Result<String> 包含POST请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> post(String relativePath, String body) {
@@ -514,7 +514,7 @@ public class GrafanaHandler {
      * @param bodyMap      请求体参数的Map
      * @param loginName    用户登录名
      * @param password     用户密码
-     * @return Result<String> 包含POST请求结果的Result对象
+     * @return Result<String> 包含POST请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> post(String relativePath, Map<String, Object> bodyMap, String loginName, String password) {
@@ -559,7 +559,7 @@ public class GrafanaHandler {
      * @param body         请求体内容
      * @param loginName    用户登录名
      * @param password     用户密码
-     * @return Result<String> 包含POST请求结果的Result对象
+     * @return Result<String> 包含POST请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> post(String relativePath, String body, String loginName, String password) {
@@ -599,7 +599,7 @@ public class GrafanaHandler {
      *
      * @param relativePath 相对路径
      * @param paramsMap    请求参数的Map
-     * @return Result<String> 包含GET请求结果的Result对象
+     * @return Result<String> 包含GET请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> get(String relativePath, Map<String, Object> paramsMap) {
@@ -655,7 +655,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param relativePath 相对路径
-     * @return Result<String> 包含GET请求结果的Result对象
+     * @return Result<String> 包含GET请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> get(String relativePath) {
@@ -698,7 +698,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param relativePath 相对路径
-     * @return Result<String> 包含DELETE请求结果的Result对象
+     * @return Result<String> 包含DELETE请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> delete(String relativePath) {
@@ -742,7 +742,7 @@ public class GrafanaHandler {
      *
      * @param relativePath 相对路径
      * @param bodyMap      请求体参数的Map
-     * @return Result<String> 包含PATCH请求结果的Result对象
+     * @return Result<String> 包含PATCH请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> patch(String relativePath, Map<String, Object> bodyMap) {
@@ -788,7 +788,7 @@ public class GrafanaHandler {
      *
      * @param relativePath 相对路径
      * @param bodyMap      请求体参数的Map
-     * @return Result<String> 包含PUT请求结果的Result对象
+     * @return Result<String> 包含PUT请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> put(String relativePath, Map<String, Object> bodyMap) {
@@ -814,7 +814,7 @@ public class GrafanaHandler {
      * @param bodyMap      请求体参数的Map
      * @param loginName    用户登录名
      * @param password     用户密码
-     * @return Result<String> 包含PUT请求结果的Result对象
+     * @return Result<String> 包含PUT请求结果的 Result 对象
      */
     @SneakyThrows
     private Result<String> put(String relativePath, Map<String, Object> bodyMap, String loginName, String password) {
@@ -941,7 +941,7 @@ public class GrafanaHandler {
      * Throws:
      *
      * @param orgId 组织ID
-     * @return Result<String> 包含切换组织结果的Result对象
+     * @return Result<String> 包含切换组织结果的 Result 对象
      */
     public Result<String> switchOrg(String orgId) {
         Map<String, Object> map = new HashMap<String, Object>() {
