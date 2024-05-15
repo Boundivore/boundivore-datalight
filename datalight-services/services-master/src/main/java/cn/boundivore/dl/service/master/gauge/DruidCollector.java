@@ -24,14 +24,13 @@ import java.util.List;
 import java.util.function.ToDoubleFunction;
 
 /**
- * Description: Druid 连接池监控指标采集器
+ * Description: DruidCollector 负责收集并将 DruidDataSource 实例的指标注册到 MeterRegistry 中。
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/8/15
+ * Creation time: 2024/5/15
  * Modification description:
  * Modified by:
  * Modification time:
- * Version: V1.0
  */
 public class DruidCollector {
 
@@ -41,11 +40,34 @@ public class DruidCollector {
 
     private final MeterRegistry registry;
 
+    /**
+     * Description: 构造一个 DruidCollector，包含 DruidDataSource 实例列表和 MeterRegistry。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param dataSources DruidDataSource 实例列表
+     * @param registry    注册指标的 MeterRegistry
+     */
     DruidCollector(List<DruidDataSource> dataSources, MeterRegistry registry) {
         this.registry = registry;
         this.dataSources = dataSources;
     }
 
+    /**
+     * Description: 将每个 DruidDataSource 实例的指标注册到 MeterRegistry 中。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     */
     void register() {
         this.dataSources.forEach((druidDataSource) -> {
             // basic configurations
@@ -99,6 +121,21 @@ public class DruidCollector {
         });
     }
 
+    /**
+     * Description: 为指定的 DruidDataSource 创建一个 Gauge 指标。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param weakRef DruidDataSource 实例
+     * @param metric  指标名称
+     * @param help    指标描述
+     * @param measure 从 DruidDataSource 提取指标值的函数
+     */
     private void createGauge(DruidDataSource weakRef, String metric, String help, ToDoubleFunction<DruidDataSource> measure) {
         Gauge.builder(metric, weakRef, measure)
                 .description(help)

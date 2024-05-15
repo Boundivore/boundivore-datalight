@@ -89,7 +89,7 @@ subprojects {
         redissonVersion = "3.17.7"
         aliyunOssVersion = "3.15.0"
 
-        druidVersion = "1.2.13"
+        druidVersion = "1.2.22"
         mybatisPlusVersion = '3.5.2'
         mybatisPlusJoinVersion = '1.1.4'
         mybatisSpringVersion = '2.2.2'

@@ -30,14 +30,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Description: Druid 连接池指标采集配置器
+ * Description: DruidMetricsConfiguration 用于配置 Druid 数据源的指标收集。
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/8/15
+ * Creation time: 2024/5/15
  * Modification description:
  * Modified by:
  * Modification time:
- * Version: V1.0
  */
 @Configuration
 @ConditionalOnClass({DruidDataSource.class, MeterRegistry.class})
@@ -46,10 +45,35 @@ public class DruidMetricsConfiguration {
 
     private final MeterRegistry registry;
 
+
+    /**
+     * Description: 构造一个 DruidMetricsConfiguration，包含 MeterRegistry。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param registry 注册指标的 MeterRegistry
+     */
     public DruidMetricsConfiguration(MeterRegistry registry) {
         this.registry = registry;
     }
 
+    /**
+     * Description: 将指标注册表绑定到 Druid 数据源。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/15
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: SQLException
+     *
+     * @param dataSources 数据源集合
+     */
     @Autowired
     public void bindMetricsRegistryToDruidDataSources(Collection<DataSource> dataSources) throws SQLException {
         List<DruidDataSource> druidDataSources = new ArrayList<>(dataSources.size());
