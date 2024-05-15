@@ -1,0 +1,12 @@
+# 强制所有文本文件使用 LF 换行符
+* text=auto eol=lf
+
+# 强制指定文件类型使用 UTF-8 编码
+*.c  text eol=lf working-tree-encoding=UTF-8
+*.h  text eol=lf working-tree-encoding=UTF-8
+*.cpp text eol=lf working-tree-encoding=UTF-8
+*.py text eol=lf working-tree-encoding=UTF-8
+*.java text eol=lf working-tree-encoding=UTF-8
+*.js text eol=lf working-tree-encoding=UTF-8
+*.html text eol=lf working-tree-encoding=UTF-8
+*.css text eol=lf working-tree-encoding=UTF-8
