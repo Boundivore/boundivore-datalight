@@ -376,13 +376,16 @@ https://gitee.com/boundivore/boundivore-datalight-web
 完成上述初始化操作后，各个节点已经准备好了工作所需的内容，此时可以通过如下方式启动 Master 进程，在主节点中执行：
 
 ~~~shell
-/opt/datalight/bin/datalight.sh master start 8001
+/opt/datalight/bin/datalight.sh start master 8001
 ~~~
 
 启动成功后，将看到如下日志内容：
 
 ~~~shell
-
+No masterIp provided or masterIp is empty. Skipping IP validation.
+master starting in 10263...
+master started.
+/opt/datalight/bin/datalight.sh done.
 ~~~
 
 ### 6.7  登录
