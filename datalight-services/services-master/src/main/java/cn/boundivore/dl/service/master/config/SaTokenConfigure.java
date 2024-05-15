@@ -88,7 +88,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                                     }
                             );
                         })
-                ).addPathPatterns(MASTER_URL_PREFIX + "/**");
+                ).addPathPatterns("/**");
     }
 
 //    @Bean
