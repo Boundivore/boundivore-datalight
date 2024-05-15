@@ -104,7 +104,7 @@ spring:
       #合并多个DruidDataSource的监控数据
       useGlobalDataSourceStat: true
       # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
-      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1500
       # 自己配置监控统计拦截的filter
       filter:
         # 开启 druid datasource 的状态监控
