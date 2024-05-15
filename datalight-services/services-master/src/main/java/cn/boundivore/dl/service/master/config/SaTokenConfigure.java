@@ -88,9 +88,7 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                                     }
                             );
                         })
-                ).addPathPatterns("/**")
-                // 放行 Druid 的所有 URL;
-                .excludePathPatterns("/druid/**");
+                ).addPathPatterns(MASTER_URL_PREFIX + "/**");
     }
 
 //    @Bean
