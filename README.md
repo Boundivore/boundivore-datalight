@@ -75,11 +75,18 @@ http://datalight.boundivore.cn
 | 14 | 用户管理               | 是       |
 | 15 | 权限管理               | 是       |
 
-## 五、部署说明
+## 五、编译环境
+
+本项目编译需要满足如下需要：
+
+* JDK 8
+* Gradle 6.9+
+
+## 六、部署说明
 
 部署本项目前，请确保你已经准备好了必要的物理资源、操作系统并且理解了本项目的部署流程。
 
-### 5.1 准备物理资源
+### 6.1 准备物理资源
 
 确保您有足够的硬件资源来部署和运行本项目。推荐的最小配置包括：
 
@@ -88,13 +95,13 @@ http://datalight.boundivore.cn
 - 硬盘：100 GB +
 - 网络：1 Gbps +
 
-### 5.2 准备操作系统
+### 6.2 准备操作系统
 
 本项目目前仅支持（其他系统未测试）：
 
 - CentOS 7.x (推荐：CentOS-7-x86_64-DVD-2009.iso)
 
-### 5.3 准备部署资源
+### 6.3 准备部署资源
 
 clone 本项目，并下载所以来的服务组件包和依赖库库，包括：
 
@@ -155,11 +162,11 @@ clone 本项目，并下载所以来的服务组件包和依赖库库，包括�
   | /opt/datalight/scripts                            | 公共脚本目录                              | 是       |
   | /opt/datalight/scripts/tools                      | 通用工具脚本目录                          | 是       |
 
-#### 5.3.1  创建对应目录
+#### 6.3.1  创建对应目录
 
 在开始前，首先确认已在主节点中存在上述对应目录。
 
-#### 5.3.2  准备前端页面
+#### 6.3.2  准备前端页面
 
 前往 DataLight 前端开源项目，按照对应文档执行编译操作，编译后，将编译文件解压后，拷贝至当前源码项目 datalight-services/services-master/public 目录中。
 
@@ -169,19 +176,19 @@ DataLight 前端开源项目：
 https://gitee.com/boundivore/boundivore-datalight-web
 ~~~
 
-#### 5.3.3 准备 Master/Worker
+#### 6.3.3 准备 Master/Worker
 
 将项目克隆后，使用代码编辑器打开后，执行 datalight-services 模块的编译操作（执行 boot-jar， 或从网盘中下载编译好的 jar 包)，在 services-master 与 services-worker 项目的 build/libs 目录下，可以分别看到 services-master-[版本号].jar、services-worker-[版本号].jar 两个进程文件，拷贝至 app/ 目录下即可。
 
-#### 5.3.4 准备服务组件插件 Plugins
+#### 6.3.4 准备服务组件插件 Plugins
 
 将项目克隆后，使用代码编辑器打开后，执行 datalight-plugins 模块的编译操作，将该模块下对应服务的插件 jar 包拷贝至指定目录(plugins/[服务名称]/jar)中，例如：/opt/datalight/plugins/[大写服务名称]/jars。
 
-#### 5.3.5 拷贝其他文件目录
+#### 6.3.5 拷贝其他文件目录
 
 在主项目目录中，找到 .documents 文件夹，其下对应内容，拷贝至上述表格中对应的目录中即可。
 
-#### 5.3.6 准备 DLC 服务包
+#### 6.3.6 准备 DLC 服务包
 
 前往如下地址下载 DLC 服务包：
 
@@ -192,11 +199,11 @@ https://gitee.com/boundivore/boundivore-datalight-web
 
 下载后，解压，将对应服务的 .tar.gz 包放置于对应的 /opt/datalight/plugins/[大写服务名称]/dlc 的目录中即可。
 
-### 5.4 初始化环境
+### 6.4 初始化环境
 
 在启动 Master 主程序之前，需要确认各个准备服役的节点已经完成相关初始化操作，DataLight 平台封装了相关工具，可帮助用户快速一次性初始化所有节点，用户也可手动进行初始化操作。
 
-#### 5.4.1 自动初始化
+#### 6.4.1 自动初始化
 
 自动初始化工具位于部署目录下的 assistant 目录，其中涉及到修改的内容如下。
 
@@ -254,7 +261,7 @@ https://gitee.com/boundivore/boundivore-datalight-web
   init-chrony-client-config.sh
   ~~~
 
-#### 5.4.2 手动初始化
+#### 6.4.2 手动初始化
 
 手动初始化涉及如下内容：
 
@@ -347,7 +354,7 @@ https://gitee.com/boundivore/boundivore-datalight-web
 
   * 安装 MySQL 5.7（如需 MySQL 8+ 以上支持，可自行适配平台以及服务组件源码）
 
-### 5.5 初始化 DataLight 数据库
+### 6.5 初始化 DataLight 数据库
 
 上述环境初始化完毕后，需按照如下步骤初始化平台数据库；
 
@@ -364,7 +371,7 @@ https://gitee.com/boundivore/boundivore-datalight-web
   SOURCE /opt/datalight/orm/sql/db_datalight.sql;
   ~~~
 
-### 5.6 启动 Master 主程序
+### 6.6 启动 Master 主程序
 
 完成上述初始化操作后，各个节点已经准备好了工作所需的内容，此时可以通过如下方式启动 Master 进程，在主节点中执行：
 
@@ -378,7 +385,7 @@ https://gitee.com/boundivore/boundivore-datalight-web
 
 ~~~
 
-### 5.7  登录
+### 6.7  登录
 
 启动 Master 主进程成功后，可访问如下页面进行登录：
 
@@ -388,19 +395,19 @@ http://<Master-IP>:8001
 
 注：首次默认账号密码为：admin/admin
 
-### 5.8 新建集群
+### 6.8 新建集群
 
-### 5.9 添加节点
+### 6.9 添加节点
 
-### 5.10 添加服务
+### 6.10 添加服务
 
-### 5.11 添加组件
+### 6.11 添加组件
 
-### 5.12 设置预配置文件
+### 6.12 设置预配置文件
 
-### 5.13 执行部署
+### 6.13 执行部署
 
-### 5.14 完成部署
+### 6.14 完成部署
 
 至此，部署已全部完成，详细功能介绍，请参考产品操作手册：
 
@@ -408,7 +415,7 @@ http://<Master-IP>:8001
 
 ~~~
 
-## 六、计划支持的服务
+## 七、计划支持的服务
 
 | 服务           | 版本     | 是否已支持 | 完成日期       |
 | -------------- |--------|------------|------------|
@@ -437,7 +444,7 @@ http://<Master-IP>:8001
 | KUDU           | 待定 |            |            |
 | IMPALA         | 待定 |            |            |
 
-## 七、资源下载汇总
+## 八、资源下载汇总
 
 ### 8.1 DataLight 平台部署包下载
 
