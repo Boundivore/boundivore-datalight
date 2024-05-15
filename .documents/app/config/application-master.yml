@@ -135,7 +135,7 @@ spring:
         url-pattern: /druid/*           # 访问内置监控页面的路径，内置监控页面的首页是/druid/index.html
         reset-enable: false              # 不允许清空统计数据,重新计算
         login-username: admin            # 配置监控页面访问密码
-        login-password: 123456
+        login-password: admin
         # 允许访问的地址，如果allow没有配置或者为空，则允许所有访问
         allow:
         deny:
