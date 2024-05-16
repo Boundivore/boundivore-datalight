@@ -4,33 +4,12 @@
 
 DataLight 是一个开源的大数据运维管理平台，用于简化和自动化大数据服务的部署、管理和监控。它提供了一套全面的工具来管理您的大数据生态系统，旨在帮助企业实现简洁、快速地构建 OLAP 与 OLTP 统一的业务平台。用户可以通过 plugin 插件，以插拔式的方式快速集成自己的业务服务或其他大数据组件，从而在平台中进行统一管理。
 
-后端开源项目仓库：
+资源汇总如下：
 
-~~~http
-https://gitee.com/boundivore/boundivore-datalight
-~~~
-
-前端开源项目仓库：
-
-~~~http
-https://gitee.com/boundivore/boundivore-datalight-web
-~~~
-
-开源资源包下载地址：
-
-~~~http
-链接：https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ 
-提取码：data
-~~~
-
-开源产品详情可访问：
-
-~~~http
-http://datalight.boundivore.cn
-~~~
-
-相关手册：
-
+* [项目官网](http://datalight.boundivore.cn) 
+* [后端仓库](https://gitee.com/boundivore/boundivore-datalight) 
+* [前端仓库](https://gitee.com/boundivore/boundivore-datalight-web) 
+* [资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
 * [产品手册](./.documents/docs/产品手册.md)
 * [开发手册](./.documents/docs/开发手册.md)
 
@@ -439,15 +418,7 @@ http://<Master-IP>:8001
 | KYLIN          | 待定 |            |            |
 | KUDU           | 待定 |            |            |
 | IMPALA         | 待定 |            |            |
-
-## 九、资源下载汇总
-
-### 8.1 DataLight 平台部署包下载
-
-~~~http
-链接：https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ 
-提取码：data 
-~~~
+| More.... |  | | |
 
 ## 参与开源
 
@@ -466,4 +437,47 @@ QQ 交流群：
 ## 开源协议
 
 本项目采用 Apache 2.0 开源协议。有关详细内容，请查看 [Apache 2.0 LICENSE](http://www.apache.org/licenses/)。
+
+## 鸣谢
+
+### 用户
+
+感谢所有贡献者和提交者
+
+#### 贡献者（Contributors）
+
+特别感谢以下人员对本项目的贡献：
+
+- [@boundivore](https://gitee.com/boundivore)
+- [@Tracy-88](https://gitee.com/Tracy-88)
+
+#### 提交者（Committers）
+
+特别感谢以下人员为本项目提交代码：
+
+- [@boundivore](https://gitee.com/boundivore)
+- [@Tracy-88](https://gitee.com/Tracy-88)
+
+我们非常感谢他们的支持和贡献！
+
+### 项目
+
+在此特别感谢所有在本项目研发过程中使用到的开源项目或代码库。
+
+没有这些项目的支持，本项目无法顺利进行。
+
+其中特别鸣谢以下开源项目： 
+- **[Spring](https://spring.io/)**：一个轻量级的应用框架和控制反转容器。
+- **[Hutool](https://hutool.cn/)**：一个小而全的 Java 工具类库。
+- **[Sa-Token](https://sa-token.dev33.cn/)**：一个轻量级的 Java 权限认证框架。
+- **[SshJ](https://github.com/hierynomus/sshj)**：一个用于 Java 的 SSH 库。
+
+## 推荐
+
+在此，我们推荐一些其他优秀的开源项目，希望对你有帮助：
+
+- **[Hutool](https://hutool.cn/)**：Hutool 是一个小而全的 Java 工具类库，通过简化代码和提供丰富的工具类，帮助开发者提高开发效率。它的功能涵盖了字符串操作、日期处理、文件操作、HTTP 请求等多个方面，是 Java 开发者的得力助手。
+- **[Sa-Token](https://sa-token.dev33.cn/)**：Sa-Token 是一个轻量级的 Java 权限认证框架，提供了简单易用的登录认证、权限验证、Session 会话管理等功能。它支持多种登录方式和权限控制策略，适用于各种 Java Web 应用。
+
+希望这些推荐的项目能够帮助你在开发过程中提高效率，解决常见问题。
 
