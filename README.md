@@ -80,7 +80,7 @@ http://datalight.boundivore.cn
 本项目编译需要满足如下需要：
 
 * JDK 8
-* Gradle 6.9+
+* Gradle 7.4+
 
 ## 六、部署说明
 
