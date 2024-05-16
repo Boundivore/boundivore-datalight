@@ -430,7 +430,7 @@ http://<Master-IP>:8001
 
 QQ 交流群：
 
-<img src=".documents/docs/assets/dataLight-QQ-交流群.png" alt="DataLight QQ 交流群" style="zoom:25%;" />
+<img src=".documents/docs/assets/dataLight-QQ-交流群-only-code-small.png" alt="DataLight QQ 交流群" style="zoom:50%;" />
 
 
 
