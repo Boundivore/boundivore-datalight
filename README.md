@@ -29,6 +29,11 @@ https://gitee.com/boundivore/boundivore-datalight-web
 http://datalight.boundivore.cn
 ~~~
 
+相关手册：
+
+* [产品手册](./.documents/docs/产品手册.md)
+* [开发手册](./.documents/docs/开发手册.md)
+
 ## 二、软件架构
 
 这个软件架构通过Master-Worker主从模式实现了高可用、可扩展的分布式计算与大数据处理平台。
