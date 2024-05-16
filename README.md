@@ -425,9 +425,11 @@ http://<Master-IP>:8001
 如果您对本项目感兴趣，欢迎提供积极的反馈，帮助该项目做的更好。
 
 微信公众号：
+
 <img src=".documents/docs/assets/boundivore-公众号12.jpg" style="zoom:40%;" />
 
 QQ 交流群：
+
 <img src=".documents/docs/assets/dataLight-QQ-交流群-only-code-small.png"  style="zoom:50%;" />
 
 
