@@ -426,7 +426,7 @@ http://<Master-IP>:8001
 
 微信公众号：
 
-<img src=".documents/docs/assets/boundivore-公众号12.jpg" alt="boundivore-公众号12" style="zoom:50%;" />
+<img src=".documents/docs/assets/boundivore-公众号12.jpg" alt="boundivore-公众号12" style="zoom:40%;" />
 
 QQ 交流群：
 
