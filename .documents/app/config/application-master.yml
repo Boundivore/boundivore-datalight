@@ -206,3 +206,9 @@ sa-token:
   token-style: simple-uuid
   # 是否输出操作日志
   is-log: true
+
+aigc:
+  qianfan:
+    access-key: "ALTAKzKkKakn52TXvd6ck7Fv3m"
+    secret-key: "a68e2f185bf043d388e95cbfd81cebb3"
+    model: "ERNIE-Speed-128K"

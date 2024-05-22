@@ -160,7 +160,7 @@ public class CoreJavaTest {
                 .addMessage("user", "你好") // 添加用户消息 (此方法可以调用多次，以实现多轮对话的消息传递)
                 .temperature(0.7) // 自定义超参数
                 .execute(); // 发起请求
-        System.out.println(response.getResult());
+        System.out.println(response);
 
     }
 }

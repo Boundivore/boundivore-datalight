@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.boundivore.dl.aigc.qianfan.AIGCQianfanAutoConfiguration

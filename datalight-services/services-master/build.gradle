@@ -20,6 +20,7 @@ dependencies {
     implementation project(":datalight-common:common-exception")
 
     implementation project(":datalight-starter-parent:starter-ssh")
+    implementation project(":datalight-starter-parent:starter-aigc-qianfan")
 
 //    implementation project(":datalight-ssh")
 
