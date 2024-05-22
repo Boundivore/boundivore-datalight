@@ -136,6 +136,8 @@ subprojects {
 
         apmToolkitVersion = "8.12.0"
         sentinelVersion = "1.8.5"
+
+        qianfanVersion = "0.0.5"
     }
 
     repositories {
@@ -278,6 +280,9 @@ subprojects {
             dependency group: 'org.apache.zookeeper', name: 'zookeeper', version: zookeeperVersion
             dependency group: 'org.apache.curator', name: 'curator-recipes', version: zookeeperCuratorVersion
             dependency group: 'org.apache.curator', name: 'curator-framework', version: zookeeperCuratorVersion
+
+            dependency group: 'com.baidubce', name: 'qianfan', version: qianfanVersion
+
 
             dependency group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
             dependency group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstructVersion

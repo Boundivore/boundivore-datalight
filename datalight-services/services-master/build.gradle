@@ -90,6 +90,8 @@ dependencies {
     implementation group: 'org.ini4j', name: 'ini4j'
     implementation group: 'org.freemarker', name: 'freemarker'
 
+    implementation group: 'com.baidubce', name: 'qianfan'
+
     implementation group: 'io.micrometer', name: 'micrometer-registry-prometheus'
     implementation group: 'io.micrometer', name: 'micrometer-registry-jmx'
 
