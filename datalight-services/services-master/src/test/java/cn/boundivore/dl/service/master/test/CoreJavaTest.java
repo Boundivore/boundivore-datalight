@@ -149,7 +149,10 @@ public class CoreJavaTest {
         String accessKey = "ALTAKzKkKakn52TXvd6ck7Fv3m";
         String secretKey = "a68e2f185bf043d388e95cbfd81cebb3";
 
-        Qianfan qianfan = new Qianfan(accessKey, secretKey);
+        Qianfan qianfan = new Qianfan(
+                accessKey,
+                secretKey
+        );
 
         ChatResponse response = qianfan.chatCompletion()
                 .model("ERNIE-Speed-128K") // 使用model指定预置模型
