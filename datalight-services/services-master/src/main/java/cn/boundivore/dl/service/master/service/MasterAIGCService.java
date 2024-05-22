@@ -17,8 +17,10 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.aigc.qianfan.service.QianfanService;
+import cn.boundivore.dl.base.enumeration.impl.AIGCTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractAIGCRequest;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.hutool.core.lang.Assert;
@@ -59,10 +61,42 @@ public class MasterAIGCService {
      * @param request AIGC 请求体
      * @return Result<String> AIGC 返回内容
      */
+    @LocalLock
     public Result<String> sendMessage(AbstractAIGCRequest.SendMessageRequest request) {
+
+        // 检查模型配置
+        this.checkModel(request.getAigcType());
 
         String result = "";
         switch (request.getAigcType()) {
+            case QIANFAN:
+                result = this.qianfanService.sendMessage(request.getMessage());
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        String.format(
+                                "未知的模型类型: %s",
+                                request.getAigcType()
+                        )
+                );
+        }
+        return Result.success(result);
+    }
+
+    /**
+     * Description: 检查模型配置
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/5/22
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param aigcType 模型类型
+     */
+    private void checkModel(AIGCTypeEnum aigcType) {
+        switch (aigcType) {
             case QIANFAN:
                 Assert.notBlank(
                         dataLightEnv.getQianfanAccessKey(),
@@ -79,17 +113,15 @@ public class MasterAIGCService {
                         () -> new BException("千帆 Model 尚未配置")
                 );
 
-                result = this.qianfanService.sendMessage(request.getMessage());
                 break;
             default:
                 throw new IllegalArgumentException(
                         String.format(
                                 "未知的模型类型: %s",
-                                request.getAigcType()
+                                aigcType
                         )
                 );
         }
-        return Result.success(result);
     }
 
 
