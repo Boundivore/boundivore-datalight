@@ -204,9 +204,10 @@ public class MasterManageService {
                 )
                 .stream()
                 .collect(Collectors.toMap(
-                        TDlNode::getIpv4,
-                        i -> i
-                ));
+                                TDlNode::getIpv4,
+                                i -> i
+                        )
+                );
 
         // 整合上述两个集合，准备 SSH 启动 Worker
         final List<TDlNode> allInvalidWorkerTDlNodeList = this.assembleInvalidWorkerTDlNodeList(startedWorkerTDlNodeMap);
