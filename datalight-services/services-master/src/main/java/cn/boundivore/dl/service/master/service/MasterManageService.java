@@ -196,7 +196,7 @@ public class MasterManageService {
      * Throws:
      */
     private void checkAndPullWorker() {
-        // <ip, WorkerMeta> 获取全部状态为 STARTED 的节点
+        // <ip, TDlNode> 获取全部状态为 STARTED 的节点
         final Map<String, TDlNode> startedWorkerTDlNodeMap = this.masterNodeService.getNodeListByState(
                         CollUtil.newArrayList(
                                 NodeStateEnum.STARTED
