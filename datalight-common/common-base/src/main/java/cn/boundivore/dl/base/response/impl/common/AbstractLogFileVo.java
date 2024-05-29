@@ -114,6 +114,10 @@ public abstract class AbstractLogFileVo {
         @Schema(name = "Content", title = "文件内容", required = true)
         @JsonProperty(value = "Content", required = true)
         private String content;
+
+        @Schema(name = "MaxOffset", title = "日志当前本次最大偏移量", required = true)
+        @JsonProperty(value = "MaxOffset", required = true)
+        private Long maxOffset;
     }
 
 

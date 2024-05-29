@@ -56,8 +56,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Http Request method error:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_REQUEST_METHOD,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_REQUEST_METHOD
         );
     }
 
@@ -68,8 +67,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Request parameter missing:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_REQUEST_PARAM_MISSING,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_REQUEST_PARAM_MISSING
         );
     }
 
@@ -80,8 +78,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("The parameter type of the request is wrong:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_REQUEST_PARAM_MISSING,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_REQUEST_PARAM_MISSING
         );
     }
 
@@ -92,8 +89,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Data formatting error:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_DATA_FORMAT,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_DATA_FORMAT
         );
     }
 
@@ -104,8 +100,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Illegal input error:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_ILLEGAL_ARGUMENT,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_ILLEGAL_ARGUMENT
         );
     }
 
@@ -116,8 +111,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("BusinessException:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_BUSINESS_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_BUSINESS_EXCEPTION
         );
     }
 
@@ -128,8 +122,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("BashException:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_EXECUTOR_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_EXECUTOR_EXCEPTION
         );
     }
 
@@ -139,7 +132,9 @@ public class GlobalExceptionHandler {
     public Result<?> authExceptionHandler(Exception e) {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("User Auth exception:[{}]", error);
-        return Result.fail(ResultEnum.FAIL_AUTH_EXCEPTION);
+        return Result.fail(
+                ResultEnum.FAIL_AUTH_EXCEPTION
+        );
     }
 
     @ExceptionHandler({PermissionInterfaceDeniedException.class})
@@ -148,7 +143,9 @@ public class GlobalExceptionHandler {
     public Result<?> permissionInterfaceExceptionHandler(Exception e) {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Interface permission exception:[{}]", error);
-        return Result.fail(ResultEnum.FAIL_INTERFACE_UNAUTHORIZED);
+        return Result.fail(
+                ResultEnum.FAIL_INTERFACE_UNAUTHORIZED
+        );
     }
 
 
@@ -158,8 +155,8 @@ public class GlobalExceptionHandler {
     public Result<?> loginFailExceptionHandler(LoginFailException e) {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("User login fail exception:[{}]", error);
-        return Result.fail(ResultEnum.FAIL_USER_PWD_NOT_MATCH_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+        return Result.fail(
+                ResultEnum.FAIL_USER_PWD_NOT_MATCH_EXCEPTION
         );
     }
 
@@ -171,8 +168,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("DatabaseException:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_DATABASE_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_DATABASE_EXCEPTION
         );
     }
 
@@ -183,8 +179,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_404,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_404
         );
     }
 
@@ -212,8 +207,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_LOCK_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_LOCK_EXCEPTION
         );
     }
 
@@ -224,8 +218,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_REMOTE_INVOKE_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_REMOTE_INVOKE_EXCEPTION
         );
     }
 
@@ -236,8 +229,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_FILE_UPLOAD_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_FILE_UPLOAD_EXCEPTION
         );
     }
 
@@ -248,8 +240,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_FILE_DOWNLOAD_EXCEPTION,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_FILE_DOWNLOAD_EXCEPTION
         );
     }
 
@@ -301,8 +292,7 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_UNKNOWN,
-                new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
+                ResultEnum.FAIL_UNKNOWN
         );
     }
 

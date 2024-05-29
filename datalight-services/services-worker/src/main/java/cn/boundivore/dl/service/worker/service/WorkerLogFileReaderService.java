@@ -123,7 +123,9 @@ public class WorkerLogFileReaderService {
      * @param endOffset   读取文件内容结束点
      * @return Result<AbstractLogFileVo.LogFileContentVo> 文件内容响应体
      */
-    public Result<AbstractLogFileVo.LogFileContentVo> loadFileContent(String filePath, Long startOffset, Long endOffset) {
+    public Result<AbstractLogFileVo.LogFileContentVo> loadFileContent(String filePath,
+                                                                      Long startOffset,
+                                                                      Long endOffset) {
         // 验证输入参数
         Assert.isFalse(
                 filePath == null
@@ -134,16 +136,37 @@ public class WorkerLogFileReaderService {
                 () -> new IllegalArgumentException("非法的参数")
         );
 
+        long maxOffset;
+        try (FileInputStream fis = new FileInputStream(filePath);
+             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+             BufferedReader br = new BufferedReader(isr)) {
+
+            // 尝试跳过一个极大的数字来获取文件的总字符数
+            maxOffset = br.skip(Long.MAX_VALUE);
+
+        } catch (IOException e) {
+            String error = ExceptionUtil.stacktraceToString(e);
+            log.error(error);
+            throw new BException(error);
+        }
+
         try (FileInputStream fis = new FileInputStream(filePath);
              InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
              BufferedReader br = new BufferedReader(isr)) {
 
             // 尝试跳过 startOffset 之前的字符
             long actuallySkipped = br.skip(startOffset);
-            Assert.isFalse(
-                    actuallySkipped != startOffset,
-                    () -> new BException("跳过指定字符失败")
-            );
+            if (actuallySkipped < startOffset) {
+                // 如果实际跳过的字符数小于 startOffset，说明文件不够长，返回空内容
+                AbstractLogFileVo.LogFileContentVo contentVo = AbstractLogFileVo.LogFileContentVo.builder()
+                        .filePath(filePath)
+                        .startOffset(startOffset)
+                        .endOffset(startOffset) // 没有读取内容，endOffset 等于 startOffset
+                        .content("")
+                        .maxOffset(maxOffset)
+                        .build();
+                return Result.success(contentVo);
+            }
 
             StringBuilder contentBuilder = new StringBuilder();
             long charactersToRead = endOffset - startOffset;
@@ -158,9 +181,9 @@ public class WorkerLogFileReaderService {
             AbstractLogFileVo.LogFileContentVo contentVo = AbstractLogFileVo.LogFileContentVo.builder()
                     .filePath(filePath)
                     .startOffset(startOffset)
-                    // 更新endOffset为实际读取的结束位置
                     .endOffset(startOffset + content.length())
                     .content(content)
+                    .maxOffset(maxOffset)
                     .build();
 
             return Result.success(contentVo);
