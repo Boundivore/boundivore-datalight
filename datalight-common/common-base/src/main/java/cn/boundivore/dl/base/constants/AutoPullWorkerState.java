@@ -16,8 +16,7 @@
  */
 package cn.boundivore.dl.base.constants;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.concurrent.ConcurrentHashMap;
 

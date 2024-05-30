@@ -32,7 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * Description: 进程自动拉起开关状态切换
@@ -77,9 +76,18 @@ public class MasterAutoPullService {
      * Throws:
      */
     private void initAutoPullWorkerFromDB() {
-        this.tDlAutoPullSwitchService.lambdaQuery()
-                .select();
+        this.tDlAutoPullSwitchService.list()
+                .forEach(i -> {
+                            AutoPullWorkerState.CacheBean cacheBean = new AutoPullWorkerState.CacheBean();
+                            cacheBean.setClusterId(i.getClusterId());
+                            cacheBean.updatePullWorker(
+                                    i.getOffOn(),
+                                    i.getCloseEndTime() - i.getCloseBeginTime()
+                            );
 
+                            AutoPullWorkerState.putAutoPullWorkerState(cacheBean);
+                        }
+                );
     }
 
     /**
@@ -171,14 +179,23 @@ public class MasterAutoPullService {
      * @return Result<AutoPullProcessVo> 返回自动拉起开关状态
      */
     public Result<AutoPullProcessVo> getAutoPullState(Long clusterId) {
-        AutoPullWorkerState.CacheBean autoPullWorkerState = AutoPullWorkerState.getAutoPullWorkerState(clusterId);
+        AutoPullWorkerState.CacheBean cacheBean = AutoPullWorkerState.getAutoPullWorkerState(clusterId);
+
+        if (cacheBean == null) {
+            cacheBean = new AutoPullWorkerState.CacheBean();
+            cacheBean.setClusterId(clusterId);
+            cacheBean.updatePullWorker(true, 0);
+
+            AutoPullWorkerState.putAutoPullWorkerState(cacheBean);
+
+        }
 
         return Result.success(
                 new AutoPullProcessVo(
                         clusterId,
-                        autoPullWorkerState.isAutoPullWorker(),
-                        autoPullWorkerState.getCloseAutoPullBeginTimeWorker(),
-                        autoPullWorkerState.getCloseAutoPullEndTimeWorker()
+                        cacheBean.isAutoPullWorker(),
+                        cacheBean.getCloseAutoPullBeginTimeWorker(),
+                        cacheBean.getCloseAutoPullEndTimeWorker()
                 )
         );
     }

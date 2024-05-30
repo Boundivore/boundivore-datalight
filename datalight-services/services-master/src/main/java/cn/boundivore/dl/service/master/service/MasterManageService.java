@@ -458,28 +458,26 @@ public class MasterManageService {
                                         () -> new BException("告警信息解析错误")
                                 );
 
-                                if (alertSummaryBean != null) {
-                                    TDlNode tDlNode = this.masterNodeService.getNodeListByHostname(alertSummaryBean.getHostname());
+                                TDlNode tDlNode = this.masterNodeService.getNodeListByHostname(alertSummaryBean.getHostname());
 
-                                    TDlComponent tDlComponent = this.masterComponentService.getTDlComponentByComponentNameInNode(
-                                            tDlNode.getId(),
+                                TDlComponent tDlComponent = this.masterComponentService.getTDlComponentByComponentNameInNode(
+                                        tDlNode.getId(),
+                                        alertSummaryBean.getServiceName(),
+                                        alertSummaryBean.getComponentName()
+                                );
+
+                                // 判断，如果当前组件意图状态为 STARTED，但监控状态为不活跃，则应自动拉起该组件
+                                if (tDlComponent.getComponentState() == SCStateEnum.STARTED) {
+                                    RestartInfo restartInfo = this.getRestartInfo(
                                             alertSummaryBean.getServiceName(),
                                             alertSummaryBean.getComponentName()
                                     );
 
-                                    // 判断，如果当前组件意图状态为 STARTED，但监控状态为不活跃，则应自动拉起该组件
-                                    if (tDlComponent.getComponentState() == SCStateEnum.STARTED) {
-                                        RestartInfo restartInfo = this.getRestartInfo(
-                                                alertSummaryBean.getServiceName(),
-                                                alertSummaryBean.getComponentName()
-                                        );
-
-                                        // 执行远程自动拉起操作
-                                        this.executeShell(
-                                                tDlNode.getIpv4(),
-                                                restartInfo
-                                        );
-                                    }
+                                    // 执行远程自动拉起操作
+                                    this.executeShell(
+                                            tDlNode.getIpv4(),
+                                            restartInfo
+                                    );
                                 }
 
                             } catch (Exception ignored) {
