@@ -132,7 +132,7 @@ public class WorkerLogFileReaderService {
                         || startOffset == null
                         || endOffset == null
                         || startOffset < 0
-                        || endOffset <= startOffset,
+                        || endOffset < startOffset,
                 () -> new IllegalArgumentException("非法的参数")
         );
 
