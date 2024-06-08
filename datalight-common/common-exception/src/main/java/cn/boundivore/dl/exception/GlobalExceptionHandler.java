@@ -67,7 +67,8 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Request parameter missing:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_REQUEST_PARAM_MISSING
+                ResultEnum.FAIL_REQUEST_PARAM_MISSING,
+                new ErrorMessage(e.getMessage())
         );
     }
 
@@ -78,7 +79,8 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("The parameter type of the request is wrong:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_REQUEST_PARAM_MISSING
+                ResultEnum.FAIL_REQUEST_TYPE_MISMATCH,
+                new ErrorMessage(e.getMessage())
         );
     }
 
@@ -89,7 +91,8 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Data formatting error:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_DATA_FORMAT
+                ResultEnum.FAIL_DATA_FORMAT,
+                new ErrorMessage(e.getMessage())
         );
     }
 
@@ -100,18 +103,8 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("Illegal input error:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_ILLEGAL_ARGUMENT
-        );
-    }
-
-    @ExceptionHandler(BException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.OK)
-    public Result<?> businessExceptionHandler(BException e) {
-        val error = ExceptionUtil.stacktraceToString(e);
-        log.error("BusinessException:[{}]", error);
-        return Result.fail(
-                ResultEnum.FAIL_BUSINESS_EXCEPTION
+                ResultEnum.FAIL_ILLEGAL_ARGUMENT,
+                new ErrorMessage(e.getMessage())
         );
     }
 
@@ -168,7 +161,8 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error("DatabaseException:[{}]", error);
         return Result.fail(
-                ResultEnum.FAIL_DATABASE_EXCEPTION
+                ResultEnum.FAIL_DATABASE_EXCEPTION,
+                new ErrorMessage(e.getMessage())
         );
     }
 
@@ -285,6 +279,18 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(BException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    public Result<?> businessExceptionHandler(BException e) {
+        val error = ExceptionUtil.stacktraceToString(e);
+        log.error("BusinessException:[{}]", error);
+        return Result.fail(
+                ResultEnum.FAIL_BUSINESS_EXCEPTION,
+                new ErrorMessage(e.getMessage())
+        );
+    }
+
     @ExceptionHandler
     @ResponseBody
     @ResponseStatus(HttpStatus.OK)
@@ -292,7 +298,8 @@ public class GlobalExceptionHandler {
         val error = ExceptionUtil.stacktraceToString(e);
         log.error(error);
         return Result.fail(
-                ResultEnum.FAIL_UNKNOWN
+                ResultEnum.FAIL_UNKNOWN,
+                new ErrorMessage(e.getMessage())
         );
     }
 
