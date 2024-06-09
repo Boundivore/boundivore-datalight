@@ -443,7 +443,7 @@ public class SshTool {
     private void assembleTransFileLocal(TransferProgress transferProgress, File file) {
         // 输出文件路径和字节数
         String parentDir = this.convertPath(file.getParent()) + "/";
-        log.info("待传输文件路径：{}{}", parentDir, file.getName());
+        log.info("本地待传输文件路径：{}{}", parentDir, file.getName());
 
         // 输出文件路径和字节数
         transferProgress.put(
@@ -506,7 +506,7 @@ public class SshTool {
     private void assembleTransFileRemote(TransferProgress transferProgress, RemoteResourceInfo resource) {
         // 输出文件路径和字节数
         String parentDir = this.convertPath(resource.getParent()) + "/";
-        log.info("待传输文件路径：{}{}", parentDir, resource.getName());
+        log.info("远端待传输文件路径：{}{}", parentDir, resource.getName());
 
         transferProgress.put(
                 new TransferProgress.FilePath()
