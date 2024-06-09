@@ -31,6 +31,7 @@ import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
+import net.schmizz.sshj.sftp.RemoteResourceInfo;
 import net.schmizz.sshj.sftp.SFTPClient;
 import net.schmizz.sshj.sftp.SFTPFileTransfer;
 import org.aspectj.weaver.BCException;
@@ -440,6 +441,7 @@ public class SshTool {
      * @param file             待传输文件
      */
     private void assembleTransFile(TransferProgress transferProgress, File file) {
+        // 输出文件路径和字节数
         String parentDir = this.convertPath(file.getParent()) + "/";
         log.info("待传输文件路径：{}{}", parentDir, file.getName());
 
@@ -482,10 +484,38 @@ public class SshTool {
                 }
             } else {
                 // 组装待传输文件
-                this.assembleTransFile(transferProgress, new File(resource.getPath()));
+                this.assembleTransFile(transferProgress, resource);
             }
             return true;
         });
+    }
+
+    /**
+     * Description: 组装待传输文件
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param transferProgress 进度对象，用于记录文件信息
+     * @param resource         待传输文件
+     */
+    private void assembleTransFile(TransferProgress transferProgress, RemoteResourceInfo resource) {
+        // 输出文件路径和字节数
+        String parentDir = this.convertPath(resource.getParent()) + "/";
+        log.info("待传输文件路径：{}{}", parentDir, resource.getName());
+
+        transferProgress.put(
+                new TransferProgress.FilePath()
+                        .setFileDir(parentDir)
+                        .setFilename(resource.getName()),
+                new TransferProgress.FileProgress()
+                        .setFilename(resource.getName())
+                        .setFileBytes(resource.getAttributes().getSize())
+        );
     }
 
     /**
