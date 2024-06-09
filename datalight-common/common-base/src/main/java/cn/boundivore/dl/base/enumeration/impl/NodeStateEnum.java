@@ -20,7 +20,7 @@ package cn.boundivore.dl.base.enumeration.impl;
 import cn.boundivore.dl.base.enumeration.IBaseEnum;
 
 /**
- * Description: NodeStateEnum
+ * Description: NodeStateEnum 枚举严格有序，部分代码将通过枚举定义顺序来决定逻辑走向
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/7
