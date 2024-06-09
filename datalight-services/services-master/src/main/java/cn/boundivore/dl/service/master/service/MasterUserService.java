@@ -315,6 +315,7 @@ public class MasterUserService {
         userInfoVo.setTokenTimeout(StpUtil.getTokenTimeout(StpUtil.getTokenValue()));
         // 如果当前登录的用户不是超级用户，则不需要建议修改密码
         userInfoVo.setIsNeedChangePassword(false);
+        userInfoVo.setPrincipal(tDlUserAuth.getPrincipal());
 
         // 更新登录时间
         Assert.isTrue(
