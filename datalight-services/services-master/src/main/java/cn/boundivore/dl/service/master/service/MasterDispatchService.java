@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.response.impl.common.AbstractDataLightDirVo;
 import cn.boundivore.dl.base.response.impl.common.AbstractLogFileVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlDirectory;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlDirectory;
 import cn.hutool.core.lang.Assert;
@@ -71,7 +72,7 @@ public class MasterDispatchService {
      */
     public Result<AbstractDataLightDirVo.DataLightDirCollectionVo> getDataLightDirTree() throws Exception {
 
-        String datalightDirectory = "/opt/datalight";
+        String datalightDirectory = DataLightEnv.APP_PARENT_ROOT_DIR_REMOTE;
 
         return this.remoteInvokeWorkerService.iWorkerDispatchAPI("localhost")
                 .getDataLightDirTree(datalightDirectory);
