@@ -18,7 +18,6 @@ package cn.boundivore.dl.ssh.tools;
 
 import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.boundivore.dl.ssh.listener.CustomFileTransferListener;
-import cn.boundivore.dl.ssh.listener.UpdateDatabaseCallback;
 import cn.boundivore.dl.ssh.verifier.NoneHostKeyVerifier;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
@@ -410,30 +409,48 @@ public class SshTool {
      */
     private void listFilesRecursive(TransferProgress transferProgress, String transferPath) {
 
-        File directory = FileUtil.file(transferPath);
+        File rootFile = FileUtil.file(transferPath);
 
-        File[] files = directory.listFiles();
+        File[] files = rootFile.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
                     // 递归进入子目录
-                    listFilesRecursive(transferProgress, file.getAbsolutePath());
+                    this.listFilesRecursive(transferProgress, file.getAbsolutePath());
                 } else {
-                    String parentDir = this.convertPath(file.getParent()) + "/";
-                    log.info("待传输文件路径：{}{}", parentDir, file.getName());
-
-                    // 输出文件路径和字节数
-                    transferProgress.put(
-                            new TransferProgress.FilePath()
-                                    .setFileDir(parentDir)
-                                    .setFilename(file.getName()),
-                            new TransferProgress.FileProgress()
-                                    .setFilename(file.getName())
-                                    .setFileBytes(file.length())
-                    );
+                    // 组装待传输文件
+                    this.assembleTransFile(transferProgress, file);
                 }
             }
         }
+    }
+
+    /**
+     * Description: 组装待传输文件
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/9
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param transferProgress 进度对象，用于记录文件信息
+     * @param file             待传输文件
+     */
+    private void assembleTransFile(TransferProgress transferProgress, File file) {
+        String parentDir = this.convertPath(file.getParent()) + "/";
+        log.info("待传输文件路径：{}{}", parentDir, file.getName());
+
+        // 输出文件路径和字节数
+        transferProgress.put(
+                new TransferProgress.FilePath()
+                        .setFileDir(parentDir)
+                        .setFilename(file.getName()),
+                new TransferProgress.FileProgress()
+                        .setFilename(file.getName())
+                        .setFileBytes(file.length())
+        );
     }
 
     /**
