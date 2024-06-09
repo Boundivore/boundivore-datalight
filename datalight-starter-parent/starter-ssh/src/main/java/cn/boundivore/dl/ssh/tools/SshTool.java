@@ -20,6 +20,7 @@ import cn.boundivore.dl.ssh.bean.TransferProgress;
 import cn.boundivore.dl.ssh.listener.CustomFileTransferListener;
 import cn.boundivore.dl.ssh.verifier.NoneHostKeyVerifier;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.AllArgsConstructor;
@@ -477,21 +478,11 @@ public class SshTool {
                 try {
                     listFilesRecursive(transferProgress, resource.getPath(), sftpClient);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.error(ExceptionUtil.stacktraceToString(e));
                 }
             } else {
-                // 输出文件路径和字节数
-                String parentDir = this.convertPath(resource.getParent()) + "/";
-                log.info("待传输文件路径：{}{}", parentDir, resource.getName());
-
-                transferProgress.put(
-                        new TransferProgress.FilePath()
-                                .setFileDir(parentDir)
-                                .setFilename(resource.getName()),
-                        new TransferProgress.FileProgress()
-                                .setFilename(resource.getName())
-                                .setFileBytes(resource.getAttributes().getSize())
-                );
+                // 组装待传输文件
+                this.assembleTransFile(transferProgress, new File(resource.getPath()));
             }
             return true;
         });
