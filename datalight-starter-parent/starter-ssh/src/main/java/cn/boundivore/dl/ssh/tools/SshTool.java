@@ -360,7 +360,7 @@ public class SshTool {
      *
      * @param transferPath 传输路径
      * @param sshClient    SSH客户端
-     * @param isUpload     是否上传
+     * @param isUpload     上传或下载
      * @return NodeTransferProgress - 节点传输进度
      */
     public TransferProgress initNodePushProgress(String transferPath,
