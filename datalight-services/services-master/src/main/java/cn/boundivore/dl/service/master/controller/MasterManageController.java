@@ -41,7 +41,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @SaIgnore
-@Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterManageController implements IMasterManageAPI {
 
     private final MasterManageService masterManageService;
