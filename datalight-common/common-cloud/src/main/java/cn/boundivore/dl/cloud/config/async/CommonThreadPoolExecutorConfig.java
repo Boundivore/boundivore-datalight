@@ -46,7 +46,7 @@ public class CommonThreadPoolExecutorConfig {
 
     @Bean(name = "commonExecutor")
     @Scope(value = "singleton")
-    public ThreadPoolTaskExecutor executor() {
+    public ThreadPoolTaskExecutor commonExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
         executor.setMaxPoolSize(maxPoolSize);

@@ -21,28 +21,40 @@ import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 
 import java.lang.annotation.*;
 
+/**
+ * Description: 日志注解，用于审计、埋点功能
+ * Created by: Boundivore
+ * E-mail: boundivore@foxmail.com
+ * Creation time: 2024/6/11
+ * Modification description:
+ * Modified by:
+ * Modification time:
+ * Throws:
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Logs {
     /**
-     * Description: Log name
+     * Description: 日志名称
      * Created by: Boundivore
-     * Creation time: 2023/5/30
+     * Creation time: 2024/6/11
      * Modification description:
      * Modified by:
      * Modification time:
+     *
      * @return String
      */
     String name() default "";
 
     /**
-     * Description: Log type
+     * Description: 日志类型
      * Created by: Boundivore
-     * Creation time: 2023/5/30
+     * Creation time: 2024/6/11
      * Modification description:
      * Modified by:
      * Modification time:
+     *
      * @return LogTypeEnum
      */
     LogTypeEnum logType() default LogTypeEnum.MASTER;
@@ -50,10 +62,11 @@ public @interface Logs {
     /**
      * Description: Whether to logs results, false is default.
      * Created by: Boundivore
-     * Creation time: 2023/5/30
+     * Creation time: 2024/6/11
      * Modification description:
      * Modified by:
      * Modification time:
+     *
      * @return boolean
      */
     boolean isPrintResult() default true;

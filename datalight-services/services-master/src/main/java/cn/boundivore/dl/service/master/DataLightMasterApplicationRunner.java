@@ -88,7 +88,7 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
         // 更新 Master 所在节点的元数据信息
         // TODO 如果后续开启 Master 高可用功能，则此处需要根据持有活跃锁的状态，在回调函数中执行下面的函数
-        this.masterManageService.updateMasterMeta();
+//        this.masterManageService.updateMasterMeta();
 
         // 检查超级用户是否注入到数据库
         this.masterUserService.checkInitSuperUser();

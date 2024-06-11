@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
  * Description: LogTrace
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/11
+ * Creation time: 2024/6/11
  * Modification description:
  * Modified by:
  * Modification time:
@@ -52,10 +52,6 @@ public class LogTrace {
     @Schema(name = "UserId", title = "用户 ID", required = true)
     @JsonProperty(value = "UserId", required = true)
     private Long userId;
-
-    @Schema(name = "Mobile", title = "手机号", required = true)
-    @JsonProperty(value = "Mobile", required = true)
-    private String mobile;
 
     @Schema(name = "TimeStamp", title = "请求发生的时间戳(毫秒数)", required = true)
     @JsonProperty(value = "TimeStamp", required = true)

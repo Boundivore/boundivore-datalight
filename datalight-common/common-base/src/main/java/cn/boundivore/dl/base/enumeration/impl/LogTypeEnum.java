@@ -30,8 +30,8 @@ import cn.boundivore.dl.base.enumeration.IBaseEnum;
  */
 public enum LogTypeEnum implements IBaseEnum {
 
-    MASTER("0", "主节点"),
-    WORKER("1", "从节点");
+    MASTER("0", "主进程"),
+    WORKER("1", "从进程");
 
     private final String code;
     private final String message;

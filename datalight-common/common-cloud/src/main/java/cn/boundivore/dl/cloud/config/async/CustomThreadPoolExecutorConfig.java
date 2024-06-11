@@ -50,7 +50,7 @@ public class CustomThreadPoolExecutorConfig {
 
     @Bean(name = "customExecutor")
     @Scope(value = "singleton")
-    public CustomThreadPoolTaskExecutor executor() {
+    public CustomThreadPoolTaskExecutor customExecutor() {
         CustomThreadPoolTaskExecutor executor = new CustomThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
         executor.setMaxPoolSize(maxPoolSize);

@@ -17,9 +17,11 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterUserAPI;
+import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterUserService;
 import cn.dev33.satoken.annotation.SaIgnore;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +56,7 @@ public class MasterUserController implements IMasterUserAPI {
 
     @SaIgnore
     @Override
+    @Logs(name = "登录", logType = LogTypeEnum.MASTER, isPrintResult = true)
     public Result<AbstractUserVo.UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
         return this.masterUserService.login(request);
     }
@@ -65,6 +68,7 @@ public class MasterUserController implements IMasterUserAPI {
 
     @SaIgnore
     @Override
+    @Logs(name = "判断是否登录", logType = LogTypeEnum.MASTER, isPrintResult = true)
     public Result<Boolean> isLogin() throws Exception {
         return this.masterUserService.isLogin();
     }
