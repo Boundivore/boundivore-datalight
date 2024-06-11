@@ -4204,7 +4204,7 @@
       "Name": "Templated",
       "CreateDate": "2024/4/7 10:26:29",
       "OrderNo": 2,
-      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,",
+      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,\r\n",
       "Tables": {
         "Count": 1,
         "items": [{
@@ -4213,7 +4213,7 @@
           "Caption": "日志埋点信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 1,
-          "GraphDesc": "Left=18.50\r\nTop=17.00",
+          "GraphDesc": "Left=18.50\r\nTop=17.00\r\n",
           "MetaFields": {
             "Count": 17,
             "items": [
