@@ -1,7 +1,6 @@
 server:
   datalight:
     version: 1.0.0
-    audit-enable: true
     is-debug: false
     super-user: admin
     super-user-default-password: admin
@@ -207,6 +206,12 @@ sa-token:
   token-style: simple-uuid
   # 是否输出操作日志
   is-log: true
+
+datalight:
+  audit:
+    enable: true
+    post-mapping-enable: true
+    get-mapping-enable: false
 
 aigc:
   qianfan:
