@@ -120,21 +120,28 @@ public class ReactiveAddressUtil {
             };
             for (String key : headerKeys) {
                 ip = request.getHeader(key);
-                if (!isEmptyIP(ip)) {
+                if (ip != null && !isEmptyIP(ip)) {
                     break;
                 }
             }
             if (isEmptyIP(ip)) {
                 ip = request.getRemoteAddr();
             }
+            // 针对多级代理情况，取第一个非 unknown 的 IP
+            if (ip != null && ip.contains(",")) {
+                ip = ip.split(",")[0].trim();
+            }
+            // 处理本地回环地址
+            if ("0:0:0:0:0:0:0:1".equals(ip)) {
+                ip = "127.0.0.1";
+            }
         } catch (Exception e) {
             log.error("Invoke getRemoteIp() error: {}", ExceptionUtil.stacktraceToString(e));
         }
         return ip;
     }
-
     /**
-     * Description: 判断IP地址是否为空或为unknown
+     * Description: 判断 IP 地址是否为空或为unknown
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2023/7/6
@@ -147,7 +154,7 @@ public class ReactiveAddressUtil {
      * @return 是否为空或unknown
      */
     private static boolean isEmptyIP(String ip) {
-        return StrUtil.isEmpty(ip) || UNKNOWN_STR.equalsIgnoreCase(ip);
+        return ip == null || ip.isEmpty() || UNKNOWN_STR.equalsIgnoreCase(ip);
     }
 
     /**

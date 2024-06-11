@@ -22,6 +22,8 @@ import cn.boundivore.dl.base.result.ResultEnum;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.StrUtil;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -87,14 +89,26 @@ public class LogAspect {
             Logs logsAnnotation = methodAnnotation != null ? methodAnnotation : classAnnotation;
             assert logsAnnotation != null;
 
-            //Name & Type
-            logTrace.setLogName(logsAnnotation.name());
-            logTrace.setLogType(logsAnnotation.logType());
+            String logName = logsAnnotation.name();
 
-            //Class.Method
+            // Name & Type & Class.Method
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = method.getName();
             String classMethodName = String.format("%s#%s()", className, methodName);
+
+            if(StrUtil.isBlank(logName)){
+                // 获取父类方法上的 @ApiOperation 注解
+                ApiOperation apiOperation = this.getApiOperationAnnotationFromParent(targetClass, method);
+
+                if (apiOperation != null) {
+                    logName = apiOperation.notes();
+                }else{
+                    logName = classMethodName;
+                }
+            }
+
+            logTrace.setLogName(logName);
+            logTrace.setLogType(logsAnnotation.logType());
             logTrace.setClassMethod(classMethodName);
 
             //Time & Date
@@ -158,5 +172,50 @@ public class LogAspect {
                     new ErrorMessage(ExceptionUtil.getSimpleMessage(e))
             );
         }
+    }
+
+    /**
+     * Description: 获取父类或接口方法中的 @ApiOperation 注解
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/11
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: 无异常抛出，但可能返回 null
+     *
+     * @param targetClass  当前被拦截的类
+     * @param method       当前被拦截的方法
+     * @return             父类或接口方法上的 @ApiOperation 注解，如果没有找到则返回 null
+     */
+    private ApiOperation getApiOperationAnnotationFromParent(Class<?> targetClass, Method method) {
+        // Check interfaces
+        for (Class<?> interfaces : targetClass.getInterfaces()) {
+            try {
+                Method interfaceMethod = interfaces.getMethod(method.getName(), method.getParameterTypes());
+                ApiOperation annotation = interfaceMethod.getAnnotation(ApiOperation.class);
+                if (annotation != null) {
+                    return annotation;
+                }
+            } catch (NoSuchMethodException e) {
+                // Method not found in interface, continue with next interface
+            }
+        }
+
+        // Check superclass
+        Class<?> superclass = targetClass.getSuperclass();
+        if (superclass != null && superclass != Object.class) {
+            try {
+                Method parentMethod = superclass.getMethod(method.getName(), method.getParameterTypes());
+                ApiOperation annotation = parentMethod.getAnnotation(ApiOperation.class);
+                if (annotation != null) {
+                    return annotation;
+                }
+            } catch (NoSuchMethodException e) {
+                // Method not found in superclass, continue with next superclass
+            }
+        }
+
+        return null;
     }
 }

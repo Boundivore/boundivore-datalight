@@ -17,11 +17,13 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterInitProcedureAPI;
+import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractProcedureRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractInitProcedureVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterInitProcedureService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterInitProcedureController implements IMasterInitProcedureAPI {
 
     private final MasterInitProcedureService masterInitProcedureService;

@@ -17,11 +17,13 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterConfigAPI;
+import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterConfigService;
 import cn.boundivore.dl.service.master.service.MasterConfigSyncService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
@@ -40,6 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterConfigController implements IMasterConfigAPI {
 
     private final MasterConfigService masterConfigService;

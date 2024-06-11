@@ -17,12 +17,14 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterAlertAPI;
+import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.common.AlertWebhookPayloadRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertHandlerRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertHandlerVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterAlertHandlerInterfaceService;
 import cn.boundivore.dl.service.master.service.MasterAlertHandlerMailService;
 import cn.boundivore.dl.service.master.service.MasterAlertHandlerService;
@@ -45,6 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterAlertController implements IMasterAlertAPI {
 
     private final MasterAlertService masterAlertService;

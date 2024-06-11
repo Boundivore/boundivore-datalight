@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterUserController implements IMasterUserAPI {
 
     protected final MasterUserService masterUserService;
@@ -56,7 +57,6 @@ public class MasterUserController implements IMasterUserAPI {
 
     @SaIgnore
     @Override
-    @Logs(name = "登录", logType = LogTypeEnum.MASTER, isPrintResult = true)
     public Result<AbstractUserVo.UserInfoVo> login(AbstractUserRequest.UserAuthRequest request) throws Exception {
         return this.masterUserService.login(request);
     }
@@ -68,7 +68,6 @@ public class MasterUserController implements IMasterUserAPI {
 
     @SaIgnore
     @Override
-    @Logs(name = "判断是否登录", logType = LogTypeEnum.MASTER, isPrintResult = true)
     public Result<Boolean> isLogin() throws Exception {
         return this.masterUserService.isLogin();
     }

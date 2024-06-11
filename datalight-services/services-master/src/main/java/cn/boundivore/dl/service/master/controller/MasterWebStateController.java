@@ -17,9 +17,11 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterWebStateAPI;
+import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractWebStateRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractWebStateVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterWebStateService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
+@Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterWebStateController implements IMasterWebStateAPI {
 
     private final MasterWebStateService masterWebStateService;
