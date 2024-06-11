@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543336",
-  "TableCount": 33,
+  "TableCount": 34,
   "Count": 2,
   "items": [
     {
@@ -9,11 +9,11 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-280.05,437.14,1.70,0,",
+      "CustomAttr1": "DVS:-186.12,1040.14,1.44,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
-        "Count": 32,
+        "Count": 33,
         "items": [
           {
             "ID": 1,
@@ -32,7 +32,7 @@
                   "DataType": 2,
                   "DataTypeName": "BigInt",
                   "KeyFieldType": 1,
-                  "RelateTable": "t_dl_",
+                  "RelateTable": "t_dl_alert",
                   "DataLength": 20
                 },
                 {
@@ -42,7 +42,7 @@
                   "DisplayName": "创建时间",
                   "DataType": 2,
                   "DataTypeName": "BigInt",
-                  "RelateTable": "t_dl_",
+                  "RelateTable": "t_dl_alert",
                   "DataLength": 20
                 },
                 {
@@ -52,7 +52,7 @@
                   "DisplayName": "修改时间",
                   "DataType": 2,
                   "DataTypeName": "BigInt",
-                  "RelateTable": "t_dl_",
+                  "RelateTable": "t_dl_alert",
                   "DataLength": 20
                 },
                 {
@@ -61,7 +61,7 @@
                   "OrderNo": 4,
                   "DisplayName": "乐观锁版本",
                   "DataType": 2,
-                  "RelateTable": "t_dl_",
+                  "RelateTable": "t_dl_alert",
                   "DefaultValue": "0",
                   "Not_Nullable": true,
                   "DataLength": 20
@@ -89,65 +89,10 @@
           },
           {
             "ID": 1,
-            "Name": "t_dl_",
-            "Caption": "模板表",
-            "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 2,
-            "GraphDesc": "Left=15.41\r\nTop=2668.41",
-            "MetaFields": {
-              "Count": 4,
-              "items": [
-                {
-                  "ID": 1,
-                  "Name": "id",
-                  "OrderNo": 1,
-                  "DisplayName": "分布式 ID",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "KeyFieldType": 1,
-                  "RelateTable": "t_",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 2,
-                  "Name": "create_time",
-                  "OrderNo": 2,
-                  "DisplayName": "创建时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "RelateTable": "t_",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 3,
-                  "Name": "update_time",
-                  "OrderNo": 3,
-                  "DisplayName": "修改时间",
-                  "DataType": 2,
-                  "DataTypeName": "BigInt",
-                  "RelateTable": "t_",
-                  "DataLength": 20
-                },
-                {
-                  "ID": 4,
-                  "Name": "version",
-                  "OrderNo": 4,
-                  "DisplayName": "乐观锁版本",
-                  "DataType": 2,
-                  "RelateTable": "t_",
-                  "DefaultValue": "0",
-                  "Not_Nullable": true,
-                  "DataLength": 20
-                }
-              ]
-            }
-          },
-          {
-            "ID": 1,
             "Name": "t_dl_user_auth",
             "Caption": "用户认证信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 3,
+            "OrderNo": 2,
             "GraphDesc": "Left=536.74\r\nTop=596.03",
             "MetaFields": {
               "Count": 8,
@@ -246,7 +191,7 @@
             "Name": "t_dl_user",
             "Caption": "用户基础信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 4,
+            "OrderNo": 3,
             "GraphDesc": "Left=316.24\r\nTop=596.03",
             "MetaFields": {
               "Count": 7,
@@ -326,10 +271,10 @@
             "Name": "t_dl_node",
             "Caption": "节点信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 5,
+            "OrderNo": 4,
             "GraphDesc": "Left=294.17\r\nTop=1331.74",
             "MetaFields": {
-              "Count": 15,
+              "Count": 16,
               "items": [
                 {
                   "ID": 1,
@@ -475,6 +420,16 @@
                   "DataType": 1,
                   "Not_Nullable": true,
                   "DataLength": 255
+                },
+                {
+                  "ID": 9,
+                  "Name": "serial_num",
+                  "Memo": "当前为第几个增加的节点，唯一且仅递增，不可回退，同时用于部分组件唯一部署 ID",
+                  "OrderNo": 16,
+                  "DisplayName": "节点计数",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 11
                 }
               ]
             }
@@ -484,7 +439,7 @@
             "Name": "t_dl_node_init",
             "Caption": "节点初始化信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 6,
+            "OrderNo": 5,
             "GraphDesc": "Left=29.83\r\nTop=1332.50",
             "MetaFields": {
               "Count": 15,
@@ -642,8 +597,8 @@
             "Name": "t_dl_service",
             "Caption": "服务信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 7,
-            "GraphDesc": "Left=22.89\r\nTop=1882.64",
+            "OrderNo": 6,
+            "GraphDesc": "Left=36.57\r\nTop=1870.09",
             "MetaFields": {
               "Count": 8,
               "items": [
@@ -734,8 +689,8 @@
             "Name": "t_dl_component",
             "Caption": "组件信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 8,
-            "GraphDesc": "Left=259.66\r\nTop=1881.96",
+            "OrderNo": 7,
+            "GraphDesc": "Left=273.34\r\nTop=1869.41",
             "MetaFields": {
               "Count": 11,
               "items": [
@@ -855,8 +810,8 @@
             "Name": "t_dl_job",
             "Caption": "Job 信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 9,
-            "GraphDesc": "Left=15.89\r\nTop=2129.49",
+            "OrderNo": 8,
+            "GraphDesc": "Left=29.57\r\nTop=2116.94",
             "MetaFields": {
               "Count": 12,
               "items": [
@@ -983,8 +938,8 @@
             "Name": "t_dl_stage",
             "Caption": "Stage 信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 10,
-            "GraphDesc": "Left=296.46\r\nTop=2128.74",
+            "OrderNo": 9,
+            "GraphDesc": "Left=310.14\r\nTop=2116.19",
             "MetaFields": {
               "Count": 16,
               "items": [
@@ -1149,8 +1104,8 @@
             "Name": "t_dl_task",
             "Caption": "Task 信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 11,
-            "GraphDesc": "Left=576.46\r\nTop=2126.24",
+            "OrderNo": 10,
+            "GraphDesc": "Left=590.14\r\nTop=2113.69",
             "MetaFields": {
               "Count": 29,
               "items": [
@@ -1435,8 +1390,8 @@
             "Name": "t_dl_step",
             "Caption": "Step 信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 12,
-            "GraphDesc": "Left=859.15\r\nTop=2125.81",
+            "OrderNo": 11,
+            "GraphDesc": "Left=872.83\r\nTop=2113.26",
             "MetaFields": {
               "Count": 24,
               "items": [
@@ -1666,7 +1621,7 @@
             "Name": "t_dl_cluster",
             "Caption": "集群信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 13,
+            "OrderNo": 12,
             "GraphDesc": "Left=35.60\r\nTop=1098.50",
             "MetaFields": {
               "Count": 11,
@@ -1787,7 +1742,7 @@
             "Name": "t_dl_init_procedure",
             "Caption": "初始化步骤缓存信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 14,
+            "OrderNo": 13,
             "GraphDesc": "Left=777.48\r\nTop=594.40",
             "MetaFields": {
               "Count": 10,
@@ -1894,8 +1849,8 @@
             "Name": "t_dl_config",
             "Caption": "配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 15,
-            "GraphDesc": "Left=824.79\r\nTop=1882.64",
+            "OrderNo": 14,
+            "GraphDesc": "Left=838.47\r\nTop=1870.09",
             "MetaFields": {
               "Count": 11,
               "items": [
@@ -2013,8 +1968,8 @@
             "Name": "t_dl_config_pre",
             "Caption": "服务组件预配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 16,
-            "GraphDesc": "Left=510.68\r\nTop=1883.48",
+            "OrderNo": 15,
+            "GraphDesc": "Left=524.36\r\nTop=1870.93",
             "MetaFields": {
               "Count": 10,
               "items": [
@@ -2124,7 +2079,7 @@
             "Name": "t_dl_node_step",
             "Caption": "Step 节点步骤信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 17,
+            "OrderNo": 16,
             "GraphDesc": "Left=1106.15\r\nTop=1331.71",
             "MetaFields": {
               "Count": 28,
@@ -2386,7 +2341,7 @@
             "Name": "t_dl_node_task",
             "Caption": "Task 节点任务信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 18,
+            "OrderNo": 17,
             "GraphDesc": "Left=798.38\r\nTop=1331.52",
             "MetaFields": {
               "Count": 24,
@@ -2628,7 +2583,7 @@
             "Name": "t_dl_node_job",
             "Caption": "Job 节点工作信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 19,
+            "OrderNo": 18,
             "GraphDesc": "Left=517.66\r\nTop=1333.20",
             "MetaFields": {
               "Count": 12,
@@ -2757,7 +2712,7 @@
             "Name": "t_dl_node_job_log",
             "Caption": "Job 节点工作日志信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 20,
+            "OrderNo": 19,
             "GraphDesc": "Left=1487.46\r\nTop=1333.21",
             "MetaFields": {
               "Count": 12,
@@ -2879,8 +2834,8 @@
             "Name": "t_dl_job_log",
             "Caption": "Job 工作日志信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 21,
-            "GraphDesc": "Left=1140.90\r\nTop=2127.30",
+            "OrderNo": 20,
+            "GraphDesc": "Left=1154.58\r\nTop=2114.75",
             "MetaFields": {
               "Count": 13,
               "items": [
@@ -3009,8 +2964,8 @@
             "Name": "t_dl_config_content",
             "Caption": "配置文件内容信息表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 22,
-            "GraphDesc": "Left=1103.85\r\nTop=1882.37",
+            "OrderNo": 21,
+            "GraphDesc": "Left=1117.53\r\nTop=1869.82",
             "MetaFields": {
               "Count": 8,
               "items": [
@@ -3102,7 +3057,7 @@
             "Name": "t_dl_web_state",
             "Caption": "前端状态信息缓存表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 23,
+            "OrderNo": 22,
             "GraphDesc": "Left=317.24\r\nTop=433.03",
             "MetaFields": {
               "Count": 8,
@@ -3194,8 +3149,8 @@
             "Name": "t_dl_auto_pull_switch",
             "Caption": "进程自动拉起状态表",
             "CreateDate": "2023/9/19 13:59:05",
-            "OrderNo": 24,
-            "GraphDesc": "Left=27.39\r\nTop=1636.43",
+            "OrderNo": 23,
+            "GraphDesc": "Left=28.04\r\nTop=1653.76",
             "MetaFields": {
               "Count": 9,
               "items": [
@@ -3296,7 +3251,7 @@
           {
             "Name": "t_dl_role_user_relation",
             "Caption": "角色绑定关系表",
-            "OrderNo": 25,
+            "OrderNo": 24,
             "GraphDesc": "Left=28.07\r\nTop=802.85",
             "MetaFields": {
               "Count": 6,
@@ -3364,7 +3319,7 @@
             "Name": "t_dl_role",
             "Caption": "角色信息表",
             "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 26,
+            "OrderNo": 25,
             "GraphDesc": "Left=334.12\r\nTop=801.65",
             "MetaFields": {
               "Count": 11,
@@ -3480,7 +3435,7 @@
             "Name": "t_dl_permission",
             "Caption": "权限信息表",
             "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 27,
+            "OrderNo": 26,
             "GraphDesc": "Left=1197.76\r\nTop=806.67",
             "MetaFields": {
               "Count": 13,
@@ -3615,7 +3570,7 @@
             "Name": "t_dl_permission_role_relation",
             "Caption": "权限角色信息映射表",
             "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 28,
+            "OrderNo": 27,
             "GraphDesc": "Left=820.47\r\nTop=807.22",
             "MetaFields": {
               "Count": 6,
@@ -3684,7 +3639,7 @@
             "Name": "t_dl_rule_interface",
             "Caption": "接口资源规则表",
             "CreateDate": "2022/9/19 13:59:05",
-            "OrderNo": 29,
+            "OrderNo": 28,
             "GraphDesc": "Left=1503.77\r\nTop=806.44",
             "MetaFields": {
               "Count": 6,
@@ -3752,11 +3707,132 @@
           },
           {
             "ID": 1,
+            "Name": "t_dl_alert",
+            "Caption": "告警配置信息表",
+            "CreateDate": "2023/9/19 13:59:05",
+            "OrderNo": 29,
+            "GraphDesc": "Left=29.09\r\nTop=2655.86",
+            "MetaFields": {
+              "Count": 11,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "RelateTable": "t_",
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 12,
+                  "Name": "cluster_id",
+                  "OrderNo": 5,
+                  "DisplayName": "集群 ID",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 5,
+                  "Name": "alert_name",
+                  "OrderNo": 6,
+                  "DisplayName": "告警配置名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 8,
+                  "Name": "alert_file_path",
+                  "OrderNo": 7,
+                  "DisplayName": "规则配置文件路径",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 7,
+                  "Name": "alert_file_name",
+                  "OrderNo": 8,
+                  "DisplayName": "规则配置文件名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 11,
+                  "Name": "alert_rule_content",
+                  "Memo": "Base64",
+                  "OrderNo": 9,
+                  "DisplayName": "规则配置内容",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 9,
+                  "Name": "enabled",
+                  "OrderNo": 10,
+                  "DisplayName": "是否启用",
+                  "DataType": 2,
+                  "DefaultValue": "1",
+                  "Not_Nullable": true,
+                  "DataLength": 1
+                },
+                {
+                  "ID": 6,
+                  "Name": "alert_version",
+                  "OrderNo": 11,
+                  "DisplayName": "告警规则文件版本",
+                  "DataType": 2,
+                  "DefaultValue": "1",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                }
+              ]
+            }
+          },
+          {
+            "ID": 1,
             "Name": "t_dl_alert_handler_relation",
             "Caption": "告警与处理告警信息关联表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 30,
-            "GraphDesc": "Left=326.11\r\nTop=2671.18",
+            "GraphDesc": "Left=339.79\r\nTop=2658.63",
             "MetaFields": {
               "Count": 7,
               "items": [
@@ -3839,7 +3915,7 @@
             "Caption": "处理告警邮箱配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 31,
-            "GraphDesc": "Left=743.59\r\nTop=2785.58",
+            "GraphDesc": "Left=757.27\r\nTop=2773.03",
             "MetaFields": {
               "Count": 5,
               "items": [
@@ -3903,7 +3979,7 @@
             "Caption": "处理告警接口配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 32,
-            "GraphDesc": "Left=738.88\r\nTop=2672.64",
+            "GraphDesc": "Left=752.56\r\nTop=2660.09",
             "MetaFields": {
               "Count": 5,
               "items": [
@@ -3960,6 +4036,165 @@
                 }
               ]
             }
+          },
+          {
+            "ID": 1,
+            "Name": "t_dl_logs",
+            "Caption": "日志埋点信息表",
+            "CreateDate": "2023/9/19 13:59:05",
+            "OrderNo": 33,
+            "GraphDesc": "Left=34.78\r\nTop=2886.92",
+            "MetaFields": {
+              "Count": 17,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "RelateTable": "t_",
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 5,
+                  "Name": "log_name",
+                  "OrderNo": 5,
+                  "DisplayName": "日志名称",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 6,
+                  "Name": "user_id",
+                  "OrderNo": 6,
+                  "DisplayName": "用户 ID",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 7,
+                  "Name": "timestamp",
+                  "OrderNo": 7,
+                  "DisplayName": "请求发生的时间戳",
+                  "DataType": 2,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 8,
+                  "Name": "date_format",
+                  "OrderNo": 8,
+                  "DisplayName": "格式化日期",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 9,
+                  "Name": "log_type",
+                  "OrderNo": 9,
+                  "DisplayName": "日志类型",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 10,
+                  "Name": "class_name",
+                  "OrderNo": 10,
+                  "DisplayName": "请求的类",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 11,
+                  "Name": "method_name",
+                  "OrderNo": 11,
+                  "DisplayName": "请求的方法",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 12,
+                  "Name": "ip",
+                  "OrderNo": 12,
+                  "DisplayName": "请求的来源 IP",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 13,
+                  "Name": "uri",
+                  "OrderNo": 13,
+                  "DisplayName": "请求的来源 URI",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 14,
+                  "Name": "result_code",
+                  "OrderNo": 14,
+                  "DisplayName": "业务响应状态码",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 15,
+                  "Name": "result_enum",
+                  "OrderNo": 15,
+                  "DisplayName": "业务响应状态枚举",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 16,
+                  "Name": "params",
+                  "OrderNo": 16,
+                  "DisplayName": "请求入参",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 17,
+                  "Name": "result",
+                  "OrderNo": 17,
+                  "DisplayName": "响应体结果",
+                  "DataType": 1,
+                  "DataLength": 255
+                }
+              ]
+            }
           }
         ]
       }
@@ -3969,18 +4204,18 @@
       "Name": "Templated",
       "CreateDate": "2024/4/7 10:26:29",
       "OrderNo": 2,
-      "CustomAttr1": "DVS:-177.00,-1769.50,2.00,0,",
+      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,",
       "Tables": {
         "Count": 1,
         "items": [{
           "ID": 1,
-          "Name": "t_dl_",
-          "Caption": "模板表",
+          "Name": "t_dl_logs",
+          "Caption": "日志埋点信息表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 1,
-          "GraphDesc": "Left=10.00\r\nTop=10.00",
+          "GraphDesc": "Left=18.50\r\nTop=17.00",
           "MetaFields": {
-            "Count": 4,
+            "Count": 17,
             "items": [
               {
                 "ID": 1,
@@ -4023,6 +4258,110 @@
                 "DefaultValue": "0",
                 "Not_Nullable": true,
                 "DataLength": 20
+              },
+              {
+                "ID": 5,
+                "Name": "log_name",
+                "OrderNo": 5,
+                "DisplayName": "日志名称",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 6,
+                "Name": "user_id",
+                "OrderNo": 6,
+                "DisplayName": "用户 ID",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 7,
+                "Name": "timestamp",
+                "OrderNo": 7,
+                "DisplayName": "请求发生的时间戳",
+                "DataType": 2,
+                "DataLength": 20
+              },
+              {
+                "ID": 8,
+                "Name": "date_format",
+                "OrderNo": 8,
+                "DisplayName": "格式化日期",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 9,
+                "Name": "log_type",
+                "OrderNo": 9,
+                "DisplayName": "日志类型",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 10,
+                "Name": "class_name",
+                "OrderNo": 10,
+                "DisplayName": "请求的类",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 11,
+                "Name": "method_name",
+                "OrderNo": 11,
+                "DisplayName": "请求的方法",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 12,
+                "Name": "ip",
+                "OrderNo": 12,
+                "DisplayName": "请求的来源 IP",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 13,
+                "Name": "uri",
+                "OrderNo": 13,
+                "DisplayName": "请求的来源 URI",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 14,
+                "Name": "result_code",
+                "OrderNo": 14,
+                "DisplayName": "业务响应状态码",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 15,
+                "Name": "result_enum",
+                "OrderNo": 15,
+                "DisplayName": "业务响应状态枚举",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 16,
+                "Name": "params",
+                "OrderNo": 16,
+                "DisplayName": "请求入参",
+                "DataType": 1,
+                "DataLength": 255
+              },
+              {
+                "ID": 17,
+                "Name": "result",
+                "OrderNo": 17,
+                "DisplayName": "响应体结果",
+                "DataType": 1,
+                "DataLength": 255
               }
             ]
           }
