@@ -22,7 +22,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.logs.Logs;
+import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterComponentService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;

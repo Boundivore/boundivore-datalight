@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.boot.logs;
+package cn.boundivore.dl.service.master.logs;
 
 import cn.boundivore.dl.base.result.ErrorMessage;
 import cn.boundivore.dl.base.result.Result;
@@ -62,7 +62,7 @@ public class LogAspect {
 
     private final ThreadPoolTaskExecutor commonExecutor;
 
-    @Pointcut("@annotation(cn.boundivore.dl.boot.logs.Logs) || @within(cn.boundivore.dl.boot.logs.Logs)")
+    @Pointcut("@annotation(cn.boundivore.dl.service.master.logs.Logs) || @within(cn.boundivore.dl.service.master.logs.Logs)")
     public void logPointCut() {
     }
 

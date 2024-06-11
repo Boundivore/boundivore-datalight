@@ -14,10 +14,12 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.boot.logs;
+package cn.boundivore.dl.service.master.logs;
 
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.config.async.AbstractTask;
+import cn.boundivore.dl.cloud.utils.SpringContextUtil;
+import cn.boundivore.dl.orm.service.single.impl.TDlLogsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,6 +39,8 @@ public class LogExporterTask extends AbstractTask<String> {
     private final LogTrace logTrace;
     private final ObjectMapper objectMapper;
 
+    private final TDlLogsServiceImpl tDlLogsService = SpringContextUtil.getBean(TDlLogsServiceImpl.class);
+
     public LogExporterTask(String desc, LogTrace logTrace) {
         super("LogExporterTask", desc);
         this.logTrace = logTrace;
@@ -48,8 +52,10 @@ public class LogExporterTask extends AbstractTask<String> {
     protected Result<String> run() throws Exception {
         String json = objectMapper.writeValueAsString(logTrace);
         //TODO Export log to ElasticSearch or HBase or Kafka asynchronously.
-        //TODO Temporarily store in a local file or console.
+        //TODO Temporarily store in a local file or console or MySQL.
         log.info(json);
+
+
         return Result.success();
     }
 }

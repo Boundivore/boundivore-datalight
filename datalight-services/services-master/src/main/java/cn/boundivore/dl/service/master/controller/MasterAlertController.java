@@ -24,7 +24,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertHandlerVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.logs.Logs;
+import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterAlertHandlerInterfaceService;
 import cn.boundivore.dl.service.master.service.MasterAlertHandlerMailService;
 import cn.boundivore.dl.service.master.service.MasterAlertHandlerService;

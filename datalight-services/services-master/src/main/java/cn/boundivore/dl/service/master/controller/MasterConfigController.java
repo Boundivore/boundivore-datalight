@@ -23,7 +23,7 @@ import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.logs.Logs;
+import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterConfigService;
 import cn.boundivore.dl.service.master.service.MasterConfigSyncService;
 import cn.dev33.satoken.annotation.SaCheckLogin;

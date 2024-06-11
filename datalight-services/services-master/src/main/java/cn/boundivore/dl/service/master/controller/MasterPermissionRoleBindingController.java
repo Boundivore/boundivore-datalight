@@ -21,7 +21,7 @@ import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.logs.Logs;
+import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterPermissionRoleBindingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

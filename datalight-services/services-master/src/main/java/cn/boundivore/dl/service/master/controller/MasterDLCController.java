@@ -20,7 +20,7 @@ import cn.boundivore.dl.api.master.define.IMasterDLCAPI;
 import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.response.impl.master.AbstractDlcVo;
 import cn.boundivore.dl.base.result.Result;
-import cn.boundivore.dl.boot.logs.Logs;
+import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterDLCService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
