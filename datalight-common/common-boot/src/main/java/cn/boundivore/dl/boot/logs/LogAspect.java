@@ -60,20 +60,31 @@ public class LogAspect {
 
     private final ThreadPoolTaskExecutor commonExecutor;
 
-    @Pointcut(value = "@annotation(cn.boundivore.dl.boot.logs.Logs)")
+    @Pointcut("@annotation(cn.boundivore.dl.boot.logs.Logs) || @within(cn.boundivore.dl.boot.logs.Logs)")
     public void logPointCut() {
     }
 
-    @Around(value = "logPointCut()")
+    @Around("logPointCut()")
     public Object logs(ProceedingJoinPoint joinPoint) {
-        log.info("切面成功");
         try {
             LogTrace logTrace = new LogTrace();
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-
             Method method = methodSignature.getMethod();
 
-            Logs logsAnnotation = method.getAnnotation(Logs.class);
+            // 检查方法上是否有 @LogsIgnore 注解，如有，则忽略，并放行
+            if (method.isAnnotationPresent(LogsIgnore.class)) {
+                return joinPoint.proceed();
+            }
+
+            // 获取方法上的注解
+            Logs methodAnnotation = method.getAnnotation(Logs.class);
+
+            // 获取类上的注解
+            Class<?> targetClass = joinPoint.getTarget().getClass();
+            Logs classAnnotation = targetClass.getAnnotation(Logs.class);
+
+            // 如果方法上和类上都有注解，优先使用方法上的注解
+            Logs logsAnnotation = methodAnnotation != null ? methodAnnotation : classAnnotation;
             assert logsAnnotation != null;
 
             //Name & Type
@@ -86,23 +97,12 @@ public class LogAspect {
             String classMethodName = String.format("%s#%s()", className, methodName);
             logTrace.setClassMethod(classMethodName);
 
-            //Time&Date
-            // 获取当前时间
+            //Time & Date
             LocalDateTime now = LocalDateTime.now();
-
-            // 定义时区为 GMT+8
             ZoneId zoneId = ZoneId.of("GMT+8");
-
-            // 将当前时间转换为特定时区的时间
             ZonedDateTime zonedDateTime = now.atZone(zoneId);
-
-            // 定义日期时间格式化器
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            // 格式化日期时间
             String dateFormat = zonedDateTime.format(formatter);
-
-            // 转换为时间戳（毫秒）
             long timestamp = zonedDateTime.toInstant().toEpochMilli();
 
             logTrace.setTimeStamp(timestamp);
@@ -111,7 +111,6 @@ public class LogAspect {
             //Params
             Object[] params = joinPoint.getArgs();
             logTrace.setParams(params);
-
 
             //Uri
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

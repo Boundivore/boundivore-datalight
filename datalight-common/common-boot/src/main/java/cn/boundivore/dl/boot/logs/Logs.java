@@ -31,7 +31,7 @@ import java.lang.annotation.*;
  * Modification time:
  * Throws:
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Logs {
