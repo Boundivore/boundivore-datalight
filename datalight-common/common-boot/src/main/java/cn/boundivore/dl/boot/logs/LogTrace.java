@@ -73,7 +73,7 @@ public class LogTrace {
     @JsonProperty(value = "MethodName", required = true)
     private String methodName;
 
-    @Schema(name = "Ip", title = "请求来源的IP", required = true)
+    @Schema(name = "Ip", title = "请求来源的 IP", required = true)
     @JsonProperty(value = "Ip", required = true)
     private String ip;
 
