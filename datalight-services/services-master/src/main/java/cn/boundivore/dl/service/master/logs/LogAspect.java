@@ -155,7 +155,7 @@ public class LogAspect {
         }
 
         // 将 LogTrace 对象添加到缓存中
-        LogTraceCache.addLogTrace(logTrace);
+        LogTraceCache.putLogTrace(logTrace);
 
         return result;
     }

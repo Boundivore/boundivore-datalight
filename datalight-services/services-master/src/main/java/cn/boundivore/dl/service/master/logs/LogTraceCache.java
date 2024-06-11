@@ -73,7 +73,7 @@ public class LogTraceCache {
      *
      * @param logTrace 要添加的 LogTrace 对象
      */
-    public static void addLogTrace(LogTrace logTrace) {
+    public static void putLogTrace(LogTrace logTrace) {
         try {
             // 阻塞直到有空间可用
             logTraceQueue.put(logTrace);
