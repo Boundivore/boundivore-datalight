@@ -20,6 +20,7 @@ import cn.boundivore.dl.base.result.ErrorMessage;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.base.result.ResultEnum;
 import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
@@ -32,7 +33,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -60,7 +60,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class LogAspect {
 
-    private final ThreadPoolTaskExecutor commonExecutor;
+    private final DataLightEnv dataLightEnv;
 
     @Pointcut("@annotation(cn.boundivore.dl.service.master.logs.Logs) || @within(cn.boundivore.dl.service.master.logs.Logs)")
     public void logPointCut() {
@@ -69,6 +69,10 @@ public class LogAspect {
     @Around("logPointCut()")
     public Object logs(ProceedingJoinPoint joinPoint) {
         try {
+            if (!dataLightEnv.getAuditEnable()) {
+                return joinPoint.proceed();
+            }
+
             LogTrace logTrace = new LogTrace();
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             Method method = methodSignature.getMethod();
@@ -96,13 +100,13 @@ public class LogAspect {
             String methodName = method.getName();
             String classMethodName = String.format("%s#%s", className, methodName);
 
-            if(StrUtil.isBlank(logName)){
+            if (StrUtil.isBlank(logName)) {
                 // 获取父类方法上的 @ApiOperation 注解
                 ApiOperation apiOperation = this.getApiOperationAnnotationFromParent(targetClass, method);
 
                 if (apiOperation != null) {
                     logName = apiOperation.notes();
-                }else{
+                } else {
                     logName = classMethodName;
                 }
             }
@@ -112,7 +116,7 @@ public class LogAspect {
             logTrace.setClassName(className);
             logTrace.setMethodName(methodName);
 
-            //Time & Date
+            // Time & Date
             LocalDateTime now = LocalDateTime.now();
             ZoneId zoneId = ZoneId.of("GMT+8");
             ZonedDateTime zonedDateTime = now.atZone(zoneId);
@@ -123,11 +127,11 @@ public class LogAspect {
             logTrace.setTimeStamp(timestamp);
             logTrace.setDateFormat(dateFormat);
 
-            //Params
+            // Params
             Object[] params = joinPoint.getArgs();
             logTrace.setParams(params);
 
-            //Uri
+            // Uri
             ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
             assert attributes != null;
             HttpServletRequest request = attributes.getRequest();
@@ -135,10 +139,10 @@ public class LogAspect {
             String uri = request.getRequestURI();
             logTrace.setUri(uri);
 
-            //Ip
+            // Ip
             logTrace.setIp(ReactiveAddressUtil.getRemoteIp(request));
 
-            //User
+            // User
             if (StpUtil.isLogin()) {
                 Long userId = Long.parseLong(StpUtil.getSession().get("userId").toString());
                 logTrace.setUserId(userId);
@@ -156,13 +160,8 @@ public class LogAspect {
                 }
             }
 
-            //TODO Export log to ElasticSearch or HBase or Kafka asynchronously.
-            //TODO Temporarily store in a local file.
-            this.commonExecutor.submit(new LogExporterTask(
-                            logTrace.getLogName(),
-                            logTrace
-                    )
-            );
+            // 将 LogTrace 对象添加到缓存中
+            LogTraceCache.addLogTrace(logTrace);
 
             return result;
         } catch (Throwable e) {
@@ -185,9 +184,9 @@ public class LogAspect {
      * Modification time:
      * Throws: 无异常抛出，但可能返回 null
      *
-     * @param targetClass  当前被拦截的类
-     * @param method       当前被拦截的方法
-     * @return             父类或接口方法上的 @ApiOperation 注解，如果没有找到则返回 null
+     * @param targetClass 当前被拦截的类
+     * @param method      当前被拦截的方法
+     * @return 父类或接口方法上的 @ApiOperation 注解，如果没有找到则返回 null
      */
     private ApiOperation getApiOperationAnnotationFromParent(Class<?> targetClass, Method method) {
         // Check interfaces

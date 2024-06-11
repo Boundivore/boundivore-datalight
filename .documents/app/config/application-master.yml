@@ -1,6 +1,7 @@
 server:
   datalight:
     version: 1.0.0
+    audit-enable: true
     is-debug: false
     super-user: admin
     super-user-default-password: admin

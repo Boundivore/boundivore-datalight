@@ -69,6 +69,9 @@ public class DataLightEnv {
     @Value("${server.datalight.version}")
     private String version;
 
+    @Value("${server.datalight.audit-enable}")
+    private Boolean auditEnable;
+
     @Value("${server.datalight.is-debug}")
     private boolean isDebug;
 
