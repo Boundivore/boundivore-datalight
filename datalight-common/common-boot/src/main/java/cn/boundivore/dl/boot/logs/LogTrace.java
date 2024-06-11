@@ -65,9 +65,13 @@ public class LogTrace {
     @JsonProperty(value = "LogType", required = true)
     private LogTypeEnum logType;
 
-    @Schema(name = "ClassMethod", title = "请求的 类#方法()", required = true)
-    @JsonProperty(value = "ClassMethod", required = true)
-    private String classMethod;
+    @Schema(name = "ClassName", title = "请求的类", required = true)
+    @JsonProperty(value = "ClassName", required = true)
+    private String className;
+
+    @Schema(name = "MethodName", title = "请求的方法", required = true)
+    @JsonProperty(value = "MethodName", required = true)
+    private String methodName;
 
     @Schema(name = "Ip", title = "请求来源的IP", required = true)
     @JsonProperty(value = "Ip", required = true)

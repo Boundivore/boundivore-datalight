@@ -94,7 +94,7 @@ public class LogAspect {
             // Name & Type & Class.Method
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = method.getName();
-            String classMethodName = String.format("%s#%s()", className, methodName);
+            String classMethodName = String.format("%s#%s", className, methodName);
 
             if(StrUtil.isBlank(logName)){
                 // 获取父类方法上的 @ApiOperation 注解
@@ -109,7 +109,8 @@ public class LogAspect {
 
             logTrace.setLogName(logName);
             logTrace.setLogType(logsAnnotation.logType());
-            logTrace.setClassMethod(classMethodName);
+            logTrace.setClassName(className);
+            logTrace.setMethodName(methodName);
 
             //Time & Date
             LocalDateTime now = LocalDateTime.now();
