@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 12/05/2024 15:55:11
+ Date: 11/06/2024 12:25:31
 */
 
 SET NAMES utf8mb4;
@@ -274,6 +274,31 @@ CREATE TABLE `t_dl_login_event`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Table structure for t_dl_logs
+-- ----------------------------
+DROP TABLE IF EXISTS `t_dl_logs`;
+CREATE TABLE `t_dl_logs`  (
+  `id` bigint(20) NOT NULL COMMENT '分布式 ID',
+  `create_time` bigint(20) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_time` bigint(20) NULL DEFAULT NULL COMMENT '修改时间',
+  `version` bigint(20) NOT NULL DEFAULT 0 COMMENT '乐观锁版本',
+  `log_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志名称',
+  `user_id` bigint(20) NULL DEFAULT NULL COMMENT '用户 ID',
+  `timestamp` bigint(20) NULL DEFAULT NULL COMMENT '请求发生的时间戳',
+  `date_format` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '格式化日期',
+  `log_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '日志类型',
+  `class_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求的类',
+  `method_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求的方法',
+  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求的来源 IP',
+  `uri` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '请求的来源 URI',
+  `result_code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务响应状态码',
+  `result_enum` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '业务响应状态枚举',
+  `params` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '请求入参',
+  `result` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '响应体结果',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志埋点信息表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_dl_node
 -- ----------------------------
 DROP TABLE IF EXISTS `t_dl_node`;
@@ -295,7 +320,7 @@ CREATE TABLE `t_dl_node`  (
   `os_version` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '系统版本',
   `serial_num` int(11) NOT NULL COMMENT '节点计数 当前为第几个增加的节点，唯一且仅递增，不可回退，同时用于部分组件唯一部署 ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '节点信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_node_init
