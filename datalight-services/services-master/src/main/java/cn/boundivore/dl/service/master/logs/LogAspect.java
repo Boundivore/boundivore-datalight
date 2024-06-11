@@ -95,16 +95,19 @@ public class LogAspect {
         }
 
         // 获取注解
-        Logs logsAnnotation = this.getAnnotation(joinPoint, Logs.class);
+        Logs logsAnnotation = this.getAnnotationFromMethodOrClass(method, joinPoint.getTarget().getClass(), Logs.class);
         if (logsAnnotation == null) {
             return joinPoint.proceed();
         }
 
         // 判断是否需要记录 GET 或 POST 请求的日志
-        if (dataLightEnv.getPostMappingEnable() && this.getAnnotation(joinPoint, PostMapping.class) == null) {
+        if (dataLightEnv.getPostMappingEnable()
+                && this.getAnnotationFromMethodOrClass(method, joinPoint.getTarget().getClass(), PostMapping.class) == null) {
             return joinPoint.proceed();
         }
-        if (dataLightEnv.getGetMappingEnable() && this.getAnnotation(joinPoint, GetMapping.class) == null) {
+
+        if (dataLightEnv.getGetMappingEnable()
+                && this.getAnnotationFromMethodOrClass(method, joinPoint.getTarget().getClass(), GetMapping.class) == null) {
             return joinPoint.proceed();
         }
 
@@ -160,8 +163,9 @@ public class LogAspect {
         return result;
     }
 
+
     /**
-     * Description: 获取指定方法或类上的注解。
+     * Description: 获取指定方法或类上的注解，包括父类和接口中的注解
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/6/11
@@ -170,18 +174,49 @@ public class LogAspect {
      * Modification time:
      * Throws: 无
      *
-     * @param joinPoint       连接点，表示被拦截的方法
+     * @param method          当前方法
+     * @param targetClass     当前类
      * @param annotationClass 要获取的注解的类
      * @return 注解实例，如果没有找到则返回 null
      */
-    private <T extends Annotation> T getAnnotation(ProceedingJoinPoint joinPoint, Class<T> annotationClass) {
-        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-        Method method = methodSignature.getMethod();
+    private <T extends Annotation> T getAnnotationFromMethodOrClass(Method method, Class<?> targetClass, Class<T> annotationClass) {
         T annotation = method.getAnnotation(annotationClass);
         if (annotation != null) {
             return annotation;
         }
-        return joinPoint.getTarget().getClass().getAnnotation(annotationClass);
+
+        annotation = targetClass.getAnnotation(annotationClass);
+        if (annotation != null) {
+            return annotation;
+        }
+
+        for (Class<?> interfaces : targetClass.getInterfaces()) {
+            try {
+                Method interfaceMethod = interfaces.getMethod(method.getName(), method.getParameterTypes());
+                annotation = interfaceMethod.getAnnotation(annotationClass);
+                if (annotation != null) {
+                    return annotation;
+                }
+            } catch (NoSuchMethodException e) {
+                // Method not found in interface, continue with next interface
+            }
+        }
+
+        Class<?> superclass = targetClass.getSuperclass();
+        while (superclass != null && superclass != Object.class) {
+            try {
+                Method parentMethod = superclass.getMethod(method.getName(), method.getParameterTypes());
+                annotation = parentMethod.getAnnotation(annotationClass);
+                if (annotation != null) {
+                    return annotation;
+                }
+            } catch (NoSuchMethodException e) {
+                // Method not found in superclass, continue with next superclass
+            }
+            superclass = superclass.getSuperclass();
+        }
+
+        return null;
     }
 
     /**
@@ -203,7 +238,7 @@ public class LogAspect {
             Class<?> targetClass = joinPoint.getTarget().getClass();
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             Method method = methodSignature.getMethod();
-            ApiOperation apiOperation = getAnnotation(joinPoint, ApiOperation.class);
+            ApiOperation apiOperation = this.getAnnotationFromMethodOrClass(method, targetClass, ApiOperation.class);
 
             if (apiOperation != null) {
                 logName = apiOperation.notes();
