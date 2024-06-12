@@ -24,6 +24,7 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlLogs;
 import cn.boundivore.dl.orm.service.single.impl.TDlLogsServiceImpl;
 import cn.hutool.core.codec.Base64;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
@@ -108,9 +109,16 @@ public class MasterAuditService {
                 );
 
         // 日志查询 wrapper
+        List<String> excludeColumnList = CollUtil.newArrayList(
+                "params",
+                "result"
+        );
         LambdaQueryChainWrapper<TDlLogs> tableWrapper = this.tDlLogsService
                 .lambdaQuery()
-                .select(column -> !column.getColumn().equals("params") && !column.getColumn().equals("result"));
+                .select(
+                        TDlLogs.class,
+                        column -> !excludeColumnList.contains(column.getColumn())
+                );
 
         // 添加查询条件
         if (StrUtil.isNotBlank(principal) && userPrincipalMap.containsKey(principal)) {
