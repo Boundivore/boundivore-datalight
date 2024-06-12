@@ -92,9 +92,6 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
         this.masterResetService.checkClusterState();
         this.masterResetService.checkNodeState();
-        this.masterResetService.checkServiceState();
-        this.masterResetService.checkComponentState();
-
     }
 
 }
