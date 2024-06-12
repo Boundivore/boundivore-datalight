@@ -152,7 +152,7 @@ public class MasterComponentPlacementAdvisorService {
                     // 暂时不做最小部署推荐
                     long minPlacement = componentFinal.getMin() == -1L ? 0L : componentFinal.getMin();
 
-                    for (int count = 1; count <= maxPlacement; count++) {
+                    for (int count = 1; count <= maxPlacement && count <= nodeDetailList.size(); count++) {
                         AbstractNodeVo.NodeDetailVo nodeDetail = nodeDetailList.get(count - 1);
                         list.add(
                                 new AbstractComponentPlacementVo.ComponentPlacementVo(
