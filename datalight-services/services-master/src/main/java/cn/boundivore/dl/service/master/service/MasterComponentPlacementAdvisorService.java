@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MasterComponentPlacementAdvisor {
+public class MasterComponentPlacementAdvisorService {
 
     private final MasterClusterService masterClusterService;
 
@@ -153,7 +153,7 @@ public class MasterComponentPlacementAdvisor {
                     long minPlacement = componentFinal.getMin() == -1L ? 0L : componentFinal.getMin();
 
                     for (int count = 1; count <= maxPlacement; count++) {
-                        AbstractNodeVo.NodeDetailVo nodeDetail = nodeDetailList.get(count);
+                        AbstractNodeVo.NodeDetailVo nodeDetail = nodeDetailList.get(count - 1);
                         list.add(
                                 new AbstractComponentPlacementVo.ComponentPlacementVo(
                                         componentFinal.getName(),

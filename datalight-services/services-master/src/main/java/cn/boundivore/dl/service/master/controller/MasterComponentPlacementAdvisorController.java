@@ -21,7 +21,7 @@ import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.response.impl.master.AbstractComponentPlacementVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
-import cn.boundivore.dl.service.master.service.MasterComponentPlacementAdvisor;
+import cn.boundivore.dl.service.master.service.MasterComponentPlacementAdvisorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,12 +40,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
 public class MasterComponentPlacementAdvisorController implements IMasterComponentPlacementAdvisorAPI {
 
-    private final MasterComponentPlacementAdvisor masterComponentPlacementAdvisor;
+    private final MasterComponentPlacementAdvisorService masterComponentPlacementAdvisorService;
 
     @Override
     public Result<AbstractComponentPlacementVo.PlacementAdvisorVo> getComponentPlacementRecommendation(Long clusterId,
                                                                                                        String serviceNames) throws Exception {
-        return this.masterComponentPlacementAdvisor.getComponentPlacementRecommendation(
+        return this.masterComponentPlacementAdvisorService.getComponentPlacementRecommendation(
                 clusterId,
                 serviceNames
         );
