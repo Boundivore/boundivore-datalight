@@ -46,15 +46,15 @@ public abstract class AbstractAuditVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractClusterVo.AuditLogSimpleList",
-            description = "AbstractClusterVo.AuditLogSimpleList 审计日志缩略信息列表信息"
+            name = "AbstractClusterVo.AuditLogSimpleListVo",
+            description = "AbstractClusterVo.AuditLogSimpleListVo 审计日志缩略信息列表信息"
     )
-    public static class AuditLogSimpleList implements IVo {
+    public static class AuditLogSimpleListVo implements IVo {
         private static final long serialVersionUID = -2237685206202222155L;
 
         @Schema(name = "AuditLogSimpleList", title = "审计日志缩略信息列表", required = true)
         @JsonProperty(value = "AuditLogSimpleList", required = true)
-        private List<AuditLogSimple> auditLogSimpleList;
+        private List<AuditLogSimpleVo> auditLogSimpleVoList;
 
     }
 
@@ -63,10 +63,10 @@ public abstract class AbstractAuditVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractClusterVo.AuditLogSimple",
-            description = "AbstractClusterVo.AuditLogSimple 审计日志缩略信息"
+            name = "AbstractClusterVo.AuditLogSimpleVo",
+            description = "AbstractClusterVo.AuditLogSimpleVo 审计日志缩略信息"
     )
-    public static class AuditLogSimple implements IVo {
+    public static class AuditLogSimpleVo implements IVo {
         private static final long serialVersionUID = -2237685706202232155L;
 
         @Schema(name = "AuditLogId", title = "审计日志 ID", required = true)
@@ -129,10 +129,10 @@ public abstract class AbstractAuditVo {
     @NoArgsConstructor
     @Accessors(chain = true)
     @Schema(
-            name = "AbstractClusterVo.AuditLogDetail",
-            description = "AbstractClusterVo.AuditLogDetail 审计日志详细信息"
+            name = "AbstractClusterVo.AuditLogDetailVo",
+            description = "AbstractClusterVo.AuditLogDetailVo 审计日志详细信息"
     )
-    public static class AuditLogDetail implements IVo {
+    public static class AuditLogDetailVo implements IVo {
         private static final long serialVersionUID = -2237685706202222155L;
 
         @Schema(name = "AuditLogId", title = "审计日志 ID", required = true)

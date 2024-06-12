@@ -43,16 +43,16 @@ public class MasterAuditController implements IMasterAuditAPI {
     private final MasterAuditService masterAuditService;
 
     @Override
-    public Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(Long currentPage,
-                                                                            Long pageSize,
-                                                                            String principal,
-                                                                            Long userId,
-                                                                            String opName,
-                                                                            Long startTs,
-                                                                            Long endTs,
-                                                                            String uri,
-                                                                            String Ip,
-                                                                            LogTypeEnum logType) throws Exception {
+    public Result<AbstractAuditVo.AuditLogSimpleListVo> getAuditLogSimpleList(Long currentPage,
+                                                                              Long pageSize,
+                                                                              String principal,
+                                                                              Long userId,
+                                                                              String opName,
+                                                                              Long startTs,
+                                                                              Long endTs,
+                                                                              String uri,
+                                                                              String Ip,
+                                                                              LogTypeEnum logType) throws Exception {
         return this.masterAuditService.getAuditLogSimpleList(
                 currentPage,
                 pageSize,
@@ -68,7 +68,7 @@ public class MasterAuditController implements IMasterAuditAPI {
     }
 
     @Override
-    public Result<AbstractAuditVo.AuditLogDetail> getAuditLogDetail(Long auditLogId) throws Exception {
+    public Result<AbstractAuditVo.AuditLogDetailVo> getAuditLogDetail(Long auditLogId) throws Exception {
         return this.masterAuditService.getAuditLogDetail(auditLogId);
     }
 }

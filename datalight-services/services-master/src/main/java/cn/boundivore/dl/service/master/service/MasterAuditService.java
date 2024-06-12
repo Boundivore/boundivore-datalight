@@ -78,18 +78,18 @@ public class MasterAuditService {
      * @param uri         操作路径
      * @param Ip          操作 IP
      * @param logType     操作日志类型
-     * @return Result<AbstractAuditVo.AuditLogSimpleList> 审计日志缩略信息列表
+     * @return Result<AbstractAuditVo.AuditLogSimpleListVo> 审计日志缩略信息列表
      */
-    public Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(Long currentPage,
-                                                                            Long pageSize,
-                                                                            String principal,
-                                                                            Long userId,
-                                                                            String opName,
-                                                                            Long startTs,
-                                                                            Long endTs,
-                                                                            String uri,
-                                                                            String Ip,
-                                                                            LogTypeEnum logType) {
+    public Result<AbstractAuditVo.AuditLogSimpleListVo> getAuditLogSimpleList(Long currentPage,
+                                                                              Long pageSize,
+                                                                              String principal,
+                                                                              Long userId,
+                                                                              String opName,
+                                                                              Long startTs,
+                                                                              Long endTs,
+                                                                              String uri,
+                                                                              String Ip,
+                                                                              LogTypeEnum logType) {
         // 获取用户详细信息列表
         List<AbstractUserVo.UserInfoVo> userInfoList = this.masterUserService.getUserDetailList()
                 .getData()
@@ -187,10 +187,10 @@ public class MasterAuditService {
                 .page(page)
                 .getRecords();
 
-        List<AbstractAuditVo.AuditLogSimple> auditLogSimpleList = tDlLogsList.stream()
+        List<AbstractAuditVo.AuditLogSimpleVo> auditLogSimpleVoList = tDlLogsList.stream()
                 .map(log -> {
                     AbstractUserVo.UserInfoVo userInfo = userIdMap.get(log.getUserId());
-                    return new AbstractAuditVo.AuditLogSimple(
+                    return new AbstractAuditVo.AuditLogSimpleVo(
                             log.getId(),
                             log.getLogName(),
                             log.getUserId(),
@@ -210,8 +210,8 @@ public class MasterAuditService {
 
 
         return Result.successWithPage(
-                new AbstractAuditVo.AuditLogSimpleList(
-                        auditLogSimpleList
+                new AbstractAuditVo.AuditLogSimpleListVo(
+                        auditLogSimpleVoList
                 ),
                 PageUtil.iPage2Page(page)
 
@@ -229,9 +229,9 @@ public class MasterAuditService {
      * Throws:
      *
      * @param auditLogId 审计日志主键 ID
-     * @return Result<AbstractAuditVo.AuditLogDetail> 审计日志详情
+     * @return Result<AbstractAuditVo.AuditLogDetailVo> 审计日志详情
      */
-    public Result<AbstractAuditVo.AuditLogDetail> getAuditLogDetail(Long auditLogId) {
+    public Result<AbstractAuditVo.AuditLogDetailVo> getAuditLogDetail(Long auditLogId) {
         // 查询日志详情
         TDlLogs tDlLogs = this.tDlLogsService.getById(auditLogId);
         Assert.notNull(
@@ -248,7 +248,7 @@ public class MasterAuditService {
         String resultBase64 = Base64.encode(tDlLogs.getResult());
 
         // 构建日志详情对象
-        AbstractAuditVo.AuditLogDetail auditLogDetail = new AbstractAuditVo.AuditLogDetail()
+        AbstractAuditVo.AuditLogDetailVo auditLogDetailVo = new AbstractAuditVo.AuditLogDetailVo()
                 .setAuditLogId(tDlLogs.getId())
                 .setOpName(tDlLogs.getLogName())
                 .setUserId(tDlLogs.getUserId())
@@ -265,6 +265,6 @@ public class MasterAuditService {
                 .setParamsBase64(paramsBase64)
                 .setResultBase64(resultBase64);
 
-        return Result.success(auditLogDetail);
+        return Result.success(auditLogDetailVo);
     }
 }

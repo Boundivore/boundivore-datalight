@@ -49,7 +49,7 @@ public interface IMasterAuditAPI {
 
     @GetMapping(value = "/audit/getAuditLogSimpleList")
     @ApiOperation(notes = "获取审计日志缩略信息列表", value = "获取审计日志缩略信息列表")
-    Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(
+    Result<AbstractAuditVo.AuditLogSimpleListVo> getAuditLogSimpleList(
             @ApiParam(name = "CurrentPage", value = "当前页码")
             @RequestParam(value = "CurrentPage", required = false)
             Long currentPage,
@@ -93,7 +93,7 @@ public interface IMasterAuditAPI {
 
     @GetMapping(value = "/audit/getAuditLogDetail")
     @ApiOperation(notes = "根据审计日志 ID 获取日志详情", value = "根据审计日志 ID 获取日志详情")
-    Result<AbstractAuditVo.AuditLogDetail> getAuditLogDetail(
+    Result<AbstractAuditVo.AuditLogDetailVo> getAuditLogDetail(
             @ApiParam(name = "AuditLogId", value = "审计日志 ID")
             @RequestParam(value = "AuditLogId", required = true)
             Long auditLogId
