@@ -25,6 +25,7 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
@@ -153,7 +154,14 @@ public class MasterComponentPlacementAdvisorService {
                     long minPlacement = componentFinal.getMin() == -1L ? 0L : componentFinal.getMin();
 
                     for (int count = 1; count <= maxPlacement && count <= nodeDetailList.size(); count++) {
-                        AbstractNodeVo.NodeDetailVo nodeDetail = nodeDetailList.get(count - 1);
+                        // 节点 List 下标
+                        int index = count - 1;
+                        // 临时逻辑：是否跳过当前节点，使用下一个节点，但是如果超出节点数量，则跳出
+                        if (this.isSkipCurrentNode(componentFinal.getName()) && ++index >= nodeDetailList.size()) {
+                            break;
+                        }
+
+                        AbstractNodeVo.NodeDetailVo nodeDetail = nodeDetailList.get(index);
                         list.add(
                                 new AbstractComponentPlacementVo.ComponentPlacementVo(
                                         componentFinal.getName(),
@@ -164,11 +172,64 @@ public class MasterComponentPlacementAdvisorService {
                                         nodeDetail.getHostname()
                                 )
                         );
+
+                        // 临时逻辑：是否结束当前组件继续添加
+                        if (this.isBreakCurrentNode(componentFinal.getName())) {
+                            break;
+                        }
                     }
 
                     return list.stream();
                 })
                 .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Description: 临时逻辑：是否结束当前组件继续添加
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param componentName 组件名称
+     * @return boolean 是否结束
+     */
+    private boolean isBreakCurrentNode(String componentName) {
+        List<String> singleComponentPlacement = CollUtil.newArrayList(
+                "MySQLExporter",
+                "HiveServer2",
+                "HThriftServer2"
+        );
+
+        return singleComponentPlacement.contains(componentName);
+    }
+
+    /**
+     * Description: 临时逻辑：是否跳过当前节点
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param componentName 组件名称
+     * @return boolean 是否跳过
+     */
+    private boolean isSkipCurrentNode(String componentName) {
+        List<String> singleComponentPlacement = CollUtil.newArrayList(
+                "NameNode2",
+                "ZKFailoverController2",
+                "ResourceManager2",
+                "HMaster2"
+        );
+
+        return singleComponentPlacement.contains(componentName);
     }
 
 }
