@@ -185,6 +185,20 @@ public class MasterComponentPlacementAdvisorService {
     }
 
 
+    private final List<String> singleComponentPlacement = CollUtil.newArrayList(
+            "MySQLExporter",
+            "HiveServer2",
+            "HThriftServer2",
+            "HttpFS"
+    );
+
+    private final List<String> skipComponentPlacement = CollUtil.newArrayList(
+            "NameNode2",
+            "ZKFailoverController2",
+            "ResourceManager2",
+            "HMaster2"
+    );
+
     /**
      * Description: 临时逻辑：是否结束当前组件继续添加
      * Created by: Boundivore
@@ -199,13 +213,7 @@ public class MasterComponentPlacementAdvisorService {
      * @return boolean 是否结束
      */
     private boolean isBreakCurrentNode(String componentName) {
-        List<String> singleComponentPlacement = CollUtil.newArrayList(
-                "MySQLExporter",
-                "HiveServer2",
-                "HThriftServer2"
-        );
-
-        return singleComponentPlacement.contains(componentName);
+        return this.singleComponentPlacement.contains(componentName);
     }
 
     /**
@@ -222,14 +230,7 @@ public class MasterComponentPlacementAdvisorService {
      * @return boolean 是否跳过
      */
     private boolean isSkipCurrentNode(String componentName) {
-        List<String> singleComponentPlacement = CollUtil.newArrayList(
-                "NameNode2",
-                "ZKFailoverController2",
-                "ResourceManager2",
-                "HMaster2"
-        );
-
-        return singleComponentPlacement.contains(componentName);
+        return this.skipComponentPlacement.contains(componentName);
     }
 
 }
