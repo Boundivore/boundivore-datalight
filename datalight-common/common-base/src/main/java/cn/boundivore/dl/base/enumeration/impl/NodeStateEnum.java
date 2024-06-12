@@ -116,4 +116,69 @@ public enum NodeStateEnum implements IBaseEnum {
     public boolean isGreaterThan(NodeStateEnum otherState) {
         return this.ordinal() > otherState.ordinal();
     }
+
+    /**
+     * Description: 重置节点状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return NodeStateEnum 重置后的节点状态
+     */
+    public NodeStateEnum resetNodeState() {
+        switch (this) {
+            case UNKNOWN:
+                return this;
+            case RESOLVED:
+                return this;
+            case DETECTING:
+                return INACTIVE;
+            case INACTIVE:
+                return this;
+            case ACTIVE:
+                return this;
+            case CHECKING:
+                return CHECK_ERROR;
+            case CHECK_ERROR:
+                return this;
+            case CHECK_OK:
+                return this;
+            case PUSHING:
+                return PUSH_ERROR;
+            case PUSH_ERROR:
+                return this;
+            case PUSH_OK:
+                return this;
+            case STARTING_WORKER:
+                return START_WORKER_ERROR;
+            case START_WORKER_ERROR:
+                return this;
+            case START_WORKER_OK:
+                return this;
+            case MAINTENANCE:
+                return this;
+            case MAINTENANCE_ADD:
+                return this;
+            case MAINTENANCE_ALTER:
+                return this;
+            case STOPPING:
+                return STOPPED;
+            case STARTED:
+                return this;
+            case STARTING:
+                return STARTED;
+            case STOPPED:
+                return this;
+            case RESTARTING:
+                return STARTED;
+            case REMOVED:
+                return this;
+            default:
+                throw new IllegalStateException("不支持的节点枚举类型: " + this);
+        }
+    }
 }

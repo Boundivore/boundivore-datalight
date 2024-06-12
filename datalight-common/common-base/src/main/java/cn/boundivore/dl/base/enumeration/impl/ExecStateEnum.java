@@ -54,4 +54,31 @@ public enum ExecStateEnum implements IBaseEnum {
     public String getMessage() {
         return message;
     }
+
+    /**
+     * Description: 重置 NodeJob 状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return ExecStateEnum 重置后的 NodeJob 状态
+     */
+    public ExecStateEnum resetExecState() {
+        switch (this) {
+            case NOT_EXIST:
+            case OK:
+            case ERROR:
+                return this;
+            case RUNNING:
+                return ERROR;
+            case SUSPEND:
+                return this;
+            default:
+                throw new IllegalStateException("不支持的 NodeJob 枚举类型: " + this);
+        }
+    }
 }

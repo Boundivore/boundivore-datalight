@@ -57,7 +57,9 @@ public class LocalLockAspect {
         String findParameterValue = "0";
         String principal = "defaultPrincipal";
         try {
-            principal = StpUtil.getSession().get("principal", "defaultPrincipal");
+            if (StpUtil.isLogin()) {
+                principal = StpUtil.getSession().get("principal", "defaultPrincipal");
+            }
         } catch (Exception ignored) {
         }
 

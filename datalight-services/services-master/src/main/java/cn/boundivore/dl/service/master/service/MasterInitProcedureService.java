@@ -70,6 +70,7 @@ public class MasterInitProcedureService {
 
     private final IInitProcedureConverter iInitProcedureConverter;
 
+    private final MasterResetService masterResetService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -101,7 +102,7 @@ public class MasterInitProcedureService {
                 () -> new DatabaseException("保存或更新状态失败")
         );
 
-        AbstractInitProcedureVo.InitProcedureVo initProcedureVo = iInitProcedureConverter.convert2InitProcedureVo(
+        AbstractInitProcedureVo.InitProcedureVo initProcedureVo = this.iInitProcedureConverter.convert2InitProcedureVo(
                 tDlInitProcedure
         );
         initProcedureVo.setNodeInfoList(
@@ -350,6 +351,12 @@ public class MasterInitProcedureService {
                 .list();
 
         this.tDlInitProcedureService.removeBatchByIds(tDlInitProcedureList);
+
+        // 通过状态机检查服务、组件状态是否需要复位
+        this.masterResetService.checkClusterState();
+        this.masterResetService.checkNodeState();
+        this.masterResetService.checkServiceState();
+        this.masterResetService.checkComponentState();
 
         return Result.success();
     }
