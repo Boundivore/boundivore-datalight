@@ -16,16 +16,22 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.base.enumeration.impl.NodeStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.response.impl.master.AbstractComponentPlacementVo;
+import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
+import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,6 +52,8 @@ import java.util.stream.Collectors;
 public class MasterComponentPlacementAdvisor {
 
     private final MasterClusterService masterClusterService;
+
+    private final MasterNodeService masterNodeService;
 
 
     /**
@@ -120,9 +128,47 @@ public class MasterComponentPlacementAdvisor {
      * @param serviceName 服务名称
      * @return AbstractComponentPlacementVo.ComponentPlacementVo 推荐的组件信息
      */
-    private List<AbstractComponentPlacementVo.ComponentPlacementVo> genComponentPlacementList(Long clusterId, String serviceName) {
+    private List<AbstractComponentPlacementVo.ComponentPlacementVo> genComponentPlacementList(Long clusterId,
+                                                                                              String serviceName) {
 
-        return null;
+        // 获取当前服务组件静态配置信息
+        YamlServiceDetail.Service service = ResolverYamlServiceDetail.SERVICE_MAP.get(serviceName);
+
+        // 获取可用节点信息（已按照 hostname 正序排序）
+        List<AbstractNodeVo.NodeDetailVo> nodeDetailList = this.masterNodeService.getNodeList(clusterId)
+                .getData()
+                .getNodeDetailList()
+                .stream()
+                .filter(i -> i.getNodeState() == NodeStateEnum.STARTED)
+                .collect(Collectors.toList());
+
+        // 返回组件推荐分布列表
+        return service.getComponents()
+                .stream()
+                .flatMap(componentFinal -> {
+                    List<AbstractComponentPlacementVo.ComponentPlacementVo> list = new ArrayList<>();
+
+                    long maxPlacement = componentFinal.getMax() == -1L ? Long.MAX_VALUE : componentFinal.getMax();
+                    // 暂时不做最小部署推荐
+                    long minPlacement = componentFinal.getMin() == -1L ? 0L : componentFinal.getMin();
+
+                    for (int count = 1; count <= maxPlacement; count++) {
+                        AbstractNodeVo.NodeDetailVo nodeDetail = nodeDetailList.get(count);
+                        list.add(
+                                new AbstractComponentPlacementVo.ComponentPlacementVo(
+                                        componentFinal.getName(),
+                                        SCStateEnum.SELECTED,
+                                        nodeDetail.getNodeId(),
+                                        nodeDetail.getNodeState(),
+                                        nodeDetail.getNodeIp(),
+                                        nodeDetail.getHostname()
+                                )
+                        );
+                    }
+
+                    return list.stream();
+                })
+                .collect(Collectors.toList());
     }
 
 }
