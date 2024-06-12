@@ -31,7 +31,16 @@ import lombok.experimental.Accessors;
 
 import java.util.List;
 
-
+/**
+ * Description: 服务组件相关响应体
+ * Created by: Boundivore
+ * E-mail: boundivore@foxmail.com
+ * Creation time: 2023/3/17
+ * Modification description:
+ * Modified by:
+ * Modification time:
+ * Version: V1.0
+ */
 public abstract class AbstractServiceComponentVo {
 
     @Data

@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
- * Description: 用户相关信息响应体 Vo
+ * Description: 用户相关信息响应体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/4/17
