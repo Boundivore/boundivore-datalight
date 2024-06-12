@@ -21,8 +21,10 @@ import cn.boundivore.dl.base.response.impl.master.AbstractAuditVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.orm.page.MyPage;
 import cn.boundivore.dl.orm.po.single.TDlLogs;
 import cn.boundivore.dl.orm.service.single.impl.TDlLogsServiceImpl;
+import cn.boundivore.dl.service.master.utils.PageUtil;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
@@ -66,17 +68,21 @@ public class MasterAuditService {
      * Modification time:
      * Throws:
      *
-     * @param principal 用户主体
-     * @param userId    用户 ID
-     * @param opName    操作名称
-     * @param startTs   操作起始时间
-     * @param endTs     操作结束时间
-     * @param uri       操作路径
-     * @param Ip        操作 IP
-     * @param logType   操作日志类型
+     * @param currentPage 当前页码
+     * @param pageSize    每页条目数
+     * @param principal   用户主体
+     * @param userId      用户 ID
+     * @param opName      操作名称
+     * @param startTs     操作起始时间
+     * @param endTs       操作结束时间
+     * @param uri         操作路径
+     * @param Ip          操作 IP
+     * @param logType     操作日志类型
      * @return Result<AbstractAuditVo.AuditLogSimpleList> 审计日志缩略信息列表
      */
-    public Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(String principal,
+    public Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(Long currentPage,
+                                                                            Long pageSize,
+                                                                            String principal,
                                                                             Long userId,
                                                                             String opName,
                                                                             Long startTs,
@@ -84,8 +90,6 @@ public class MasterAuditService {
                                                                             String uri,
                                                                             String Ip,
                                                                             LogTypeEnum logType) {
-
-
         // 获取用户详细信息列表
         List<AbstractUserVo.UserInfoVo> userInfoList = this.masterUserService.getUserDetailList()
                 .getData()
@@ -177,8 +181,11 @@ public class MasterAuditService {
             );
         }
 
-        // 查询并转换结果
-        List<TDlLogs> tDlLogsList = tableWrapper.list();
+        // 分页查询，并转换结果
+        MyPage<TDlLogs> page = MyPage.of(currentPage, pageSize);
+        List<TDlLogs> tDlLogsList = tableWrapper
+                .page(page)
+                .getRecords();
 
         List<AbstractAuditVo.AuditLogSimple> auditLogSimpleList = tDlLogsList.stream()
                 .map(log -> {
@@ -202,10 +209,12 @@ public class MasterAuditService {
                 .collect(Collectors.toList());
 
 
-        return Result.success(
+        return Result.successWithPage(
                 new AbstractAuditVo.AuditLogSimpleList(
                         auditLogSimpleList
-                )
+                ),
+                PageUtil.iPage2Page(page)
+
         );
     }
 

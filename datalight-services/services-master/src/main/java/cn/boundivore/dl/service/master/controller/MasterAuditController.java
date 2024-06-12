@@ -43,7 +43,9 @@ public class MasterAuditController implements IMasterAuditAPI {
     private final MasterAuditService masterAuditService;
 
     @Override
-    public Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(String principal,
+    public Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(Long currentPage,
+                                                                            Long pageSize,
+                                                                            String principal,
                                                                             Long userId,
                                                                             String opName,
                                                                             Long startTs,
@@ -52,6 +54,8 @@ public class MasterAuditController implements IMasterAuditAPI {
                                                                             String Ip,
                                                                             LogTypeEnum logType) throws Exception {
         return this.masterAuditService.getAuditLogSimpleList(
+                currentPage,
+                pageSize,
                 principal,
                 userId,
                 opName,

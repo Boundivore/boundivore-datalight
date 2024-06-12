@@ -50,6 +50,14 @@ public interface IMasterAuditAPI {
     @GetMapping(value = "/audit/getAuditLogSimpleList")
     @ApiOperation(notes = "获取审计日志缩略信息列表", value = "获取审计日志缩略信息列表")
     Result<AbstractAuditVo.AuditLogSimpleList> getAuditLogSimpleList(
+            @ApiParam(name = "CurrentPage", value = "当前页码")
+            @RequestParam(value = "CurrentPage", required = false)
+            Long currentPage,
+
+            @ApiParam(name = "PageSize", value = "每页条目数")
+            @RequestParam(value = "PageSize", required = false)
+            Long pageSize,
+
             @ApiParam(name = "Principal", value = "用户主体")
             @RequestParam(value = "Principal", required = false)
             String principal,
