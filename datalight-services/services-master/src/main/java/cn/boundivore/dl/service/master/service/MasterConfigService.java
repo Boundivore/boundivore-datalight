@@ -279,7 +279,7 @@ public class MasterConfigService {
                 sha256
         );
 
-        // TODO 此处可进一步优化性能：如果配置未发生变更，则不修改配置文件，直接远程写如配置文件内容到对应节点
+        // EASY_TO_FIX: 此处可进一步优化性能：如果配置未发生变更，则不修改配置文件，直接远程写如配置文件内容到对应节点
 //        if (tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()) {
 //            return null;
 //        }
