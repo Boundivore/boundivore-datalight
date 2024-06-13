@@ -23,6 +23,7 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.crypto.SecureUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -120,7 +121,7 @@ public abstract class AbstractConfigEventHandler implements IConfigEventHandler 
      * @return Base64 字符串
      */
     protected String base64(String content) {
-        return Base64.encode(content);
+        return Base64.encode(content, StandardCharsets.UTF_8);
     }
 
     /**
@@ -137,6 +138,6 @@ public abstract class AbstractConfigEventHandler implements IConfigEventHandler 
      * @return 原字符串
      */
     protected String deBase64(String content) {
-        return Base64.decodeStr(content);
+        return Base64.decodeStr(content, StandardCharsets.UTF_8);
     }
 }

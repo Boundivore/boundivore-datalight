@@ -38,7 +38,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterComponentPlacementAdvisorAPI", tags = {"Master 接口：自动推荐组件分布情况接口"})
+@Api(value = "IMasterComponentPlacementAdvisorAPI", tags = {"Master 接口：自动推荐组件分布情况相关"})
 @FeignClient(
         name = "IMasterComponentPlacementAdvisorAPI",
         contextId = "IMasterComponentPlacementAdvisorAPI",
