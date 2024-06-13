@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * Description: 同步或异步修改配置文件逻辑控制服务
- * TODO 考虑修改配置后，是否需要重启组件
  * Created by: Boundivore
  * E-mail: boundivore@formail.com
  * Creation time: 2023/8/1
