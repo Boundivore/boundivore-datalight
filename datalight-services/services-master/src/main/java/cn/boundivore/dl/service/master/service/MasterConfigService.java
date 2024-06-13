@@ -279,10 +279,10 @@ public class MasterConfigService {
                 sha256
         );
 
-        // 如果配置未发生变更，则不修改配置文件
-        if (tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()) {
-            return null;
-        }
+        // TODO 此处可进一步优化性能：如果配置未发生变更，则不修改配置文件，直接远程写如配置文件内容到对应节点
+//        if (tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()) {
+//            return null;
+//        }
 
         tDlConfig.setClusterId(clusterId);
         tDlConfig.setNodeId(nodeId);
@@ -331,6 +331,7 @@ public class MasterConfigService {
             tDlConfigContent = this.getTDlConfigContentBySha256(clusterId, filename, sha256);
         }
 
+        // 如果 tDlConfigContent 此时为空，则说明数据库中无此配置内容实例，需入库，如不为空，则说明已存在同样内容的配置实例，则跳过入库
         if (tDlConfigContent == null) {
             tDlConfigContent = new TDlConfigContent();
             tDlConfigContent.setVersion(0L);
