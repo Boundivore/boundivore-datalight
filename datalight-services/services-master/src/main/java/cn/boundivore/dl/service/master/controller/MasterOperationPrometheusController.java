@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @Logs(logType = LogTypeEnum.MASTER, isPrintResult = true)
-@SaIgnore
 public class MasterOperationPrometheusController implements IMasterOperationPrometheusAPI {
 
     private final MasterOperationPrometheusService masterOperationPrometheusService;
