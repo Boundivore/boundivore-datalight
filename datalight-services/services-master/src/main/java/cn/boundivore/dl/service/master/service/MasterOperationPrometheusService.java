@@ -106,9 +106,6 @@ public class MasterOperationPrometheusService {
                             .filter(component -> !component.getComponentName().contains("Client"))
                             // 遍历每一个组件
                             .forEach(component -> {
-                                // List <Hostname:ExporterPort>
-                                final List<String> hostnameExporterPortList = new ArrayList<>();
-
                                 final String serviceName = service.getServiceSummaryVo().getServiceName();
                                 final String componentName = component.getComponentName();
 
@@ -118,6 +115,12 @@ public class MasterOperationPrometheusService {
                                         "%s-%s",
                                         serviceName,
                                         clipComponentName
+                                );
+
+                                // List <Hostname:ExporterPort>
+                                final List<String> hostnameExporterPortList = prometheusComponentTargetsMap.computeIfAbsent(
+                                        jobName,
+                                        k -> new ArrayList<>()
                                 );
 
                                 component.getComponentNodeList()
@@ -151,7 +154,6 @@ public class MasterOperationPrometheusService {
                                         });
 
                                 hostnameExporterPortList.sort(Comparator.comparing(o -> o.split(":")[0]));
-                                prometheusComponentTargetsMap.put(jobName, hostnameExporterPortList);
                             });
                 });
 
