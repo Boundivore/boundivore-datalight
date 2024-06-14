@@ -46,7 +46,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Description: 发送告警信息到指定为止相关逻辑
+ * Description: 发送告警信息到指定逻辑
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/7/13
