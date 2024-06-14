@@ -18,12 +18,13 @@ package cn.boundivore.dl.service.master.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-//@Configuration
+@Configuration
 public class MailConfig {
 
     @Value("${spring.mail.host}")
@@ -39,6 +40,7 @@ public class MailConfig {
     private String password;
 
     @Bean
+    @Conditional(MailCredentialsCondition.class)
     public JavaMailSenderImpl javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 

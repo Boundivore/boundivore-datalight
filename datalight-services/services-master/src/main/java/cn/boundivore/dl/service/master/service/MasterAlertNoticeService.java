@@ -27,9 +27,6 @@ import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerMailServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlAlertHandlerRelationServiceImpl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -43,6 +40,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +59,7 @@ import java.util.stream.Collectors;
 public class MasterAlertNoticeService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-//    private final JavaMailSenderImpl javaMailSender;
+    private final Optional<JavaMailSenderImpl> javaMailSender;
 
     private final TDlAlertHandlerRelationServiceImpl tDlAlertHandlerRelationService;
 
@@ -142,7 +140,7 @@ public class MasterAlertNoticeService {
 
                             this.remoteInvokeHandlerInterfaceService
                                     .iThirdHandlerInterfaceAPI(uri)
-                                        .sendPostRequest(preSendStr);
+                                    .sendPostRequest(preSendStr);
 
                         } catch (JsonProcessingException e) {
                             log.error(ExceptionUtil.stacktraceToString(e));
@@ -170,22 +168,30 @@ public class MasterAlertNoticeService {
      */
     public void sendToEmail(TDlAlert tDlAlert, AlertWebhookPayloadRequest.Alert request) {
 
-//        List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
-//        List<String> handlerMailAccountList = this.getHandlerMailAccountList(handlerIdList);
-//        try {
-//            handlerMailAccountList.forEach(mail -> {
-//                        SimpleMailMessage message = new SimpleMailMessage();
-//                        message.setFrom(Objects.requireNonNull(javaMailSender.getUsername()));
-//                        message.setTo(mail);
-//                        message.setSubject(tDlAlert.getAlertName());
-//                        message.setText(request.getAnnotations().toString());
-//
-//                        javaMailSender.send(message);
-//                    }
-//            );
-//        } catch (Exception e) {
-//            log.error(ExceptionUtil.stacktraceToString(e));
-//        }
+        if (javaMailSender.isPresent()) {
+            JavaMailSenderImpl sender = javaMailSender.get();
+
+            List<Long> handlerIdList = this.getHandlerIdList(tDlAlert.getId());
+            List<String> handlerMailAccountList = this.getHandlerMailAccountList(handlerIdList);
+            try {
+                handlerMailAccountList.forEach(mail -> {
+                            SimpleMailMessage message = new SimpleMailMessage();
+                            message.setFrom(Objects.requireNonNull(sender.getUsername()));
+                            message.setTo(mail);
+                            message.setSubject(tDlAlert.getAlertName());
+                            message.setText(request.getAnnotations().toString());
+
+                            sender.send(message);
+                        }
+                );
+            } catch (Exception e) {
+                log.error(ExceptionUtil.stacktraceToString(e));
+            }
+        } else {
+            log.warn("JavaMailSender 未配置，无法发送邮件");
+        }
+
+
     }
 
     /**
