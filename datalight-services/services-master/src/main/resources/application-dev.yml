@@ -34,8 +34,8 @@ spring:
     protocol: smtp
     default-encoding: UTF-8
     port: 465
-    username: boundivore@foxmail.com
-    password: xcbjqkhrcnlobead
+    username:
+    password:
     test-connection: true
     properties:
       mail:
