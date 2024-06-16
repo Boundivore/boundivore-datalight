@@ -633,38 +633,44 @@ public class Job extends Thread {
         if ((actionTypeEnum == ActionTypeEnum.DEPLOY || actionTypeEnum == ActionTypeEnum.MIGRATE)) {
             Long currentClusterId = this.jobMeta.getClusterMeta().getCurrentClusterId();
 
-            // 重配置 Prometheus: 异步任务最后，重新加载 Prometheus 配置
-            Optional<StageMeta> monitorStageMetaOptional = this.jobMeta.getStageMetaMap()
-                    .values()
-                    .stream()
-                    .filter(i -> i.getServiceName().equals("MONITOR"))
-                    .findFirst();
+            // 重新加载 Prometheus 配置
+            this.remoteInvokePrometheusHandler.invokePrometheusReload(currentClusterId);
 
-            if (monitorStageMetaOptional.isPresent()) {
-                StageMeta monitorStageMeta = monitorStageMetaOptional.get();
+            // 重新配置 Grafana: 异步任务最后，以幂等方式重新配置 Grafana
+            this.remoteInvokeGrafanaHandler.initGrafanaSettings(currentClusterId);
 
-                Optional<TaskMeta> prometheusTaskMetaOptional = monitorStageMeta.getTaskMetaMap()
-                        .values()
-                        .stream()
-                        .filter(i -> i.getComponentName().equals("Prometheus"))
-                        .findFirst();
-
-                if (prometheusTaskMetaOptional.isPresent()) {
-                    // 重新加载 Prometheus 配置
-                    this.remoteInvokePrometheusHandler.invokePrometheusReload(currentClusterId);
-                }
-
-                Optional<TaskMeta> grafanaTaskMetaOptional = monitorStageMeta.getTaskMetaMap()
-                        .values()
-                        .stream()
-                        .filter(i -> i.getComponentName().equals("Grafana"))
-                        .findFirst();
-
-                if (grafanaTaskMetaOptional.isPresent()) {
-                    // 重新配置 Grafana: 异步任务最后，以幂等方式重新配置 Grafana
-                    this.remoteInvokeGrafanaHandler.initGrafanaSettings(currentClusterId);
-                }
-            }
+//            // 重配置 Prometheus: 异步任务最后，重新加载 Prometheus 配置
+//            Optional<StageMeta> monitorStageMetaOptional = this.jobMeta.getStageMetaMap()
+//                    .values()
+//                    .stream()
+//                    .filter(i -> i.getServiceName().equals("MONITOR"))
+//                    .findFirst();
+//
+//            if (monitorStageMetaOptional.isPresent()) {
+//                StageMeta monitorStageMeta = monitorStageMetaOptional.get();
+//
+//                Optional<TaskMeta> prometheusTaskMetaOptional = monitorStageMeta.getTaskMetaMap()
+//                        .values()
+//                        .stream()
+//                        .filter(i -> i.getComponentName().equals("Prometheus"))
+//                        .findFirst();
+//
+//                if (prometheusTaskMetaOptional.isPresent()) {
+//                    // 重新加载 Prometheus 配置
+//                    this.remoteInvokePrometheusHandler.invokePrometheusReload(currentClusterId);
+//                }
+//
+//                Optional<TaskMeta> grafanaTaskMetaOptional = monitorStageMeta.getTaskMetaMap()
+//                        .values()
+//                        .stream()
+//                        .filter(i -> i.getComponentName().equals("Grafana"))
+//                        .findFirst();
+//
+//                if (grafanaTaskMetaOptional.isPresent()) {
+//                    // 重新配置 Grafana: 异步任务最后，以幂等方式重新配置 Grafana
+//                    this.remoteInvokeGrafanaHandler.initGrafanaSettings(currentClusterId);
+//                }
+//            }
         }
     }
 
