@@ -35,7 +35,9 @@ public enum ActionTypeEnum implements IBaseEnum {
     STOP("2", "停止"),
     RESTART("3", "重启"),
     DECOMMISSION("4", "退役"),
-    REMOVE("5", "移除");
+    REMOVE("5", "移除"),
+    MIGRATE("6", "迁移");
+
 
     private final String code;
     private final String message;

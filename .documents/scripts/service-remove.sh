@@ -25,6 +25,7 @@ fi
 
 CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 SERVICE_DATA_DIR="${DATA_DIR}/${SERVICE_NAME}"
+SERVICE_LOG_DIR="${LOG_DIR}/${SERVICE_NAME}"
 
 # 函数：输出错误并退出
 exit_on_error() {
@@ -37,7 +38,8 @@ clear_service_dir() {
   if [ -d "${CURRENT_SERVICE_DIR}" ]; then
     echo "Removing ${CURRENT_SERVICE_DIR}"
     echo "Removing ${SERVICE_DATA_DIR}"
-    rm -rf "${CURRENT_SERVICE_DIR}" || exit_on_error "Failed to remove ${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR}"
+    echo "Removing ${SERVICE_LOG_DIR}"
+    rm -rf "${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR} ${SERVICE_LOG_DIR}" || exit_on_error "Failed to remove ${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR} ${SERVICE_LOG_DIR}"
   fi
 }
 

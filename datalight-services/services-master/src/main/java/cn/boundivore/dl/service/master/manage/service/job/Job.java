@@ -230,7 +230,8 @@ public class Job extends Thread {
 
         // 用于记录该服务目前在哪些节点执行过初始化步骤
         final Set<Long> haveInitServiceSet = new HashSet<>();
-        if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) { // 判断是否为部署操作
+        ActionTypeEnum actionTypeEnum = this.jobMeta.getActionTypeEnum();
+        if ((actionTypeEnum == ActionTypeEnum.DEPLOY || actionTypeEnum == ActionTypeEnum.MIGRATE)) { // 判断是否为部署操作
             // 判断当前服务在当前节点是否为第一次部署
             List<SCStateEnum> unDeployedComponentStateEnumList = CollUtil.newArrayList(
                     SCStateEnum.SELECTED,
@@ -408,7 +409,9 @@ public class Job extends Thread {
         List<YamlServiceDetail.Step> finalSteps = new LinkedList<>(action.getSteps());
         // 针对所有节点，针对同一个服务，如果是第一个执行配置文件初始化的任务，则阻塞，其他任务则不阻塞，可提升并发速度
         // 注意：该操作仅仅是为了在这里备注，对应功能的逻辑代码的位置位于：添加 TaskMeta 的位置，通过 AtomicBoolean 控制
-        if (taskMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY && taskMeta.isFirstDeployInNode()) {
+        ActionTypeEnum actionTypeEnum = taskMeta.getActionTypeEnum();
+        if ((actionTypeEnum == ActionTypeEnum.DEPLOY || actionTypeEnum == ActionTypeEnum.MIGRATE)
+                && taskMeta.isFirstDeployInNode()) {
             YamlServiceDetail.Initialize initialize = ResolverYamlServiceDetail.SERVICE_MAP
                     .get(taskMeta.getServiceName()).getInitialize();
 
@@ -530,7 +533,8 @@ public class Job extends Thread {
                 this.reloadAndInitMonitor();
 
                 // 如果是部署服务或组件，则完成后，清除 Procedure 信息
-                if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) {
+                ActionTypeEnum actionTypeEnum = this.jobMeta.getActionTypeEnum();
+                if ((actionTypeEnum == ActionTypeEnum.DEPLOY || actionTypeEnum == ActionTypeEnum.MIGRATE)) {
                     this.jobService.clearProcedure(this.jobMeta.getClusterMeta().getCurrentClusterId());
                 }
             }
@@ -625,7 +629,8 @@ public class Job extends Thread {
      * Throws:
      */
     private void reloadAndInitMonitor() {
-        if (this.jobMeta.getActionTypeEnum() == ActionTypeEnum.DEPLOY) {
+        ActionTypeEnum actionTypeEnum = this.jobMeta.getActionTypeEnum();
+        if ((actionTypeEnum == ActionTypeEnum.DEPLOY || actionTypeEnum == ActionTypeEnum.MIGRATE)) {
             Long currentClusterId = this.jobMeta.getClusterMeta().getCurrentClusterId();
 
             // 重配置 Prometheus: 异步任务最后，重新加载 Prometheus 配置
