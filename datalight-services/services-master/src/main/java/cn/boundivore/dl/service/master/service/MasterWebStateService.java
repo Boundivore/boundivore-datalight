@@ -206,6 +206,7 @@ public class MasterWebStateService {
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
+    @LocalLock
     public Result<String> clearByClusterId(AbstractWebStateRequest.ClearStateRequest request) {
         List<TDlWebState> tDlWebStateList = this.tDlWebStateService.lambdaQuery()
                 .select()
@@ -216,10 +217,7 @@ public class MasterWebStateService {
             return Result.success();
         }
 
-        Assert.isTrue(
-                this.tDlWebStateService.removeBatchByIds(tDlWebStateList),
-                () -> new DatabaseException("清空指定集群前端缓存信息失败")
-        );
+        this.tDlWebStateService.removeBatchByIds(tDlWebStateList);
 
         return Result.success();
     }

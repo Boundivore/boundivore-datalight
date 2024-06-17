@@ -170,6 +170,39 @@ public enum SCStateEnum implements IBaseEnum {
 
     }
 
+    /**
+     * Description: 重置不合理的服务状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return SCStateEnum 重置后的服务状态
+     */
+    public SCStateEnum resetServiceState() {
+        switch (this) {
+            case REMOVED:
+                return this;
+            case SELECTED:
+                return UNSELECTED;
+            case UNSELECTED:
+                return this;
+            case SELECTED_ADDITION:
+                return DEPLOYED;
+            case DEPLOYED:
+                return this;
+            case CHANGING:
+                return DEPLOYED;
+            default:
+                throw new IllegalStateException("不支持的服务枚举类型: " + this);
+        }
+    }
+
+
+
     /*
      * 以下为组件状态机
      */
@@ -223,4 +256,44 @@ public enum SCStateEnum implements IBaseEnum {
         return resultSCSStateEnum;
     }
 
+    /**
+     * Description: 重置不合理的组件状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return SCStateEnum 重置后的组件状态
+     */
+    public SCStateEnum resetComponentState() {
+        switch (this) {
+            case REMOVED:
+                return this;
+            case SELECTED:
+                return UNSELECTED;
+            case UNSELECTED:
+                return this;
+            case DEPLOYING:
+                return UNSELECTED;
+            case STARTING:
+                return STARTED;
+            case STARTED:
+                return this;
+            case STOPPING:
+                return STOPPED;
+            case STOPPED:
+                return this;
+            case RESTARTING:
+                return STARTED;
+            case BEING_DECOMMISSIONED:
+                return this;
+            case DECOMMISSIONED:
+                return this;
+            default:
+                throw new IllegalStateException("不支持的组件枚举类型: " + this);
+        }
+    }
 }

@@ -31,7 +31,16 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-
+/**
+ * Description: 集群相关响应体
+ * Created by: Boundivore
+ * E-mail: boundivore@foxmail.com
+ * Creation time: 2023/3/17
+ * Modification description:
+ * Modified by:
+ * Modification time:
+ * Version: V1.0
+ */
 public abstract class AbstractClusterVo {
 
     @Data
@@ -47,7 +56,6 @@ public abstract class AbstractClusterVo {
 
         @Schema(name = "ClusterList", title = "集群信息列表", required = true)
         @JsonProperty(value = "ClusterList", required = true)
-        @NotEmpty(message = "集群信息列表不能为空")
         private List<ClusterVo> clusterList;
     }
 

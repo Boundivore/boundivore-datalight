@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Description: AddNodeRequest
+ * Description: 解析节点主机名响应体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/5

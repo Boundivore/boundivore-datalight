@@ -14,44 +14,32 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.service.master.service;
+package cn.boundivore.dl.service.master.config;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Condition;
+import org.springframework.context.annotation.ConditionContext;
+import org.springframework.core.type.AnnotatedTypeMetadata;
 
 /**
- * Description: 检查普罗米修斯配置
+ * Description: 判断是否设置了邮件告警的密码
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/5
+ * Creation time: 2024/6/14
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-@Service
-@RequiredArgsConstructor
-@Slf4j
-public class MasterConfigPrometheusService {
+public class MailCredentialsCondition implements Condition {
 
-    private final MasterConfigService masterConfigService;
+    @Override
+    public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 
-
-    /**
-     * Description: 修改 Prometheus 配置文件
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2023/8/10
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return 修改后的内容
-     */
-    private String modifyPrometheusConfig() {
-
-        return null;
+        String mailUsername = context.getEnvironment().getProperty("spring.mail.username");
+        String mailPassword = context.getEnvironment().getProperty("spring.mail.password");
+        return mailUsername != null
+                && !mailUsername.isEmpty()
+                && mailPassword != null
+                && !mailPassword.isEmpty();
     }
 }

@@ -214,7 +214,7 @@ public class NodePlan {
                     this.execCurrent.incrementAndGet() * 100 / this.execTotal.get()
             );
 
-            log.info("执行 Step 总数: {}, 当前: {}, 进度: {}%",
+            log.info("执行 Step 总数: {}, 当前执行完毕: {}, 进度: {}%",
                     execTotal.get(),
                     execCurrent.get(),
                     execProgress.get()

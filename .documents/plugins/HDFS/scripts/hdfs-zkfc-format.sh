@@ -27,7 +27,7 @@ CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 formatZFKC() {
   /usr/bin/expect <<-EOF
         set timeout -1
-        spawn su -c "${CURRENT_SERVICE_DIR}/bin/hdfs zkfc -formatZK" "${USER_NAME}"
+        spawn su -c "${CURRENT_SERVICE_DIR}/bin/hdfs zkfc -formatZK -force" "${USER_NAME}"
         expect {
             "Proceed formatting*" { send "N\r"; exp_continue }
             eof

@@ -139,7 +139,7 @@ datalight:
             steps:
               - type: SCRIPT
                 name: '格式化 NameNode1'
-                shell: 'hdfs-namenode1-format.sh'
+                shell: 'hdfs-namenode-format.sh'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
@@ -197,6 +197,29 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
+          - type: MIGRATE
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '待命 NameNode1'
+                shell: 'hdfs-namenode-standby.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '部署后启动 NameNode1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
       - name: NameNode2
         priority: 3
         max: 1
@@ -211,7 +234,7 @@ datalight:
             steps:
               - type: SCRIPT
                 name: '待命 NameNode2'
-                shell: 'hdfs-namenode2-standby.sh'
+                shell: 'hdfs-namenode-standby.sh'
                 args: [ ]
                 interactions: [ ]
                 exits: '0'
@@ -264,6 +287,29 @@ datalight:
                 name: '重启 NameNode2'
                 shell: 'hdfs-operation.sh'
                 args: [ 'NameNode', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+                
+          - type: MIGRATE
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '待命 NameNode2'
+                shell: 'hdfs-namenode-standby.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '部署后启动 NameNode2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'NameNode', 'start' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
@@ -341,6 +387,29 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
+          - type: MIGRATE
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '格式化 ZKFC'
+                shell: 'hdfs-zkfc-format.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '部署后启动 ZKFailoverController1'
+                shell: 'hdfs-operation.sh'
+                args: [ 'ZKFailoverController', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
       - name: ZKFailoverController2
         priority: 5
         max: 1
@@ -405,6 +474,29 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
+          - type: MIGRATE
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '格式化 ZKFC'
+                shell: 'hdfs-zkfc-format.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '部署后启动 ZKFailoverController2'
+                shell: 'hdfs-operation.sh'
+                args: [ 'ZKFailoverController', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
       - name: DataNode
         priority: 6
         max: -1
@@ -463,6 +555,20 @@ datalight:
                 name: '重启 DataNode'
                 shell: 'hdfs-operation.sh'
                 args: [ 'DataNode', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: DECOMMISSION
+            start-state: DECOMMISSIONING
+            success-state: DECOMMISSIONING
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '退役 DataNode'
+                shell: 'hdfs-operation.sh'
+                args: [ 'DataNode', 'decommission' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000

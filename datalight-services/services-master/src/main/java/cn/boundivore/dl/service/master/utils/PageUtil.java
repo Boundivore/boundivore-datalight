@@ -14,46 +14,34 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.base.enumeration.impl;
+package cn.boundivore.dl.service.master.utils;
 
-import cn.boundivore.dl.base.enumeration.IBaseEnum;
+import cn.boundivore.dl.base.result.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 /**
- * Description: ActionTypeEnum
+ * Description: PageUtil
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/7
+ * Creation time: 2023/5/28
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-public enum ActionTypeEnum implements IBaseEnum {
+public class PageUtil {
+    public static <T> Page iPage2Page(IPage<T> iPage) {
+        long current = iPage != null ? iPage.getCurrent() : 0;
+        long pages = iPage != null ? iPage.getPages() : 0;
+        long size = iPage != null ? iPage.getSize() : 0;
+        long total = iPage != null ? iPage.getTotal() : 0;
 
-    DEPLOY("0", "部署"),
-    START("1", "启动"),
-    STOP("2", "停止"),
-    RESTART("3", "重启"),
-    DECOMMISSION("4", "退役"),
-    REMOVE("5", "移除"),
-    MIGRATE("6", "迁移");
-
-
-    private final String code;
-    private final String message;
-
-    ActionTypeEnum(String code, String message) {
-        this.code = code;
-        this.message = message;
+        return new Page(
+                current,
+                pages,
+                size,
+                total
+        );
     }
 
-    @Override
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
-    }
 }

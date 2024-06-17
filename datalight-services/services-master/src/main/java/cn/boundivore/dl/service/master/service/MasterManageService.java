@@ -418,7 +418,7 @@ public class MasterManageService {
     }
 
     /**
-     * Description: 用户服务组件自动拉起
+     * Description: 检查服务组件自动拉起
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/4/16

@@ -69,6 +69,15 @@ public class DataLightEnv {
     @Value("${server.datalight.version}")
     private String version;
 
+    @Value("${datalight.audit.enable}")
+    private Boolean auditEnable;
+
+    @Value("${datalight.audit.post-mapping-enable}")
+    private Boolean postMappingEnable;
+
+    @Value("${datalight.audit.get-mapping-enable}")
+    private Boolean getMappingEnable;
+
     @Value("${server.datalight.is-debug}")
     private boolean isDebug;
 

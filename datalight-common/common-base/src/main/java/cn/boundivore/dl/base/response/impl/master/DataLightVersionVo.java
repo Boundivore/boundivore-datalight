@@ -25,7 +25,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * Description: DataLight 版本相关响应体
+ * Created by: Boundivore
+ * E-mail: boundivore@foxmail.com
+ * Creation time: 2023/3/17
+ * Modification description:
+ * Modified by:
+ * Modification time:
+ * Version: V1.0
+ */
 @Data
 @Builder
 @NoArgsConstructor

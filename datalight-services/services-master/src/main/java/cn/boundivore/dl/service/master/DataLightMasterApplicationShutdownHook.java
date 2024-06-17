@@ -14,46 +14,27 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.base.enumeration.impl;
+package cn.boundivore.dl.service.master;
 
-import cn.boundivore.dl.base.enumeration.IBaseEnum;
+import cn.boundivore.dl.service.master.logs.LogTraceCache;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.stereotype.Component;
 
 /**
- * Description: ActionTypeEnum
+ * Description: SpringBoot 程序退出时，进行收尾工作
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2023/5/7
+ * Creation time: 2024/6/11
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-public enum ActionTypeEnum implements IBaseEnum {
-
-    DEPLOY("0", "部署"),
-    START("1", "启动"),
-    STOP("2", "停止"),
-    RESTART("3", "重启"),
-    DECOMMISSION("4", "退役"),
-    REMOVE("5", "移除"),
-    MIGRATE("6", "迁移");
-
-
-    private final String code;
-    private final String message;
-
-    ActionTypeEnum(String code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+@Component
+public class DataLightMasterApplicationShutdownHook implements DisposableBean {
 
     @Override
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
+    public void destroy() throws Exception {
+        LogTraceCache.shutdown();
     }
 }

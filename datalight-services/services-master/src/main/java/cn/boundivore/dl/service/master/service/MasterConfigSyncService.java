@@ -32,7 +32,6 @@ import java.util.List;
 
 /**
  * Description: 同步或异步修改配置文件逻辑控制服务
- * TODO 考虑修改配置后，是否需要重启组件
  * Created by: Boundivore
  * E-mail: boundivore@formail.com
  * Creation time: 2023/8/1
@@ -95,6 +94,7 @@ public class MasterConfigSyncService {
      * Throws:
      *
      * @param pluginConfigResult 插件对配置文件修改后的最终结果
+     * @return boolean 是否成功批量保存配置文件
      */
     public boolean saveConfigOrUpdateBatch(PluginConfigResult pluginConfigResult) {
         // 判断如果为有效的配置修改，则发送修改配置请求
@@ -119,6 +119,7 @@ public class MasterConfigSyncService {
      * Throws:
      *
      * @param request 将要修改的配置文件分组
+     * @return Result<String> 同步分组保存配置文件结果
      */
     public Result<String> saveConfigByGroupSync(ConfigSaveByGroupRequest request) {
         synchronized (this) {
@@ -137,7 +138,7 @@ public class MasterConfigSyncService {
      * Throws:
      *
      * @param pluginConfigResult 插件对配置文件修改后的最终结果
-     * @return 转换后的配置文件修改请求
+     * @return ConfigSaveRequest 转换后的配置文件修改请求
      */
     public ConfigSaveRequest pluginConfigResult2Request(PluginConfigResult pluginConfigResult) {
 

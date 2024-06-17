@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 /**
- * Description: AutoPullProcessVo
+ * Description: 自动进程拉起相关响应体
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/3/21

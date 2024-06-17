@@ -16,42 +16,40 @@
  */
 package cn.boundivore.dl.api.master.define;
 
-import cn.boundivore.dl.base.request.impl.master.AbstractAIGCRequest;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 
 /**
- * Description: AIGC 内容生成接口
+ * Description: 操作 Prometheus 相关接口
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
- * Creation time: 2024/5/22
+ * Creation time: 2024/6/13
  * Modification description:
  * Modified by:
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterAIGCAPI", tags = {"Master 接口：AIGC 内容生成相关"})
+@Api(value = "IMasterOperationPrometheusAPI", tags = {"Master 接口：操作 Prometheus 相关"})
 @FeignClient(
-        name = "IMasterAIGCAPI",
-        contextId = "IMasterAIGCAPI",
+        name = "IMasterOperationPrometheusAPI",
+        contextId = "IMasterOperationPrometheusAPI",
         path = MASTER_URL_PREFIX
 )
-public interface IMasterAIGCAPI {
+public interface IMasterOperationPrometheusAPI {
 
-    @PostMapping(value = "/aigc/sendMessage")
-    @ApiOperation(notes = "向 AIGC 发送消息", value = "向 AIGC 发送消息")
-    Result<String> sendMessage(
-            @RequestBody
-            @Valid
-            AbstractAIGCRequest.SendMessageRequest request
+    @GetMapping(value = "/operation/prometheus/resetPrometheusConfig")
+    @ApiOperation(notes = "重置 Prometheus 配置", value = "重置 Prometheus 配置")
+    Result<String> resetPrometheusConfig(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId
     ) throws Exception;
 }

@@ -46,13 +46,7 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
 
     private final MasterUserService masterUserService;
 
-    private final MasterNodeJobService masterNodeJobService;
-
-    private final MasterJobService masterJobService;
-
-    private final MasterServiceService masterServiceService;
-
-    private final MasterComponentService masterComponentService;
+    private final MasterResetService masterResetService;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -93,13 +87,11 @@ public class DataLightMasterApplicationRunner implements ApplicationRunner {
         // 检查超级用户是否注入到数据库
         this.masterUserService.checkInitSuperUser();
 
-        // 检查是否存在 Master 异常终止导致数据库状态异常，若存在，则使其恢复到正常状态
+        // 检查是否存在 Master 异常终止导致数据库状态异常，若存在，则重置复到正常状态
         // TODO 如果后续开启 Master 高可用功能，此处功能需要移动到 “切换为活跃锁时，检查状态异常”
-        this.masterNodeJobService.checkNodeJobState();
-        this.masterJobService.checkJobState();
-        this.masterServiceService.checkServiceState();
-        this.masterComponentService.checkComponentState();
 
+        this.masterResetService.checkClusterState();
+        this.masterResetService.checkNodeState();
     }
 
 }

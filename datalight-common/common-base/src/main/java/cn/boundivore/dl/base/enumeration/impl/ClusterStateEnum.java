@@ -52,4 +52,29 @@ public enum ClusterStateEnum implements IBaseEnum {
     public String getMessage() {
         return message;
     }
+
+    /**
+     * Description: 重置集群状态
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/12
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return ClusterStateEnum 重置后的集群状态
+     */
+    public ClusterStateEnum resetClusterState() {
+        switch (this) {
+            case MAINTENANCE:
+                return this;
+            case REMOVED:
+                return this;
+            case STARTED:
+                return this;
+            default:
+                throw new IllegalStateException("不支持的集群枚举类型: " + this);
+        }
+    }
 }

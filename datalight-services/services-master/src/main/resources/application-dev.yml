@@ -25,22 +25,26 @@ spring:
   #  cloud:
   #    loadbalancer:
   #      enabled: false
-#  mail:
-#    host: smtp.qq.com
-#    protocol: smtp
-#    default-encoding: UTF-8
-#    port: 465
-#    username: boundivore@foxmail.com
-#    password: xcbjqkhrcnlobead
-#    test-connection: true
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: false  # STARTTLS不再启用
-#          ssl:
-#            enable: true   # 启用SSL
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailSenderValidatorAutoConfiguration
+  mail:
+    host: smtp.qq.com
+    protocol: smtp
+    default-encoding: UTF-8
+    port: 465
+    username:
+    password:
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false  # STARTTLS不再启用
+          ssl:
+            enable: true   # 启用SSL
 
   servlet:
     multipart:
@@ -207,9 +211,15 @@ sa-token:
   # 是否输出操作日志
   is-log: true
 
+datalight:
+  audit:
+    enable: true
+    post-mapping-enable: true
+    get-mapping-enable: false
+
 aigc:
   qianfan:
-    access-key: "ALTAKzKkKakn52TXvd6ck7Fv3m"
-    secret-key: "a68e2f185bf043d388e95cbfd81cebb3"
-    model: "ERNIE-Speed-128K"
+    access-key: ""
+    secret-key: ""
+    model: ""
 
