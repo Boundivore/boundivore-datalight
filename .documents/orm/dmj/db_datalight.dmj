@@ -1,7 +1,7 @@
 {
   "RootName": "DataModels",
   "CTVER": "43543336",
-  "TableCount": 34,
+  "TableCount": 35,
   "Count": 2,
   "items": [
     {
@@ -9,11 +9,11 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-186.12,1040.14,1.44,0,",
+      "CustomAttr1": "DVS:-33.67,661.06,0.88,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
-        "Count": 33,
+        "Count": 34,
         "items": [
           {
             "ID": 1,
@@ -811,7 +811,7 @@
             "Caption": "Job 信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 8,
-            "GraphDesc": "Left=29.57\r\nTop=2116.94",
+            "GraphDesc": "Left=16.37\r\nTop=2255.00",
             "MetaFields": {
               "Count": 12,
               "items": [
@@ -939,7 +939,7 @@
             "Caption": "Stage 信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 9,
-            "GraphDesc": "Left=310.14\r\nTop=2116.19",
+            "GraphDesc": "Left=296.94\r\nTop=2254.25",
             "MetaFields": {
               "Count": 16,
               "items": [
@@ -1105,7 +1105,7 @@
             "Caption": "Task 信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 10,
-            "GraphDesc": "Left=590.14\r\nTop=2113.69",
+            "GraphDesc": "Left=576.94\r\nTop=2251.75",
             "MetaFields": {
               "Count": 29,
               "items": [
@@ -1391,7 +1391,7 @@
             "Caption": "Step 信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 11,
-            "GraphDesc": "Left=872.83\r\nTop=2113.26",
+            "GraphDesc": "Left=856.86\r\nTop=2251.32",
             "MetaFields": {
               "Count": 24,
               "items": [
@@ -2835,7 +2835,7 @@
             "Caption": "Job 工作日志信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 20,
-            "GraphDesc": "Left=1154.58\r\nTop=2114.75",
+            "GraphDesc": "Left=1138.61\r\nTop=2252.81",
             "MetaFields": {
               "Count": 13,
               "items": [
@@ -3711,7 +3711,7 @@
             "Caption": "告警配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 29,
-            "GraphDesc": "Left=29.09\r\nTop=2655.86",
+            "GraphDesc": "Left=13.12\r\nTop=2793.92",
             "MetaFields": {
               "Count": 11,
               "items": [
@@ -3832,7 +3832,7 @@
             "Caption": "告警与处理告警信息关联表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 30,
-            "GraphDesc": "Left=339.79\r\nTop=2658.63",
+            "GraphDesc": "Left=323.82\r\nTop=2796.69",
             "MetaFields": {
               "Count": 7,
               "items": [
@@ -3915,7 +3915,7 @@
             "Caption": "处理告警邮箱配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 31,
-            "GraphDesc": "Left=757.27\r\nTop=2773.03",
+            "GraphDesc": "Left=741.30\r\nTop=2911.09",
             "MetaFields": {
               "Count": 5,
               "items": [
@@ -3979,7 +3979,7 @@
             "Caption": "处理告警接口配置信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 32,
-            "GraphDesc": "Left=752.56\r\nTop=2660.09",
+            "GraphDesc": "Left=736.59\r\nTop=2798.15",
             "MetaFields": {
               "Count": 5,
               "items": [
@@ -4043,7 +4043,7 @@
             "Caption": "日志埋点信息表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 33,
-            "GraphDesc": "Left=34.78\r\nTop=2886.92",
+            "GraphDesc": "Left=18.81\r\nTop=3024.98",
             "MetaFields": {
               "Count": 17,
               "items": [
@@ -4195,6 +4195,88 @@
                 }
               ]
             }
+          },
+          {
+            "ID": 1,
+            "Name": "t_dl_component_migrate",
+            "Caption": "组件迁移信息表",
+            "CreateDate": "2023/9/19 13:59:05",
+            "OrderNo": 34,
+            "GraphDesc": "Left=268.50\r\nTop=2085.98",
+            "MetaFields": {
+              "Count": 7,
+              "items": [
+                {
+                  "ID": 1,
+                  "Name": "id",
+                  "OrderNo": 1,
+                  "DisplayName": "分布式 ID",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "KeyFieldType": 1,
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 2,
+                  "Name": "create_time",
+                  "OrderNo": 2,
+                  "DisplayName": "创建时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 3,
+                  "Name": "update_time",
+                  "OrderNo": 3,
+                  "DisplayName": "修改时间",
+                  "DataType": 2,
+                  "DataTypeName": "BigInt",
+                  "RelateTable": "t_",
+                  "DataLength": 20
+                },
+                {
+                  "ID": 4,
+                  "Name": "version",
+                  "OrderNo": 4,
+                  "DisplayName": "乐观锁版本",
+                  "DataType": 2,
+                  "RelateTable": "t_",
+                  "DefaultValue": "0",
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 7,
+                  "Name": "cluster_id",
+                  "OrderNo": 5,
+                  "DisplayName": "集群 ID",
+                  "DataType": 2,
+                  "Not_Nullable": true,
+                  "DataLength": 20
+                },
+                {
+                  "ID": 6,
+                  "Name": "service_name",
+                  "OrderNo": 6,
+                  "DisplayName": "服务名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                },
+                {
+                  "ID": 5,
+                  "Name": "component_name",
+                  "OrderNo": 7,
+                  "DisplayName": "组件名称",
+                  "DataType": 1,
+                  "Not_Nullable": true,
+                  "DataLength": 255
+                }
+              ]
+            }
           }
         ]
       }
@@ -4204,18 +4286,18 @@
       "Name": "Templated",
       "CreateDate": "2024/4/7 10:26:29",
       "OrderNo": 2,
-      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,\r\n",
+      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,t_dl_",
       "Tables": {
         "Count": 1,
         "items": [{
           "ID": 1,
-          "Name": "t_dl_logs",
-          "Caption": "日志埋点信息表",
+          "Name": "t_dl_",
+          "Caption": "模板表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 1,
-          "GraphDesc": "Left=18.50\r\nTop=17.00\r\n",
+          "GraphDesc": "Left=20.00\r\nTop=15.00",
           "MetaFields": {
-            "Count": 17,
+            "Count": 4,
             "items": [
               {
                 "ID": 1,
@@ -4258,110 +4340,6 @@
                 "DefaultValue": "0",
                 "Not_Nullable": true,
                 "DataLength": 20
-              },
-              {
-                "ID": 5,
-                "Name": "log_name",
-                "OrderNo": 5,
-                "DisplayName": "日志名称",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 6,
-                "Name": "user_id",
-                "OrderNo": 6,
-                "DisplayName": "用户 ID",
-                "DataType": 2,
-                "DataLength": 20
-              },
-              {
-                "ID": 7,
-                "Name": "timestamp",
-                "OrderNo": 7,
-                "DisplayName": "请求发生的时间戳",
-                "DataType": 2,
-                "DataLength": 20
-              },
-              {
-                "ID": 8,
-                "Name": "date_format",
-                "OrderNo": 8,
-                "DisplayName": "格式化日期",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 9,
-                "Name": "log_type",
-                "OrderNo": 9,
-                "DisplayName": "日志类型",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 10,
-                "Name": "class_name",
-                "OrderNo": 10,
-                "DisplayName": "请求的类",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 11,
-                "Name": "method_name",
-                "OrderNo": 11,
-                "DisplayName": "请求的方法",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 12,
-                "Name": "ip",
-                "OrderNo": 12,
-                "DisplayName": "请求的来源 IP",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 13,
-                "Name": "uri",
-                "OrderNo": 13,
-                "DisplayName": "请求的来源 URI",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 14,
-                "Name": "result_code",
-                "OrderNo": 14,
-                "DisplayName": "业务响应状态码",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 15,
-                "Name": "result_enum",
-                "OrderNo": 15,
-                "DisplayName": "业务响应状态枚举",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 16,
-                "Name": "params",
-                "OrderNo": 16,
-                "DisplayName": "请求入参",
-                "DataType": 1,
-                "DataLength": 255
-              },
-              {
-                "ID": 17,
-                "Name": "result",
-                "OrderNo": 17,
-                "DisplayName": "响应体结果",
-                "DataType": 1,
-                "DataLength": 255
               }
             ]
           }
