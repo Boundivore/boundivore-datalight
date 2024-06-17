@@ -45,7 +45,7 @@ public enum SCStateEnum implements IBaseEnum {
 
     RESTARTING("5", "重启中"),
 
-    BEING_DECOMMISSIONED("6", "退役中"),
+    DECOMMISSIONING("6", "退役中"),
     DECOMMISSIONED("7", "已退役"),
 
     /**
@@ -288,7 +288,7 @@ public enum SCStateEnum implements IBaseEnum {
                 return this;
             case RESTARTING:
                 return STARTED;
-            case BEING_DECOMMISSIONED:
+            case DECOMMISSIONING:
                 return this;
             case DECOMMISSIONED:
                 return this;
