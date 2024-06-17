@@ -560,6 +560,20 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
+          - type: DECOMMISSION
+            start-state: DECOMMISSIONING
+            success-state: DECOMMISSIONING
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '退役 DataNode'
+                shell: 'hdfs-operation.sh'
+                args: [ 'DataNode', 'decommission' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
       - name: HttpFS
         priority: 7
         max: 2
