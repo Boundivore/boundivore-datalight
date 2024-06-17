@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.ActionTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
@@ -28,7 +27,6 @@ import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
-import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
 import cn.boundivore.dl.orm.po.single.*;
@@ -45,7 +43,6 @@ import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapp
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -114,6 +111,11 @@ public class MasterJobService {
                 componentSCSStateEnumList.add(SCStateEnum.STOPPED);
                 break;
             case DECOMMISSION:
+                componentSCSStateEnumList.add(SCStateEnum.STARTED);
+                break;
+            case MIGRATE:
+                componentSCSStateEnumList.add(SCStateEnum.SELECTED);
+                componentSCSStateEnumList.add(SCStateEnum.SELECTED_ADDITION);
                 break;
         }
 
