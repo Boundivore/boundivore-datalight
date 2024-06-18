@@ -143,7 +143,7 @@ public class MasterOperationService {
                 ? jobRequest.getActionTypeEnum()
                 : jobDetailRequest.getActionTypeEnum();
 
-        // TODO 检查将要操作的服务或组件是否存在对应的行为操作，与 Yaml 配置相关联进行校检
+        // TODO 检查将要操作的服务或组件是否存在对应的行为操作，并与 Yaml 配置相关联进行校检
         switch (actionTypeEnum) {
             case START:
                 break;
@@ -152,6 +152,23 @@ public class MasterOperationService {
             case RESTART:
                 break;
             case DECOMMISSION:
+
+                Assert.notNull(
+                        jobDetailRequest,
+                        () -> new BException("JobDetailRequest 不能为空")
+                );
+
+                // TODO 可考虑在通过检查后，实现自动修改 dfs.exclude 配置文件，实现自动退役
+                assert jobDetailRequest != null;
+                jobDetailRequest.getJobDetailServiceList()
+                        .forEach(i -> i.getJobDetailComponentList()
+                                .forEach(c -> Assert.isTrue(
+                                                c.getComponentName().equals("DataNode"),
+                                                () -> new BException("仅 DataNode 组件允许执行退役操作")
+                                        )
+                                )
+                        );
+
                 break;
             case DEPLOY:
                 break;
@@ -197,13 +214,11 @@ public class MasterOperationService {
 
 
         // TODO 检查操作的组件是否在对应节点存在
-        if(jobDetailRequest != null){
+        if (jobDetailRequest != null) {
             AbstractServiceComponentVo.ComponentVo componentVo = this.masterComponentService.getComponentList(clusterId).getData();
             // TODO 用 jobDetailRequest  对比 componentVo，且对应组件在对应节点上的状态不能是 REMOVED
 
         }
-
-
 
 
     }
