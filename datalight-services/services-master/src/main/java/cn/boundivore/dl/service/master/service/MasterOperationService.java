@@ -158,7 +158,7 @@ public class MasterOperationService {
                         () -> new BException("JobDetailRequest 不能为空")
                 );
 
-                // TODO 可考虑在通过检查后，实现自动修改 dfs.exclude 配置文件，实现自动退役
+                // TODO 可考虑在通过检查后，实现自动修改 dfs.exclude 配置文件，实现跟随当前操作自动退役
                 assert jobDetailRequest != null;
                 jobDetailRequest.getJobDetailServiceList()
                         .forEach(i -> i.getJobDetailComponentList()
