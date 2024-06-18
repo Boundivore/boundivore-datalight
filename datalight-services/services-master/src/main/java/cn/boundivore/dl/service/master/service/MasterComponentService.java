@@ -1442,9 +1442,9 @@ public class MasterComponentService {
 
         /*
             返回结果示例：
-                node01-Normal
-                node02-Decommissioned
-                node03-Decommissioning
+                node01:Normal:(DataNodeStateMark)
+                node02:Decommissioned:(DataNodeStateMark)
+                node03:Decommissioning:(DataNodeStateMark)
          */
         String checkDecommissionResult = this.remoteInvokeWorkerService.iWorkerExecAPI(anyDataNodeHostname)
                 .exec(new ExecRequest(
@@ -1456,7 +1456,7 @@ public class MasterComponentService {
                         new String[0],
                         new String[0],
                         true
-                )).getData();
+                )).getData().trim();
 
         log.info(checkDecommissionResult);
 
@@ -1482,9 +1482,8 @@ public class MasterComponentService {
      */
     private Map<String, SCStateEnum> parseDecommissionResult(String datanodeDecommissionResult) {
         return Arrays.stream(datanodeDecommissionResult.split("\n"))
-                .map(line -> line.split("-"))
-                // 跳过 Normal 的 DataNode
-                .filter(parts -> parts.length == 2 && !"Normal".equals(parts[1]))
+                .filter(line -> line.trim().contains("DataNodeStateMark"))
+                .map(line -> line.split(":"))
                 /*
                     Normal 对应 SCStateEnum.STARTED
                     Decommissioned 对应 SCStateEnum.DECOMMISSIONED

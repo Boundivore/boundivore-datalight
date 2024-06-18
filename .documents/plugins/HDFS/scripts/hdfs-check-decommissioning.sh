@@ -35,11 +35,11 @@ check_all_nodes_decommission_status() {
     /Decommission Status/ {
       status=$4
       if (status == "Decommissioned") {
-        print node_hostname "-Decommissioned"
+        print node_hostname ":Decommissioned:(DataNodeStateMark)"
       } else if (status == "Decommissioning") {
-        print node_hostname "-Decommissioning"
+        print node_hostname ":Decommissioning:(DataNodeStateMark)"
       } else {
-        print node_hostname "-Normal"
+        print node_hostname ":Normal:(DataNodeStateMark)"
       }
     }
   '

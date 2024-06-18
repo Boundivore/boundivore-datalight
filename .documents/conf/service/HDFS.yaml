@@ -568,7 +568,7 @@ datalight:
               - type: SCRIPT
                 name: '退役 DataNode'
                 shell: 'hdfs-operation.sh'
-                args: [ 'DataNode', 'decommission' ]
+                args: [ 'DataNode', 'refresh' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000

@@ -129,9 +129,6 @@ case "${COMPONENT_NAME}" in
   "report")
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs dfsadmin -report" "${USER_NAME}"
     ;;
-  "decommission")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs dfsadmin -decommission" "${USER_NAME}"
-    ;;
   *)
      echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart|refresh|report|decommission]"
     exit 1
