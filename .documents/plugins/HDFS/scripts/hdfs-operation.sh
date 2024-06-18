@@ -127,7 +127,7 @@ case "${COMPONENT_NAME}" in
     su -c "${CURRENT_SERVICE_DIR}/bin/hdfs dfsadmin -refreshNodes" "${USER_NAME}"
     ;;
   "report")
-    su -c "${CURRENT_SERVICE_DIR}/bin/hdfs dfsadmin -report" "${USER_NAME}"
+    su -c "/srv/datalight/HDFS/bin/hdfs dfsadmin -report" "datalight"
     ;;
   *)
      echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart|refresh|report|decommission]"
