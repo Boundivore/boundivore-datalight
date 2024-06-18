@@ -1406,7 +1406,12 @@ public class MasterComponentService {
                 .filter(i -> {
                     String hostname = componentNodeMap.get(i.getNodeId()).getHostname();
                     SCStateEnum newDataNodeState = nodeDataNodeStateMap.get(hostname);
-                    return newDataNodeState != i.getComponentState();
+
+                    boolean needUpdate = newDataNodeState != i.getComponentState();
+                    if (needUpdate) {
+                        i.setComponentState(newDataNodeState);
+                    }
+                    return needUpdate;
                 })
                 .collect(Collectors.toList());
 
