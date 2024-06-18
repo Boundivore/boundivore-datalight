@@ -79,4 +79,9 @@ public class MasterComponentController implements IMasterComponentAPI {
     public Result<ServiceWebUIVo> getComponentWebUIList(Long clusterId, String serviceName) throws Exception {
         return this.masterComponentService.getComponentWebUIList(clusterId, serviceName);
     }
+
+    @Override
+    public Result<String> refreshDataNodeDecommission(Long clusterId) throws Exception {
+        return this.masterComponentService.refreshDataNodeDecommission(clusterId);
+    }
 }

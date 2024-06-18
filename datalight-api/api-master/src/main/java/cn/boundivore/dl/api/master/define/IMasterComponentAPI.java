@@ -126,4 +126,12 @@ public interface IMasterComponentAPI {
             @RequestParam(value = "ServiceName", required = true)
             String serviceName
     ) throws Exception;
+
+    @GetMapping(value = "/component/datanode/decommission/refresh")
+    @ApiOperation(notes = "刷新所有 DataNode 退役情况", value = "刷新所有 DataNode 退役情况")
+    Result<String> refreshDataNodeDecommission(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId
+    ) throws Exception;
 }

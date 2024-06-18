@@ -19,6 +19,7 @@ package cn.boundivore.dl.service.master.service;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.*;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
+import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
@@ -36,6 +37,7 @@ import cn.boundivore.dl.orm.service.single.impl.TDlComponentServiceImpl;
 import cn.boundivore.dl.service.master.converter.IServiceComponentConverter;
 import cn.boundivore.dl.service.master.manage.service.bean.ClusterMeta;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlComponentWebUI;
+import cn.boundivore.dl.service.master.resolver.ResolverYamlDirectory;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceDetail;
@@ -84,6 +86,8 @@ public class MasterComponentService {
     private final IServiceComponentConverter iServiceComponentConverter;
 
     private final MasterInitProcedureService masterInitProcedureService;
+
+    private final RemoteInvokeWorkerService remoteInvokeWorkerService;
 
     /**
      * Description: 根据指定服务、组件获取组件列表信息
@@ -1263,25 +1267,6 @@ public class MasterComponentService {
 
     }
 
-
-    /**
-     * Description: 检查是否存在异常状态的 Component，若存在，则恢复
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/2/27
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     */
-    @Transactional(
-            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
-            rollbackFor = DatabaseException.class
-    )
-    public void checkComponentState() {
-
-    }
-
     /**
      * Description: 返回指定服务下组件的 WebUI Url List
      * Created by: Boundivore
@@ -1375,5 +1360,140 @@ public class MasterComponentService {
         );
 
         return Result.success(serviceWebUIVo);
+    }
+
+    /**
+     * Description: 刷新所有 DataNode 退役情况
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @return Result<String> 成功或失败
+     */
+    @Transactional(
+            timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
+            rollbackFor = DatabaseException.class
+    )
+    @LocalLock
+    public Result<String> refreshDataNodeDecommission(Long clusterId) {
+
+        // 准备更改退役情况
+        List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, clusterId)
+                .eq(TDlComponent::getComponentName, "DataNode")
+                .eq(TDlComponent::getComponentState, DECOMMISSIONING)
+                .list();
+
+        if (CollUtil.isEmpty(tDlComponentList)) {
+            return Result.success();
+        }
+
+        // <NodeId, TDlNode>
+        final Map<Long, TDlNode> componentNodeMap = this.getComponentNodeMap(clusterId, tDlComponentList);
+
+        // 获取 主机名与 DataNode 退役情况映射关系
+        String anyDataNodeHostname = componentNodeMap.get(tDlComponentList.get(0).getNodeId()).getHostname();
+        Map<String, SCStateEnum> nodeDataNodeStateMap = this.getDataNodeDecommisstionMap(anyDataNodeHostname);
+
+        // 准备更新状态的 DataNode 列表
+        List<TDlComponent> newTDlComponentList = tDlComponentList.stream()
+                .filter(i -> {
+                    String hostname = componentNodeMap.get(i.getNodeId()).getHostname();
+                    SCStateEnum newDataNodeState = nodeDataNodeStateMap.get(hostname);
+                    return newDataNodeState != i.getComponentState();
+                })
+                .collect(Collectors.toList());
+
+        if (CollUtil.isNotEmpty(newTDlComponentList)) {
+            Assert.isTrue(
+                    this.tDlComponentService.updateBatchById(newTDlComponentList),
+                    () -> new DatabaseException("更新 DataNode 状态失败")
+            );
+        }
+
+        return Result.success();
+    }
+
+
+    /**
+     * Description: 获取 主机名与 DataNode 退役情况映射关系
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param anyDataNodeHostname 任意 DataNode 所在节点主机名
+     * @return Map<String, SCStateEnum> 返回 <Hostname, DataNode 组件状态>
+     */
+    private Map<String, SCStateEnum> getDataNodeDecommisstionMap(String anyDataNodeHostname) {
+        String checkShell = String.format(
+                "%s/plugins/HDFS/scripts/hdfs-check-decommissioning.sh",
+                ResolverYamlDirectory.DIRECTORY_YAML.getDatalight().getDatalightDir()
+        );
+
+        /*
+            返回结果示例：
+                node01-Normal
+                node02-Decommissioned
+                node03-Decommissioning
+         */
+        String checkDecommissionResult = this.remoteInvokeWorkerService.iWorkerExecAPI(anyDataNodeHostname)
+                .exec(new ExecRequest(
+                        ExecTypeEnum.COMMAND,
+                        "检查 DataNode 节点退役情况",
+                        checkShell,
+                        0,
+                        60 * 1000L,
+                        new String[0],
+                        new String[0],
+                        true
+                )).getData();
+
+        log.info(checkDecommissionResult);
+
+        // <Hostname, SCStateEnum(DataNodeState)>
+        final Map<String, SCStateEnum> nodeDataNodeStateMap = this.parseDecommissionResult(checkDecommissionResult);
+        log.info(nodeDataNodeStateMap.toString());
+
+        return nodeDataNodeStateMap;
+    }
+
+    /**
+     * Description: 解析 DataNode 退役结果到组件状态枚举
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param datanodeDecommissionResult DataNode 节点退役结果报告
+     * @return Map<String, SCStateEnum> 返回 <Hostname, ComponentState>
+     */
+    private Map<String, SCStateEnum> parseDecommissionResult(String datanodeDecommissionResult) {
+        return Arrays.stream(datanodeDecommissionResult.split("\n"))
+                .map(line -> line.split("-"))
+                // 跳过 Normal 的 DataNode
+                .filter(parts -> parts.length == 2 && !"Normal".equals(parts[1]))
+                /*
+                    Normal 对应 SCStateEnum.STARTED
+                    Decommissioned 对应 SCStateEnum.DECOMMISSIONED
+                    Decommissioning 对应 SCStateEnum.DECOMMISSIONING
+                 */
+                .collect(Collectors.toMap(
+                                parts -> parts[0],
+                                parts -> SCStateEnum.mapStatusToEnum(parts[1])
+                        )
+                );
     }
 }

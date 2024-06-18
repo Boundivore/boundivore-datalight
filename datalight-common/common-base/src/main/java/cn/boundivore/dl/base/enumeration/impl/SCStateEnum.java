@@ -296,4 +296,30 @@ public enum SCStateEnum implements IBaseEnum {
                 throw new IllegalStateException("不支持的组件枚举类型: " + this);
         }
     }
+
+    /**
+     * Description: 映射 DataNode 退役的字符串标识到当前枚举类型
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/18
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param status 退役字符串标识
+     * @return SCStateEnum 当前枚举
+     */
+    public static SCStateEnum mapStatusToEnum(String status) {
+        switch (status) {
+            case "Normal":
+                return SCStateEnum.STARTED;
+            case "Decommissioned":
+                return SCStateEnum.DECOMMISSIONED;
+            case "Decommissioning":
+                return SCStateEnum.DECOMMISSIONING;
+            default:
+                throw new IllegalArgumentException("未知的状态: " + status);
+        }
+    }
 }
