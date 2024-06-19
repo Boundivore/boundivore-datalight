@@ -146,8 +146,8 @@ public class CoreJavaTest {
     @SneakyThrows
     @Test
     public void testQianfanAPI() {
-        String accessKey = "ALTAKzKkKakn52TXvd6ck7Fv3m";
-        String secretKey = "a68e2f185bf043d388e95cbfd81cebb3";
+        String accessKey = "";
+        String secretKey = "";
 
         Qianfan qianfan = new Qianfan(
                 accessKey,
