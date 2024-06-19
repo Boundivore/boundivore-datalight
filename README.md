@@ -7,11 +7,16 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 资源汇总如下：
 
 * [项目官网](http://datalight.boundivore.cn) 
-* [后端仓库](https://gitee.com/boundivore/boundivore-datalight) 
-* [前端仓库](https://gitee.com/boundivore/boundivore-datalight-web) 
-* [资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
+
+* [后端 Gitee 主仓库](https://gitee.com/boundivore/boundivore-datalight) 
+* [后端 Github 镜像仓库](https://github.com/Boundivore/boundivore-datalight) 
+* [前端 Gitee 主仓库](https://gitee.com/boundivore/boundivore-datalight-web) 
+* [前端 Github 镜像仓库](https://github.com/Boundivore/boundivore-datalight-web) 
 * [产品手册](./.documents/docs/产品手册.md)
 * [开发手册](./.documents/docs/开发手册.md)
+
+* [资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
+
 
 ## 二、软件架构
 
