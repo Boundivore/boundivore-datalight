@@ -437,6 +437,10 @@ QQ 交流群：
 
 <img src=".documents/docs/assets/dataLight-QQ-交流群-only-code-small.png"  style="zoom:50%;" />
 
+微信交流：
+
+<img src=".documents/docs/assets/微信号二维码.jpg" alt="微信号二维码" style="zoom:25%;" />
+
 
 
 ## 开源协议
