@@ -28,7 +28,7 @@ echo "Found PIDs: $PIDS"
 
 if [ -z "$PIDS" ]; then
   echo "No kafka server to stop"
-  exit 1
+  exit 0
 else
   kill -s $SIGNAL $PIDS
   if [ $? -eq 0 ]; then
@@ -37,3 +37,4 @@ else
     echo "Failed to send signal $SIGNAL to PIDs: $PIDS"
   fi
 fi
+exit 0
