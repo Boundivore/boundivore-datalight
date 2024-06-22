@@ -431,15 +431,15 @@ http://<Master-IP>:8001
 
 微信公众号：
 
-<img src=".documents/docs/assets/boundivore-公众号8cm.jpg" style="zoom:55%;" />
+<img src=".documents/docs/assets/boundivore-公众号8cm.jpg" style="zoom:50%;" />
 
 QQ 交流群：
 
-<img src=".documents/docs/assets/dataLight-QQ-交流群-only-code-small.png"  style="zoom:50%;" />
+<img src=".documents/docs/assets/dataLight-QQ-交流群-only-code-small.jpg"  style="zoom:50%;" />
 
 微信交流：
 
-<img src=".documents/docs/assets/微信号二维码.jpg" alt="微信号二维码" style="zoom:25%;" />
+<img src=".documents/docs/assets/微信号二维码.jpg" alt="微信号二维码" style="zoom:50%;" />
 
 
 
