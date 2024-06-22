@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-SIGNAL=${SIGNAL:-TERM}
+SIGNAL=KILL
 
 if [[ $(uname -s) == "OS/390" ]]; then
     if [ -z $JOBNAME ]; then
@@ -24,9 +24,16 @@ else
     PIDS=$(ps ax | grep -i 'kafka\.Kafka' | grep java | grep -v grep | awk '{print $1}')
 fi
 
+echo "Found PIDs: $PIDS"
+
 if [ -z "$PIDS" ]; then
   echo "No kafka server to stop"
   exit 1
 else
   kill -s $SIGNAL $PIDS
+  if [ $? -eq 0 ]; then
+    echo "Sent signal $SIGNAL to PIDs: $PIDS"
+  else
+    echo "Failed to send signal $SIGNAL to PIDs: $PIDS"
+  fi
 fi
