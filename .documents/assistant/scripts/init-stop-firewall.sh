@@ -12,14 +12,8 @@ BASE_PATH=$(dirname "$0")
 echo "Bash Path: $BASE_PATH"
 
 # 检查防火墙状态
-FIREWALL_STATUS=$(firewall-cmd --state)
-if [[ $FIREWALL_STATUS == "running" ]]; then
-    echo "Closing firewall."
-    systemctl stop firewalld.service
-    systemctl disable firewalld.service
-else
-    echo "Firewall closed."
-fi
+systemctl stop firewalld.service
+systemctl disable firewalld.service
 
 # 检查 SELinux 状态
 SELINUX_STATUS=$(getenforce)

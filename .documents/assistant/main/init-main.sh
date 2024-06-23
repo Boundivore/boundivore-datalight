@@ -124,7 +124,7 @@ for prefix_prop in "${sorted_keys[@]}"; do
 
     # 执行脚本init-main-single-node.sh，并传递节点信息作为参数
     echo "-------------------------------------${hostname}-------------------------------------"
-    sh "${main_script_dir}/init-main-single-node.sh" "${serial}" "${ip}" "${ssh_port}" "${hostname} ${master_ip}"
+    sh "${main_script_dir}/init-main-single-node.sh" "${serial}" "${ip}" "${ssh_port}" "${hostname}" "${master_ip}"
 
     echo ""
   fi

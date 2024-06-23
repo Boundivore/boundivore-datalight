@@ -8,7 +8,7 @@ fi
 # 检查传入的参数数量
 if [ "$#" -ne 1 ]; then
   echo "Error: please supply chrony server ip"
-  echo "Example: ./init-chrony-client.sh 192.168.137.10"
+  echo "Example: ./init-chrony-client-config.sh 192.168.137.10"
   exit 1
 fi
 
