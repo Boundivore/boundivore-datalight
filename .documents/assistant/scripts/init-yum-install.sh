@@ -7,7 +7,7 @@ fi
 
 yum -y install expect
 yum -y install epel-release
-yum -y install jq
+#yum -y install jq
 yum -y install curl
 yum -y install chrony
 yum -y install openssl openssl-devel patch
