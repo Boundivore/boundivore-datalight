@@ -17,6 +17,8 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 
 * [资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
 
+* [视频教程](https://space.bilibili.com/3546708503955571/channel/seriesdetail?sid=4187881&ctype=0)
+
 
 ## 二、软件架构
 
