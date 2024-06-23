@@ -5,11 +5,11 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+yum -y install expect
 yum -y install epel-release
 yum -y install jq
 yum -y install curl
 yum -y install chrony
-yum -y install expect
 yum -y install openssl openssl-devel patch
 yum -y install lrzsz
 yum -y install unzip zip

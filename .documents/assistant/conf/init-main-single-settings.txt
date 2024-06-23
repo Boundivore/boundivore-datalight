@@ -1,3 +1,4 @@
+init-yum-install.sh
 init-stop-firewall.sh
 init-ssh-remove-ask.sh
 init-close-swap.sh
@@ -8,6 +9,5 @@ init-hosts.sh
 init-user-group.sh
 init-datalight-env.sh
 init-jdk.sh
-init-yum-install.sh
 init-chrony-server-config.sh
 init-chrony-client-config.sh
