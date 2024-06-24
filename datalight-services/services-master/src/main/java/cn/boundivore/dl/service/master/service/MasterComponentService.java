@@ -1387,7 +1387,7 @@ public class MasterComponentService {
                 .select()
                 .eq(TDlComponent::getClusterId, clusterId)
                 .eq(TDlComponent::getComponentName, "DataNode")
-                .eq(TDlComponent::getComponentState, DECOMMISSIONING)
+                .in(TDlComponent::getComponentState, DECOMMISSIONING, STARTED)
                 .list();
 
         if (CollUtil.isEmpty(tDlComponentList)) {
