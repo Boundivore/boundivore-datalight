@@ -87,6 +87,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 - 内存：8 GB +
 - 硬盘：100 GB +
 - 网络：1 Gbps +
+- 节点数：>= 3
 
 ### 6.2 准备操作系统
 
@@ -161,7 +162,7 @@ clone 本项目，并下载所以来的服务组件包和依赖库库，包括�
 
 #### 6.3.2  准备前端页面
 
-前往 DataLight 前端开源项目，按照对应文档执行编译操作，编译后，将编译文件解压后，拷贝至当前源码项目 datalight-services/services-master/public 目录中。
+前往 DataLight 前端开源项目，按照对应文档执行编译操作，编译后，将编译文件解压后，拷贝至后端源码项目 boundivore-datalight\datalight-services\services-master\src\main\resources\public 目录中。
 
 DataLight 前端开源项目：
 
