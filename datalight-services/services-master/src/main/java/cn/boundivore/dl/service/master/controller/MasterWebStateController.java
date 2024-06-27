@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.request.impl.master.AbstractWebStateRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractWebStateVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
+import cn.boundivore.dl.service.master.logs.LogsIgnore;
 import cn.boundivore.dl.service.master.service.MasterWebStateService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;

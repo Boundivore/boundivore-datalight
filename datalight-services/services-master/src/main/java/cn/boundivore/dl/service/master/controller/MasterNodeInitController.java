@@ -26,6 +26,7 @@ import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.ParseHostnameVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
+import cn.boundivore.dl.service.master.logs.LogsIgnore;
 import cn.boundivore.dl.service.master.service.MasterNodeInitService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
@@ -74,26 +75,31 @@ public class MasterNodeInitController implements IMasterNodeInitAPI {
     }
 
     @Override
+    @LogsIgnore
     public Result<AbstractNodeInitVo.NodeInitVo> initParseList(Long clusterId) throws Exception {
         return this.masterNodeInitService.initParseList(clusterId);
     }
 
     @Override
+    @LogsIgnore
     public Result<AbstractNodeInitVo.NodeInitVo> initDetectList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
         return this.masterNodeInitService.initDetectList(request);
     }
 
     @Override
+    @LogsIgnore
     public Result<AbstractNodeInitVo.NodeInitVo> initCheckList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
         return this.masterNodeInitService.initCheckList(request);
     }
 
     @Override
+    @LogsIgnore
     public Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
         return this.masterNodeInitService.initDispatchList(request);
     }
 
     @Override
+    @LogsIgnore
     public Result<AbstractNodeInitVo.NodeInitVo> initStartWorkerList(AbstractNodeInitRequest.NodeInitInfoListRequest request) throws Exception {
         return this.masterNodeInitService.initStartWorkerList(request);
     }
