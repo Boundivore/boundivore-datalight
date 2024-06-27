@@ -239,11 +239,6 @@ public class MasterAuditService {
                 () -> new BException("不存在的审计日志 ID")
         );
 
-        // 获取用户信息
-        String principal = this.masterUserService.getUserDetailById(tDlLogs.getUserId())
-                .getData()
-                .getPrincipal();
-
         String paramsBase64 = Base64.encode(tDlLogs.getParams());
         String resultBase64 = Base64.encode(tDlLogs.getResult());
 
@@ -252,7 +247,7 @@ public class MasterAuditService {
                 .setAuditLogId(tDlLogs.getId())
                 .setOpName(tDlLogs.getLogName())
                 .setUserId(tDlLogs.getUserId())
-                .setPrincipal(principal)
+
                 .setTimestamp(tDlLogs.getTimestamp())
                 .setDateFormat(tDlLogs.getDateFormat())
                 .setLogType(tDlLogs.getLogType())
@@ -264,6 +259,15 @@ public class MasterAuditService {
                 .setResultEnum(tDlLogs.getResultEnum())
                 .setParamsBase64(paramsBase64)
                 .setResultBase64(resultBase64);
+
+        if(tDlLogs.getUserId() != null){
+            // 获取用户信息
+            String principal = this.masterUserService.getUserDetailById(tDlLogs.getUserId())
+                    .getData()
+                    .getPrincipal();
+
+            auditLogDetailVo.setPrincipal(principal);
+        }
 
         return Result.success(auditLogDetailVo);
     }
