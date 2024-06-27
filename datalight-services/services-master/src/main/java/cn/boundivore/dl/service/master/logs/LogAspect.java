@@ -137,14 +137,14 @@ public class LogAspect {
             logTrace.setIp(ReactiveAddressUtil.getRemoteIp(request));
         }
 
+        // Proceed with the method execution
+        Object result = joinPoint.proceed();
+
         // User
         if (StpUtil.isLogin()) {
             Long userId = Long.parseLong(StpUtil.getSession().get("userId").toString());
             logTrace.setUserId(userId);
         }
-
-        // Proceed with the method execution
-        Object result = joinPoint.proceed();
 
         if (result instanceof Result) {
             Result<?> r = (Result<?>) result;

@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.request.impl.master.InvokePrometheusRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.handler.RemoteInvokePrometheusHandler;
+import cn.boundivore.dl.service.master.logs.LogsIgnore;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,7 @@ public class MasterPrometheusInvokeController implements IMasterPrometheusInvoke
 
     private final RemoteInvokePrometheusHandler remoteInvokePrometheusHandler;
 
+    @LogsIgnore
     public Result<String> invokePrometheus(InvokePrometheusRequest request) throws Exception {
         return this.remoteInvokePrometheusHandler.invokePrometheus(request);
     }
