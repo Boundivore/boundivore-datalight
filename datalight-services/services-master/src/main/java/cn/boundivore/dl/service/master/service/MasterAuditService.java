@@ -90,6 +90,10 @@ public class MasterAuditService {
                                                                               String uri,
                                                                               String Ip,
                                                                               LogTypeEnum logType) {
+
+
+
+
         // 获取用户详细信息列表
         List<AbstractUserVo.UserInfoVo> userInfoList = this.masterUserService.getUserDetailList()
                 .getData()
@@ -175,7 +179,7 @@ public class MasterAuditService {
         }
 
         if (logType != null) {
-            tableWrapper = tableWrapper.le(
+            tableWrapper = tableWrapper.eq(
                     TDlLogs::getLogType,
                     logType
             );
