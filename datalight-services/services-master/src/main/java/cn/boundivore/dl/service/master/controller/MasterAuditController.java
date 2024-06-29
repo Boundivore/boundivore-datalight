@@ -52,7 +52,8 @@ public class MasterAuditController implements IMasterAuditAPI {
                                                                               Long endTs,
                                                                               String uri,
                                                                               String Ip,
-                                                                              LogTypeEnum logType) throws Exception {
+                                                                              LogTypeEnum logType,
+                                                                              Boolean isOrderByDescTs) throws Exception {
         return this.masterAuditService.getAuditLogSimpleList(
                 currentPage,
                 pageSize,
@@ -63,7 +64,8 @@ public class MasterAuditController implements IMasterAuditAPI {
                 endTs,
                 uri,
                 Ip,
-                logType
+                logType,
+                isOrderByDescTs
         );
     }
 

@@ -88,7 +88,11 @@ public interface IMasterAuditAPI {
 
             @ApiParam(name = "LogType", value = "日志类型")
             @RequestParam(value = "LogType", required = false)
-            LogTypeEnum logType
+            LogTypeEnum logType,
+
+            @ApiParam(name = "IsOrderByDescTs", value = "是否根据时间戳降序")
+            @RequestParam(value = "IsOrderByDescTs", required = false, defaultValue = "true")
+            Boolean isOrderByDescTs
     ) throws Exception;
 
     @GetMapping(value = "/audit/getAuditLogDetail")

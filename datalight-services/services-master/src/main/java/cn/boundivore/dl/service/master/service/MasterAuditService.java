@@ -90,7 +90,8 @@ public class MasterAuditService {
                                                                               Long endTs,
                                                                               String uri,
                                                                               String Ip,
-                                                                              LogTypeEnum logType) {
+                                                                              LogTypeEnum logType,
+                                                                              Boolean isOrderByDescTs) {
 
 
 
@@ -186,10 +187,16 @@ public class MasterAuditService {
             );
         }
 
+        // 是否按照时间戳倒序排列
+        if(isOrderByDescTs){
+            tableWrapper.orderByDesc(TDlLogs::getTimestamp);
+        }else{
+            tableWrapper.orderByAsc(TDlLogs::getTimestamp);
+        }
+
         // 分页查询，并转换结果
         MyPage<TDlLogs> page = MyPage.of(currentPage, pageSize);
         List<TDlLogs> tDlLogsList = tableWrapper
-                .orderByDesc(TDlLogs::getTimestamp)
                 .page(page)
                 .getRecords();
 
