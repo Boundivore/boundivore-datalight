@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -198,7 +199,7 @@ public class MasterAuditService {
                             log.getId(),
                             log.getLogName(),
                             log.getUserId(),
-                            userInfo != null ? userInfo.getPrincipal() : null,
+                            userInfo!= null? userInfo.getPrincipal() : null,
                             log.getTimestamp(),
                             log.getDateFormat(),
                             log.getLogType(),
@@ -210,6 +211,7 @@ public class MasterAuditService {
                             log.getResultEnum()
                     );
                 })
+                .sorted(Comparator.comparing(AbstractAuditVo.AuditLogSimpleVo::getTimestamp).reversed())
                 .collect(Collectors.toList());
 
 
