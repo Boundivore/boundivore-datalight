@@ -189,6 +189,7 @@ public class MasterAuditService {
         // 分页查询，并转换结果
         MyPage<TDlLogs> page = MyPage.of(currentPage, pageSize);
         List<TDlLogs> tDlLogsList = tableWrapper
+                .orderByDesc(TDlLogs::getTimestamp)
                 .page(page)
                 .getRecords();
 
@@ -211,7 +212,6 @@ public class MasterAuditService {
                             log.getResultEnum()
                     );
                 })
-                .sorted(Comparator.comparing(AbstractAuditVo.AuditLogSimpleVo::getTimestamp).reversed())
                 .collect(Collectors.toList());
 
 
