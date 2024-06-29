@@ -1255,4 +1255,32 @@ public class MasterJobService {
 
         return stepMeta;
     }
+
+    /**
+     * Description: 根据 ActionTypeEnum 操作类型来决定是按照组件定义的优先级正序还是倒序执行操作
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/6/29
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param actionTypeEnum 本次操作类型
+     * @return boolean 正序操作还是倒序操作
+     */
+    public boolean isPriorityAsc(ActionTypeEnum actionTypeEnum) {
+        switch (actionTypeEnum) {
+            case STOP:
+            case REMOVE:
+                return false;
+            case RESTART:
+            case DECOMMISSION:
+            case MIGRATE:
+            case DEPLOY:
+            case START:
+            default:
+                return true;
+        }
+    }
 }

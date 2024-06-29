@@ -74,7 +74,10 @@ public class MasterOperationService {
                 request
         );
 
-        Long jobId = masterJobService.initJob(request, true);
+        Long jobId = this.masterJobService.initJob(
+                request,
+                this.masterJobService.isPriorityAsc(request.getActionTypeEnum())
+        );
 
         return Result.success(
                 new AbstractJobVo.JobIdVo(
@@ -104,7 +107,10 @@ public class MasterOperationService {
                 request
         );
 
-        Long jobId = masterJobService.initJob(request, true);
+        Long jobId = this.masterJobService.initJob(
+                request,
+                this.masterJobService.isPriorityAsc(request.getActionTypeEnum())
+        );
 
         return Result.success(
                 new AbstractJobVo.JobIdVo(

@@ -85,7 +85,10 @@ public class MasterDeployService {
             this.masterConfigPreService.replaceZookeeperMyIdDir2DataDir(request.getClusterId());
         }
 
-        Long jobId = this.masterJobService.initJob(request, true);
+        Long jobId = this.masterJobService.initJob(
+                request,
+                this.masterJobService.isPriorityAsc(request.getActionTypeEnum())
+        );
 
         // 记录部署 Procedure
         this.masterInitProcedureService.persistServiceComponentProcedure(
