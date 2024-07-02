@@ -116,7 +116,7 @@ public class MasterMigrateHDFSService {
 
         Assert.isTrue(
                 serviceNameList.size() == 1,
-                () -> new BException("迁移部署一次只能进行一次操作")
+                () -> new BException("迁移部署每次技能操作一个服务")
         );
 
         Assert.isTrue(
