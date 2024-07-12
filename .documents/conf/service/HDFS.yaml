@@ -577,7 +577,7 @@ datalight:
       - name: HttpFS
         priority: 7
         max: 2
-        min: 2
+        min: 1
         mutexes: [ ]
         dependencies: [ ]
         actions:
