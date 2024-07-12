@@ -21,13 +21,21 @@ import cn.boundivore.dl.base.enumeration.impl.ProcedureStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
+import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
+import cn.boundivore.dl.orm.po.TBasePo;
+import cn.boundivore.dl.orm.po.single.TDlComponent;
+import cn.boundivore.dl.orm.service.single.impl.TDlComponentServiceImpl;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static cn.boundivore.dl.base.enumeration.impl.SCStateEnum.*;
 
 /**
  * Description: 即将执行迁移部署
@@ -46,6 +54,8 @@ public class MasterMigrateHDFSService {
     private final MasterJobService masterJobService;
 
     private final MasterServiceService masterServiceService;
+
+    private final TDlComponentServiceImpl tDlComponentService;
 
     private final MasterConfigService masterConfigService;
 
@@ -143,5 +153,101 @@ public class MasterMigrateHDFSService {
                         )
                 )
         );
+    }
+
+    /**
+     * Description: 返回刚迁移后的 NameNode 中 hdfs-site.xml 的最新内容，并将最新内容覆盖之前的 hdfs-site.xml 的配置文件内容，
+     * 最终按照 SHA256 分组返回配置文件信息，即，按照相同服务、相同组件、相同 SHA256 进行分组，以降低重复内容，提升性能。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/6/19
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @return Result<ConfigListByGroupVo> 当前指定服务的配置文件，会按照相同的内容聚合节点
+     */
+    public Result<ConfigListByGroupVo> getNewHdfsSiteConfigListByGroup(Long clusterId) {
+
+        String hdfsServiceName = "HDFS";
+
+        // 通过数据库变更的时间戳来判断最近一次变更的是哪个节点上的 NameNode 组件
+        List<TDlComponent> tDlComponentList = this.tDlComponentService.lambdaQuery()
+                .select()
+                .eq(TDlComponent::getClusterId, clusterId)
+                .eq(TDlComponent::getServiceName, hdfsServiceName)
+                .notIn(TDlComponent::getComponentState, UNSELECTED, REMOVED, SELECTED)
+                .like(TDlComponent::getComponentName, "%" + "NameNode" + "%")
+                .orderByDesc(TBasePo::getUpdateTime)
+                .list();
+
+        Assert.isTrue(
+                tDlComponentList.size() == 2,
+                () -> new BException("未找到有效数量的 NameNode 实例")
+        );
+
+        // 时间戳最大的 NameNode 为最新的刚迁移的 NameNode
+        TDlComponent maxUpdateTimeNameNode = CollUtil.getFirst(tDlComponentList);
+
+
+        // 获取 hdfs-site.xml 的配置文件路径
+        String configPath = this.masterConfigService.getConfigPathList(clusterId, hdfsServiceName)
+                .stream()
+                .filter(path -> path.contains("hdfs-site.xml"))
+                .findFirst()
+                .orElseThrow(() -> new BException("hdfs-site.xml 配置文件路径未找到"));
+
+
+        Result<ConfigListByGroupVo> configListByGroup = this.masterConfigService.getConfigListByGroup(
+                clusterId,
+                hdfsServiceName,
+                configPath
+        );
+
+
+        ConfigListByGroupVo configListByGroupVo = configListByGroup.getData();
+        List<ConfigListByGroupVo.ConfigGroupVo> configGroupList = configListByGroupVo.getConfigGroupList();
+
+        ConfigListByGroupVo.ConfigGroupVo targetGroupVo = null;
+        List<ConfigListByGroupVo.ConfigGroupVo> groupsToRemove = new ArrayList<>();
+        List<ConfigListByGroupVo.ConfigNodeVo> nodesToAdd = new ArrayList<>();
+
+        // 确保 ConfigGroupList 中包含 nodeId 为最新迁移 NameNode 所在的节点 ID
+        Long nodeId = maxUpdateTimeNameNode.getNodeId();
+
+        boolean containsNodeId = false;
+        for (ConfigListByGroupVo.ConfigGroupVo groupVo : configGroupList) {
+
+            if (!containsNodeId) {
+                for (ConfigListByGroupVo.ConfigNodeVo nodeVo : groupVo.getConfigNodeList()) {
+                    if (nodeVo.getNodeId().equals(nodeId)) {
+                        containsNodeId = true;
+
+                        // 找到目标 NodeId 的 ConfigGroupVo 实例
+                        targetGroupVo = groupVo;
+                        break;
+                    }
+                }
+            }
+
+            if (!containsNodeId) {
+                // 将当前组的节点加入到待添加列表中，并记录当前组为待删除
+                nodesToAdd.addAll(groupVo.getConfigNodeList());
+                groupsToRemove.add(groupVo);
+            }
+        }
+
+        if (targetGroupVo != null) {
+            // 删除不包含目标 NodeId 的 ConfigGroupVo 实例
+            configGroupList.removeAll(groupsToRemove);
+
+            // 将被删除的那些节点加入到包含 nodeId 为 1 的 ConfigGroupVo 的 configNodeList 中
+            targetGroupVo.getConfigNodeList().addAll(nodesToAdd);
+        }
+
+        return configListByGroup;
+
     }
 }

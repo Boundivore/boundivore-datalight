@@ -20,6 +20,7 @@ import cn.boundivore.dl.api.master.define.IMasterMigrateHDFSAPI;
 import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
+import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterMigrateHDFSService;
@@ -46,5 +47,10 @@ public class MasterMigrateHDFSController implements IMasterMigrateHDFSAPI {
     @Override
     public Result<AbstractJobVo.JobIdVo> migrate(JobRequest request) throws Exception {
         return this.masterMigrateHDFSService.migrate(request);
+    }
+
+    @Override
+    public Result<ConfigListByGroupVo> getNewHdfsSiteConfigListByGroup(Long clusterId) throws Exception {
+        return this.masterMigrateHDFSService.getNewHdfsSiteConfigListByGroup(clusterId);
     }
 }

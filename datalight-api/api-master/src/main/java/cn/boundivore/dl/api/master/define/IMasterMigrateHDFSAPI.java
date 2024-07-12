@@ -18,12 +18,16 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
+import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 
@@ -53,6 +57,15 @@ public interface IMasterMigrateHDFSAPI {
             @RequestBody
             @Valid
             JobRequest request
+    ) throws Exception;
+
+
+    @GetMapping(value = "/migrate/getNewHdfsSiteConfigListByGroup")
+    @ApiOperation(notes = "获取迁移后最新的 NameNode 配置文件", value = "获取迁移后最新的 NameNode 配置文件")
+    Result<ConfigListByGroupVo> getNewHdfsSiteConfigListByGroup(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId
     ) throws Exception;
 
 }
