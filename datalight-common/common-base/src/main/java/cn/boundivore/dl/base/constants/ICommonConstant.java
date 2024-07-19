@@ -29,7 +29,7 @@ package cn.boundivore.dl.base.constants;
 public interface ICommonConstant {
 
 
-    int TIMEOUT_TRANSACTION_SECONDS = 10;
+    int TIMEOUT_TRANSACTION_SECONDS = 100;
     long TIMEOUT_LOCK_ACQUIRE_MILLISECONDS = (TIMEOUT_TRANSACTION_SECONDS + 1) * 1000L;
 
     /**

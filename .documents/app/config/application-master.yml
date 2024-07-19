@@ -157,9 +157,9 @@ spring:
 
 rest:
   connection:
-    timeout: 60000
+    timeout: 120000
   read:
-    timeout: 60000
+    timeout: 120000
 
 springfox:
   documentation:
