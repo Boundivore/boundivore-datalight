@@ -44,9 +44,9 @@ springfox:
 
 rest:
   connection:
-    timeout: 60000
+    timeout: 120000
   read:
-    timeout: 60000
+    timeout: 120000
 
 feign:
   ribbon:
