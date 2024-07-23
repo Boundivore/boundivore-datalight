@@ -278,7 +278,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "avg(Hadoop_NameNode_NumInServiceLiveDataNodes)",
+          "expr": "sum(Hadoop_NameNode_NumInServiceLiveDataNodes) / 2",
           "instant": true,
           "interval": "",
           "legendFormat": "Live",
