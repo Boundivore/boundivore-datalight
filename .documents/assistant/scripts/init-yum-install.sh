@@ -5,6 +5,9 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# HDFS 高可用切换所需的 fuster
+yum -y install psmisc
+# 交互自动交互工具
 yum -y install expect
 yum -y install epel-release
 #yum -y install jq
