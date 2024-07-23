@@ -324,6 +324,7 @@ https://gitee.com/boundivore/boundivore-datalight-web
   * 安装 yum 依赖
 
     ~~~shell
+    yum -y install psmisc
     yum -y install epel-release  # 安装 EPEL 仓库，提供额外的软件包
     yum -y install jq  # 安装 jq，用于处理 JSON 数据
     yum -y install curl  # 安装 curl，用于命令行数据传输
