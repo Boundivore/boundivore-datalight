@@ -35,7 +35,7 @@ formatZFKC() {
 EOF
 
   wait
-  echo "Finish NameNode formatted"
+  echo "Finish ZKFC formatted"
 }
 
 formatZFKC
