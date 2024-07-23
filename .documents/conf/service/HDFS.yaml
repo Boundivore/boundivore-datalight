@@ -202,6 +202,15 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
+              - type: JAR
+                name: '初始化服务配置文件'
+                jar: 'plugins-hdfs-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
               - type: SCRIPT
                 name: '待命 NameNode1'
                 shell: 'hdfs-namenode-standby.sh'
@@ -297,6 +306,15 @@ datalight:
             success-state: STARTED
             fail-state: SELECTED
             steps:
+              - type: JAR
+                name: '初始化服务配置文件'
+                jar: 'plugins-hdfs-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.hdfs.config.ConfigHDFS'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
               - type: SCRIPT
                 name: '待命 NameNode2'
                 shell: 'hdfs-namenode-standby.sh'
