@@ -200,7 +200,7 @@ datalight:
           - type: MIGRATE
             start-state: DEPLOYING
             success-state: STARTED
-            fail-state: SELECTED_ADDITION
+            fail-state: SELECTED
             steps:
               - type: SCRIPT
                 name: '待命 NameNode1'
@@ -295,7 +295,7 @@ datalight:
           - type: MIGRATE
             start-state: DEPLOYING
             success-state: STARTED
-            fail-state: SELECTED_ADDITION
+            fail-state: SELECTED
             steps:
               - type: SCRIPT
                 name: '待命 NameNode2'
