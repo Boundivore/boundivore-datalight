@@ -200,6 +200,7 @@ public class MasterMigrateHDFSService {
                 .orElseThrow(() -> new BException("hdfs-site.xml 配置文件路径未找到"));
 
 
+        // 获取配置文件路径
         Result<ConfigListByGroupVo> configListByGroup = this.masterConfigService.getConfigListByGroup(
                 clusterId,
                 hdfsServiceName,
@@ -217,12 +218,14 @@ public class MasterMigrateHDFSService {
         // 确保 ConfigGroupList 中包含 nodeId 为最新迁移 NameNode 所在的节点 ID
         Long nodeId = maxUpdateTimeNameNode.getNodeId();
 
+        boolean isFind = false;
         boolean containsNodeId = false;
         for (ConfigListByGroupVo.ConfigGroupVo groupVo : configGroupList) {
 
-            if (!containsNodeId) {
+            if (!isFind) {
                 for (ConfigListByGroupVo.ConfigNodeVo nodeVo : groupVo.getConfigNodeList()) {
                     if (nodeVo.getNodeId().equals(nodeId)) {
+                        isFind = true;
                         containsNodeId = true;
 
                         // 找到目标 NodeId 的 ConfigGroupVo 实例
@@ -237,7 +240,10 @@ public class MasterMigrateHDFSService {
                 nodesToAdd.addAll(groupVo.getConfigNodeList());
                 groupsToRemove.add(groupVo);
             }
+
+            containsNodeId = false;
         }
+
 
         if (targetGroupVo != null) {
             // 删除不包含目标 NodeId 的 ConfigGroupVo 实例
