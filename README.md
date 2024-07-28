@@ -34,8 +34,8 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * MasterService：主服务业务逻辑管理；
 * ServicePlugin：服务插件管理；
 * Reporter：Master/Worker 双向交互服务；
-* Master 层：通过 Restful API 接收 UI 层的请求，并协调 Worker 层的操作。目前暂未开启此功能，未来，如有必要，Master 层与 Zookeeper 集群保持心跳连接，以确保分布式锁的管理和 Master 的故障切换。Master 层还通过 MySQL 数据库进行元数据的读写操作。
-* WorkerServbice ：从节点业务逻辑管理；
+* Master 层：通过 Restful API 接收 UI 层的请求，并协调 Worker 层的操作。未来，如有必要，Master 层与 Zookeeper 集群保持心跳连接，以确保分布式锁的管理和 Master 的故障切换。Master 层还通过 MySQL 数据库进行元数据的读写操作。
+* WorkerService ：从节点业务逻辑管理；
 * Components：各类集成在平台中的组件；
 * KubeAPI：与 Kubernetes/KubeSphere API 交互的服务管理；
 
@@ -257,6 +257,8 @@ https://gitee.com/boundivore/boundivore-datalight-web
 
 #### 6.4.2 手动初始化
 
+如果使用上述自动初始化操作，则无需再进行手动初始化操作。以下操作用于不想使用自动初始化工具的用户。
+
 手动初始化涉及如下内容：
 
 * 关闭防火墙（或开放服务所需访问限制）
@@ -324,7 +326,6 @@ https://gitee.com/boundivore/boundivore-datalight-web
   * 安装 yum 依赖
 
     ~~~shell
-    yum -y install psmisc
     yum -y install epel-release  # 安装 EPEL 仓库，提供额外的软件包
     yum -y install jq  # 安装 jq，用于处理 JSON 数据
     yum -y install curl  # 安装 curl，用于命令行数据传输
