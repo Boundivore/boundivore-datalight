@@ -62,8 +62,8 @@ public class ConfigHIVE extends AbstractConfig {
                 return new ConfigLogicCatalinaSh(super.pluginConfig).config(file, replacedTemplate);
             case "configs.env":
                 return new ConfigLogicConfigsEnv(super.pluginConfig).config(file, replacedTemplate);
-            case "config.js":
-                return new ConfigLogicConfigJs(super.pluginConfig).config(file, replacedTemplate);
+            case "configs.js":
+                return new ConfigLogicConfigsJs(super.pluginConfig).config(file, replacedTemplate);
             case "server.xml":
                 return new ConfigLogicServerXml(super.pluginConfig).config(file, replacedTemplate);
             case "logging.properties":

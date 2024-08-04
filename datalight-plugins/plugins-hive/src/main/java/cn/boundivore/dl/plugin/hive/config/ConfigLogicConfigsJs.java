@@ -32,10 +32,10 @@ import java.util.stream.Collectors;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicConfigJs extends AbstractConfigLogic {
+public class ConfigLogicConfigsJs extends AbstractConfigLogic {
 
 
-    public ConfigLogicConfigJs(PluginConfig pluginConfig) {
+    public ConfigLogicConfigsJs(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 

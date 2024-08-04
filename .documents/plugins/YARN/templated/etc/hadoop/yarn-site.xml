@@ -146,11 +146,6 @@
     </property>
 
     <property>
-        <name>yarn.timeline-service.http-cross-origin.enabled</name>
-        <value>true</value>
-    </property>
-
-    <property>
         <name>yarn.timeline-service.generic-application-history.enabled</name>
         <value>true</value>
     </property>
@@ -235,7 +230,35 @@
         <value>org.apache.hadoop.mapred.ShuffleHandler</value>
     </property>
 
+    <property>
+        <name>yarn.timeline-service.http-cross-origin.enabled</name>
+        <value>true</value>
+        <description>Enables cross-origin support (CORS) for web services where cross-origin web response headers are needed.</description>
+    </property>
 
+    <property>
+        <name>yarn.timeline-service.http-cross-origin.allowed-origins</name>
+        <value>*</value>
+        <description>Comma separated list of origins that are allowed. Use * to allow all origins.</description>
+    </property>
+
+    <property>
+        <name>yarn.timeline-service.http-cross-origin.allowed-methods</name>
+        <value>GET,POST,HEAD</value>
+        <description>Comma separated list of methods that are allowed for web services needing cross-origin (CORS) support.</description>
+    </property>
+
+    <property>
+        <name>yarn.timeline-service.http-cross-origin.allowed-headers</name>
+        <value>X-Requested-With,Content-Type,Accept,Origin</value>
+        <description>Comma separated list of headers that are allowed for web services needing cross-origin (CORS) support.</description>
+    </property>
+
+    <property>
+        <name>yarn.timeline-service.http-cross-origin.max-age</name>
+        <value>1800</value>
+        <description>The number of seconds a pre-flighted request can be cached for web services needing cross-origin (CORS) support.</description>
+    </property>
     <!--    <property>-->
     <!--        <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>-->
     <!--        <value>org.apache.spark.network.yarn.YarnShuffleService</value>-->
