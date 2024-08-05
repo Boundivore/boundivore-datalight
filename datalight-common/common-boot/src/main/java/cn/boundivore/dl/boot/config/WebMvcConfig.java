@@ -30,6 +30,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.config.annotation.*;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PREFIX;
 
@@ -164,7 +169,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void configureAsyncSupport(final AsyncSupportConfigurer configurer) {
 
-        configurer.setDefaultTimeout(30 * 1000);
+        configurer.setDefaultTimeout(120 * 1000L);
 
         configurer.registerCallableInterceptors(timeoutInterceptor());
 
@@ -251,5 +256,58 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 // 如果 appName 不匹配已知的应用类型，抛出异常。
                 throw new BException("未知的应用类型");
         }
+    }
+
+    /**
+     * Description: 创建并配置缓存控制过滤器，确保 index.html 每次请求时从服务器获取最新版本。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/8/5
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Filter 配置后的缓存控制过滤器。
+     */
+    @Bean
+    public Filter cacheControlFilter() {
+        return new Filter() {
+            @Override
+            public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+                HttpServletRequest httpRequest = (HttpServletRequest) request;
+                HttpServletResponse httpResponse = (HttpServletResponse) response;
+
+                String requestURI = httpRequest.getRequestURI();
+
+                if (isHtmlResource(requestURI)) {
+                    httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                    httpResponse.setHeader("Pragma", "no-cache");
+                    httpResponse.setHeader("Expires", "0");
+                } else if (isStaticResource(requestURI)) {
+                    httpResponse.setHeader("Cache-Control", "public, max-age=31536000");
+                }
+
+                chain.doFilter(request, response);
+            }
+
+            @Override
+            public void init(FilterConfig filterConfig) throws ServletException {
+            }
+
+            @Override
+            public void destroy() {
+            }
+        };
+    }
+
+    private boolean isHtmlResource(String requestURI) {
+        return requestURI.equals("/") || requestURI.equals("/index.html") || requestURI.endsWith(".html");
+    }
+
+    private boolean isStaticResource(String requestURI) {
+        return requestURI.startsWith("/assets/") ||
+                requestURI.startsWith("/service_logo/") ||
+                requestURI.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg)$");
     }
 }
