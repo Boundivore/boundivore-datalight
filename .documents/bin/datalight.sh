@@ -103,10 +103,10 @@ execute_operation() {
 
   case "$api_type" in
   "master")
-    jar_name=$(find "${app_dir}" -name "services-master-*.jar" | head -n 1 | xargs basename)
+    jar_name=$(find "${app_dir}" -name "services-master-*.jar" | sort -V | tail -n 1 | xargs basename)
     ;;
   "worker")
-    jar_name=$(find "${app_dir}" -name "services-worker-*.jar" | head -n 1 | xargs basename)
+    jar_name=$(find "${app_dir}" -name "services-worker-*.jar" | sort -V | tail -n 1 | xargs basename)
     ;;
   *)
     echo "Invalid component name. Supported components: master, worker"
