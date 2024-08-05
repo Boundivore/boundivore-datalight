@@ -70,8 +70,8 @@ start_service() {
       while ! curl -s "http://localhost:${port}/actuator/health" | grep -q '"status":"UP"'; do
         sleep 1
         attempt=$((attempt + 1))
-        if [ $attempt -ge 60 ]; then
-          echo "${api_type} failed to start after 30 attempts."
+        if [ $attempt -ge 120 ]; then
+          echo "${api_type} failed to start after 120 attempts."
           exit 1
         fi
       done

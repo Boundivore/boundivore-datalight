@@ -79,4 +79,11 @@ datalight:
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
+      - name: KYUUBI
+        type: COMPUTE
+        desc: '为湖仓提供无服务器 SQL 的分布式多租户网关'
+        priority: 12
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN', 'HIVE' ]
+        optional-dependencies: [ 'SPARK', 'FLINK' ]
+        relatives: [ 'MONITOR' ]
 

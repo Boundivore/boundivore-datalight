@@ -56,4 +56,6 @@ include 'datalight-plugins:plugins-zkui'
 findProject(':datalight-plugins:plugins-zkui')?.name = 'plugins-zkui'
 include 'datalight-starter-parent:starter-aigc-qianfan'
 findProject(':datalight-starter-parent:starter-aigc-qianfan')?.name = 'starter-aigc-qianfan'
+include 'datalight-plugins:plugins-kyuubi'
+findProject(':datalight-plugins:plugins-kyuubi')?.name = 'plugins-kyuubi'
 

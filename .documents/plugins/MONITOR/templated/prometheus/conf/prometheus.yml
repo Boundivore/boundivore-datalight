@@ -151,6 +151,10 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'KYUUBI-KyuubiServer'
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'ELASTICSEARCH-ElasticSearch'
     metrics_path: "/_prometheus/metrics"
     static_configs:

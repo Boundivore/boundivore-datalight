@@ -73,6 +73,8 @@ public class PortConstants {
             put("FLINK-FlinkHistoryServer", "19019");
 
             put("ZKUI-ZKUIServer", "19020");
+
+            put("KYUUBI-KyuubiServer", "19021");
         }
     };
 
@@ -109,6 +111,8 @@ public class PortConstants {
             put("FLINK-FlinkHistoryServer", "18019");
 
             put("ZKUI-ZKUIServer", "18020");
+
+            put("KYUUBI-KyuubiServer", "18021");
         }
     };
 
