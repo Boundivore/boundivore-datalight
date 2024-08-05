@@ -912,81 +912,84 @@ public class MasterJobService {
         List<TDlJobLog> tDlJobLogList = tDlJobLogWrapper.list();
         String tag = tDlJobLogList.isEmpty() ? null : tDlJobLogList.get(0).getTag();
 
-        // 根据 JobId StageId TaskId StepId 获取其对应名称
-        final Set<Long> jobIdSet = new LinkedHashSet<>();
-        final Set<Long> nodeIdSet = new LinkedHashSet<>();
-        final Set<Long> stageIdSet = new LinkedHashSet<>();
-        final Set<Long> taskIdSet = new LinkedHashSet<>();
-        final Set<Long> stepIdSet = new LinkedHashSet<>();
+        List<AbstractJobVo.JobLogVo> jobLogList = new ArrayList<>();
 
-        for (TDlJobLog tDlJobLog : tDlJobLogList) {
-            jobIdSet.add(tDlJobLog.getJobId());
-            nodeIdSet.add(tDlJobLog.getNodeId());
-            stageIdSet.add(tDlJobLog.getStageId());
-            taskIdSet.add(tDlJobLog.getTaskId());
-            stepIdSet.add(tDlJobLog.getStepId());
+        if (!tDlJobLogList.isEmpty()) {
+            // 根据 JobId StageId TaskId StepId 获取其对应名称
+            final Set<Long> jobIdSet = new LinkedHashSet<>();
+            final Set<Long> nodeIdSet = new LinkedHashSet<>();
+            final Set<Long> stageIdSet = new LinkedHashSet<>();
+            final Set<Long> taskIdSet = new LinkedHashSet<>();
+            final Set<Long> stepIdSet = new LinkedHashSet<>();
+
+            for (TDlJobLog tDlJobLog : tDlJobLogList) {
+                jobIdSet.add(tDlJobLog.getJobId());
+                nodeIdSet.add(tDlJobLog.getNodeId());
+                stageIdSet.add(tDlJobLog.getStageId());
+                taskIdSet.add(tDlJobLog.getTaskId());
+                stepIdSet.add(tDlJobLog.getStepId());
+            }
+
+            Map<Long, String> jobIdNameMap = this.tDlJobService.listByIds(jobIdSet)
+                    .stream()
+                    .collect(
+                            Collectors.toMap(
+                                    TBasePo::getId,
+                                    TDlJob::getJobName
+                            )
+                    );
+            Map<Long, String> nodeIdNameMap = this.tDlNodeService.listByIds(nodeIdSet)
+                    .stream()
+                    .collect(
+                            Collectors.toMap(
+                                    TBasePo::getId,
+                                    TDlNode::getHostname
+                            )
+                    );
+            Map<Long, String> stageIdNameMap = this.tDlStageService.listByIds(stageIdSet)
+                    .stream()
+                    .collect(
+                            Collectors.toMap(
+                                    TBasePo::getId,
+                                    TDlStage::getStageName
+                            )
+                    );
+            Map<Long, String> taskIdNameMap = this.tDlTaskService.listByIds(taskIdSet)
+                    .stream()
+                    .collect(
+                            Collectors.toMap(
+                                    TBasePo::getId,
+                                    TDlTask::getTaskName
+                            )
+                    );
+            Map<Long, String> stepIdNameMap = this.tDlStepService.listByIds(stepIdSet)
+                    .stream()
+                    .collect(
+                            Collectors.toMap(
+                                    TBasePo::getId,
+                                    TDlStep::getStepName
+                            )
+                    );
+
+            jobLogList = tDlJobLogList
+                    .stream()
+                    .map(i -> new AbstractJobVo.JobLogVo(
+                                    i.getJobId(),
+                                    jobIdNameMap.get(i.getJobId()),
+                                    i.getNodeId(),
+                                    nodeIdNameMap.get(i.getNodeId()),
+                                    i.getStageId(),
+                                    stageIdNameMap.get(i.getStageId()),
+                                    i.getTaskId(),
+                                    taskIdNameMap.get(i.getTaskId()),
+                                    i.getStepId(),
+                                    stepIdNameMap.get(i.getStepId()),
+                                    i.getLogStdout(),
+                                    i.getLogErrout()
+                            )
+                    )
+                    .collect(Collectors.toList());
         }
-
-        Map<Long, String> jobIdNameMap = this.tDlJobService.listByIds(jobIdSet)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                TBasePo::getId,
-                                TDlJob::getJobName
-                        )
-                );
-        Map<Long, String> nodeIdNameMap = this.tDlNodeService.listByIds(nodeIdSet)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                TBasePo::getId,
-                                TDlNode::getHostname
-                        )
-                );
-        Map<Long, String> stageIdNameMap = this.tDlStageService.listByIds(stageIdSet)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                TBasePo::getId,
-                                TDlStage::getStageName
-                        )
-                );
-        Map<Long, String> taskIdNameMap = this.tDlTaskService.listByIds(taskIdSet)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                TBasePo::getId,
-                                TDlTask::getTaskName
-                        )
-                );
-        Map<Long, String> stepIdNameMap = this.tDlStepService.listByIds(stepIdSet)
-                .stream()
-                .collect(
-                        Collectors.toMap(
-                                TBasePo::getId,
-                                TDlStep::getStepName
-                        )
-                );
-
-
-        List<AbstractJobVo.JobLogVo> jobLogList = tDlJobLogList
-                .stream()
-                .map(i -> new AbstractJobVo.JobLogVo(
-                                i.getJobId(),
-                                jobIdNameMap.get(i.getJobId()),
-                                i.getNodeId(),
-                                nodeIdNameMap.get(i.getNodeId()),
-                                i.getStageId(),
-                                stageIdNameMap.get(i.getStageId()),
-                                i.getTaskId(),
-                                taskIdNameMap.get(i.getTaskId()),
-                                i.getStepId(),
-                                stepIdNameMap.get(i.getStepId()),
-                                i.getLogStdout(),
-                                i.getLogErrout()
-                        )
-                )
-                .collect(Collectors.toList());
 
         AbstractJobVo.JobLogListVo jobLogListVo = new AbstractJobVo.JobLogListVo(
                 clusterId,
