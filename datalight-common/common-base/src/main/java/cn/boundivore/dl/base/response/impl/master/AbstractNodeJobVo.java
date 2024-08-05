@@ -523,17 +523,33 @@ public abstract class AbstractNodeJobVo {
         @JsonProperty(value = "NodeJobId", required = true)
         private Long nodeJobId;
 
+        @Schema(name = "NodeJobName", title = "节点作业名称", required = true)
+        @JsonProperty(value = "NodeJobName", required = true)
+        private String nodeJobName;
+
         @Schema(name = "NodeId", title = "节点 ID", required = true)
         @JsonProperty(value = "NodeId", required = true)
         private Long nodeId;
+
+        @Schema(name = "NodeHostname", title = "节点名称", required = true)
+        @JsonProperty(value = "NodeHostname", required = true)
+        private String nodeHostname;
 
         @Schema(name = "NodeTaskId", title = "节点任务 ID", required = true)
         @JsonProperty(value = "NodeTaskId", required = true)
         private Long nodeTaskId;
 
+        @Schema(name = "NodeTaskName", title = "节点任务名称", required = true)
+        @JsonProperty(value = "NodeTaskName", required = true)
+        private String nodeTaskName;
+
         @Schema(name = "StepId", title = "节点步骤 ID", required = true)
         @JsonProperty(value = "StepId", required = true)
         private Long nodeStepId;
+
+        @Schema(name = "NodeStepName", title = "节点步骤名称", required = true)
+        @JsonProperty(value = "NodeStepName", required = true)
+        private String nodeStepName;
 
         @Schema(name = "LogStdOut", title = "标准日志", required = true)
         @JsonProperty(value = "LogStdOut", required = true)

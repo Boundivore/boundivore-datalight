@@ -28,6 +28,7 @@ import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.custom.ComponentNodeDto;
 import cn.boundivore.dl.orm.po.single.*;
 import cn.boundivore.dl.orm.service.single.impl.*;
@@ -72,6 +73,7 @@ public class MasterJobService {
     private final TDlJobLogServiceImpl tDlJobLogService;
 
     private final TDlJobServiceImpl tDlJobService;
+    private final TDlNodeServiceImpl tDlNodeService;
     private final TDlStageServiceImpl tDlStageService;
     private final TDlTaskServiceImpl tDlTaskService;
     private final TDlStepServiceImpl tDlStepService;
@@ -910,14 +912,76 @@ public class MasterJobService {
         List<TDlJobLog> tDlJobLogList = tDlJobLogWrapper.list();
         String tag = tDlJobLogList.isEmpty() ? null : tDlJobLogList.get(0).getTag();
 
+        // 根据 JobId StageId TaskId StepId 获取其对应名称
+        final Set<Long> jobIdSet = new LinkedHashSet<>();
+        final Set<Long> nodeIdSet = new LinkedHashSet<>();
+        final Set<Long> stageIdSet = new LinkedHashSet<>();
+        final Set<Long> taskIdSet = new LinkedHashSet<>();
+        final Set<Long> stepIdSet = new LinkedHashSet<>();
+
+        for (TDlJobLog tDlJobLog : tDlJobLogList) {
+            jobIdSet.add(tDlJobLog.getJobId());
+            nodeIdSet.add(tDlJobLog.getNodeId());
+            stageIdSet.add(tDlJobLog.getStageId());
+            taskIdSet.add(tDlJobLog.getTaskId());
+            stepIdSet.add(tDlJobLog.getStepId());
+        }
+
+        Map<Long, String> jobIdNameMap = this.tDlJobService.listByIds(jobIdSet)
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                TBasePo::getId,
+                                TDlJob::getJobName
+                        )
+                );
+        Map<Long, String> nodeIdNameMap = this.tDlNodeService.listByIds(nodeIdSet)
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                TBasePo::getId,
+                                TDlNode::getHostname
+                        )
+                );
+        Map<Long, String> stageIdNameMap = this.tDlStageService.listByIds(stageIdSet)
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                TBasePo::getId,
+                                TDlStage::getStageName
+                        )
+                );
+        Map<Long, String> taskIdNameMap = this.tDlTaskService.listByIds(taskIdSet)
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                TBasePo::getId,
+                                TDlTask::getTaskName
+                        )
+                );
+        Map<Long, String> stepIdNameMap = this.tDlStepService.listByIds(stepIdSet)
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                TBasePo::getId,
+                                TDlStep::getStepName
+                        )
+                );
+
+
         List<AbstractJobVo.JobLogVo> jobLogList = tDlJobLogList
                 .stream()
                 .map(i -> new AbstractJobVo.JobLogVo(
                                 i.getJobId(),
+                                jobIdNameMap.get(i.getJobId()),
                                 i.getNodeId(),
+                                nodeIdNameMap.get(i.getNodeId()),
                                 i.getStageId(),
+                                stageIdNameMap.get(i.getStageId()),
                                 i.getTaskId(),
+                                taskIdNameMap.get(i.getTaskId()),
                                 i.getStepId(),
+                                stepIdNameMap.get(i.getStepId()),
                                 i.getLogStdout(),
                                 i.getLogErrout()
                         )
