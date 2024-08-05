@@ -280,11 +280,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
                 String requestURI = httpRequest.getRequestURI();
 
-                if (isHtmlResource(requestURI)) {
+                if (this.isHtmlResource(requestURI)) {
                     httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
                     httpResponse.setHeader("Pragma", "no-cache");
                     httpResponse.setHeader("Expires", "0");
-                } else if (isStaticResource(requestURI)) {
+                } else if (this.isStaticResource(requestURI)) {
                     httpResponse.setHeader("Cache-Control", "public, max-age=31536000");
                 }
 
@@ -298,16 +298,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
             @Override
             public void destroy() {
             }
+
+            private boolean isHtmlResource(String requestURI) {
+                return requestURI.equals("/") || requestURI.equals("/index.html") || requestURI.endsWith(".html");
+            }
+
+            private boolean isStaticResource(String requestURI) {
+                return requestURI.startsWith("/assets/") ||
+                        requestURI.startsWith("/service_logo/") ||
+                        requestURI.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg)$");
+            }
         };
     }
 
-    private boolean isHtmlResource(String requestURI) {
-        return requestURI.equals("/") || requestURI.equals("/index.html") || requestURI.endsWith(".html");
-    }
 
-    private boolean isStaticResource(String requestURI) {
-        return requestURI.startsWith("/assets/") ||
-                requestURI.startsWith("/service_logo/") ||
-                requestURI.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg)$");
-    }
 }
