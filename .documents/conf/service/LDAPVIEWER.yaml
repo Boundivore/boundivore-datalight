@@ -1,8 +1,8 @@
 datalight:
   service:
     name: LDAPVIEWER
-    version: 2.4.0
-    tgz: dlc-ldapviewer-2.4.0.tar.gz
+    version: 1.2.5
+    tgz: dlc-ldapviewer-1.2.5.tar.gz
     conf-dirs:
       - service-conf-dir: '/etc/httpd/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAPVIEWER/templated/etc/httpd/conf'

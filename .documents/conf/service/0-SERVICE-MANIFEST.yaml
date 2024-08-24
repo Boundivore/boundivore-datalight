@@ -2,39 +2,39 @@ datalight:
   dlc-version: 1.0.0
   deploy:
     services:
-      - name: KERBEROS
+      - name: MONITOR
         type: BASE
         priority: 1
+        desc: '监控与告警基础服务'
+        dependencies: [ ]
+        optional-dependencies: [ ]
+        relatives: [ ]
+      - name: KERBEROS
+        type: BASE
+        priority: 2
         desc: '提供基于票据的安全认证服务'
         dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ ]
       - name: LDAP
         type: BASE
-        priority: 2
+        priority: 3
         desc: '提供目录服务，用于集中管理用户和资源信息'
         dependencies: [ ]
         optional-dependencies: [ 'KERBEROS' ]
         relatives: [ ]
       - name: SSSD
         type: BASE
-        priority: 3
+        priority: 4
         desc: '与 LDAP 和 KERBEROS 集成，实现统一认证和访问管理'
         dependencies: [ 'KERBEROS', 'LDAP' ]
         optional-dependencies: [ ]
         relatives: [ ]
       - name: LDAPVIEWER
         type: BASE
-        priority: 4
+        priority: 5
         desc: '提供 LDAP 的可视化管理页面'
         dependencies: [ 'LDAP' ]
-        optional-dependencies: [ ]
-        relatives: [ ]
-      - name: MONITOR
-        type: BASE
-        priority: 5
-        desc: '监控与告警基础服务'
-        dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ ]
       - name: KUBESPHERE

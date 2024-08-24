@@ -12,6 +12,12 @@ datalight:
       path: '/'
       button-name-suffix: '-Web UI'
 
+    - service: LDAPVIEWER
+      component: LDAPViewerServer
+      port: '8007'
+      path: '/phpldapadmin'
+      button-name-suffix: '-Web UI'
+
     - service: HDFS
       component: NameNode1
       port: '50070'
