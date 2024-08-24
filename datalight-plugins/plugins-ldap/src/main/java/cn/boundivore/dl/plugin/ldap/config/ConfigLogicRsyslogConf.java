@@ -46,12 +46,13 @@ public class ConfigLogicRsyslogConf extends AbstractConfigLogic {
                 file
         );
 
-        // {{}}
+        // {{LOG_DIR}}
+        String logDir = super.logDir();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{LOG_DIR}}",
+                        logDir
                 )
                 ;
     }

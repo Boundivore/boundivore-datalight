@@ -1,0 +1,140 @@
+datalight:
+  service:
+    name: LDAPVIEWER
+    version: 2.4.0
+    tgz: dlc-ldapviewer-2.4.0.tar.gz
+    conf-dirs:
+      - service-conf-dir: '/etc/httpd/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAPVIEWER/templated/etc/httpd/conf'
+
+      - service-conf-dir: '/etc/httpd/conf.d'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAPVIEWER/templated/etc/httpd/conf.d'
+
+      - service-conf-dir: '/etc/phpldapadmin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAPVIEWER/templated/etc/phpldapadmin'
+
+
+#       TODO FOR TEST
+#      - service-conf-dir: '/etc/httpd/conf'
+#        templated-dir: 'D:/datalight/plugins/LDAPVIEWER/templated/etc/httpd/conf'
+#
+#      - service-conf-dir: '/etc/httpd/conf.d'
+#        templated-dir: 'D:/datalight/plugins/LDAPVIEWER/templated/etc/httpd/conf.d'
+#
+#      - service-conf-dir: '/etc/phpldapadmin'
+#        templated-dir: 'D:/datalight/plugins/LDAPVIEWER/templated/etc/phpldapadmin'
+
+
+    config-event-handler-jar: 'plugins-ldapviewer-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.ldapviewer.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    components:
+      - name: LDAPViewerServer
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ 'LDAPClient' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '安装 LDAPViewerServer'
+                shell: 'ldapviewer-yum-install-server.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: JAR
+                name: '初始化服务配置文件'
+                jar: 'plugins-ldapviewer-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.ldapviewer.config.ConfigLDAPVIEWER'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 LDAPViewerServer'
+                shell: 'ldapviewer-operation.sh'
+                args: [ 'LDAPViewerServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '配置 LDAPViewerServer 自启动'
+                shell: 'ldapviewer-operation.sh'
+                args: [ 'LDAPViewerServer', 'enable' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 LDAPViewerServer'
+                shell: 'ldapviewer-operation.sh'
+                args: [ 'LDAPViewerServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 LDAPViewerServer'
+                shell: 'ldapviewer-operation.sh'
+                args: [ 'LDAPViewerServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 LDAPViewerServer'
+                shell: 'ldapviewer-operation.sh'
+                args: [ 'LDAPViewerServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000

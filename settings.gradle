@@ -64,4 +64,6 @@ include 'datalight-plugins:plugins-ldap'
 findProject(':datalight-plugins:plugins-ldap')?.name = 'plugins-ldap'
 include 'datalight-plugins:plugins-sssd'
 findProject(':datalight-plugins:plugins-sssd')?.name = 'plugins-sssd'
+include 'datalight-plugins:plugins-ldapviewer'
+findProject(':datalight-plugins:plugins-ldapviewer')?.name = 'plugins-ldapviewer'
 

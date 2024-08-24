@@ -65,4 +65,12 @@ public class ConfigFileRequest implements IRequest {
     @Schema(name = "Sha256", title = "配置文件信息摘要", required = true)
     @JsonProperty("Sha256")
     private String sha256;
+
+    @Schema(name = "User", title = "配置文件及其目录所属用户", required = true)
+    @JsonProperty("User")
+    private String user = "datalight";
+
+    @Schema(name = "Group", title = "配置文件及其目录所属用户组", required = true)
+    @JsonProperty("Group")
+    private String group = "datalight";
 }

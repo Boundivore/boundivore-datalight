@@ -20,6 +20,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -46,14 +47,73 @@ public class ConfigLogicKrb5Conf extends AbstractConfigLogic {
                 file
         );
 
-        // {{}}
+        // {{kdc}}
+        String kdc = this.kdc();
+
+        // {{admin_server}}
+        String adminServer = this.adminServer();
+
+        // {{LOG_DIR}}
+        String logDir = super.logDir();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{kdc}}",
+                        kdc
+                )
+                .replace(
+                        "{{admin_server}}",
+                        adminServer
+                )
+                .replace(
+                        "{{LOG_DIR}}",
+                        logDir
                 )
                 ;
+    }
+
+    /**
+     * Description: 返回 KerberosServer 组件所在节点主机名
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/8/23
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String KerberosServer 组件所在节点主机名
+     */
+    private String adminServer() {
+        return super.currentMetaService.getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(v -> "KerberosServer".equals(v.getComponentName()))
+                .map(PluginConfig.MetaComponent::getHostname)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("KerberosServer 未找到"));
+    }
+
+    /**
+     * Description: 返回 KerberosServer 组件所在节点主机名
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/8/23
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String KerberosServer 组件所在节点主机名
+     */
+    private String kdc() {
+        return super.currentMetaService.getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(v -> "KerberosServer".equals(v.getComponentName()))
+                .map(PluginConfig.MetaComponent::getHostname)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("KerberosServer 未找到"));
     }
 
 }

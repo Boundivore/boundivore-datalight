@@ -111,8 +111,12 @@ public class WorkerConfigService {
                 () -> new BException("为配置文件授权可执行权限失败")
         );
 
-        // 为目录递归变更所属以及可执行权限
-        this.chown(rootParentDirFile.getAbsolutePath());
+        // 为文件变更所属以及可执行权限
+        this.chown(
+                file.getAbsolutePath(),
+                request.getUser(),
+                request.getGroup()
+        );
 
         return Result.success();
     }
@@ -132,7 +136,7 @@ public class WorkerConfigService {
      */
     private File getNewRelativeRootParentFile(File file) {
         File rootParentFile = file.getParentFile();
-        while(!FileUtil.getParent(rootParentFile, 1).exists()){
+        while (!FileUtil.getParent(rootParentFile, 1).exists()) {
             rootParentFile = FileUtil.getParent(rootParentFile, 1);
         }
         return rootParentFile;
@@ -148,9 +152,9 @@ public class WorkerConfigService {
      * Modification time:
      * Throws:
      *
-     * @param dir 授权的指定目录
+     * @param filePath 授权的指定文件
      */
-    private void chown(String dir) {
+    private void chown(String filePath, String user, String group) {
         String cmd = String.format(
                 "%s/%s",
                 SpringContextUtil.SCRIPTS_DIR,
@@ -161,7 +165,7 @@ public class WorkerConfigService {
                 cmd,
                 0,
                 3000,
-                new String[]{dir},
+                new String[]{filePath, user, group},
                 new String[0],
                 true
         );

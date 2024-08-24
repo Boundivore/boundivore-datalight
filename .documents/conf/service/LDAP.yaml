@@ -1,0 +1,292 @@
+datalight:
+  service:
+    name: LDAP
+    version: 2.4.44
+    tgz: dlc-ldap-2.4.44.tar.gz
+    conf-dirs:
+      - service-conf-dir: '/etc'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAP/templated/etc'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/LDAP'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAP/templated/ldif'
+
+      - service-conf-dir: '/var/lib/ldap'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAP/templated/var/lib/ldap'
+
+#       TODO FOR TEST
+#      - service-conf-dir: '/etc'
+#        templated-dir: 'D:/datalight/plugins/LDAP/templated/etc'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/LDAP'
+#        templated-dir: 'D:/datalight/plugins/LDAP/templated/ldif'
+#
+#      - service-conf-dir: '/var/lib/ldap'
+#        templated-dir: 'D:/datalight/plugins/LDAP/templated/var/lib/ldap'
+
+
+    config-event-handler-jar: 'plugins-ldap-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.ldap.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    components:
+      - name: LDAPServer
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '安装 LDAP 服务端'
+                shell: 'ldap-yum-install-server.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '复制 LDAP 证书'
+                shell: 'ldap-cp-certs-dir.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: JAR
+                name: '初始化服务配置文件'
+                jar: 'plugins-ldap-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.ldap.config.ConfigLDAP'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '授权 LDAP 数据库文件'
+                shell: 'ldap-chown-db-config.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 LDAPServer'
+                shell: 'ldap-operation.sh'
+                args: [ 'Slapd', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '配置 LDAPServer 自启动'
+                shell: 'ldap-operation.sh'
+                args: [ 'Slapd', 'enable' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '修改数据库密码'
+                shell: 'ldap-modify-olcRootPw.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '加载 LDAP Schema'
+                shell: 'ldap-load-schema.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '修改顶级域名'
+                shell: 'ldap-modify-domain.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '开启 MemberOf'
+                shell: 'ldap-add-memberof.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '创建基础 DN'
+                shell: 'ldap-add-base.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '修改日志级别'
+                shell: 'ldap-modify-log-level.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '部署后重启 Rsyslog'
+                shell: 'ldap-operation.sh'
+                args: [ 'Rsyslog', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+              - type: SCRIPT
+                name: '部署后重启 LDAPServer'
+                shell: 'ldap-operation.sh'
+                args: [ 'Slapd', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 LDAPServer'
+                shell: 'ldap-operation.sh'
+                args: [ 'Slapd', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 LDAPServer'
+                shell: 'ldap-operation.sh'
+                args: [ 'Slapd', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 LDAPServer'
+                shell: 'ldap-operation.sh'
+                args: [ 'Slapd', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: LDAPClient
+        priority: 2
+        max: -1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '安装 LDAP 客户端'
+                shell: 'ldap-yum-install-client.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '启动 LDAPClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: COMMAND
+                name: '停止 LDAPClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: COMMAND
+                name: '重启 LDAPClient'
+                shell: 'echo done'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: '0'
+                sleep: 0

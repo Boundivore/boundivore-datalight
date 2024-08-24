@@ -20,6 +20,7 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfig;
 import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
+import java.util.NoSuchElementException;
 
 
 /**
@@ -46,14 +47,80 @@ public class ConfigLogicSssdConf extends AbstractConfigLogic {
                 file
         );
 
-        // {{}}
+        // {{ldap_uri}}
+        String ldapUri = this.ldapUri();
+
+        // {{krb5_server}}
+        String krb5Server = this.krb5Server();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{ldap_uri}}",
+                        ldapUri
+                )
+                .replace(
+                        "{{krb5_server}}",
+                        krb5Server
                 )
                 ;
+    }
+
+    /**
+     * Description: 获取 krb5Server 所在节点主机名
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/8/23
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String krb5Server 所在节点主机名
+     */
+    private String krb5Server() {
+        return super.pluginConfig
+                .getMetaServiceMap()
+                .get("KERBEROS")
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(v -> "KerberosServer".equals(v.getComponentName()))
+                .map(PluginConfig.MetaComponent::getHostname)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("未找到 KerberosServer 实例"));
+    }
+
+    /**
+     * Description: 获取 ldapUri
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/8/23
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String ldapUri
+     */
+    private String ldapUri() {
+
+        String ldapServerHostname = super.pluginConfig
+                .getMetaServiceMap()
+                .get("LDAP")
+                .getMetaComponentMap()
+                .values()
+                .stream()
+                .filter(v -> "LDAPServer".equals(v.getComponentName()))
+                .map(PluginConfig.MetaComponent::getHostname)
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("未找到 LDAPServer 实例"));
+
+
+        return String.format(
+                "ldap://%s",
+                ldapServerHostname
+
+        );
     }
 
 }

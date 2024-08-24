@@ -58,8 +58,6 @@ public class ConfigSSSD extends AbstractConfig {
                 return new ConfigLogicBashRc(super.pluginConfig).config(file, replacedTemplate);
             case ".bash_profile":
                 return new ConfigLogicBashProfile(super.pluginConfig).config(file, replacedTemplate);
-            case "sync-local-user.sh":
-                return new ConfigLogicSyncLocalUserSh(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {
                     log.debug("无处理文件: {}", file.getName());

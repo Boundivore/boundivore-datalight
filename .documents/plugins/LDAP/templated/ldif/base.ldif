@@ -1,0 +1,18 @@
+dn: dc=datalight,dc=com
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: datalight
+dc: datalight
+
+dn: cn=admin,dc=datalight,dc=com
+objectClass: organizationalRole
+cn: admin
+
+dn: ou=User,dc=datalight,dc=com
+objectClass: organizationalUnit
+ou: User
+
+dn: ou=Group,dc=datalight,dc=com
+objectClass: organizationalUnit
+ou: Group

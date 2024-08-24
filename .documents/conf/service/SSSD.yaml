@@ -1,0 +1,175 @@
+datalight:
+  service:
+    name: SSSD
+    version: 1.16.5
+    tgz: dlc-sssd-1.16.5.tar.gz
+    conf-dirs:
+      - service-conf-dir: '/etc/sssd'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/SSSD/templated/etc/sssd'
+
+      - service-conf-dir: '/etc/skel'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/SSSD/templated/etc/skel'
+
+      - service-conf-dir: '/etc/pam.d'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/SSSD/templated/etc/pam.d'
+
+
+#       TODO FOR TEST
+#      - service-conf-dir: '/etc/sssd'
+#        templated-dir: 'D:/datalight/plugins/SSSD/templated/etc/sssd'
+#
+#      - service-conf-dir: '/etc/skel'
+#        templated-dir: 'D:/datalight/plugins/SSSD/templated/etc/skel'
+#
+#      - service-conf-dir: '/etc/pam.d'
+#        templated-dir: 'D:/datalight/plugins/SSSD/templated/etc/pam.d'
+
+    config-event-handler-jar: 'plugins-sssd-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.sssd.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+    components:
+      - name: SSSDServer
+        priority: 1
+        max: -1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '安装 SSSDServer'
+                shell: 'sssd-yum-install.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: JAR
+                name: '初始化服务配置文件'
+                jar: 'plugins-sssd-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.sssd.config.ConfigSSSD'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '设置配置文件权限'
+                shell: 'sssd-chmod-conf.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '配置 SSSDServer 自启动'
+                shell: 'sssd-operation.sh'
+                args: [ 'Sssd', 'enable' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 SSSDServer'
+                shell: 'sssd-operation.sh'
+                args: [ 'Sssd', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '软连接日志目录'
+                shell: 'sssd-ln-log-dir.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 SSSDServer'
+                shell: 'sssd-operation.sh'
+                args: [ 'Sssd', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '清除 SSSD 缓存'
+                shell: 'sssd-cache-clear.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '停止 SSSDServer'
+                shell: 'sssd-operation.sh'
+                args: [ 'Sssd', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '清除 SSSD 缓存'
+                shell: 'sssd-cache-clear.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '重启 SSSDServer'
+                shell: 'sssd-operation.sh'
+                args: [ 'Sssd', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000

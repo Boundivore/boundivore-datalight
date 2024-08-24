@@ -2,30 +2,58 @@ datalight:
   dlc-version: 1.0.0
   deploy:
     services:
-      - name: MONITOR
+      - name: KERBEROS
         type: BASE
         priority: 1
+        desc: '提供基于票据的安全认证服务'
+        dependencies: [ ]
+        optional-dependencies: [ ]
+        relatives: [ ]
+      - name: LDAP
+        type: BASE
+        priority: 2
+        desc: '提供目录服务，用于集中管理用户和资源信息'
+        dependencies: [ ]
+        optional-dependencies: [ 'KERBEROS' ]
+        relatives: [ ]
+      - name: SSSD
+        type: BASE
+        priority: 3
+        desc: '与 LDAP 和 KERBEROS 集成，实现统一认证和访问管理'
+        dependencies: [ 'KERBEROS', 'LDAP' ]
+        optional-dependencies: [ ]
+        relatives: [ ]
+      - name: LDAPVIEWER
+        type: BASE
+        priority: 4
+        desc: '提供 LDAP 的可视化管理页面'
+        dependencies: [ 'LDAP' ]
+        optional-dependencies: [ ]
+        relatives: [ ]
+      - name: MONITOR
+        type: BASE
+        priority: 5
         desc: '监控与告警基础服务'
         dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ ]
       - name: KUBESPHERE
         type: BASE
-        priority: 2
+        priority: 6
         desc: 'K8S 云原生平台'
         dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ ]
       - name: ZOOKEEPER
         type: BASE
-        priority: 3
+        priority: 7
         desc: '高吞吐的 CP 模式注册中心'
         dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: HDFS
         type: STORAGE
-        priority: 4
+        priority: 8
         desc: 'Hadoop 分布式存储服务'
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
@@ -33,56 +61,56 @@ datalight:
       - name: YARN
         type: COMPUTE
         desc: 'Hadoop 分布式计算资源管理服务'
-        priority: 5
+        priority: 9
         dependencies: [ 'ZOOKEEPER', 'HDFS' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR', 'SPARK', 'FLINK']
       - name: HIVE
         type: COMPUTE
         desc: 'HQL 任务生成与计算框架'
-        priority: 6
+        priority: 10
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' , 'SPARK', "FLINK"]
       - name: HBASE
         type: STORAGE
         desc: '大型分布式非结构化数据库'
-        priority: 7
+        priority: 11
         dependencies: [ 'ZOOKEEPER', 'HDFS' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR', "FLINK" ]
       - name: KAFKA
         type: STORAGE
         desc: '分布式高吞吐消息队列'
-        priority: 8
+        priority: 12
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: SPARK
         type: COMPUTE
         desc: '流批一体计算框架'
-        priority: 9
+        priority: 13
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: FLINK
         type: COMPUTE
         desc: '流批一体计算框架'
-        priority: 10
+        priority: 14
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: ZKUI
         type: COMPUTE
         desc: 'Zookeeper 可视化操作终端'
-        priority: 11
+        priority: 15
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: KYUUBI
         type: COMPUTE
         desc: '为湖仓提供无服务器 SQL 的分布式多租户网关'
-        priority: 12
+        priority: 16
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN', 'HIVE' ]
         optional-dependencies: [ 'SPARK', 'FLINK' ]
         relatives: [ 'MONITOR' ]

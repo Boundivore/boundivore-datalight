@@ -629,13 +629,13 @@ public class MasterAlertService {
                 "配置文件 Base64 内容不能为空"
         );
 
-        ConfigFileRequest configFileRequest = new ConfigFileRequest(
-                filePath,
-                configVersion,
-                filename,
-                contentBase64,
-                SecureUtil.sha256(contentBase64)
-        );
+        // 组装修改本地配置文件请求
+        ConfigFileRequest configFileRequest = new ConfigFileRequest()
+                .setPath(filePath)
+                .setConfigVersion(configVersion)
+                .setFilename(filename)
+                .setContentBase64(contentBase64)
+                .setSha256(SecureUtil.sha256(contentBase64));
 
         Result<String> result = this.remoteInvokeWorkerService.iWorkerConfigAPI(nodeDetailVo.getNodeIp())
                 .config(configFileRequest);
