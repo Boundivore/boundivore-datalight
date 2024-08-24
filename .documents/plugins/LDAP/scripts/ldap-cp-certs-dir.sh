@@ -13,6 +13,8 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-scp -r "${SERVICE_DIR}/certs" localhost:"/etc/openldap/"
+SERVICE_NAME="LDAP"
+
+scp -r "${SERVICE_DIR}/${SERVICE_NAME}/certs" localhost:"/etc/openldap/"
 
 exit 0

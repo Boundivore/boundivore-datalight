@@ -13,6 +13,8 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-ldapadd -x -D cn=admin,dc=datalight,dc=com -w 123456 -f "${SERVICE_DIR}/base.ldif"
+SERVICE_NAME="LDAP"
+
+ldapadd -x -D cn=admin,dc=datalight,dc=com -w 123456 -f "${SERVICE_DIR}/${SERVICE_NAME}/base.ldif"
 
 exit 0

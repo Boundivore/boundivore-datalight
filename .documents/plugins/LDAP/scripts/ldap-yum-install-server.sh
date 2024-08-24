@@ -7,7 +7,9 @@
 # PID_DIR="/data/datalight/pids"
 # DATA_DIR="/data/datalight/data"
 
-cd "$SERVICE_DIR/LDAP/ldap-package" || exit
+SERVICE_NAME="LDAP"
+
+cd "$SERVICE_DIR/${SERVICE_NAME}/ldap-package" || exit
 
 # 安装所有 RPM 包
 yum -y localinstall ./*.rpm --disablerepo='*'

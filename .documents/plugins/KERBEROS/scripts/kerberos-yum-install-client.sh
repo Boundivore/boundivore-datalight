@@ -7,7 +7,9 @@
 # PID_DIR="/data/datalight/pids"
 # DATA_DIR="/data/datalight/data"
 
-cd "$SERVICE_DIR/KERBEROS/kerberos-package" || exit
+SERVICE_NAME=KERBEROS
+
+cd "$SERVICE_DIR/${SERVICE_NAME}/kerberos-package" || exit
 
 # 安装所有 RPM 包
 # ls ./*.rpm | grep -v 'krb5-server' | xargs yum -y localinstall

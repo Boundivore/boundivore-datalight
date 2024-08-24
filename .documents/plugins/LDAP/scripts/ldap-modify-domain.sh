@@ -13,6 +13,8 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-ldapadd -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/modify-domain.ldif"
+SERVICE_NAME="LDAP"
+
+ldapadd -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/${SERVICE_NAME}/modify-domain.ldif"
 
 exit 0

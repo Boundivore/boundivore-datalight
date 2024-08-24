@@ -13,8 +13,10 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-ldapadd -Q -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/add-memberof.ldif"
-ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/modify-refint-1.ldif"
-ldapadd -Q -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/add-refint-2.ldif"
+SERVICE_NAME="LDAP"
+
+ldapadd -Q -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/${SERVICE_NAME}/add-memberof.ldif"
+ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/${SERVICE_NAME}/modify-refint-1.ldif"
+ldapadd -Q -Y EXTERNAL -H ldapi:/// -f "${SERVICE_DIR}/${SERVICE_NAME}/add-refint-2.ldif"
 
 exit 0
