@@ -15,28 +15,28 @@ datalight:
         desc: '提供基于票据的安全认证服务'
         dependencies: [ ]
         optional-dependencies: [ ]
-        relatives: [ ]
+        relatives: [ 'MONITOR' ]
       - name: LDAP
         type: BASE
         priority: 3
         desc: '提供目录服务，用于集中管理用户和资源信息'
         dependencies: [ ]
         optional-dependencies: [ 'KERBEROS' ]
-        relatives: [ ]
+        relatives: [ 'MONITOR' ]
       - name: SSSD
         type: BASE
         priority: 4
         desc: '与 LDAP 和 KERBEROS 集成，实现统一认证和访问管理'
         dependencies: [ 'KERBEROS', 'LDAP' ]
         optional-dependencies: [ ]
-        relatives: [ ]
+        relatives: [ 'MONITOR' ]
       - name: LDAPVIEWER
         type: BASE
         priority: 5
         desc: '提供 LDAP 的可视化管理页面'
         dependencies: [ 'LDAP' ]
         optional-dependencies: [ ]
-        relatives: [ ]
+        relatives: [ 'MONITOR' ]
       - name: KUBESPHERE
         type: BASE
         priority: 6

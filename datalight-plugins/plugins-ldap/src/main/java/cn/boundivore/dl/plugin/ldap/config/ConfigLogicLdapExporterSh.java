@@ -23,7 +23,7 @@ import java.io.File;
 
 
 /**
- * Description: 配置 ldap_exporter_config.yaml 文件
+ * Description: 配置 ldap-loglevel.ldif 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/8/22
@@ -32,9 +32,9 @@ import java.io.File;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicLdapLogLevelLdif extends AbstractConfigLogic {
+public class ConfigLogicLdapExporterSh extends AbstractConfigLogic {
 
-    public ConfigLogicLdapLogLevelLdif(PluginConfig pluginConfig) {
+    public ConfigLogicLdapExporterSh(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 
@@ -46,12 +46,13 @@ public class ConfigLogicLdapLogLevelLdif extends AbstractConfigLogic {
                 file
         );
 
-        // {{}}
+        // {{SERVICE_DIR}}
+        String serviceDir = super.serviceDir();
 
         return replacedTemplated
                 .replace(
-                        "{{}}",
-                        ""
+                        "{{SERVICE_DIR}}",
+                        serviceDir
                 )
                 ;
     }

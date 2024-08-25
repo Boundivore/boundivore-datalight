@@ -18,10 +18,11 @@ USER_NAME="datalight"
 GROUP_NAME="datalight"
 
 SERVICE_NAME="LDAP"
+CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
 # 检查参数是否为空
 if [ -z "$1" ] || [ -z "$2" ]; then
-  echo "Usage: $0 <Slapd|Rsyslog> <start|stop|restart|enable|disable>"
+  echo "Usage: $0 <Slapd|Rsyslog|LDAPServer> <start|stop|restart|enable|disable>"
   exit 1
 fi
 
@@ -82,6 +83,22 @@ disable_rsyslog() {
   echo "Rsyslog disabled from starting on boot."
 }
 
+start_ldapserver() {
+  "${CURRENT_SERVICE_DIR}/exporter/ldap/bin/ldap_exporter.sh" start
+  echo "LDAPServer started."
+}
+
+stop_ldapserver() {
+  "${CURRENT_SERVICE_DIR}/exporter/ldap/bin/ldap_exporter.sh" stop
+  echo "LDAPServer stopped."
+}
+
+restart_ldapserver() {
+  stop_ldapserver
+  sleep 2
+  start_ldapserver
+}
+
 # 执行相应的启动、停止、启用或禁用命令
 case "${COMPONENT_NAME}" in
   "Slapd")
@@ -134,8 +151,25 @@ case "${COMPONENT_NAME}" in
         ;;
     esac
     ;;
+  "LDAPServer")
+    case "${OPERATION}" in
+      "start")
+        start_ldapserver
+        ;;
+      "stop")
+        stop_ldapserver
+        ;;
+      "restart")
+        restart_ldapserver
+        ;;
+      *)
+        echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
+        exit 1
+        ;;
+    esac
+    ;;
   *)
-    echo "Invalid component name. Supported components: <Slapd|Rsyslog>"
+    echo "Invalid component name. Supported components: <Slapd|Rsyslog|LDAPServer>"
     exit 1
     ;;
 esac

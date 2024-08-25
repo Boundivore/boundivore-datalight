@@ -44,6 +44,7 @@ public class PortConstants {
             put("MONITOR-Grafana", "3000");
             put("MONITOR-MySQLExporter", "9104");
             put("MONITOR-NodeExporter", "9100");
+            put("LDAP-LDAPExporter", "9330");
 
             put("ZOOKEEPER-QuarumPeermain", "19001");
 

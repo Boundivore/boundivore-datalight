@@ -13,6 +13,12 @@ datalight:
       - service-conf-dir: '/var/lib/ldap'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAP/templated/var/lib/ldap'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/LDAP/exporter/ldap/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAP/templated/exporter/ldap/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/LDAP/exporter/ldap/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/LDAP/templated/exporter/ldap/conf'
+
 #       TODO FOR TEST
 #      - service-conf-dir: '/etc'
 #        templated-dir: 'D:/datalight/plugins/LDAP/templated/etc'
@@ -23,6 +29,11 @@ datalight:
 #      - service-conf-dir: '/var/lib/ldap'
 #        templated-dir: 'D:/datalight/plugins/LDAP/templated/var/lib/ldap'
 
+#      - service-conf-dir: '{{SERVICE_DIR}}/LDAP/exporter/ldap/bin'
+#        templated-dir: 'D:/datalight/plugins/LDAP/templated/exporter/ldap/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/LDAP/exporter/ldap/conf'
+#        templated-dir: 'D:/datalight/plugins/LDAP/templated/exporter/ldap/conf'
 
     config-event-handler-jar: 'plugins-ldap-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.ldap.config.event.ConfigEventHandler'
@@ -228,8 +239,89 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: LDAPClient
+      - name: LDAPExporter
         priority: 2
+        max: -1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ 'LDAPServer' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '安装 LDAP 服务端'
+                shell: 'ldap-yum-install-server.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 0
+
+              - type: JAR
+                name: '初始化服务配置文件'
+                jar: 'plugins-ldap-1.0.0.jar'
+                clazz: 'cn.boundivore.dl.plugin.ldap.config.ConfigLDAP'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 0
+
+              - type: SCRIPT
+                name: '部署后启动 LDAPExporter'
+                shell: 'ldap-operation.sh'
+                args: [ 'LDAPExporter', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 LDAPExporter'
+                shell: 'ldap-operation.sh'
+                args: [ 'LDAPExporter', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 LDAPExporter'
+                shell: 'ldap-operation.sh'
+                args: [ 'LDAPExporter', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 LDAPExporter'
+                shell: 'ldap-operation.sh'
+                args: [ 'LDAPExporter', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: LDAPClient
+        priority: 3
         max: -1
         min: 1
         mutexes: [ ]

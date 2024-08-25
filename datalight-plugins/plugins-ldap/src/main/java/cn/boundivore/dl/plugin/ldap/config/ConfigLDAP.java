@@ -58,6 +58,10 @@ public class ConfigLDAP extends AbstractConfig {
                 return new ConfigLogicRsyslogConf(super.pluginConfig).config(file, replacedTemplate);
             case "ldap-loglevel.ldif":
                 return new ConfigLogicLdapLogLevelLdif(super.pluginConfig).config(file, replacedTemplate);
+            case "ldap_exporter.sh":
+                return new ConfigLogicLdapExporterSh(super.pluginConfig).config(file, replacedTemplate);
+            case "ldap_exporter_config.yaml":
+                return new ConfigLogicLdapExporterConfigYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {
                     log.debug("无处理文件: {}", file.getName());

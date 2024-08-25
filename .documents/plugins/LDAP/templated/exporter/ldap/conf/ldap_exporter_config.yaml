@@ -1,0 +1,3 @@
+---
+ldapUser: "cn=admin,dc=datalight,dc=com"
+ldapPass: "123456"
