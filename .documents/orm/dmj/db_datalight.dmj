@@ -1,6 +1,6 @@
 {
   "RootName": "DataModels",
-  "CTVER": "43543336",
+  "CTVER": "43543338",
   "TableCount": 35,
   "Count": 2,
   "items": [
@@ -9,7 +9,7 @@
       "Name": "db_data_light",
       "CreateDate": "2023/4/17 9:37:49",
       "OrderNo": 1,
-      "CustomAttr1": "DVS:-33.67,661.06,0.88,0,",
+      "CustomAttr1": "DVS:-783.76,-1264.97,1.45,0,",
       "DefDbEngine": "MYSQL",
       "DbConnectStr": "TCtMetaMysqlDb",
       "Tables": {
@@ -18,9 +18,10 @@
           {
             "ID": 1,
             "Name": "t_dl_login_event",
+            "Caption": "登录事件记录表",
             "CreateDate": "2023/9/19 13:59:05",
             "OrderNo": 1,
-            "GraphDesc": "Left=36.74\r\nTop=596.03",
+            "GraphDesc": "Left=36.05\r\nTop=596.03",
             "MetaFields": {
               "Count": 6,
               "items": [

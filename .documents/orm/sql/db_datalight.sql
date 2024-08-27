@@ -11,7 +11,7 @@
  Target Server Version : 50741
  File Encoding         : 65001
 
- Date: 11/06/2024 12:25:31
+ Date: 27/08/2024 11:18:43
 */
 
 SET NAMES utf8mb4;
@@ -271,7 +271,7 @@ CREATE TABLE `t_dl_login_event`  (
   `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
   `last_login` bigint(20) NOT NULL COMMENT '最近一次登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '登录事件记录表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_logs
@@ -296,7 +296,7 @@ CREATE TABLE `t_dl_logs`  (
   `params` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '请求入参',
   `result` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '响应体结果',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志埋点信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志埋点信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for t_dl_node
