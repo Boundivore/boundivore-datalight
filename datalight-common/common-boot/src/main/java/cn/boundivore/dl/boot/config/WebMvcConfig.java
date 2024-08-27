@@ -304,9 +304,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
             }
 
             private boolean isStaticResource(String requestURI) {
-                return requestURI.startsWith("/assets/") ||
-                        requestURI.startsWith("/service_logo/") ||
-                        requestURI.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg)$");
+//                return requestURI.startsWith("/assets/") ||
+//                        requestURI.startsWith("/service_logo/") ||
+//                        requestURI.matches(".*\\.(css|js|png|jpg|jpeg|gif|svg)$");
+
+                return requestURI.startsWith("/assets/");
             }
         };
     }
