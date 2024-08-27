@@ -22,7 +22,7 @@ CURRENT_SERVICE_DIR="${SERVICE_DIR}/${SERVICE_NAME}"
 
 # 检查参数是否为空
 if [ -z "$1" ] || [ -z "$2" ]; then
-  echo "Usage: $0 <Slapd|Rsyslog|LDAPServer> <start|stop|restart|enable|disable>"
+  echo "Usage: $0 <Slapd|Rsyslog|LDAPExporter> <start|stop|restart|enable|disable>"
   exit 1
 fi
 
@@ -83,20 +83,20 @@ disable_rsyslog() {
   echo "Rsyslog disabled from starting on boot."
 }
 
-start_ldapserver() {
+start_LDAPExporter() {
   "${CURRENT_SERVICE_DIR}/exporter/ldap/bin/ldap_exporter.sh" start
-  echo "LDAPServer started."
+  echo "LDAPExporter started."
 }
 
-stop_ldapserver() {
+stop_LDAPExporter() {
   "${CURRENT_SERVICE_DIR}/exporter/ldap/bin/ldap_exporter.sh" stop
-  echo "LDAPServer stopped."
+  echo "LDAPExporter stopped."
 }
 
-restart_ldapserver() {
-  stop_ldapserver
+restart_LDAPExporter() {
+  stop_LDAPExporter
   sleep 2
-  start_ldapserver
+  start_LDAPExporter
 }
 
 # 执行相应的启动、停止、启用或禁用命令
@@ -151,16 +151,16 @@ case "${COMPONENT_NAME}" in
         ;;
     esac
     ;;
-  "LDAPServer")
+  "LDAPExporter")
     case "${OPERATION}" in
       "start")
-        start_ldapserver
+        start_LDAPExporter
         ;;
       "stop")
-        stop_ldapserver
+        stop_LDAPExporter
         ;;
       "restart")
-        restart_ldapserver
+        restart_LDAPExporter
         ;;
       *)
         echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
@@ -169,7 +169,7 @@ case "${COMPONENT_NAME}" in
     esac
     ;;
   *)
-    echo "Invalid component name. Supported components: <Slapd|Rsyslog|LDAPServer>"
+    echo "Invalid component name. Supported components: <Slapd|Rsyslog|LDAPExporter>"
     exit 1
     ;;
 esac
