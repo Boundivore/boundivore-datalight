@@ -21,14 +21,10 @@ set_ownership_and_permissions() {
   USER_NAME="datalight"
   GROUP_NAME="datalight"
 
-  chown -R "$USER_NAME:$GROUP_NAME" "$1" || {
-    echo "Failed to set ownership for $1"
-    exit 1
-  }
-  chmod -R 755 "$1" || {
-    echo "Failed to set permissions for $1"
-    exit 1
-  }
+  if [[ $(id -u) -eq 0 ]]; then
+    chown -R "$USER_NAME:$GROUP_NAME" "$1" || exit 1
+    chmod -R 755 "$1" || exit 1
+  fi
 }
 
 # 创建目录并设置权限
