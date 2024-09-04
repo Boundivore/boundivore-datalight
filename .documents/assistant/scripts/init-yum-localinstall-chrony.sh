@@ -11,7 +11,7 @@ BASE_PATH=$(dirname "$(readlink -f "$0")")
 echo "Bash Path: $BASE_PATH"
 
 # 定义路径变量
-REPO_PATH="$BASE_PATH/../packages"
+REPO_PATH="$BASE_PATH/../repo"
 FOLDER_NAME="yum-chrony"
 TAR_NAME="yum-chrony.tar.gz"
 
