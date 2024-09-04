@@ -3,9 +3,6 @@
 # example: sh init-ssh-copy-key.sh
 set -e
 
-# 安装 expect 工具
-yum -y install expect
-
 # 获取当前用户
 CURRENT_USER="$USER"
 echo "Current User: ${CURRENT_USER}"

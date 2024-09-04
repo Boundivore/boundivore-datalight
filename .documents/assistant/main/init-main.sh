@@ -8,6 +8,9 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+# 安装 expect 工具
+yum -y install expect
+
 # 获取当前脚本所在目录的绝对路径
 main_script_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 echo "main_script_dir: ${main_script_dir}"
