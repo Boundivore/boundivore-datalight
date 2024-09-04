@@ -199,6 +199,15 @@ https://gitee.com/boundivore/boundivore-datalight-web
 
 #### 6.4.1 自动初始化
 
+自动初始化过程中，依赖 expect 工具，脚本中会自动安装该工具，即自动执行：
+~~~shell
+yum -y install expect
+~~~
+
+如需自主安装该工具，可修改脚本 `init-main.sh`。
+
+---
+
 自动初始化工具位于部署目录下的 assistant 目录，其中涉及到修改的内容如下。
 
 注意：MySQL 5.7 请自行手动安装，自动初始化工具将不包含这部分内容。
