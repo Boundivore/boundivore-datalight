@@ -1,8 +1,8 @@
 datalight:
   service:
     name: HBASE
-    version: 3.5.9
-    tgz: dlc-hbase-3.5.9.tar.gz
+    version: 2.5.9
+    tgz: dlc-hbase-2.5.9.tar.gz
     conf-dirs:
       - service-conf-dir: '{{SERVICE_DIR}}/HBASE/exporter/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/HBASE/templated/exporter/conf'
