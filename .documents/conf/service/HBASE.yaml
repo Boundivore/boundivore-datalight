@@ -321,7 +321,7 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 HBASEClient 部署'
+                name: '正在完成 HBaseClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -334,7 +334,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '启动 HBASEClient'
+                name: '启动 HBaseClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -348,7 +348,7 @@ datalight:
             fail-state: STARTED
             steps:
               - type: COMMAND
-                name: '停止 HBASEClient'
+                name: '停止 HBaseClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -362,7 +362,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '重启 HBASEClient'
+                name: '重启 HBaseClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]

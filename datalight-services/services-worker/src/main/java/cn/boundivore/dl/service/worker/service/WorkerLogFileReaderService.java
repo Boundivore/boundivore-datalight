@@ -130,10 +130,17 @@ public class WorkerLogFileReaderService {
         Assert.isFalse(
                 filePath == null
                         || startOffset == null
-                        || endOffset == null
-                        || startOffset < 0
-                        || endOffset < startOffset,
+                        || endOffset == null,
                 () -> new IllegalArgumentException("非法的参数")
+        );
+
+        // 容错，防止前端调用传入负数
+        startOffset = startOffset < 0 ? 0 : startOffset;
+        endOffset = endOffset < 0 ? 0 : endOffset;
+
+        Assert.isFalse(
+                endOffset < startOffset,
+                () -> new IllegalArgumentException("非法的偏移量数值")
         );
 
         long maxOffset;

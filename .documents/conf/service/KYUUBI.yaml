@@ -116,7 +116,7 @@ datalight:
                 exits: '0'
                 sleep: 1000
 
-      - name: KYUUBIClient
+      - name: KyuubiClient
         priority: 2
         max: -1
         min: 0
@@ -129,7 +129,7 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 KYUUBIClient 部署'
+                name: '正在完成 KyuubiClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -142,7 +142,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '启动 KYUUBIClient'
+                name: '启动 KyuubiClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -156,7 +156,7 @@ datalight:
             fail-state: STARTED
             steps:
               - type: COMMAND
-                name: '停止 KYUUBIClient'
+                name: '停止 KyuubiClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -170,7 +170,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '重启 KYUUBIClient'
+                name: '重启 KyuubiClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]

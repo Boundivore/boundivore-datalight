@@ -86,32 +86,45 @@ datalight:
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
-      - name: SPARK
-        type: COMPUTE
-        desc: '流批一体计算框架'
+      - name: SOLR
+        type: STORAGE
+        desc: '提供强大的全文搜索和索引功能'
         priority: 13
-        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
-      - name: FLINK
+      - name: SPARK
         type: COMPUTE
         desc: '流批一体计算框架'
         priority: 14
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
+      - name: FLINK
+        type: COMPUTE
+        desc: '流批一体计算框架'
+        priority: 15
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR' ]
       - name: ZKUI
         type: COMPUTE
         desc: 'Zookeeper 可视化操作终端'
-        priority: 15
+        priority: 16
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: KYUUBI
         type: COMPUTE
         desc: '为湖仓提供无服务器 SQL 的分布式多租户网关'
-        priority: 16
+        priority: 17
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN', 'HIVE' ]
         optional-dependencies: [ 'SPARK', 'FLINK' ]
         relatives: [ 'MONITOR' ]
-
+#      - name: RANGER
+#        type: COMPUTE
+#        priority: 18
+#        desc: '提供数据安全性和权限管理的集中控制台'
+#        dependencies: [ 'ZOOKEEPER', 'SOLR' ]
+#        optional-dependencies: [ ]
+#        relatives: [ 'MONITOR' ]

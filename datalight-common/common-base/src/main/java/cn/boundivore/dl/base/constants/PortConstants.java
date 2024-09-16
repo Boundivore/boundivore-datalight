@@ -76,6 +76,8 @@ public class PortConstants {
             put("ZKUI-ZKUIServer", "19020");
 
             put("KYUUBI-KyuubiServer", "19021");
+
+            put("SOLR-SolrServer", "19022");
         }
     };
 
@@ -114,6 +116,8 @@ public class PortConstants {
             put("ZKUI-ZKUIServer", "18020");
 
             put("KYUUBI-KyuubiServer", "18021");
+
+            put("SOLR-SolrServer", "18022");
         }
     };
 

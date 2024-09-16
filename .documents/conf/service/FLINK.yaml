@@ -142,7 +142,7 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: COMMAND
-                name: '正在完成 FLINKClient 部署'
+                name: '正在完成 FlinkClient 部署'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -155,7 +155,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '启动 FLINKClient'
+                name: '启动 FlinkClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -169,7 +169,7 @@ datalight:
             fail-state: STARTED
             steps:
               - type: COMMAND
-                name: '停止 FLINKClient'
+                name: '停止 FlinkClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]
@@ -183,7 +183,7 @@ datalight:
             fail-state: STOPPED
             steps:
               - type: COMMAND
-                name: '重启 FLINKClient'
+                name: '重启 FlinkClient'
                 shell: 'echo done'
                 args: [ ]
                 interactions: [ ]

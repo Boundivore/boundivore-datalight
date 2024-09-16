@@ -16,6 +16,6 @@ fi
 # 创建 SSSD 日志目录并创建符号链接
 mkdir -p "${LOG_DIR}/SSSD"
 
-ln -s /var/log/sssd "${LOG_DIR}/SSSD/sssd"
+ln -s /var/log/sssd "${LOG_DIR}/SSSD"
 
 exit 0

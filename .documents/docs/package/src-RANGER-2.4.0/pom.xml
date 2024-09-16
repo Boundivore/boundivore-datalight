@@ -80,9 +80,7 @@
         <apacheds.version>2.0.0-M22</apacheds.version>
         <asm.all.version>3.2</asm.all.version>
         <aspectj.version>1.8.2</aspectj.version>
-        <!-- DLC-FIX -->
         <assembly.plugin.version>3.3.0</assembly.plugin.version>
-        <!-- DLC-FIX -->
         <atlas.version>2.2.0</atlas.version>
         <atlas.jackson.version>2.11.3</atlas.jackson.version>
         <atlas.jackson.databind.version>2.11.3</atlas.jackson.databind.version>
@@ -194,7 +192,7 @@
         <servlet.api.version>2.5</servlet.api.version>
         <slf4j-api.version>1.7.32</slf4j-api.version>
         <slf4j.version>1.7.32</slf4j.version>
-        <solr.version>8.11.2</solr.version>
+        <solr.version>8.11.3</solr.version>
         <spring-ldap-core.version>2.3.8.RELEASE</spring-ldap-core.version>
         <springframework.security.version>5.7.5</springframework.security.version>
         <springframework.test.version>5.3.23</springframework.test.version>
@@ -873,7 +871,6 @@
             </snapshots>
         </repository>
 
-        <!-- Cloudera -->
         <repository>
             <id>cloudera</id>
             <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>

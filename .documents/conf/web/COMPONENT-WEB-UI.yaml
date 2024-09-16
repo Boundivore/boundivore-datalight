@@ -89,3 +89,9 @@ datalight:
       port: '5181'
       path: '/'
       button-name-suffix: '-Web UI'
+
+    - service: SOLR
+      component: SolrServer
+      port: '8983'
+      path: '/solr'
+      button-name-suffix: '-Web UI'

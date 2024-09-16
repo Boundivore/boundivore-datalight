@@ -1,0 +1,105 @@
+datalight:
+  service:
+    name: RANGER
+    version: 2.4.0
+    tgz: dlc-ranger-2.4.0.tar.gz
+    conf-dirs:
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin'
+
+
+    config-event-handler-jar: 'plugins-ranger-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.ranger.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-ranger-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.ranger.config.ConfigRANGER'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
+    components:
+      - name: RangerAdmin
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ 'SolrClient' ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 RangerAdmin'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerAdmin', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 RangerAdmin'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerAdmin', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 RangerAdmin'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerAdmin', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 RangerAdmin'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerAdmin', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
