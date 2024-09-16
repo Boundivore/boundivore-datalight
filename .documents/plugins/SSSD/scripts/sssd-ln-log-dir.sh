@@ -13,9 +13,14 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# 创建 SSSD 日志目录并创建符号链接
+# 创建 SSSD 日志目录
 mkdir -p "${LOG_DIR}/SSSD"
 
-ln -s /var/log/sssd "${LOG_DIR}/SSSD"
+# 检查并创建符号链接
+if [ ! -L "${LOG_DIR}/SSSD/sssd" ]; then
+  ln -s /var/log/sssd "${LOG_DIR}/SSSD/"
+else
+  echo "Symbolic link already exists."
+fi
 
 exit 0
