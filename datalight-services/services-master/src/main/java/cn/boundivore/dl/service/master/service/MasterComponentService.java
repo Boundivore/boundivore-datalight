@@ -591,16 +591,16 @@ public class MasterComponentService {
                                     )
                             );
 
-                            // 检查组件的节点列表是否为空
-                            Assert.notEmpty(
-                                    i.getNodeIdList(),
-                                    () -> new BException(
-                                            String.format(
-                                                    "操作的组件 %s 节点列表为空",
-                                                    i.getComponentName()
-                                            )
-                                    )
-                            );
+//                            // 检查组件的节点列表是否为空
+//                            Assert.notEmpty(
+//                                    i.getNodeIdList(),
+//                                    () -> new BException(
+//                                            String.format(
+//                                                    "操作的组件 %s 节点列表为空",
+//                                                    i.getComponentName()
+//                                            )
+//                                    )
+//                            );
                         })
                         .flatMap(i -> i.getNodeIdList().stream())
                         .distinct()

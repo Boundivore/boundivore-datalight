@@ -94,7 +94,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "SolrServer",
+          "alias": "RangerAdmin",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -111,7 +111,7 @@
         },
         {
           "$$hashKey": "object:993",
-          "alias": "SolrServer State",
+          "alias": "RangerAdmin State",
           "align": "auto",
           "colorMode": "cell",
           "colors": [
@@ -157,113 +157,7 @@
           "refId": "A"
         }
       ],
-      "title": "SolrServer State",
-      "transform": "timeseries_to_rows",
-      "type": "table-old"
-    },
-    {
-      "columns": [],
-      "datasource": {
-        "type": "prometheus",
-        "uid": "MONITOR-Prometheus"
-      },
-      "fontSize": "100%",
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 0
-      },
-      "id": 223,
-      "links": [],
-      "pluginVersion": "6.7.0",
-      "showHeader": true,
-      "sort": {
-        "col": 1,
-        "desc": false
-      },
-      "styles": [
-        {
-          "$$hashKey": "object:531",
-          "alias": "",
-          "align": "right",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "decimals": 2,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:938",
-          "alias": "ZookeeperState",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Metric",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:993",
-          "alias": "QuarumPeermain State",
-          "align": "auto",
-          "colorMode": "cell",
-          "colors": [
-            "#FA6400",
-            "#FA6400",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 0,
-          "mappingType": 1,
-          "pattern": "Value",
-          "thresholds": [
-            "0",
-            "1"
-          ],
-          "type": "string",
-          "unit": "short",
-          "valueMaps": [
-            {
-              "$$hashKey": "object:1054",
-              "text": "Dead",
-              "value": "0"
-            },
-            {
-              "$$hashKey": "object:1096",
-              "text": "Alive",
-              "value": "1"
-            }
-          ]
-        }
-      ],
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "MONITOR-Prometheus"
-          },
-          "editorMode": "code",
-          "expr": "up{job=~\"ZOOKEEPER-QuarumPeermain\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "{{instance}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Zookeeper State",
+      "title": "RangerAdmin State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     }
@@ -272,8 +166,8 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "SOLR",
-    "SolrServer"
+    "RANGER",
+    "RangerAdmin"
   ],
   "templating": {
     "list": [
@@ -283,7 +177,7 @@
           "type": "prometheus",
           "uid": "MONITOR-Prometheus"
         },
-        "definition": "label_values({job=\"SOLR-SolrServer\"},job)",
+        "definition": "label_values({job=\"RANGER-RangerAdmin\"},job)",
         "hide": 0,
         "includeAll": false,
         "label": "JobName",
@@ -291,7 +185,7 @@
         "name": "JobName",
         "options": [],
         "query": {
-          "query": "label_values({job=\"SOLR-SolrServer\"},job)",
+          "query": "label_values({job=\"RANGER-RangerAdmin\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -355,8 +249,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "SOLR-SolrServer",
-  "uid": "SOLR-SolrServer",
+  "title": "RANGER-RangerAdmin",
+  "uid": "RANGER-RangerAdmin",
   "version": 1,
   "weekStart": ""
 }

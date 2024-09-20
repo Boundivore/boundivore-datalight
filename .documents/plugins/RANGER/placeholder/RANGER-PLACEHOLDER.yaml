@@ -1,0 +1,39 @@
+datalight:
+  service:
+    name: RANGER
+    placeholder-infos:
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/install.properties'
+        properties:
+          - placeholder: '{{db_root_user}}'
+            describe: 'MetaStore 元数据库用户名'
+            default: 'root'
+
+          - placeholder: '{{db_root_password}}'
+            describe: 'MetaStore 元数据库密码'
+            default: '1qaz!QAZ'
+
+          - placeholder: '{{db_host}}'
+            describe: 'MetaStore 元数据库主机名'
+            default: 'localhost'
+
+          - placeholder: '{{db_port}}'
+            describe: 'MetaStore 元数据库端口号'
+            default: '3306'
+
+          - placeholder: '{{unix_user}}'
+            describe: 'Linux datalight 用户名'
+            default: 'datalight'
+
+          - placeholder: '{{unix_user_pwd}}'
+            describe: 'Linux datalight 用户密码'
+            default: '12345678'
+
+          - placeholder: '{{unix_group}}'
+            describe: 'Linux datalight 用户组名'
+            default: 'datalight'
+
+
+
+
+
+

@@ -1263,7 +1263,7 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>${assembly.plugin.version}</version>
                 <configuration>
-                    <skipAssembly>true</skipAssembly>
+                    <skipAssembly>false</skipAssembly>
                 </configuration>
             </plugin>
             <plugin>

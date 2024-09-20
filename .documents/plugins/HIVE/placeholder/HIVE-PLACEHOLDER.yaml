@@ -1,6 +1,6 @@
 datalight:
   service:
-    name: HDFS
+    name: HIVE
     placeholder-infos:
       - templated-file-path: '{{DATALIGHT_DIR}}/plugins/HIVE/templated/conf/hive-site.xml'
         properties:

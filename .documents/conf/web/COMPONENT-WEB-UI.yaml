@@ -95,3 +95,9 @@ datalight:
       port: '8983'
       path: '/solr'
       button-name-suffix: '-Web UI'
+
+    - service: RANGER
+      component: RangerAdmin
+      port: '6080'
+      path: '/'
+      button-name-suffix: '-Web UI'

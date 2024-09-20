@@ -7,6 +7,48 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/ews'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/ews'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/resources'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/resources'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/scripts'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/scripts'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/exporter/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/exporter/conf'
+
+      # TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/ews'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/ews'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/conf'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/resources'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/resources'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/scripts'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/scripts'
 
     config-event-handler-jar: 'plugins-ranger-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.ranger.config.event.ConfigEventHandler'
@@ -54,6 +96,33 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: SCRIPT
+                name: '初始化 RangerAdmin 数据库以及相关依赖'
+                shell: 'ranger-admin-setup.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 300000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '挂载 ranger_audits 到 Zookeeper'
+                shell: 'ranger-admin-audits-add-to-zk.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 120000
+                sleep: 0
+
+              - type: SCRIPT
+                name: '在 Solr 创建 ranger_audits 集合'
+                shell: 'ranger-admin-create-audits-collection.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 120000
+                sleep: 0
+
+              - type: SCRIPT
                 name: '部署后启动 RangerAdmin'
                 shell: 'ranger-operation.sh'
                 args: [ 'RangerAdmin', 'start' ]
@@ -99,6 +168,69 @@ datalight:
                 name: '重启 RangerAdmin'
                 shell: 'ranger-operation.sh'
                 args: [ 'RangerAdmin', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+      - name: RangerUserSync
+        priority: 2
+        max: -1
+        min: 0
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 RangerUserSync'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerUserSync', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 RangerUserSync'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerUserSync', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 RangerUserSync'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerUserSync', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 RangerUserSync'
+                shell: 'ranger-operation.sh'
+                args: [ 'RangerUserSync', 'restart' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000

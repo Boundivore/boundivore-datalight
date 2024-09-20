@@ -121,10 +121,10 @@ datalight:
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN', 'HIVE' ]
         optional-dependencies: [ 'SPARK', 'FLINK' ]
         relatives: [ 'MONITOR' ]
-#      - name: RANGER
-#        type: COMPUTE
-#        priority: 18
-#        desc: '提供数据安全性和权限管理的集中控制台'
-#        dependencies: [ 'ZOOKEEPER', 'SOLR' ]
-#        optional-dependencies: [ ]
-#        relatives: [ 'MONITOR' ]
+      - name: RANGER
+        type: COMPUTE
+        priority: 18
+        desc: '提供数据安全性和权限管理的集中控制台'
+        dependencies: [ 'ZOOKEEPER', 'SOLR' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR' ]

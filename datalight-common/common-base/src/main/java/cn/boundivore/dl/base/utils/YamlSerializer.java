@@ -71,6 +71,7 @@ public class YamlSerializer {
      */
     public static <T> T toObject(File yamlFile, Class<T> valueType) throws IOException {
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
         return objectMapper.readValue(yamlFile, valueType);
     }
 }

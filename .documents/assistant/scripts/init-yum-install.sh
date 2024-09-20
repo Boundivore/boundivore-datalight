@@ -25,6 +25,7 @@ yum -y install autoconf automake libtool curl
 yum -y install zlib lzo-devel zlib-devel openssl openssl-devel ncurses-devel ruby
 yum -y install snappy snappy-devel bzip2 bzip2-devel lzo lzo-devel lzop libXtst
 yum -y install lsof
+yum -y install python3
 
 echo "$0 done."
 exit 0

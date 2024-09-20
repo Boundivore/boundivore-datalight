@@ -84,6 +84,9 @@ public final class ResolverYamlServiceDetail {
         //获取已支持的服务列表
         List<YamlServiceManifest.Service> services = deploy.getServices();
 
+        //目录配置
+        YamlDirectory.Directory directory = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
+
         //准备解析 Yaml
         //根据已支持的服务列表，找到对应的服务配置
         for (YamlServiceManifest.Service mainService : services) {
@@ -107,9 +110,14 @@ public final class ResolverYamlServiceDetail {
                     )
             );
 
+            // 将各个服务配置文件中的 {{DATALIGHT_DIR}}、{{SERVICE_DIR}} 替换为 0-SERVICE-MANIFEST.yaml 中配置的内容
+            String content = FileUtil.readUtf8String(deployConfFile)
+                    .replace("{{SERVICE_DIR}}", directory.getServiceDir())
+                    .replace("{{DATALIGHT_DIR}}", directory.getDatalightDir());
+
             //解析服务配置文件
             YamlServiceDetail yamlServiceDetail = YamlSerializer.toObject(
-                    deployConfFile,
+                    content,
                     YamlServiceDetail.class
             );
 
@@ -122,26 +130,25 @@ public final class ResolverYamlServiceDetail {
             service.setDependencies(mainService.getDependencies());
             service.setRelatives(mainService.getRelatives());
 
-            //目录配置
-            YamlDirectory.Directory directory = ResolverYamlDirectory.DIRECTORY_YAML.getDatalight();
 
-            //将各个服务配置文件中的 {{DATALIGHT_DIR}}、{{SERVICE_DIR}} 替换为 0-SERVICE-MANIFEST.yaml 中配置的内容
-            service.getConfDirs().forEach(i -> {
-                String serviceConfDir = i.getServiceConfDir()
-                        .replace(
-                                "{{SERVICE_DIR}}",
-                                directory.getServiceDir()
-                        );
 
-                String templatedDir = i.getTemplatedDir().
-                        replace(
-                                "{{DATALIGHT_DIR}}",
-                                directory.getDatalightDir()
-                        );
-
-                i.setServiceConfDir(serviceConfDir);
-                i.setTemplatedDir(templatedDir);
-            });
+            // 将各个服务配置文件中的 {{DATALIGHT_DIR}}、{{SERVICE_DIR}} 替换为 0-SERVICE-MANIFEST.yaml 中配置的内容
+//            service.getConfDirs().forEach(i -> {
+//                String serviceConfDir = i.getServiceConfDir()
+//                        .replace(
+//                                "{{SERVICE_DIR}}",
+//                                directory.getServiceDir()
+//                        );
+//
+//                String templatedDir = i.getTemplatedDir().
+//                        replace(
+//                                "{{DATALIGHT_DIR}}",
+//                                directory.getDatalightDir()
+//                        );
+//
+//                i.setServiceConfDir(serviceConfDir);
+//                i.setTemplatedDir(templatedDir);
+//            });
 
             //将部署概览中的服务优先级添加到部署服务详情的配置中去
             service.setPriority(mainService.getPriority());

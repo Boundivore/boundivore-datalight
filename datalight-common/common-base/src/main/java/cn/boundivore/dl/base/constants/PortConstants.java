@@ -78,6 +78,10 @@ public class PortConstants {
             put("KYUUBI-KyuubiServer", "19021");
 
             put("SOLR-SolrServer", "19022");
+
+            put("RANGER-RangerAdmin", "19023");
+
+            put("RANGER-RangerUserSync", "19024");
         }
     };
 
@@ -118,6 +122,10 @@ public class PortConstants {
             put("KYUUBI-KyuubiServer", "18021");
 
             put("SOLR-SolrServer", "18022");
+
+            put("RANGER-RangerAdmin", "18023");
+
+            put("RANGER-RangerUserSync", "18024");
         }
     };
 

@@ -32,6 +32,7 @@ import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.service.single.impl.TDlComponentServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -549,10 +550,12 @@ public class MasterNodeService {
      */
     public Map<Long, TDlNode> checkNodeExistsById(List<Long> nodeIdList) {
 
-        Assert.notEmpty(
-                nodeIdList,
-                () -> new BException("存在空的节点信息")
-        );
+//        Assert.notEmpty(
+//                nodeIdList,
+//                () -> new BException("存在空的节点信息")
+//        );
+
+        if(CollUtil.isEmpty(nodeIdList)) return new HashMap<>();
 
         // <Long, TDlNode>
         Map<Long, TDlNode> tDlNodeMap = this.tDlNodeService.lambdaQuery()
