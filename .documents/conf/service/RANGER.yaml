@@ -13,9 +13,6 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
 
-      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
-        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
-
       - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/conf'
 
@@ -28,15 +25,15 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/RANGER/exporter/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/exporter/conf'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-usersync'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-usersync'
+
       # TODO FOR TEST
 #      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin'
 #        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin'
 #
 #      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/ews'
 #        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/ews'
-#
-#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
-#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
 #
 #      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits'
 #        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits'
@@ -49,6 +46,12 @@ datalight:
 #
 #      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin/solr/ranger_audits/scripts'
 #        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin/solr/ranger_audits/scripts'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/exporter/conf'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/exporter/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-usersync'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-usersync'
 
     config-event-handler-jar: 'plugins-ranger-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.ranger.config.event.ConfigEventHandler'
@@ -175,7 +178,7 @@ datalight:
 
       - name: RangerUserSync
         priority: 2
-        max: 1
+        max: -1
         min: 0
         mutexes: [ ]
         dependencies: [ ]
