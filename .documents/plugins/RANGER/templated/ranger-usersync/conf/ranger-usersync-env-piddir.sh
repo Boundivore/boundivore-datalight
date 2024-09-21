@@ -1,0 +1,2 @@
+export USERSYNC_PID_DIR_PATH=/data/datalight/pids/RANGER
+export UNIX_USERSYNC_USER=datalight

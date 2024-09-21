@@ -1,0 +1,1 @@
+export USERSYNC_CONF_DIR=/srv/datalight/RANGER/ranger-admin/usersync/conf

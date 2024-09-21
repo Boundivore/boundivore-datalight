@@ -28,6 +28,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-usersync'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-usersync'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-usersync/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-usersync/conf'
+
       # TODO FOR TEST
 #      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-admin'
 #        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-admin'

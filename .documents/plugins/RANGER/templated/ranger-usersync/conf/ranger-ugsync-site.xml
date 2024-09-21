@@ -1,0 +1,226 @@
+<configuration>
+	<property>
+		<name>ranger.usersync.credstore.filename</name>
+		<value>/srv/datalight/RANGER/ranger-usersync/rangerusersync.jceks</value>
+	</property>
+	<property>
+		<name>ranger.usersync.enabled</name>
+		<value>false</value>
+	</property>
+	<property>
+		<name>ranger.usersync.group.memberattributename</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.group.nameattribute</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.group.objectclass</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.group.searchbase</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.group.searchenabled</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.group.searchfilter</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.group.searchscope</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.binddn</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.groupname.caseconversion</name>
+		<value>lower</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.ldapbindpassword</name>
+		<value>_</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.searchBase</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.url</name>
+		<value />
+	</property>
+	<property>
+                <name>ranger.usersync.ldap.deltasync</name>
+                <value />
+        </property>
+	<property>
+		<name>ranger.usersync.ldap.user.groupnameattribute</name>
+		<value>memberof,ismemberof</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.user.nameattribute</name>
+		<value>cn</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.user.objectclass</name>
+		<value>person</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.user.searchbase</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.user.searchfilter</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.user.searchscope</name>
+		<value>sub</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.username.caseconversion</name>
+		<value>lower</value>
+	</property>
+	<property>
+		<name>ranger.usersync.logdir</name>
+		<value>/data/datalight/logs/RANGER</value>
+	</property>
+	<property>
+		<name>ranger.usersync.pagedresultsenabled</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.pagedresultssize</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.passwordvalidator.path</name>
+		<value>./native/credValidator.uexe</value>
+	</property>
+	<property>
+		<name>ranger.usersync.policymanager.baseURL</name>
+		<value>http://node01:6080</value>
+	</property>
+	<property>
+		<name>ranger.usersync.policymanager.maxrecordsperapicall</name>
+		<value>1000</value>
+	</property>
+	<property>
+		<name>ranger.usersync.policymanager.mockrun</name>
+		<value>false</value>
+	</property>
+	<property>
+		<name>ranger.usersync.port</name>
+		<value>5151</value>
+	</property>
+	<property>
+		<name>ranger.usersync.sink.impl.class</name>
+		<value>org.apache.ranger.unixusersync.process.PolicyMgrUserGroupBuilder</value>
+	</property>
+	<property>
+		<name>ranger.usersync.sleeptimeinmillisbetweensynccycle</name>
+		<value>60000</value>
+	</property>
+	<property>
+		<name>ranger.usersync.source.impl.class</name>
+		<value>org.apache.ranger.unixusersync.process.UnixUserGroupBuilder</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ssl</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>ranger.usersync.unix.minUserId</name>
+		<value>500</value>
+	</property>
+	<property>
+		<name>ranger.usersync.unix.minGroupId</name>
+		<value>500</value>
+	</property>
+	<property>
+		<name>ranger.usersync.keystore.file</name>
+		<value>/srv/datalight/RANGER/ranger-admin/usersync/conf/cert/unixauthservice.jks</value>
+	</property>
+	<property>
+		<name>ranger.usersync.truststore.file</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.policymgr.username</name>
+		<value>rangerusersync</value>
+	</property>
+	<property>
+		<name>ranger.usersync.policymgr.alias</name>
+		<value>ranger.usersync.policymgr.password</value>
+	</property>
+	<property>
+		<name>ranger.usersync.policymgr.keystore</name>
+		<value>/srv/datalight/RANGER/ranger-usersync/rangerusersync.jceks</value>
+	</property>
+	<property>
+		<name>ranger.usersync.sync.source</name>
+		<value>unix</value>
+	</property>
+	<property>
+		<name>ranger.usersync.ldap.referral</name>
+		<value>ignore</value>
+	</property>
+	<property>
+		<name>ranger.usersync.kerberos.principal</name>
+		<value />
+	</property>
+	<property>
+		<name>ranger.usersync.kerberos.keytab</name>
+		<value />
+	</property>
+	<property>
+      <name>ranger.usersync.keystore.password</name>
+      <value>_</value>
+    </property>
+    <property>
+      <name>ranger.usersync.truststore.password</name>
+      <value>_</value>
+    </property>
+    <property>
+      <name>ranger.usersync.role.assignment.list.delimiter</name>
+          <value>&amp;</value>
+        </property>
+        <property>
+      <name>ranger.usersync.users.groups.assignment.list.delimiter</name>
+      <value>:</value>
+        </property>
+        <property>
+      <name>ranger.usersync.username.groupname.assignment.list.delimiter</name>
+      <value>,</value>
+        </property>
+    <property>
+          <name>ranger.usersync.group.based.role.assignment.rules</name>
+      <value />
+    </property>
+    <property>
+		<name>ranger.usersync.dest.ranger.session.cookie.name</name>
+		<value>RANGERADMINSESSIONID</value>
+	</property>
+    <property>
+		<name>ranger.usersync.metrics.enabled</name>
+		<value />
+    </property>
+    <property>
+		<name>ranger.usersync.metrics.filepath</name>
+		<value />
+    </property>
+    <property>
+		<name>ranger.usersync.metrics.frequencytimeinmillis</name>
+		<value />
+    </property>
+    <property>
+		<name>ranger.usersync.metrics.filename</name>
+		<value />
+    </property>
+</configuration>

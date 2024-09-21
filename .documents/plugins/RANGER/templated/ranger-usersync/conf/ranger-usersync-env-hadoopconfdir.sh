@@ -1,0 +1,1 @@
+export RANGER_USERSYNC_HADOOP_CONF_DIR={{hadoop_conf}}

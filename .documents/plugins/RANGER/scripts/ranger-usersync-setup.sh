@@ -25,4 +25,7 @@ cd "${CURRENT_SERVICE_DIR}/ranger-usersync"
 
 ./setup.sh
 
+sed -i '/<name>ranger.usersync.enabled<\/name>/{n;s/<value>false<\/value>/<value>true<\/value>/}' ${SERVICE_DIR}/RANGER/ranger-usersync/conf/ranger-ugsync-site.xml
+
+
 exit 0
