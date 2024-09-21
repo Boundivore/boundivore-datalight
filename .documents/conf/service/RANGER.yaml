@@ -55,7 +55,9 @@ datalight:
 #
 #      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-usersync'
 #        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-usersync'
-
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/RANGER/ranger-usersync/conf'
+#        templated-dir: 'D:/datalight/plugins/RANGER/templated/ranger-usersync/conf'
     config-event-handler-jar: 'plugins-ranger-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.ranger.config.event.ConfigEventHandler'
 
