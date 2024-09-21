@@ -82,6 +82,8 @@ public class PortConstants {
             put("RANGER-RangerAdmin", "19023");
 
             put("RANGER-RangerUserSync", "19024");
+
+            put("RANGER-RangerTagSync", "19025");
         }
     };
 
@@ -126,6 +128,8 @@ public class PortConstants {
             put("RANGER-RangerAdmin", "18023");
 
             put("RANGER-RangerUserSync", "18024");
+
+            put("RANGER-RangerTagSync", "18025");
         }
     };
 

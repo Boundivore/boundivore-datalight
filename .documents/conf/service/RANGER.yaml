@@ -128,7 +128,7 @@ datalight:
                 args: [ 'RangerAdmin', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
           - type: START
@@ -142,7 +142,7 @@ datalight:
                 args: [ 'RangerAdmin', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
           - type: STOP
@@ -156,7 +156,7 @@ datalight:
                 args: [ 'RangerAdmin', 'stop' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
           - type: RESTART
@@ -170,12 +170,12 @@ datalight:
                 args: [ 'RangerAdmin', 'restart' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
       - name: RangerUserSync
         priority: 2
-        max: -1
+        max: 1
         min: 0
         mutexes: [ ]
         dependencies: [ ]
@@ -186,12 +186,21 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: SCRIPT
+                name: '初始化 RangerAdmin 数据库以及相关依赖'
+                shell: 'ranger-usersync-setup.sh'
+                args: [ ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 300000
+                sleep: 0
+
+              - type: SCRIPT
                 name: '部署后启动 RangerUserSync'
                 shell: 'ranger-operation.sh'
                 args: [ 'RangerUserSync', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
           - type: START
@@ -205,7 +214,7 @@ datalight:
                 args: [ 'RangerUserSync', 'start' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
           - type: STOP
@@ -219,7 +228,7 @@ datalight:
                 args: [ 'RangerUserSync', 'stop' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000
 
           - type: RESTART
@@ -233,5 +242,5 @@ datalight:
                 args: [ 'RangerUserSync', 'restart' ]
                 interactions: [ ]
                 exits: '0'
-                timeout: 60000
+                timeout: 120000
                 sleep: 1000

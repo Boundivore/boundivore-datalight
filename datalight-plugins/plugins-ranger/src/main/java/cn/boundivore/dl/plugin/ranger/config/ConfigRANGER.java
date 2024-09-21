@@ -72,7 +72,12 @@ public class ConfigRANGER extends AbstractConfig {
         }
 
         if (file.getAbsolutePath().contains("ranger-usersync")) {
-
+            switch (file.getName()) {
+                case "ranger-usersync-services.sh":
+                    return new ConfigLogicRangerUserSyncServicesSh(super.pluginConfig).config(file, replacedTemplate);
+                case "install.properties":
+                    return new ConfigLogicRangerUserSyncInstallProperties(super.pluginConfig).config(file, replacedTemplate);
+            }
         }
 
         if (log.isDebugEnabled()) {
