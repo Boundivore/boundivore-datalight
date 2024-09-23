@@ -309,10 +309,11 @@ public class BashExecutor {
                 log.error("进程关闭超时[{}]", cmdLine);
                 log.error(ExceptionUtil.stacktraceToString(e));
                 return -100;
+            }else{
+                log.error(ExceptionUtil.stacktraceToString(e));
+                return -101;
             }
         }
-
-        return -101;
     }
 
     /**
