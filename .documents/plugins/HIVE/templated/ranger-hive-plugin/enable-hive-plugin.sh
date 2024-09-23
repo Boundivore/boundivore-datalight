@@ -120,6 +120,25 @@ INSTALL_ARGS="${PROJ_INSTALL_DIR}/install.properties"
 COMPONENT_INSTALL_ARGS="${PROJ_INSTALL_DIR}/${COMPONENT_NAME}-install.properties"
 JAVA=$JAVA_HOME/bin/java
 
+# 遍历并复制文件
+for jar_file in "$PROJ_INSTALL_LIB_DIR"/*.jar; do
+  # 检查是否存在 .jar 文件，避免通配符未匹配任何文件时，将通配符作为字符串处理
+  [ -e "$jar_file" ] || continue
+  # 获取 jar 文件的名称
+  jar_name=$(basename "$jar_file")
+  # 目标文件路径
+  target_file="$PROJ_LIB_DIR/$jar_name"
+  # 如果目标文件已存在，则跳过并提示
+  if [ -e "$target_file" ]; then
+    echo "Skip exists: $jar_name"
+    continue
+  else
+    # 复制文件，并提供提示
+    cp -p "$jar_file" "$target_file"
+    echo "Copy file: $jar_name"
+  fi
+done
+
 PLUGIN_DEPENDENT_LIB_DIR=lib/"${PROJ_NAME}-${COMPONENT_NAME}-impl"
 PROJ_LIB_PLUGIN_DIR=${PROJ_INSTALL_DIR}/${PLUGIN_DEPENDENT_LIB_DIR}
 
