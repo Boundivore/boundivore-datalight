@@ -16,6 +16,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/YARN/sbin'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/YARN/templated/sbin'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/YARN/ranger-yarn-plugin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/YARN/templated/ranger-yarn-plugin'
+
       # TODO FOR TEST
 #      - service-conf-dir: '{{SERVICE_DIR}}/YARN/exporter/conf'
 #        templated-dir: 'D:/datalight/plugins/YARN/templated/exporter/conf'
@@ -28,6 +31,9 @@ datalight:
 #
 #      - service-conf-dir: '{{SERVICE_DIR}}/YARN/sbin'
 #        templated-dir: 'D:/datalight/plugins/YARN/templated/sbin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/YARN/ranger-yarn-plugin'
+#        templated-dir: 'D:/datalight/plugins/YARN/templated/ranger-yarn-plugin'
 
     config-event-handler-jar: 'plugins-yarn-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.yarn.config.event.ConfigEventHandler'
@@ -125,6 +131,34 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
+          - type: ENABLE_RANGER_PLUGIN
+            start-state: STARTED
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '启用 ranger-yarn-plugin 插件'
+                shell: 'ranger-plugin-switch.sh'
+                args: [ 'enable', 'YARN' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: DISABLE_RANGER_PLUGIN
+            start-state: STARTED
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '禁用 ranger-yarn-plugin 插件'
+                shell: 'ranger-plugin-switch.sh'
+                args: [ 'disable', 'YARN' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
       - name: ResourceManager2
         priority: 2
         max: 1
@@ -183,6 +217,34 @@ datalight:
                 name: '重启 ResourceManage2'
                 shell: 'yarn-operation.sh'
                 args: [ 'ResourceManager', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: ENABLE_RANGER_PLUGIN
+            start-state: STARTED
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '启用 ranger-yarn-plugin 插件'
+                shell: 'ranger-plugin-switch.sh'
+                args: [ 'enable', 'YARN' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: DISABLE_RANGER_PLUGIN
+            start-state: STARTED
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '禁用 ranger-yarn-plugin 插件'
+                shell: 'ranger-plugin-switch.sh'
+                args: [ 'disable', 'YARN' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000

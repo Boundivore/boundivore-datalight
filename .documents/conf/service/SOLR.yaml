@@ -19,6 +19,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/SOLR/exporter/conf'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/SOLR/templated/exporter/conf'
 
+      - service-conf-dir: '{{SERVICE_DIR}}/SOLR/ranger-solr-plugin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/SOLR/templated/ranger-solr-plugin'
+
       # TODO FOR TEST
 #      - service-conf-dir: '{{SERVICE_DIR}}/SOLR/bin'
 #        templated-dir: 'D:/datalight/plugins/SOLR/templated/bin'
@@ -34,6 +37,9 @@ datalight:
 #
 #      - service-conf-dir: '{{SERVICE_DIR}}/SOLR/server/solr/exporter/conf'
 #        templated-dir: 'D:/datalight/plugins/SOLR/templated/exporter/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/SOLR/ranger-solr-plugin'
+#        templated-dir: 'D:/datalight/plugins/SOLR/templated/ranger-solr-plugin'
 
     config-event-handler-jar: 'plugins-solr-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.solr.config.event.ConfigEventHandler'
@@ -126,6 +132,34 @@ datalight:
                 name: '重启 SolrServer'
                 shell: 'solr-operation.sh'
                 args: [ 'SolrServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: ENABLE_RANGER_PLUGIN
+            start-state: STARTED
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '启用 ranger-solr-plugin 插件'
+                shell: 'ranger-plugin-switch.sh'
+                args: [ 'enable', 'SOLR' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: DISABLE_RANGER_PLUGIN
+            start-state: STARTED
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '禁用 ranger-solr-plugin 插件'
+                shell: 'ranger-plugin-switch.sh'
+                args: [ 'disable', 'SOLR' ]
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000

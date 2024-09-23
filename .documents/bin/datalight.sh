@@ -2,6 +2,9 @@
 
 set -e
 
+# 记录开始时间
+start_time=$(date +%s)
+
 # 检查是否以 root 身份运行脚本
 if [ "$EUID" -ne 0 ]; then
   echo "Please run the script with root privileges."
@@ -157,5 +160,10 @@ validate_ip() {
 
 execute_operation "$component"
 
+# 记录结束时间并计算总耗时
+end_time=$(date +%s)
+elapsed_time=$(( end_time - start_time ))
+
 echo "$0 done."
+echo "Total execution time: ${elapsed_time} seconds"
 exit 0

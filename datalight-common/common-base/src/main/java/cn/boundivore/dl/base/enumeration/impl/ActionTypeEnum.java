@@ -36,7 +36,9 @@ public enum ActionTypeEnum implements IBaseEnum {
     RESTART("3", "重启"),
     DECOMMISSION("4", "退役"),
     REMOVE("5", "移除"),
-    MIGRATE("6", "迁移");
+    MIGRATE("6", "迁移"),
+    ENABLE_RANGER_PLUGIN("7", "启用 Ranger 插件"),
+    DISABLE_RANGER_PLUGIN("8", "禁用 Ranger 插件");
 
 
     private final String code;
