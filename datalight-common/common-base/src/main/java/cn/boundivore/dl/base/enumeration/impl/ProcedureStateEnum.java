@@ -39,8 +39,9 @@ public enum ProcedureStateEnum implements IBaseEnum {
     PROCEDURE_SELECT_COMPONENT("8", "选择组件"),
     PROCEDURE_PRE_CONFIG("9", "预配置"),
     PROCEDURE_DEPLOYING("10", "部署中"),
-    PROCEDURE_MIGRATE_DEPLOYING("10", "迁移部署中"),
-    PROCEDURE_DEPLOYED("11", "部署完成");
+    PROCEDURE_MIGRATE_DEPLOYING("11", "迁移部署中"),
+    PROCEDURE_RANGER_PLUGIN_DEPLOYING("12", "RangerPlugin 部署中"),
+    PROCEDURE_DEPLOYED("13", "部署完成");
 
 
     private final String code;

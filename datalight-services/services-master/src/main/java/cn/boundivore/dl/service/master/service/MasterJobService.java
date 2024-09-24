@@ -119,6 +119,14 @@ public class MasterJobService {
                 componentSCSStateEnumList.add(SCStateEnum.SELECTED);
                 componentSCSStateEnumList.add(SCStateEnum.SELECTED_ADDITION);
                 break;
+            case ENABLE_RANGER_PLUGIN:
+                componentSCSStateEnumList.add(SCStateEnum.STARTED);
+                componentSCSStateEnumList.add(SCStateEnum.STOPPED);
+                break;
+            case DISABLE_RANGER_PLUGIN:
+                componentSCSStateEnumList.add(SCStateEnum.STARTED);
+                componentSCSStateEnumList.add(SCStateEnum.STARTED);
+                break;
         }
 
         return componentSCSStateEnumList;

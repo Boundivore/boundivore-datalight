@@ -33,7 +33,7 @@ import cn.boundivore.dl.orm.service.single.impl.TDlServiceServiceImpl;
 import cn.boundivore.dl.service.master.converter.IServiceComponentConverter;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceManifest;
-import cn.hutool.core.collection.CollUtil;
+import cn.boundivore.dl.service.master.resolver.yaml.YamlServiceManifest;
 import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +84,8 @@ public class MasterServiceService {
      */
     public Result<AbstractServiceComponentVo.ServiceVo> getServiceList(Long clusterId) {
 
-        return Result.success(new AbstractServiceComponentVo.ServiceVo(
+        return Result.success(
+                new AbstractServiceComponentVo.ServiceVo(
                         clusterId,
                         ResolverYamlServiceManifest.SERVICE_MANIFEST_YAML
                                 .getDataLight()
@@ -119,6 +120,14 @@ public class MasterServiceService {
         final Map<String, SCStateEnum> serviceNameMap = new HashMap<>();
         tDlServiceList.forEach(i -> serviceNameMap.put(i.getServiceName(), i.getServiceState()));
 
+        // 为服务配置是否存在 Ranger 插件
+        List<String> rangerServiceRelativeList = ResolverYamlServiceManifest
+                .MANIFEST_SERVICE_MAP
+                .get("RANGER")
+                .getRelatives();
+        rangerServiceRelativeList.remove("MONITOR");
+
+
         return ResolverYamlServiceDetail.SERVICE_MAP
                 .values()
                 .stream()
@@ -132,6 +141,7 @@ public class MasterServiceService {
                                 )
                         )
                 )
+                .peek(i -> i.setIsContainsRangerPlugin(rangerServiceRelativeList.contains(i.getServiceName())))
                 .collect(Collectors.toMap(AbstractServiceComponentVo.ServiceSummaryVo::getServiceName, i -> i));
     }
 

@@ -112,6 +112,10 @@ public abstract class AbstractServiceComponentVo {
         @Schema(name = "DependencyList", title = "需要依赖的服务列表", required = true)
         @JsonProperty(value = "DependencyList", required = true)
         private List<String> dependencyList;
+
+        @Schema(name = "IsContainsRangerPlugin", title = "是否持有 Ranger 插件", required = true)
+        @JsonProperty(value = "IsContainsRangerPlugin", required = true)
+        private Boolean isContainsRangerPlugin;
     }
 
     @Data
