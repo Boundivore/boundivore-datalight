@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * Description: 封装插件中的配置文件事件的信息
- * （包含的配置文件变动的服务下面的 所有的 配置信息）
+ * （包含配置文件变动的服务下面的 所有的 配置信息）
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/6/20

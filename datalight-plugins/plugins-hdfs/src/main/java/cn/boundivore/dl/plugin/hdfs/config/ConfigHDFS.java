@@ -56,6 +56,8 @@ public class ConfigHDFS extends AbstractConfig {
                 return new ConfigLogicHdfsSite(super.pluginConfig).config(file, replacedTemplate);
             case "hadoop-env.sh":
                 return new ConfigLogicHadoopEnvSh(super.pluginConfig).config(file, replacedTemplate);
+            case "install.properties":
+                return new ConfigLogicInstallProperties(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_JournalNode:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_NameNode:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_ZKFailoverController:
