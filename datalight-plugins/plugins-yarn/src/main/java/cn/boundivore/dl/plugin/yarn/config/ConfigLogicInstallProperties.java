@@ -76,6 +76,11 @@ public class ConfigLogicInstallProperties extends AbstractConfigLogic {
                         "{{FILE_SPOOL_DIR}}",
                         xaAuditSolrFileSpoolDir
                 )
+                .replace(
+                        "{{XAAUDIT.SOLR.FILE_SPOOL_DIR}}",
+                        xaAuditSolrFileSpoolDir
+                )
+
                 ;
     }
 

@@ -133,7 +133,7 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                         // 获取新的 Ranger Admin 主机名
                         String rangerAdminNewHostname = this.getRangerAdminHostname(pluginConfigEvent);
                         if (StrUtil.isBlank(rangerAdminNewHostname)) {
-                            rangerAdminNewHostname = policyMgrUrl;
+                            rangerAdminNewHostname = "localhost";
                         }
 
                         String policyMgrUrlNew = String.format("http://%s:6080", rangerAdminNewHostname);
