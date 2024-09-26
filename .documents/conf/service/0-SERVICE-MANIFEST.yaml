@@ -127,4 +127,4 @@ datalight:
         desc: '提供数据安全性和权限管理的集中控制台'
         dependencies: [ 'ZOOKEEPER', 'SOLR' ]
         optional-dependencies: [ ]
-        relatives: [ 'MONITOR', 'HDFS', 'YARN', 'HIVE', 'HBASE', 'KAFKA' 'SOLR']
+        relatives: [ 'MONITOR', 'HDFS', 'YARN', 'HIVE', 'HBASE', 'KAFKA', 'SOLR']
