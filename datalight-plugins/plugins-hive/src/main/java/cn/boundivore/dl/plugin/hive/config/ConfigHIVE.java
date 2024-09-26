@@ -68,6 +68,8 @@ public class ConfigHIVE extends AbstractConfig {
                 return new ConfigLogicServerXml(super.pluginConfig).config(file, replacedTemplate);
             case "logging.properties":
                 return new ConfigLogicLoggingProperties(super.pluginConfig).config(file, replacedTemplate);
+            case "install.properties":
+                return new ConfigLogicInstallProperties(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_MetaStore:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_HiveServer2:
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_TezUI:

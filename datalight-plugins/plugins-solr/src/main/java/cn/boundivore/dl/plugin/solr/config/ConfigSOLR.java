@@ -52,6 +52,8 @@ public class ConfigSOLR extends AbstractConfig {
         switch (file.getName()) {
             case "solr.in.sh":
                 return new ConfigLogicSolrInSh(super.pluginConfig).config(file, replacedTemplate);
+            case "install.properties":
+                return new ConfigLogicInstallProperties(super.pluginConfig).config(file, replacedTemplate);
             case ConfigLogicJmxYaml.JMX_CONFIG_FILE_SolrServer:
                 return new ConfigLogicJmxYaml(super.pluginConfig).config(file, replacedTemplate);
             default:
