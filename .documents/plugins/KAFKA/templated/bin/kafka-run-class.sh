@@ -191,6 +191,7 @@ if [  $JMX_PORT ]; then
   KAFKA_JMX_OPTS="$KAFKA_JMX_OPTS -Dcom.sun.management.jmxremote.port=$JMX_PORT "
 fi
 
+LOG_DIR={{KAFKA_LOG_DIR}}
 # Log directory to use
 if [ "x$LOG_DIR" = "x" ]; then
   LOG_DIR={{KAFKA_LOG_DIR}}
