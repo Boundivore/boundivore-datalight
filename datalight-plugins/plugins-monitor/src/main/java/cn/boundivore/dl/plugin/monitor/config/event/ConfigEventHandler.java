@@ -82,7 +82,11 @@ public class ConfigEventHandler extends AbstractConfigEventHandler {
                                         )
                                 );
                             } else {
-                                log.info("配置文件变动被主动忽略的文件: {}", i.getConfigPath());
+                                log.info("忽略 {} 对 {} 的配置影响: {}", 
+                                        super.pluginConfigEvent.getServiceName(),
+                                        pluginConfigSelf.getServiceName(),
+                                        i.getConfigPath()
+                                );
                             }
                         }
                 );
