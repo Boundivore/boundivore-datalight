@@ -22,6 +22,7 @@ import cn.boundivore.dl.base.enumeration.impl.ClusterTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractClusterRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractClusterVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.base.utils.StringValidator;
 import cn.boundivore.dl.boot.lock.LocalLock;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
@@ -95,9 +96,15 @@ public class MasterClusterService {
                 () -> new BException("无法匹配对应的 DlcVersion")
         );
 
-        // TODO 使用正则判断集群名称的合法性
-        // 检查集群名称是否重复
         String clusterName = request.getClusterName();
+
+        // 使用正则判断集群名称的合法性
+        Assert.isTrue(
+                StringValidator.isValid(clusterName),
+                () -> new BException("集群名称只允许英文字符、数字、以及 -")
+        );
+
+        // 检查集群名称是否重复
         Assert.isFalse(
                 this.tDlClusterService.lambdaQuery()
                         .select()

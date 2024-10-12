@@ -25,6 +25,7 @@ import cn.boundivore.dl.base.request.impl.master.NodeJobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.po.TBasePo;
@@ -32,6 +33,7 @@ import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.service.single.impl.TDlComponentServiceImpl;
 import cn.boundivore.dl.orm.service.single.impl.TDlNodeServiceImpl;
+import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import lombok.RequiredArgsConstructor;
@@ -80,10 +82,36 @@ public class MasterNodeService {
      */
     public Result<AbstractNodeJobVo.NodeJobIdVo> operateNode(NodeJobRequest request) throws Exception {
         Long jobId = -1L;
-        if (request.getNodeActionTypeEnum() == NodeActionTypeEnum.START) {
-            jobId = this.operateNode2Started(request);
-        } else {
-            jobId = this.masterNodeJobService.initNodeJob(request, true);
+
+        switch (request.getNodeActionTypeEnum()) {
+            case START:
+                jobId = this.operateNode2Started(request);
+                break;
+            case SHUTDOWN:
+            case RESTART:
+                // 判断，如果当前操作仅包含 Master 所在节点，则抛出异常提示
+                long withoutMasterNodeCount = request.getNodeInfoList()
+                        .stream()
+                        .filter(i -> !i.getHostname().equals(DataLightEnv.MASTER_HOSTNAME))
+                        .count();
+
+                Assert.isTrue(
+                        withoutMasterNodeCount > 0,
+                        () -> new BException("Master 所在节点不支持关机与重启操作")
+                );
+
+                jobId = this.masterNodeJobService.initNodeJob(
+                        request,
+                        DataLightEnv.MASTER_HOSTNAME,
+                        true
+                );
+                break;
+            default:
+                jobId = this.masterNodeJobService.initNodeJob(
+                        request,
+                        true
+                );
+
         }
 
         return Result.success(
@@ -119,18 +147,18 @@ public class MasterNodeService {
         List<TDlNode> newTDlNodeList = tDlNodeMap.values()
                 .stream()
                 .peek(i -> {
-                            Assert.isTrue(
-                                    i.getNodeState() == NodeStateEnum.STOPPING ||
-                                            i.getNodeState() == NodeStateEnum.STOPPED ||
-                                            i.getNodeState() == NodeStateEnum.STARTING ||
-                                            i.getNodeState() == NodeStateEnum.RESTARTING,
-                                    () -> new BException(
-                                            String.format(
-                                                    "节点当前状态 %s 不能被标记为 %s",
-                                                    i.getNodeState(),
-                                                    NodeStateEnum.STARTED
-                                            )
-                                    ));
+//                            Assert.isTrue(
+//                                    i.getNodeState() == NodeStateEnum.STOPPING ||
+//                                            i.getNodeState() == NodeStateEnum.STOPPED ||
+//                                            i.getNodeState() == NodeStateEnum.STARTING ||
+//                                            i.getNodeState() == NodeStateEnum.RESTARTING,
+//                                    () -> new BException(
+//                                            String.format(
+//                                                    "节点当前状态 %s 不能被标记为 %s",
+//                                                    i.getNodeState(),
+//                                                    NodeStateEnum.STARTED
+//                                            )
+//                                    ));
 
                             i.setNodeState(NodeStateEnum.STARTED);
                         }
@@ -329,7 +357,7 @@ public class MasterNodeService {
         // 优化：使用方法来封装组件查询逻辑
         return this.tDlComponentService.lambdaQuery()
                 .select(TDlComponent::getNodeId, TDlComponent::getComponentName)
-                .ne(TDlComponent::getComponentState, SCStateEnum.REMOVED)
+                .notIn(TDlComponent::getComponentState, SCStateEnum.REMOVED, SCStateEnum.UNSELECTED)
                 .eq(TDlComponent::getClusterId, clusterId)
                 .list()
                 .stream()

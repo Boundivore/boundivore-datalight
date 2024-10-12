@@ -78,6 +78,7 @@ public class MasterNodeJobService {
 
     private final TDlNodeJobLogServiceImpl tDlNodeJobLogService;
 
+
     /**
      * Description: 执行节点异步操作
      * Created by: Boundivore
@@ -88,12 +89,32 @@ public class MasterNodeJobService {
      * Modification time:
      * Throws:
      *
-     * @param request 当前即将对节点进行的操作请求
-     * @param isAsc   是否按照节点主机名正序执行，true：正序，false：逆序
+     * @param request           当前即将对节点进行的操作请求
+     * @param isAsc             是否按照节点主机名正序执行，true：正序，false：逆序
      * @return NodeJobId
      */
     @LocalLock
     public Long initNodeJob(NodeJobRequest request, boolean isAsc) throws Exception {
+        // masterHostname 传空时，适用于那些不需要排除 Master 所在节点的节点操作
+        return this.initNodeJob(request, "", isAsc);
+    }
+    /**
+     * Description: 执行节点异步操作
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/6/30
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request           当前即将对节点进行的操作请求
+     * @param masterHostname    Master 所在节点的主机名
+     * @param isAsc             是否按照节点主机名正序执行，true：正序，false：逆序
+     * @return NodeJobId
+     */
+    @LocalLock
+    public Long initNodeJob(NodeJobRequest request, String masterHostname, boolean isAsc) throws Exception {
 
         // 检查 NodeJob 合法性
         this.checkNodeJobIllegal(request);
@@ -119,6 +140,7 @@ public class MasterNodeJobService {
                                 request.getClusterId(),
                                 request.getNodeActionTypeEnum(),
                                 hostnameList,
+                                masterHostname,
                                 isAsc
                         )
                 );
@@ -364,12 +386,14 @@ public class MasterNodeJobService {
      * @param clusterId          集群ID
      * @param nodeActionTypeEnum 节点行为类型
      * @param hostnameList       主机名列表
+     * @param masterHostname      Master 所在节点的主机名
      * @param isAsc              是否升序排序
      * @return List<NodeIntention.Node> 封装意图节点信息的列表
      */
     public List<NodeIntention.Node> intentionNodeList(Long clusterId,
                                                       NodeActionTypeEnum nodeActionTypeEnum,
                                                       List<String> hostnameList,
+                                                      String masterHostname,
                                                       boolean isAsc) {
 
         List<NodeIntention.Node> nodeIntentionList = new ArrayList<>();
@@ -394,6 +418,7 @@ public class MasterNodeJobService {
                                         false
 
                                 ))
+                                .filter(node -> !node.getHostname().equals(masterHostname))
                                 .sorted((o1, o2) -> isAsc ?
                                         o1.getHostname().compareTo(o2.getHostname()) :
                                         o2.getHostname().compareTo(o1.getHostname())
