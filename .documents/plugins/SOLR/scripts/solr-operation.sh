@@ -50,7 +50,7 @@ start_solrserver() {
 }
 
 stop_solrserver() {
-  su -s /bin/bash "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/bin/solr stop"
+  su -s /bin/bash "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/bin/solr stop -all"
   echo "SolrServer stopped."
 }
 
