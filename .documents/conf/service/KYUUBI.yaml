@@ -56,7 +56,7 @@ datalight:
           sleep: 0
 
     components:
-      - name: KYUUBIServer
+      - name: KyuubiServer
         priority: 1
         max: 2
         min: 1
