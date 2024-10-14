@@ -121,11 +121,15 @@ public class MasterServiceService {
         tDlServiceList.forEach(i -> serviceNameMap.put(i.getServiceName(), i.getServiceState()));
 
         // 为服务配置是否存在 Ranger 插件
-        List<String> rangerServiceRelativeList = ResolverYamlServiceManifest
+        YamlServiceManifest.Service rangerServiceManifest = ResolverYamlServiceManifest
                 .MANIFEST_SERVICE_MAP
-                .get("RANGER")
-                .getRelatives();
-        rangerServiceRelativeList.remove("MONITOR");
+                .get("RANGER");
+
+        final List<String> rangerServiceRelativeList = new ArrayList<>();
+        if(rangerServiceManifest != null){
+            rangerServiceRelativeList.addAll(rangerServiceManifest.getRelatives());
+            rangerServiceRelativeList.remove("MONITOR");
+        }
 
 
         return ResolverYamlServiceDetail.SERVICE_MAP
@@ -141,7 +145,7 @@ public class MasterServiceService {
                                 )
                         )
                 )
-                .peek(i -> i.setIsContainsRangerPlugin(rangerServiceRelativeList.contains(i.getServiceName())))
+                .peek(i -> i.setIsContainsRangerPlugin(!rangerServiceRelativeList.isEmpty() && rangerServiceRelativeList.contains(i.getServiceName())))
                 .collect(Collectors.toMap(AbstractServiceComponentVo.ServiceSummaryVo::getServiceName, i -> i));
     }
 
