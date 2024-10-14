@@ -71,7 +71,7 @@ public interface IMasterClusterAPI {
     @GetMapping(value = "/cluster/getClusterListByClusterType")
     @ApiOperation(notes = "查询指定类型的集群信息列表", value = "查询指定类型的集群信息列表")
     Result<AbstractClusterVo.ClusterListVo> getClusterListByClusterType(
-            @ApiParam(name = "ClusterType", value = "集群 ID")
+            @ApiParam(name = "ClusterType", value = "集群类型")
             @RequestParam(value = "ClusterType", required = true)
             ClusterTypeEnum clusterTypeEnum
     ) throws Exception;
