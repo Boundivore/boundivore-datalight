@@ -194,7 +194,7 @@ datalight:
             fail-state: SELECTED
             steps:
               - type: SCRIPT
-                name: '初始化 RangerAdmin 数据库以及相关依赖'
+                name: '安装配置 UserSync'
                 shell: 'ranger-usersync-setup.sh'
                 args: [ ]
                 interactions: [ ]
