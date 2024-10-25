@@ -115,6 +115,15 @@ datalight:
           timeout: 60000
           sleep: 0
 
+        - type: SCRIPT
+          name: '检查并初始化数据库'
+          shell: 'dolphinscheduler-init-database.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
         - type: JAR
           name: '初始化服务配置文件'
           jar: 'plugins-dolphinscheduler-1.0.0.jar'
