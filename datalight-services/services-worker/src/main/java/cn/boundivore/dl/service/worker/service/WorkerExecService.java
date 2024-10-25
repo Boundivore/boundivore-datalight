@@ -19,7 +19,9 @@ package cn.boundivore.dl.service.worker.service;
 import cn.boundivore.dl.base.bash.BashResult;
 import cn.boundivore.dl.base.constants.Constants;
 import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
+import cn.boundivore.dl.base.result.ErrorMessage;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.base.result.ResultEnum;
 import cn.boundivore.dl.boot.bash.BashExecutor;
 import cn.boundivore.dl.exception.BashException;
 import cn.hutool.core.lang.Assert;
@@ -74,23 +76,25 @@ public class WorkerExecService {
                 printLog
         );
 
-        Assert.isTrue(
-                bashResult.isSuccess(),
-                () -> new BashException(
-                        String.format(
-                                "错误码: %s, 错误信息: %s",
-                                bashResult.getExitValue(),
-                                bashResult.getResult()
-                        )
-                )
-        );
-
-        return Result.success(
-                String.format(
-                        "%s\n%s",
-                        bashResult.getExecLog(),
-                        bashResult.getResult()
-                )
-        );
+        if(bashResult.isSuccess()){
+            return Result.success(
+                    String.format(
+                            "%s\n%s",
+                            bashResult.getExecLog(),
+                            bashResult.getResult()
+                    )
+            );
+        }else{
+            return Result.fail(
+                    ResultEnum.FAIL_BUSINESS_EXCEPTION,
+                    new ErrorMessage(
+                            String.format(
+                                    "%s\n%s\n%s",
+                                    bashResult.getExitValue(),
+                                    bashResult.getExecLog(),
+                                    bashResult.getResult()
+                            ))
+            );
+        }
     }
 }
