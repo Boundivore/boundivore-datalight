@@ -1,6 +1,6 @@
 datalight:
   service:
-    name: RANGER
+    name: DOLPHINSCHEDULER
     placeholder-infos:
       - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/bin/dolphinscheduler_env.sh'
         properties:
