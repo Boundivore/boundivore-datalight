@@ -46,6 +46,11 @@ public class PortConstants {
             put("MONITOR-NodeExporter", "9100");
             put("LDAP-LDAPExporter", "9330");
 
+            put("DOLPHINSCHEDULER-DSMasterServer", "5679");
+            put("DOLPHINSCHEDULER-DSWorkerServer", "1235");
+            put("DOLPHINSCHEDULER-DSApiServer", "12345");
+            put("DOLPHINSCHEDULER-DSAlertServer", "50053");
+
             put("ZOOKEEPER-QuarumPeermain", "19001");
 
             put("HDFS-JournalNode", "19002");

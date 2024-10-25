@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.List;
 
 /**
- * Description: KAFKA 关联的服务发生变动时，检查是否需要联动修改自身的配置文件
+ * Description: RANGER 关联的服务发生变动时，检查是否需要联动修改自身的配置文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/5/7

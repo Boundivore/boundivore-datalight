@@ -176,6 +176,26 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'DOLPHINSCHEDULER-DSMasterServer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DOLPHINSCHEDULER-DSWorkerServer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DOLPHINSCHEDULER-DSApiServer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DOLPHINSCHEDULER-DSAlertServer'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'ELASTICSEARCH-ElasticSearch'
     metrics_path: "/_prometheus/metrics"
     static_configs:

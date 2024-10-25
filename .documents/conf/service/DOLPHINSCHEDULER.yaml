@@ -1,0 +1,366 @@
+datalight:
+  service:
+    name: DOLPHINSCHEDULER
+    version: 3.1.9
+    tgz: dlc-dolphinscheduler-3.1.9.tar.gz
+    conf-dirs:
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/alert-server/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/alert-server/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/alert-server/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/alert-server/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/api-server/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/api-server/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/api-server/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/api-server/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/bin/env'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/bin/env'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/master-server/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/master-server/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/master-server/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/master-server/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/standalone-server/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/standalone-server/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/standalone-server/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/standalone-server/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/tools/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/tools/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/tools/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/tools/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/worker-server/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/worker-server/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/worker-server/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/worker-server/conf'
+
+#       TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/alert-server/bin'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/alert-server/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/alert-server/conf'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/alert-server/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/api-server/bin'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/api-server/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/api-server/conf'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/api-server/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/bin'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/bin/env'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/bin/env'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/master-server/bin'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/master-server/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/master-server/conf'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/master-server/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/standalone-server/bin'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/standalone-server/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/standalone-server/conf'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/standalone-server/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/tools/bin'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/tools/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DOLPHINSCHEDULER/tools/conf'
+#        templated-dir: 'D:/datalight/plugins/DOLPHINSCHEDULER/templated/tools/conf'
+
+    config-event-handler-jar: 'plugins-dolphinscheduler-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.dolphinscheduler.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署服务所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: SCRIPT
+          name: '检查并配置 datalight 用户 sudoers 权限'
+          shell: 'dolphinscheduler-sudo-datalight.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化服务配置文件'
+          jar: 'plugins-dolphinscheduler-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.dolphinscheduler.config.ConfigDOLPHINSCHEDULER'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
+    components:
+      - name: DSMasterServer
+        priority: 1
+        max: 2
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 DSMasterServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSMasterServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 DSMasterServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSMasterServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 DSMasterServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSMasterServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '重启 DSMasterServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSMasterServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: DSWorkerServer
+        priority: 2
+        max: -1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 DSWorkerServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSWorkerServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 DSWorkerServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSWorkerServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 DSWorkerServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSWorkerServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '重启 DSWorkerServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSWorkerServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: DSApiServer
+        priority: 3
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 DSApiServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSApiServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 DSApiServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSApiServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 DSApiServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSApiServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '重启 DSApiServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSApiServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+      - name: DSAlertServer
+        priority: 4
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 DSAlertServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSAlertServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 DSAlertServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSAlertServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 DSAlertServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSAlertServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '重启 DSAlertServer'
+                shell: 'dolphinscheduler-operation.sh'
+                args: [ 'DSAlertServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                sleep: 1000

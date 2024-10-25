@@ -128,3 +128,10 @@ datalight:
         dependencies: [ 'ZOOKEEPER', 'SOLR' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR', 'HDFS', 'YARN', 'HIVE', 'HBASE', 'KAFKA', 'SOLR']
+      - name: DOLPHINSCHEDULER
+        type: COMPUTE
+        priority: 19
+        desc: '提供数据安全性和权限管理的集中控制台'
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN']
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR' ]

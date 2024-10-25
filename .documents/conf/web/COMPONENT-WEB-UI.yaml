@@ -101,3 +101,9 @@ datalight:
       port: '6080'
       path: '/'
       button-name-suffix: '-Web UI'
+
+    - service: DOLPHINSCHEDULER
+      component: DSApiServer
+      port: '12345'
+      path: '/dolphinscheduler/ui'
+      button-name-suffix: '-Web UI'

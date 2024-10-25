@@ -195,7 +195,7 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-      - name: KERBEROSClient
+      - name: KerberosClient
         priority: 2
         max: -1
         min: 1

@@ -1,0 +1,21 @@
+datalight:
+  service:
+    name: RANGER
+    placeholder-infos:
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DOLPHINSCHEDULER/templated/bin/dolphinscheduler_env.sh'
+        properties:
+          - placeholder: '{{db_root_user}}'
+            describe: 'MySQL 数据库用户名'
+            default: 'root'
+
+          - placeholder: '{{db_root_password}}'
+            describe: 'MySQL 数据库密码'
+            default: '1qaz!QAZ'
+
+          - placeholder: '{{db_host}}'
+            describe: 'MySQL 数据库主机名'
+            default: 'localhost'
+
+          - placeholder: '{{db_port}}'
+            describe: 'MySQL 数据库端口号'
+            default: '3306'

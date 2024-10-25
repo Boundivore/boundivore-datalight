@@ -5,19 +5,19 @@ datalight:
       - templated-file-path: '{{DATALIGHT_DIR}}/plugins/RANGER/templated/ranger-admin/install.properties'
         properties:
           - placeholder: '{{db_root_user}}'
-            describe: 'MetaStore 元数据库用户名'
+            describe: 'MySQL 数据库用户名'
             default: 'root'
 
           - placeholder: '{{db_root_password}}'
-            describe: 'MetaStore 元数据库密码'
+            describe: 'MySQL 数据库密码'
             default: '1qaz!QAZ'
 
           - placeholder: '{{db_host}}'
-            describe: 'MetaStore 元数据库主机名'
+            describe: 'MySQL 数据库主机名'
             default: 'localhost'
 
           - placeholder: '{{db_port}}'
-            describe: 'MetaStore 元数据库端口号'
+            describe: 'MySQL 数据库端口号'
             default: '3306'
 
           - placeholder: '{{unix_user}}'
