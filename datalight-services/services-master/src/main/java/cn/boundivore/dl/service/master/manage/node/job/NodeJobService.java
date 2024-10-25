@@ -606,6 +606,7 @@ public class NodeJobService {
                      String localPath,
                      String remotePath) throws IOException {
 
+        log.info("正在传输 {} 到 {}", localPath, hostname);
         SshTool sshTool = sshService.sshTool();
 
         SSHClient sshClient = sshTool.connect(
