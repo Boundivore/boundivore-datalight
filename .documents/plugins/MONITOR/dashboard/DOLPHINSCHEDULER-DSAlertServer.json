@@ -155,7 +155,7 @@
         },
         {
           "$$hashKey": "object:993",
-          "alias": "Master State",
+          "alias": "DSMasterServer State",
           "align": "auto",
           "colorMode": "cell",
           "colors": [
@@ -194,14 +194,14 @@
             "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
-          "expr": "up{job=~\"DATALIGHT-Master\"}",
+          "expr": "up{job=~\"$JobName\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "{{instance}}",
           "refId": "A"
         }
       ],
-      "title": "DataLight-Master State",
+      "title": "DSMasterServer State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
@@ -244,7 +244,7 @@
         },
         {
           "$$hashKey": "object:938",
-          "alias": "Worker",
+          "alias": "DSServer Name",
           "align": "auto",
           "colors": [
             "rgba(245, 54, 54, 0.9)",
@@ -261,7 +261,7 @@
         },
         {
           "$$hashKey": "object:993",
-          "alias": "Worker State",
+          "alias": "Current State",
           "align": "auto",
           "colorMode": "cell",
           "colors": [
@@ -300,14 +300,14 @@
             "uid": "MONITOR-Prometheus"
           },
           "editorMode": "code",
-          "expr": "up{job=~\"DATALIGHT-Worker\"}",
+          "expr": "up{job=~\"DOLPHINSCHEDULER.*\"}",
           "instant": true,
           "interval": "",
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{job}}-{{instance}}",
           "refId": "A"
         }
       ],
-      "title": "DataLight-Worker State",
+      "title": "All Server State",
       "transform": "timeseries_to_rows",
       "type": "table-old"
     },
@@ -1030,7 +1030,7 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
-        "w": 8,
+        "w": 6,
         "x": 0,
         "y": 22
       },
@@ -1152,7 +1152,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 30
+        "y": 38
       },
       "hiddenSeries": false,
       "id": 88,
@@ -1274,7 +1274,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 50,
@@ -1373,7 +1373,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 80,
@@ -1469,7 +1469,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 46
+        "y": 54
       },
       "hiddenSeries": false,
       "id": 82,
@@ -1575,7 +1575,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 46
+        "y": 54
       },
       "hiddenSeries": false,
       "id": 83,
@@ -1681,7 +1681,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 53
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 68,
@@ -1800,7 +1800,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 53
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 78,
@@ -1895,7 +1895,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 69
       },
       "id": 72,
       "panels": [],
@@ -1932,7 +1932,7 @@
         "h": 10,
         "w": 12,
         "x": 0,
-        "y": 62
+        "y": 70
       },
       "hiddenSeries": false,
       "id": 74,
@@ -2030,7 +2030,7 @@
         "h": 10,
         "w": 12,
         "x": 12,
-        "y": 62
+        "y": 70
       },
       "hiddenSeries": false,
       "id": 76,
@@ -2117,7 +2117,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 72
+        "y": 80
       },
       "id": 18,
       "panels": [],
@@ -2154,7 +2154,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 81
       },
       "hiddenSeries": false,
       "id": 4,
@@ -2251,7 +2251,7 @@
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 80
+        "y": 88
       },
       "hiddenSeries": false,
       "id": 2,
@@ -2338,7 +2338,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 87
+        "y": 95
       },
       "id": 8,
       "panels": [],
@@ -2375,7 +2375,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 88
+        "y": 96
       },
       "hiddenSeries": false,
       "id": 6,
@@ -2473,7 +2473,7 @@
         "h": 7,
         "w": 12,
         "x": 12,
-        "y": 88
+        "y": 96
       },
       "hiddenSeries": false,
       "id": 10,
@@ -2571,7 +2571,7 @@
         "h": 7,
         "w": 8,
         "x": 0,
-        "y": 95
+        "y": 103
       },
       "hiddenSeries": false,
       "id": 14,
@@ -2669,7 +2669,7 @@
         "h": 7,
         "w": 8,
         "x": 8,
-        "y": 95
+        "y": 103
       },
       "hiddenSeries": false,
       "id": 16,
@@ -2767,7 +2767,7 @@
         "h": 7,
         "w": 8,
         "x": 16,
-        "y": 95
+        "y": 103
       },
       "hiddenSeries": false,
       "id": 20,
@@ -2854,7 +2854,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 102
+        "y": 110
       },
       "id": 34,
       "panels": [],
@@ -2897,8 +2897,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -2910,7 +2909,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 103
+        "y": 111
       },
       "id": 44,
       "links": [],
@@ -2964,8 +2963,7 @@
             "steps": [
               {
                 "color": "#7EB26D",
-                "index": 0,
-                "value": null
+                "index": 0
               }
             ]
           },
@@ -2977,7 +2975,7 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 103
+        "y": 111
       },
       "id": 101,
       "links": [],
@@ -3038,8 +3036,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -3051,7 +3048,7 @@
         "h": 4,
         "w": 4,
         "x": 8,
-        "y": 103
+        "y": 111
       },
       "id": 46,
       "links": [],
@@ -3114,8 +3111,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -3135,7 +3131,7 @@
         "h": 4,
         "w": 4,
         "x": 12,
-        "y": 103
+        "y": 111
       },
       "id": 102,
       "links": [],
@@ -3197,8 +3193,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#299c46",
-                "value": null
+                "color": "#299c46"
               },
               {
                 "color": "rgba(237, 129, 40, 0.89)",
@@ -3218,7 +3213,7 @@
         "h": 4,
         "w": 4,
         "x": 16,
-        "y": 103
+        "y": 111
       },
       "id": 103,
       "links": [],
@@ -3280,8 +3275,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -3297,7 +3291,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 103
+        "y": 111
       },
       "id": 104,
       "links": [],
@@ -3347,7 +3341,7 @@
         "h": 9,
         "w": 8,
         "x": 0,
-        "y": 107
+        "y": 115
       },
       "hiddenSeries": false,
       "id": 105,
@@ -3439,7 +3433,7 @@
         "h": 9,
         "w": 8,
         "x": 8,
-        "y": 107
+        "y": 115
       },
       "hiddenSeries": false,
       "id": 106,
@@ -3531,7 +3525,7 @@
         "h": 9,
         "w": 8,
         "x": 16,
-        "y": 107
+        "y": 115
       },
       "hiddenSeries": false,
       "id": 107,
@@ -3622,7 +3616,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 116
+        "y": 124
       },
       "hiddenSeries": false,
       "id": 108,
@@ -3713,7 +3707,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 116
+        "y": 124
       },
       "hiddenSeries": false,
       "id": 109,
@@ -3813,7 +3807,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 116
+        "y": 124
       },
       "hiddenSeries": false,
       "id": 112,
@@ -3913,7 +3907,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 124
+        "y": 132
       },
       "hiddenSeries": false,
       "id": 110,
@@ -4004,7 +3998,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 124
+        "y": 132
       },
       "hiddenSeries": false,
       "id": 111,
@@ -4095,7 +4089,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 124
+        "y": 132
       },
       "hiddenSeries": false,
       "id": 113,
@@ -4186,7 +4180,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 132
+        "y": 140
       },
       "hiddenSeries": false,
       "id": 114,
@@ -4280,7 +4274,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 132
+        "y": 140
       },
       "hiddenSeries": false,
       "id": 115,
@@ -4372,7 +4366,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 132
+        "y": 140
       },
       "hiddenSeries": false,
       "id": 116,
@@ -4473,7 +4467,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 140
+        "y": 148
       },
       "hiddenSeries": false,
       "id": 117,
@@ -4565,7 +4559,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 140
+        "y": 148
       },
       "hiddenSeries": false,
       "id": 118,
@@ -4657,7 +4651,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 140
+        "y": 148
       },
       "hiddenSeries": false,
       "id": 119,
@@ -4748,7 +4742,7 @@
   "schemaVersion": 38,
   "style": "dark",
   "tags": [
-    "DATALIGHT"
+    "DOLPHINSCHEDULER"
   ],
   "templating": {
     "list": [
@@ -4758,7 +4752,7 @@
           "type": "prometheus",
           "uid": "MONITOR-Prometheus"
         },
-        "definition": "label_values(up{job=~\"DATALIGHT.*\"},job)",
+        "definition": "label_values(up{job=~\"DOLPHINSCHEDULER.DSAlertServer\"},job)",
         "hide": 0,
         "includeAll": false,
         "label": "JobName",
@@ -4766,7 +4760,7 @@
         "name": "JobName",
         "options": [],
         "query": {
-          "query": "label_values(up{job=~\"DATALIGHT.*\"},job)",
+          "query": "label_values(up{job=~\"DOLPHINSCHEDULER.DSAlertServer\"},job)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -4885,7 +4879,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {
@@ -4913,8 +4907,8 @@
     ]
   },
   "timezone": "",
-  "title": "DATALIGHT",
-  "uid": "DATALIGHT",
+  "title": "DOLPHINSCHEDULER-DSAlertServer",
+  "uid": "DOLPHINSCHEDULER-DSAlertServer",
   "version": 1,
   "weekStart": ""
 }

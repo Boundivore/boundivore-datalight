@@ -187,7 +187,7 @@ scrape_configs:
       - targets: [ ]
 
   - job_name: 'DOLPHINSCHEDULER-DSApiServer'
-    metrics_path: '/actuator/prometheus'
+    metrics_path: '/dolphinscheduler/actuator/prometheus'
     static_configs:
       - targets: [ ]
 
