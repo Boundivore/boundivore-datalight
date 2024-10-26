@@ -17,8 +17,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 
 * [开发规划](./.documents/docs/开发规划.md)
 
-* [百度网盘: 资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
-* [123云盘: 资源包下载地址](https://www.123pan.com/s/7j3rTd-iFzKd?) `网盘提取码: 6666`
+* [资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
 
 * [视频教程](https://space.bilibili.com/3546708503955571/channel/seriesdetail?sid=4187881&ctype=0)
 
@@ -336,7 +335,6 @@ yum -y install expect
   * 安装 yum 依赖
 
     ~~~shell
-    yum -y install psmisc # HDFS 高可用切换所需的 fuster
     yum -y install epel-release  # 安装 EPEL 仓库，提供额外的软件包
     yum -y install jq  # 安装 jq，用于处理 JSON 数据
     yum -y install curl  # 安装 curl，用于命令行数据传输
@@ -347,15 +345,12 @@ yum -y install expect
     yum -y install unzip zip  # 安装 unzip 和 zip，用于解压和压缩文件
     yum -y install yum-utils  # 安装 yum-utils，提供额外的 yum 命令
     yum -y install net-tools  # 安装 net-tools，提供网络工具如 ifconfig
-    yum -y install bc
     
     yum -y install gcc gcc-c++  # 安装 GCC 和 G++ 编译器
     yum -y install make  # 安装 make，构建自动化工具
     yum -y install autoconf automake libtool curl  # 安装 autoconf、automake、libtool 和 curl，用于构建和配置软件
     yum -y install zlib lzo-devel zlib-devel openssl openssl-devel ncurses-devel ruby  # 安装 zlib、lzo-devel、zlib-devel、openssl、openssl-devel、ncurses-devel 和 ruby，用于压缩、加密、终端控制和 Ruby 语言支持
     yum -y install snappy snappy-devel bzip2 bzip2-devel lzo lzo-devel lzop libXtst  # 安装 snappy、snappy-devel、bzip2、bzip2-devel、lzo、lzo-devel、lzop 和 libXtst，用于数据压缩和图形界面支持
-    yum -y install lsof
-    yum -y install python3
     ~~~
 
   * 主节点安装并配置 chrony 时间管理服务器
@@ -436,7 +431,7 @@ http://<Master-IP>:8001
 | HUDI           | 待定 |            |            |
 | KUBESPHERE     | 3.3.2  | √           | 2023-09 |
 | SEATUNNEL      | 待定 |            |            |
-| DOPHINSCHDULER | 待定 |            |            |
+| DOPHINSCHEDULER | 3.1.9 | √ | 2024-10 |
 | KERBEROS | 1.15.1 | √ | 2024-08 |
 | LDAP | 2.4.44 | √ | 2024-08 |
 | SSSD | 1.16.5 | √ | 2024-08 |
