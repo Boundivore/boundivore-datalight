@@ -17,7 +17,7 @@
 
 spring:
   jackson:
-    time-zone: UTC
+    time-zone: Asia/Shanghai
     date-format: "yyyy-MM-dd HH:mm:ss"
   banner:
     charset: UTF-8
