@@ -36,7 +36,7 @@ masters=${masters:-"node01,node02"}
 # A comma separated list of machine <hostname>:<workerGroup> or <IP>:<workerGroup>.All hostname or IP must be a
 # subset of configuration `ips`, And workerGroup have default value as `default`, but we recommend you declare behind the hosts
 # Example for hostnames: workers="ds1:default,ds2:default,ds3:default", Example for IPs: workers="192.168.8.1:default,192.168.8.2:default,192.168.8.3:default"
-workers=${workers:-"node01:default,noide02:default,node03:default"}
+workers=${workers:-"node01:default,node02:default,node03:default"}
 
 # A comma separated list of machine hostname or IP would be installed Alert server, it
 # must be a subset of configuration `ips`.
