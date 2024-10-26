@@ -39,7 +39,7 @@ clear_service_dir() {
     echo "Removing ${CURRENT_SERVICE_DIR}"
     echo "Removing ${SERVICE_DATA_DIR}"
     echo "Removing ${SERVICE_LOG_DIR}"
-    rm -rf "${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR} ${SERVICE_LOG_DIR}" || exit_on_error "Failed to remove ${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR} ${SERVICE_LOG_DIR}"
+    rm -rf "${CURRENT_SERVICE_DIR}" "${SERVICE_DATA_DIR}" "${SERVICE_LOG_DIR}" || exit_on_error "Failed to remove ${CURRENT_SERVICE_DIR} ${SERVICE_DATA_DIR} ${SERVICE_LOG_DIR}"
   fi
 }
 
