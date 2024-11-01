@@ -27,7 +27,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 
 
 /**
- * Description: 关于 DCL 包关接口定义
+ * Description: 关于 DLC 包关接口定义
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/13
@@ -36,7 +36,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterDLCAPI", tags = {"Master 接口：DCL 包相关"})
+@Api(value = "IMasterDLCAPI", tags = {"Master 接口：DLC 包相关"})
 @FeignClient(
         name = "IMasterDLCAPI",
         contextId = "IMasterDLCAPI",
