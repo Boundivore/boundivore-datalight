@@ -57,7 +57,7 @@ datalight:
         desc: 'Hadoop 分布式存储服务'
         dependencies: [ 'ZOOKEEPER' ]
         optional-dependencies: [ ]
-        relatives: [ 'MONITOR', 'HIVE', 'HBASE']
+        relatives: [ 'MONITOR', 'HIVE', 'HBASE', 'DORIS']
       - name: YARN
         type: COMPUTE
         desc: 'Hadoop 分布式计算资源管理服务'
@@ -97,7 +97,7 @@ datalight:
         type: COMPUTE
         desc: '流批一体计算框架'
         priority: 14
-        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN' ]
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN', 'DORIS' ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
       - name: FLINK
@@ -134,4 +134,11 @@ datalight:
         desc: '提供数据安全性和权限管理的集中控制台'
         dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN']
         optional-dependencies: [ ]
+        relatives: [ 'MONITOR' ]
+      - name: DORIS
+        type: STORAGE
+        priority: 20
+        desc: '基于 MPP 架构的高性能、实时分析型数据库'
+        dependencies: [ ]
+        optional-dependencies: [ 'HDFS', 'SPARK']
         relatives: [ 'MONITOR' ]
