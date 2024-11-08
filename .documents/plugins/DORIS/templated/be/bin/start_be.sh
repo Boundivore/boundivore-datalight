@@ -18,6 +18,16 @@
 
 set -eo pipefail
 
+storage_root_path="{{storage_root_path}}"
+if [ ! -z "${storage_root_path}" ]; then
+  IFS=';' read -ra paths <<< "${storage_root_path}"
+  for path in "${paths[@]}"; do
+    sudo mkdir -p "${path}"
+    sudo chown datalight:datalight -R "${path}"
+    sudo chmod +x -R "${path}"
+  done
+fi
+
 curdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 MACHINE_OS=$(uname -s)

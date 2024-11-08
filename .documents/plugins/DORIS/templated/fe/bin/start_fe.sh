@@ -18,6 +18,11 @@
 
 set -eo pipefail
 
+meta_dir="{{meta_dir}}"
+sudo mkdir -p "${meta_dir}"
+sudo chown datalight:datalight -R "${meta_dir}"
+sudo chmod +x -R "${meta_dir}"
+
 curdir="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 if [[ "$(uname -s)" == 'Darwin' ]] && command -v brew &>/dev/null; then

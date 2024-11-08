@@ -59,6 +59,10 @@ public class ConfigDORIS extends AbstractConfig {
                 return new ConfigLogicStartBrokerSh(super.pluginConfig).config(file, replacedTemplate);
             case "doris_cloud.conf":
                 return new ConfigLogicDorisCloudConf(super.pluginConfig).config(file, replacedTemplate);
+            case "start_fe.sh":
+                return new ConfigLogicStartFeSh(super.pluginConfig).config(file, replacedTemplate);
+            case "start_be.sh":
+                return new ConfigLogicStartBeSh(super.pluginConfig).config(file, replacedTemplate);
         }
 
 
