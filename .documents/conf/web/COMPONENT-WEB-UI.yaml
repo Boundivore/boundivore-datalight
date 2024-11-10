@@ -107,3 +107,9 @@ datalight:
       port: '12345'
       path: '/dolphinscheduler/ui'
       button-name-suffix: '-Web UI'
+
+    - service: DORIS
+      component: FEServer
+      port: '6030'
+      path: '/'
+      button-name-suffix: '-Web UI'
