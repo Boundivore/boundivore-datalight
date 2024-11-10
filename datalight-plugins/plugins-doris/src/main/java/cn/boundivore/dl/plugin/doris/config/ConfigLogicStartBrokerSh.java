@@ -49,15 +49,15 @@ public class ConfigLogicStartBrokerSh extends AbstractConfigLogic {
         // {{BROKER_LOG_DIR}}
         String brokerLogDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.logDir()
+                super.logDir(),
+                SERVICE_NAME
         );
 
         // {{PID_DIR}}
         String pidDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.pidDir()
+                super.pidDir(),
+                SERVICE_NAME
         );
 
         // {{JAVA_HOME}}

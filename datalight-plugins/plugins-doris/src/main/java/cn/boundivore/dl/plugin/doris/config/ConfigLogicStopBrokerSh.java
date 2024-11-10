@@ -51,8 +51,8 @@ public class ConfigLogicStopBrokerSh extends AbstractConfigLogic {
         // {{PID_DIR}}
         String pidDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.pidDir()
+                super.pidDir(),
+                SERVICE_NAME
         );
 
         return replacedTemplated

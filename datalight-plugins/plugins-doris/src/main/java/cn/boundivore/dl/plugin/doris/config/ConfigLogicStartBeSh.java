@@ -49,15 +49,15 @@ public class ConfigLogicStartBeSh extends AbstractConfigLogic {
         // {{LOG_DIR}}
         String logDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.logDir()
+                super.logDir(),
+                SERVICE_NAME
         );
 
         // {{PID_DIR}}
         String pidDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.pidDir()
+                super.pidDir(),
+                SERVICE_NAME
         );
 
         // {{storage_root_path}}
