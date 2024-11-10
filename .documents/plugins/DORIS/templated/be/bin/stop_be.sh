@@ -91,6 +91,6 @@ if [[ -f "${pidfile}" ]]; then
         exit 1
     fi
 else
-    echo "ERROR: ${pidfile} does not exist"
-    exit 1
+    echo "NOTICE: ${pidfile} does not exist"
+    exit 0
 fi
