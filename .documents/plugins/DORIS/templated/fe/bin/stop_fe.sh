@@ -26,10 +26,11 @@ DORIS_HOME="$(
 )"
 export DORIS_HOME
 
-PID_DIR="$(
-    cd "${curdir}"
-    pwd
-)"
+#PID_DIR="$(
+#    cd "${curdir}"
+#    pwd
+#)"
+PID_DIR="{{PID_DIR}}"
 export PID_DIR
 
 while read -r line; do

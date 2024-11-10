@@ -24,7 +24,7 @@ import java.io.File;
 import static cn.boundivore.dl.plugin.doris.config.ConfigDORIS.SERVICE_NAME;
 
 /**
- * Description: 配置 fe.conf 文件
+ * Description: 配置 start.sh 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/11/08
@@ -33,9 +33,9 @@ import static cn.boundivore.dl.plugin.doris.config.ConfigDORIS.SERVICE_NAME;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicFEConf extends AbstractConfigLogic {
+public class ConfigLogicStartSh extends AbstractConfigLogic {
 
-    public ConfigLogicFEConf(PluginConfig pluginConfig) {
+    public ConfigLogicStartSh(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 
@@ -46,6 +46,10 @@ public class ConfigLogicFEConf extends AbstractConfigLogic {
                 file
         );
 
+
+        // {{JAVA_HOME}}
+        String javaHome = this.javaHome();
+
         // {{LOG_DIR}}
         String logDir = String.format(
                 "%s/%s",
@@ -53,32 +57,25 @@ public class ConfigLogicFEConf extends AbstractConfigLogic {
                 super.logDir()
         );
 
-        // {{metaDir}}
-        String metaDir = this.metaDir();
-
-        // {{priority_networks}}
-        String priorityNetworks = this.priorityNetworks();
-
-        // {{JAVA_HOME}}
-        String javaHome = this.javaHome();
-
+        // {{PID_DIR}}
+        String pidDir = String.format(
+                "%s/%s",
+                SERVICE_NAME,
+                super.pidDir()
+        );
 
         return replacedTemplated
+                .replace(
+                        "{{JAVA_HOME}}",
+                        javaHome
+                )
                 .replace(
                         "{{LOG_DIR}}",
                         logDir
                 )
                 .replace(
-                        "{{meta_dir}}",
-                        metaDir
-                )
-                .replace(
-                        "{{priority_networks}}",
-                        priorityNetworks
-                )
-                .replace(
-                        "{{JAVA_HOME}}",
-                        javaHome
+                        "{{PID_DIR}}",
+                        pidDir
                 )
                 ;
     }
@@ -98,40 +95,4 @@ public class ConfigLogicFEConf extends AbstractConfigLogic {
     private String javaHome() {
         return "/srv/datalight/DORIS/jdk-17";
     }
-
-    /**
-     * Description: 获取 Doris 元数据存储目录
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/11/8
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return Doris 元数据存储目录
-     */
-    private String metaDir() {
-        return String.format(
-                "%s/DORIS/doris-meta",
-                super.dataDir()
-        );
-    }
-
-    /**
-     * Description: 获取 FE 可用网段
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/11/8
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return FE 可用网段
-     */
-    private String priorityNetworks() {
-        return super.currentNodeIp;
-    }
-
 }

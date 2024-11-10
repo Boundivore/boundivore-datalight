@@ -62,16 +62,19 @@ done <"${DORIS_HOME}/conf/doris_cloud.conf"
 
 process=doris_cloud
 
-if [[ -f "${DORIS_HOME}/bin/${process}.pid" ]]; then
-    pid=$(cat "${DORIS_HOME}/bin/${process}.pid")
+PID_DIR="{{PID_DIR}}"
+export PID_DIR
+
+if [[ -f "${PID_DIR}/${process}.pid" ]]; then
+    pid=$(cat "${PID_DIR}/${process}.pid")
     if [[ "${pid}" != "" ]]; then
-        if kill -0 "$(cat "${DORIS_HOME}/bin/${process}.pid")" >/dev/null 2>&1; then
+        if kill -0 "$(cat "${PID_DIR}/${process}.pid")" >/dev/null 2>&1; then
             echo "pid file existed, ${process} have already started, pid=${pid}"
             exit 1
         fi
     fi
     echo "pid file existed but process not alive, remove it, pid=${pid}"
-    rm -f "${DORIS_HOME}/bin/${process}.pid"
+    rm -f "${PID_DIR}/${process}.pid"
 fi
 
 lib_path="${DORIS_HOME}/lib"
@@ -86,6 +89,8 @@ if ldd "${bin}" | grep -Ei 'libfdb_c.*not found' &>/dev/null; then
 fi
 
 chmod 550 "${DORIS_HOME}/lib/doris_cloud"
+
+JAVA_HOME={{JAVA_HOME}}
 
 if [[ -z "${JAVA_HOME}" ]]; then
     echo "The JAVA_HOME environment variable is not defined correctly"
@@ -133,8 +138,11 @@ if [[ "${RUN_VERSION}" -eq 1 ]]; then
 fi
 
 mkdir -p "${DORIS_HOME}/log"
+
+LOG_DIR={{LOG_DIR}}
+
 echo "starts ${process} with args: $*"
-out_file=${DORIS_HOME}/log/${process}.out
+out_file=${LOG_DIR}/${process}.out
 if [[ "${RUN_DAEMON}" -eq 1 ]]; then
     # append 10 blank lines to ensure the following tail -n10 works correctly
     printf "\n\n\n\n\n\n\n\n\n\n" >>"${out_file}"

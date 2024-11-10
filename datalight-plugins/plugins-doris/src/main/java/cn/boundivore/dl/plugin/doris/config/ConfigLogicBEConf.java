@@ -21,6 +21,8 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 
+import static cn.boundivore.dl.plugin.doris.config.ConfigDORIS.SERVICE_NAME;
+
 /**
  * Description: 配置 be.conf 文件
  * Created by: Boundivore
@@ -45,13 +47,20 @@ public class ConfigLogicBEConf extends AbstractConfigLogic {
         );
 
         // {{LOG_DIR}}
-        String logDir = super.logDir();
+        String logDir = String.format(
+                "%s/%s",
+                SERVICE_NAME,
+                super.logDir()
+        );
 
         // {{priority_networks}}
         String priorityNetworks = this.priorityNetworks();
 
         // {{storage_root_path}}
         String storageRootPath = this.storageRootPath();
+
+        // {{JAVA_HOME}}
+        String javaHome = this.javaHome();
 
 
         return replacedTemplated
@@ -67,7 +76,27 @@ public class ConfigLogicBEConf extends AbstractConfigLogic {
                         "{{storage_root_path}}",
                         storageRootPath
                 )
+                .replace(
+                        "{{JAVA_HOME}}",
+                        javaHome
+                )
                 ;
+    }
+
+    /**
+     * Description: 获取 Doris 内置的 JavaHome
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/11/10
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return Doris 内置的 JavaHome
+     */
+    private String javaHome() {
+        return "/srv/datalight/DORIS/jdk-17";
     }
 
     /**
@@ -84,7 +113,7 @@ public class ConfigLogicBEConf extends AbstractConfigLogic {
      */
     private String storageRootPath() {
         return String.format(
-                "%s/doris",
+                "%s/DORIS/doris",
                 super.dataDir()
         );
     }

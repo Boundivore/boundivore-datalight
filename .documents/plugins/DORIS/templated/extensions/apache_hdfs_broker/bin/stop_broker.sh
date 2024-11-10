@@ -26,10 +26,11 @@ BROKER_HOME=$(
 )
 export BROKER_HOME
 
-PID_DIR=$(
-    cd "${curdir}"
-    pwd
-)
+#PID_DIR="$(
+#    cd "${curdir}"
+#    pwd
+#)"
+PID_DIR="{{PID_DIR}}"
 export PID_DIR
 
 pidfile="${PID_DIR}/apache_hdfs_broker.pid"

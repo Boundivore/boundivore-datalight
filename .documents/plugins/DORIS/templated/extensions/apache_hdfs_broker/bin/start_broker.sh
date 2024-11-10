@@ -57,20 +57,23 @@ BROKER_HOME="$(
 )"
 export BROKER_HOME
 
-PID_DIR="$(
-    cd "${curdir}"
-    pwd
-)"
+#PID_DIR="$(
+#    cd "${curdir}"
+#    pwd
+#)"
+PID_DIR="{{PID_DIR}}"
 export PID_DIR
 
 export JAVA_OPTS="-Xmx1024m -Dfile.encoding=UTF-8 --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens java.base/jdk.internal.ref=ALL-UNNAMED"
 export BROKER_LOG_DIR="{{BROKER_LOG_DIR}}"
 # java
-if [[ -z "${JAVA_HOME}" ]]; then
-    JAVA="$(command -v java)"
-else
-    JAVA="${JAVA_HOME}/bin/java"
-fi
+JAVA_HOME={{JAVA_HOME}}
+JAVA="${JAVA_HOME}/bin/java"
+#if [[ -z "${JAVA_HOME}" ]]; then
+#    JAVA="$(command -v java)"
+#else
+#    JAVA="${JAVA_HOME}/bin/java"
+#fi
 
 if [[ ! -x "${JAVA}" ]]; then
     echo "The JAVA_HOME environment variable is not defined correctly"

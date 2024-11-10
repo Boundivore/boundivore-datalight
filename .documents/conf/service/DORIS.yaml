@@ -75,7 +75,7 @@ datalight:
           args: [ ]
           interactions: [ ]
           exits: '0'
-          timeout: 60000
+          timeout: 240000
           sleep: 0
 
         - type: SCRIPT

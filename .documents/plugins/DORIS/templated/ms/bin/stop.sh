@@ -25,12 +25,15 @@ cd "${DORIS_HOME}" || exit 1
 
 process=doris_cloud
 
-if [[ ! -f "${DORIS_HOME}/bin/${process}.pid" ]]; then
+PID_DIR="{{PID_DIR}}"
+export PID_DIR
+
+if [[ ! -f "${PID_DIR}/${process}.pid" ]]; then
     echo "no ${process}.pid found, process may have been stopped"
     exit 1
 fi
 
-pid=$(cat "${DORIS_HOME}/bin/${process}.pid")
+pid=$(cat "${PID_DIR}/${process}.pid")
 kill -2 "${pid}"
 cnt=0
 while true; do
@@ -45,4 +48,4 @@ while true; do
     echo "${msg}"
     sleep 1
 done
-rm -f "${DORIS_HOME}/bin/${process}.pid"
+rm -f "${PID_DIR}/${process}.pid"

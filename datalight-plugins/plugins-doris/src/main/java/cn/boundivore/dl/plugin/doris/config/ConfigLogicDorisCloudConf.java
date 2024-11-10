@@ -21,6 +21,8 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 
+import static cn.boundivore.dl.plugin.doris.config.ConfigDORIS.SERVICE_NAME;
+
 /**
  * Description: 配置 doris_cloud.conf 文件
  * Created by: Boundivore
@@ -45,7 +47,11 @@ public class ConfigLogicDorisCloudConf extends AbstractConfigLogic {
         );
 
         // {{log_dir}}
-        String logDir = super.logDir();
+        String logDir = String.format(
+                "%s/%s",
+                SERVICE_NAME,
+                super.logDir()
+        );
 
 
         return replacedTemplated

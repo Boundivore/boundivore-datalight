@@ -45,12 +45,12 @@ echo "To ${OPERATION} ${COMPONENT_NAME} ..."
 
 # 定义启动和停止函数
 start_component() {
-  su -s /bin/bash "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/bin/start_${1}.sh"
+  su -s /bin/bash "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/${1}/bin/start_${1}.sh --daemon"
   echo "$1 started."
 }
 
 stop_component() {
-  su -s /bin/bash "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/bin/stop_${1}.sh"
+  su -s /bin/bash "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/${1}/bin/stop_${1}.sh"
   echo "$1 stopped."
 }
 

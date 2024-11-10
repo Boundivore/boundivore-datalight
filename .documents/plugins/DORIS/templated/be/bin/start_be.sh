@@ -84,12 +84,15 @@ export DORIS_HOME
 #
 # LOG_DIR
 # PID_DIR
-export LOG_DIR="${DORIS_HOME}/log"
-PID_DIR="$(
-    cd "${curdir}"
-    pwd
-)"
+export LOG_DIR="{{LOG_DIR}}"
+#PID_DIR="$(
+#    cd "${curdir}"
+#    pwd
+#)"
+PID_DIR="{{PID_DIR}}"
 export PID_DIR
+
+JAVA_HOME={{JAVA_HOME}}
 
 # read from be.conf
 while read -r line; do

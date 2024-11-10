@@ -33,6 +33,9 @@ import java.io.File;
  */
 @Slf4j
 public class ConfigDORIS extends AbstractConfig {
+
+    public static final String SERVICE_NAME = "DORIS";
+
     /**
      * Description: 根据配置文件执行不同的配置修改逻辑
      * Created by: Boundivore
@@ -53,16 +56,29 @@ public class ConfigDORIS extends AbstractConfig {
         switch (file.getName()) {
             case "fe.conf":
                 return new ConfigLogicFEConf(super.pluginConfig).config(file, replacedTemplate);
-            case "be.conf":
-                return new ConfigLogicBEConf(super.pluginConfig).config(file, replacedTemplate);
-            case "start_broker.sh":
-                return new ConfigLogicStartBrokerSh(super.pluginConfig).config(file, replacedTemplate);
-            case "doris_cloud.conf":
-                return new ConfigLogicDorisCloudConf(super.pluginConfig).config(file, replacedTemplate);
             case "start_fe.sh":
                 return new ConfigLogicStartFeSh(super.pluginConfig).config(file, replacedTemplate);
+            case "stop_fe.sh":
+                return new ConfigLogicStopFeSh(super.pluginConfig).config(file, replacedTemplate);
+
+            case "be.conf":
+                return new ConfigLogicBEConf(super.pluginConfig).config(file, replacedTemplate);
             case "start_be.sh":
                 return new ConfigLogicStartBeSh(super.pluginConfig).config(file, replacedTemplate);
+            case "stop_be.sh":
+                return new ConfigLogicStopBeSh(super.pluginConfig).config(file, replacedTemplate);
+
+            case "start_broker.sh":
+                return new ConfigLogicStartBrokerSh(super.pluginConfig).config(file, replacedTemplate);
+            case "stop_broker.sh":
+                return new ConfigLogicStopBrokerSh(super.pluginConfig).config(file, replacedTemplate);
+
+            case "doris_cloud.conf":
+                return new ConfigLogicDorisCloudConf(super.pluginConfig).config(file, replacedTemplate);
+            case "start.sh":
+                return new ConfigLogicStartSh(super.pluginConfig).config(file, replacedTemplate);
+            case "stop.sh":
+                return new ConfigLogicStopSh(super.pluginConfig).config(file, replacedTemplate);
         }
 
 

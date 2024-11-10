@@ -100,11 +100,12 @@ export DORIS_HOME
 # LOG_DIR
 # PID_DIR
 export JAVA_OPTS="-Xmx1024m"
-export LOG_DIR="${DORIS_HOME}/log"
-PID_DIR="$(
-    cd "${curdir}"
-    pwd
-)"
+export LOG_DIR="{{LOG_DIR}}"
+#PID_DIR="$(
+#    cd "${curdir}"
+#    pwd
+#)"
+PID_DIR="{{PID_DIR}}"
 export PID_DIR
 
 while read -r line; do
@@ -125,16 +126,17 @@ if [[ -e "${DORIS_HOME}/bin/palo_env.sh" ]]; then
 fi
 
 #Due to the machine not being configured with Java home, in this case, when FE cannot start, it is necessary to prompt an error message indicating that it has not yet been configured with Java home.
-
-if [[ -z "${JAVA_HOME}" ]]; then
-    if ! command -v java &>/dev/null; then
-        JAVA=""
-    else
-        JAVA="$(command -v java)"
-    fi
-else
-    JAVA="${JAVA_HOME}/bin/java"
-fi
+JAVA_HOME={{JAVA_HOME}}
+JAVA="${JAVA_HOME}/bin/java"
+#if [[ -z "${JAVA_HOME}" ]]; then
+#    if ! command -v java &>/dev/null; then
+#        JAVA=""
+#    else
+#        JAVA="$(command -v java)"
+#    fi
+#else
+#    JAVA="${JAVA_HOME}/bin/java"
+#fi
 
 if [[ ! -x "${JAVA}" ]]; then
     echo "The JAVA_HOME environment variable is not set correctly"

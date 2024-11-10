@@ -24,7 +24,7 @@ import java.io.File;
 import static cn.boundivore.dl.plugin.doris.config.ConfigDORIS.SERVICE_NAME;
 
 /**
- * Description: 配置 start_broker.sh 文件
+ * Description: 配置 stop_be.sh 文件
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2024/11/08
@@ -33,9 +33,9 @@ import static cn.boundivore.dl.plugin.doris.config.ConfigDORIS.SERVICE_NAME;
  * Modification time:
  * Version: V1.0
  */
-public class ConfigLogicStartBrokerSh extends AbstractConfigLogic {
+public class ConfigLogicStopBeSh extends AbstractConfigLogic {
 
-    public ConfigLogicStartBrokerSh(PluginConfig pluginConfig) {
+    public ConfigLogicStopBeSh(PluginConfig pluginConfig) {
         super(pluginConfig);
     }
 
@@ -46,12 +46,7 @@ public class ConfigLogicStartBrokerSh extends AbstractConfigLogic {
                 file
         );
 
-        // {{BROKER_LOG_DIR}}
-        String brokerLogDir = String.format(
-                "%s/%s",
-                SERVICE_NAME,
-                super.logDir()
-        );
+
 
         // {{PID_DIR}}
         String pidDir = String.format(
@@ -60,39 +55,11 @@ public class ConfigLogicStartBrokerSh extends AbstractConfigLogic {
                 super.pidDir()
         );
 
-        // {{JAVA_HOME}}
-        String javaHome = this.javaHome();
-
         return replacedTemplated
-                .replace(
-                        "{{BROKER_LOG_DIR}}",
-                        brokerLogDir
-                )
                 .replace(
                         "{{PID_DIR}}",
                         pidDir
                 )
-                .replace(
-                        "{{JAVA_HOME}}",
-                        javaHome
-                )
                 ;
     }
-
-    /**
-     * Description: 获取 Doris 内置的 JavaHome
-     * Created by: Boundivore
-     * E-mail: boundivore@foxmail.com
-     * Creation time: 2024/11/10
-     * Modification description:
-     * Modified by:
-     * Modification time:
-     * Throws:
-     *
-     * @return Doris 内置的 JavaHome
-     */
-    private String javaHome() {
-        return "/srv/datalight/DORIS/jdk-17";
-    }
-
 }
