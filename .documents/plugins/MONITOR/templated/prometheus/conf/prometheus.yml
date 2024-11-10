@@ -205,11 +205,15 @@ scrape_configs:
     metrics_path: "/metrics"
     static_configs:
       - targets: [ ]
+        labels:
+          group: fe
 
   - job_name: 'DORIS-BEServer'
     metrics_path: "/metrics"
     static_configs:
       - targets: [ ]
+        labels:
+          group: be
 
   - job_name: 'ELASTICSEARCH-ElasticSearch'
     metrics_path: "/_prometheus/metrics"
