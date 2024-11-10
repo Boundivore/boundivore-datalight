@@ -87,6 +87,15 @@ datalight:
           timeout: 60000
           sleep: 0
 
+        - type: SCRIPT
+          name: '设置 vm.max_map_count'
+          shell: 'doris-sysctl-vm-max-map-count.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
         - type: JAR
           name: '初始化服务配置文件'
           jar: 'plugins-doris-1.0.0.jar'

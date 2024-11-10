@@ -113,3 +113,9 @@ datalight:
       port: '6030'
       path: '/'
       button-name-suffix: '-Web UI'
+
+    - service: DORIS
+      component: BEServer
+      port: '6040'
+      path: '/'
+      button-name-suffix: '-Web UI'
