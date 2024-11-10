@@ -49,8 +49,8 @@ public class ConfigLogicDorisCloudConf extends AbstractConfigLogic {
         // {{log_dir}}
         String logDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.logDir()
+                super.logDir(),
+                SERVICE_NAME
         );
 
 

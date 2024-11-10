@@ -49,8 +49,8 @@ public class ConfigLogicBEConf extends AbstractConfigLogic {
         // {{LOG_DIR}}
         String logDir = String.format(
                 "%s/%s",
-                SERVICE_NAME,
-                super.logDir()
+                super.logDir(),
+                SERVICE_NAME
         );
 
         // {{priority_networks}}
