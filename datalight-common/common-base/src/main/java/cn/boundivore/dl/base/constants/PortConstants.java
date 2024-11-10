@@ -45,6 +45,8 @@ public class PortConstants {
             put("MONITOR-MySQLExporter", "9104");
             put("MONITOR-NodeExporter", "9100");
             put("LDAP-LDAPExporter", "9330");
+            put("DORIS-FEServer", "6030");
+            put("DORIS-BEServer", "6040");
 
             put("DOLPHINSCHEDULER-DSMasterServer", "5679");
             put("DOLPHINSCHEDULER-DSWorkerServer", "1235");

@@ -196,6 +196,21 @@ scrape_configs:
     static_configs:
       - targets: [ ]
 
+  - job_name: 'DORIS-FEServer'
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DORIS-FEServer'
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: [ ]
+
+  - job_name: 'DORIS-BEServer'
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: [ ]
+
   - job_name: 'ELASTICSEARCH-ElasticSearch'
     metrics_path: "/_prometheus/metrics"
     static_configs:
