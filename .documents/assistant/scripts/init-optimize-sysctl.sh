@@ -11,7 +11,7 @@ sysctl_conf="/etc/sysctl.conf"
 
 # 定义优化参数
 optimizations=(
-    "vm.max_map_count=655300"
+    "vm.max_map_count=2000000"
     "vm.dirty_ratio=10"
     "vm.dirty_background_ratio=5"
     "vm.dirty_writeback_centisecs=200"
