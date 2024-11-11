@@ -372,7 +372,7 @@ public abstract class AbstractTask implements ITask {
                                     "该 class 未实现 %s %s %s 接口",
                                     "datalight-plugins",
                                     "plugin-base",
-                                    "cn.boundivore.dl.plugin.base.exec.IExec"
+                                    "cn.boundivore.dl.plugin.base.config.IConfig"
                             )
 
                     );
