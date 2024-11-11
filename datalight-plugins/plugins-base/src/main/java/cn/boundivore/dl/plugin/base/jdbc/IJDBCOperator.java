@@ -63,11 +63,12 @@ public interface IJDBCOperator {
      * Modification time:
      * Throws:
      *
+     * @param connection JDBC 连接器
      * @param ip 对应 Doris 业务 IP 地址
      * @param port 对应 Doris 业务端口号
      * @return String 执行结果
      */
-    String addFeFollower(String ip, String port);
+    String addFeFollower(Connection connection, String ip, String port);
 
     /**
      * Description: 添加 Fe Observer
@@ -79,11 +80,12 @@ public interface IJDBCOperator {
      * Modification time:
      * Throws:
      *
+     * @param connection JDBC 连接器
      * @param ip 对应 Doris 业务 IP 地址
      * @param port 对应 Doris 业务端口号
      * @return String 执行结果
      */
-    String addFeObserver(String ip, String port);
+    String addFeObserver(Connection connection, String ip, String port);
 
     /**
      * Description: 添加 Be
@@ -95,9 +97,10 @@ public interface IJDBCOperator {
      * Modification time:
      * Throws:
      *
+     * @param connection JDBC 连接器
      * @param ip 对应 Doris 业务 IP 地址
      * @param port 对应 Doris 业务端口号
      * @return String 执行结果
      */
-    String addBe(String ip, String port);
+    String addBe(Connection connection, String ip, String port);
 }

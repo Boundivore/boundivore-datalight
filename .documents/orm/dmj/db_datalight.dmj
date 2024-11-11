@@ -1394,7 +1394,7 @@
             "OrderNo": 11,
             "GraphDesc": "Left=856.86\r\nTop=2251.32",
             "MetaFields": {
-              "Count": 24,
+              "Count": 25,
               "items": [
                 {
                   "ID": 1,
@@ -1538,9 +1538,17 @@
                   "DataLength": 255
                 },
                 {
+                  "ID": 25,
+                  "Name": "method",
+                  "OrderNo": 16,
+                  "DisplayName": "method 名称",
+                  "DataType": 1,
+                  "DataLength": 255
+                },
+                {
                   "ID": 18,
                   "Name": "shell",
-                  "OrderNo": 16,
+                  "OrderNo": 17,
                   "DisplayName": "脚本名称",
                   "DataType": 1,
                   "DataLength": 255
@@ -1548,7 +1556,7 @@
                 {
                   "ID": 19,
                   "Name": "args",
-                  "OrderNo": 17,
+                  "OrderNo": 18,
                   "DisplayName": "脚本参数",
                   "DataType": 1,
                   "DataLength": 255
@@ -1556,7 +1564,7 @@
                 {
                   "ID": 20,
                   "Name": "interactions",
-                  "OrderNo": 18,
+                  "OrderNo": 19,
                   "DisplayName": "交互参数",
                   "DataType": 1,
                   "DataLength": 255
@@ -1564,7 +1572,7 @@
                 {
                   "ID": 21,
                   "Name": "exits",
-                  "OrderNo": 19,
+                  "OrderNo": 20,
                   "DisplayName": "期望退出码",
                   "DataType": 1,
                   "DataLength": 255
@@ -1573,7 +1581,7 @@
                   "ID": 22,
                   "Name": "timeout",
                   "Memo": "单位：毫秒",
-                  "OrderNo": 20,
+                  "OrderNo": 21,
                   "DisplayName": "脚本超时时间",
                   "DataType": 2,
                   "DataLength": 20
@@ -1582,7 +1590,7 @@
                   "ID": 23,
                   "Name": "sleep",
                   "Memo": "脚本执行后的等待时间，单位：毫秒",
-                  "OrderNo": 21,
+                  "OrderNo": 22,
                   "DisplayName": "脚本睡眠时间",
                   "DataType": 2,
                   "DataLength": 20
@@ -1591,7 +1599,7 @@
                   "ID": 11,
                   "Name": "start_time",
                   "Memo": "毫秒时间戳",
-                  "OrderNo": 22,
+                  "OrderNo": 23,
                   "DisplayName": "执行起始时间",
                   "DataType": 2,
                   "DataLength": 20
@@ -1600,7 +1608,7 @@
                   "ID": 12,
                   "Name": "end_time",
                   "Memo": "毫秒时间戳",
-                  "OrderNo": 23,
+                  "OrderNo": 24,
                   "DisplayName": "执行结束时间",
                   "DataType": 2,
                   "DataLength": 20
@@ -1609,7 +1617,7 @@
                   "ID": 13,
                   "Name": "duration",
                   "Memo": "毫秒时间戳",
-                  "OrderNo": 24,
+                  "OrderNo": 25,
                   "DisplayName": "耗时",
                   "DataType": 2,
                   "DataLength": 20
@@ -4287,7 +4295,7 @@
       "Name": "Templated",
       "CreateDate": "2024/4/7 10:26:29",
       "OrderNo": 2,
-      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,t_dl_",
+      "CustomAttr1": "DVS:-464.50,-1617.50,2.00,0,t_dl_\r\n",
       "Tables": {
         "Count": 1,
         "items": [{
@@ -4296,7 +4304,7 @@
           "Caption": "模板表",
           "CreateDate": "2023/9/19 13:59:05",
           "OrderNo": 1,
-          "GraphDesc": "Left=20.00\r\nTop=15.00",
+          "GraphDesc": "Left=20.00\r\nTop=15.00\r\n",
           "MetaFields": {
             "Count": 4,
             "items": [

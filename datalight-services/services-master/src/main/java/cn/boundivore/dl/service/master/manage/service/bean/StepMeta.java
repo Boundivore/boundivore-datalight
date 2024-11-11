@@ -61,6 +61,8 @@ public class StepMeta extends TimeMeta {
 
     private String clazz;
 
+    private String method;
+
     private String shell;
 
     private List<String> args;

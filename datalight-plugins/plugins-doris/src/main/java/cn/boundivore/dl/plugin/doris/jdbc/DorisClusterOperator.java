@@ -19,6 +19,8 @@ package cn.boundivore.dl.plugin.doris.jdbc;
 import cn.boundivore.dl.plugin.base.jdbc.AbstractJDBCOperator;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Connection;
+
 /**
  * Description: 操作数据库变更 Doris 集群
  * Created by: Boundivore
@@ -30,19 +32,22 @@ import lombok.extern.slf4j.Slf4j;
  * Version: V1.0
  */
 @Slf4j
-public class DorisClusterOperation extends AbstractJDBCOperator {
+public class DorisClusterOperator extends AbstractJDBCOperator {
     @Override
-    public String addFeFollower(String ip, String port) {
+    public String addFeFollower(Connection connection, String ip, String port) {
+        String sql = "ALTER SYSTEM ADD FOLLOWER ip:port";
         return null;
     }
 
     @Override
-    public String addFeObserver(String ip, String port) {
+    public String addFeObserver(Connection connection, String ip, String port) {
+        String sql = "ALTER SYSTEM ADD OBSERVER ip:port";
         return null;
     }
 
     @Override
-    public String addBe(String ip, String port) {
+    public String addBe(Connection connection, String ip, String port) {
+        String sql = "ALTER SYSTEM ADD BACKEND ip:port";
         return null;
     }
     /*

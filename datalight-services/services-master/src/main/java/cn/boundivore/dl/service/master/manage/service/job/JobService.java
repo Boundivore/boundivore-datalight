@@ -450,6 +450,7 @@ public class JobService {
                 .setStepType(stepMeta.getType())
                 .setJar(stepMeta.getJar())
                 .setClazz(stepMeta.getClazz())
+                .setMethod(stepMeta.getMethod())
                 .setShell(stepMeta.getShell())
                 .setArgs(StepMeta.list2Str(stepMeta.getArgs()))
                 .setInteractions(StepMeta.list2Str(stepMeta.getInteractions()))

@@ -1316,6 +1316,7 @@ public class MasterJobService {
                 .setName(tDlStep.getStepName())
                 .setJar(tDlStep.getJar())
                 .setClazz(tDlStep.getClazz())
+                .setMethod(tDlStep.getMethod())
                 .setShell(tDlStep.getShell())
                 .setArgs(StepMeta.str2List(tDlStep.getArgs()))
                 .setInteractions(StepMeta.str2List(tDlStep.getInteractions()))

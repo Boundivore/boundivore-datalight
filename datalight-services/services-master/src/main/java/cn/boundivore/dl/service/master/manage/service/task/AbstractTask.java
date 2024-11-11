@@ -41,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.sql.Connection;
 
 /**
  * Description: 包装异步 Task 的执行逻辑，Task 线程运行性质：同服务、同组件、同节点
@@ -368,7 +369,20 @@ public abstract class AbstractTask implements ITask {
                     );
 
                 } else if(IJDBCOperator.class.isAssignableFrom(clazz)){
+                    // 操作 Doris 集群
                     IJDBCOperator ijdbcOperator = (IJDBCOperator) clazz.getDeclaredConstructor().newInstance();
+                    //TODO 获取 Fe IP 地址 this.taskMeta.getStageMeta().getTaskMetaMap(); 遍历寻找第一个 FEServer
+//                    Connection connection = ijdbcOperator.initConnector(
+//                            "root",
+//                            "",
+//                            null,
+//                            "7030",
+//                            ""
+//                    );
+
+
+
+
 
                 }else {
                     throw new BException(
@@ -376,7 +390,7 @@ public abstract class AbstractTask implements ITask {
                                     "该 class 未实现 %s %s %s 接口",
                                     "datalight-plugins",
                                     "plugin-base",
-                                    "cn.boundivore.dl.plugin.base.config.IConfig"
+                                    "cn.boundivore.dl.plugin.base.config.IConfig or cn.boundivore.dl.plugin.base.jdbc.IJDBCOperator"
                             )
 
                     );

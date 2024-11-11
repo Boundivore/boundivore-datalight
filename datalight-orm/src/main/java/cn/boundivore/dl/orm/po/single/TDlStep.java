@@ -73,6 +73,10 @@ public class TDlStep extends TBasePo<TDlStep> {
     @TableField("clazz")
     private String clazz;
 
+    @ApiModelProperty("method 名称")
+    @TableField("method")
+    private String method;
+
     @ApiModelProperty("脚本名称")
     @TableField("shell")
     private String shell;
