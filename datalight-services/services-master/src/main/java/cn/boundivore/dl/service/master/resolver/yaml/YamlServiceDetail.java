@@ -178,6 +178,9 @@ public class YamlServiceDetail {
         @JsonProperty("clazz")
         private String clazz;
 
+        @JsonProperty("method")
+        private String method;
+
         @JsonProperty("shell")
         private String shell;
 

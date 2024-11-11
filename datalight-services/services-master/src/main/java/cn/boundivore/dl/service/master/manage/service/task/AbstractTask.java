@@ -25,6 +25,7 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.BashException;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.IConfig;
+import cn.boundivore.dl.plugin.base.jdbc.IJDBCOperator;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.boundivore.dl.service.master.manage.service.bean.StepMeta;
 import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
@@ -366,7 +367,10 @@ public abstract class AbstractTask implements ITask {
                             )
                     );
 
-                } else {
+                } else if(IJDBCOperator.class.isAssignableFrom(clazz)){
+                    IJDBCOperator ijdbcOperator = (IJDBCOperator) clazz.getDeclaredConstructor().newInstance();
+
+                }else {
                     throw new BException(
                             String.format(
                                     "该 class 未实现 %s %s %s 接口",
