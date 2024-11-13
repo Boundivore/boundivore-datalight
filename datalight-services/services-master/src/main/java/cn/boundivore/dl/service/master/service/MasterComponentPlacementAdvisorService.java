@@ -189,7 +189,10 @@ public class MasterComponentPlacementAdvisorService {
             "MySQLExporter",
             "HiveServer2",
             "HThriftServer2",
-            "HttpFS"
+            "HttpFS",
+            "FEServer",
+            "LDAPServer",
+            "LDAPExporter"
     );
 
     private final List<String> skipComponentPlacement = CollUtil.newArrayList(
