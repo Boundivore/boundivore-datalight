@@ -89,5 +89,14 @@ public class YamlPrometheusConfig {
     public static class StaticConfig {
         @JsonProperty("targets")
         private List<String> targets;
+
+        @JsonProperty("labels")
+        private Labels labels;
+    }
+
+    @Data
+    public static class Labels {
+        @JsonProperty("group")
+        private String group;
     }
 }

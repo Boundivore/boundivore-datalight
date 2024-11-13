@@ -17,9 +17,11 @@
 package cn.boundivore.dl.plugin.doris.jdbc;
 
 import cn.boundivore.dl.plugin.base.jdbc.AbstractJDBCOperator;
+import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
-import java.sql.Connection;
+import java.sql.*;
 
 /**
  * Description: 操作数据库变更 Doris 集群
@@ -35,38 +37,111 @@ import java.sql.Connection;
 public class DorisClusterOperator extends AbstractJDBCOperator {
     @Override
     public String addFeFollower(Connection connection, String ip, String port) {
-        String sql = "ALTER SYSTEM ADD FOLLOWER ip:port";
-        return null;
+        String sql = String.format(
+                "ALTER SYSTEM ADD FOLLOWER \"%s:%s\"",
+                ip,
+                port
+        );
+        return getString(connection, sql);
     }
 
     @Override
     public String addFeObserver(Connection connection, String ip, String port) {
-        String sql = "ALTER SYSTEM ADD OBSERVER ip:port";
-        return null;
+        String sql = String.format(
+                "ALTER SYSTEM ADD OBSERVER %s:%s",
+                ip,
+                port
+        );
+        return getString(connection, sql);
     }
 
     @Override
     public String addBe(Connection connection, String ip, String port) {
-        String sql = "ALTER SYSTEM ADD BACKEND ip:port";
-        return null;
+        String sql = String.format(
+                "ALTER SYSTEM ADD BACKEND %s:%s",
+                ip,
+                port
+        );
+        return getString(connection, sql);
     }
-    /*
-     String user = "user_name";
-        String password = "user_password";
-        String newUrl = "jdbc:mysql://FE_IP:FE_PORT/demo？useUnicode=true&characterEncoding=utf8&useTimezone=true&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true";
-        try {
-            Connection myCon = DriverManager.getConnection(newUrl, user, password);
-            Statement stmt = myCon.createStatement();
-            ResultSet result = stmt.executeQuery("show databases");
+
+    /**
+     * Description: 执行 SQL
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/11/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param connection JDBC 连接器
+     * @param sql 待执行的 SQL 语句
+     * @return String 执行结果
+     */
+    private String getString(Connection connection, String sql) {
+        log.info("Exec sql: {}", sql);
+
+        try (Statement stmt = connection.createStatement();
+             ResultSet result = stmt.executeQuery(sql)) {
             ResultSetMetaData metaData = result.getMetaData();
             int columnCount = metaData.getColumnCount();
             while (result.next()) {
                 for (int i = 1; i <= columnCount; i++) {
+                    log.info(result.getObject(i).toString());
                     System.out.println(result.getObject(i));
                 }
             }
         } catch (SQLException e) {
-            log.error("get JDBC connection exception.", e);
+            log.error(ExceptionUtil.stacktraceToString(e));
         }
+
+        return null;
+    }
+
+
+
+    /**
+     * Description: For Test
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/11/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
      */
+    public static void main(String[] args) {
+        DorisClusterOperator dorisClusterOperator = new DorisClusterOperator();
+
+        // 创建连接
+        try (Connection connection = dorisClusterOperator.initConnector(
+                "root",
+                "",
+                "192.168.137.10",
+                "7030",
+                ""
+        )) {
+            dorisClusterOperator.addFeFollower(connection, "192.168.137.10", "7010");
+
+            // 执行 SQL
+            try (Statement stmt = connection.createStatement();
+                 ResultSet result = stmt.executeQuery("show backends")) {
+                ResultSetMetaData metaData = result.getMetaData();
+                int columnCount = metaData.getColumnCount();
+                while (result.next()) {
+                    for (int i = 1; i <= columnCount; i++) {
+                        System.out.println(result.getObject(i));
+                    }
+                }
+            } catch (SQLException e) {
+                log.error(ExceptionUtil.stacktraceToString(e));
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+            e.printStackTrace();
+        }
+    }
 }

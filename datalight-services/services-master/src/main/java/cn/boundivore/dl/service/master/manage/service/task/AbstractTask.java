@@ -39,9 +39,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Description: 包装异步 Task 的执行逻辑，Task 线程运行性质：同服务、同组件、同节点
@@ -350,41 +352,12 @@ public abstract class AbstractTask implements ITask {
                 Class<?> clazz = ucl.loadClass(stepMeta.getClazz());
 
                 if (IConfig.class.isAssignableFrom(clazz)) {
-                    //TODO 反射实例可缓存，降低开销
-                    IConfig iConfig = (IConfig) clazz.getDeclaredConstructor().newInstance();
-
-                    iConfig.init(this.jobService.pluginConfig(this.taskMeta));
-
-                    //得到配置文件修改后的返回结果，准备入库
-                    PluginConfigResult selfPluginConfigResult = iConfig.configSelf();
-
-                    Assert.isTrue(
-                            this.jobService.configSaveOrUpdateBatch(selfPluginConfigResult),
-                            () -> new BException(
-                                    String.format(
-                                            "%s 配置文件修改失败",
-                                            this.taskMeta.getComponentName()
-                                    )
-                            )
-                    );
-
-                } else if(IJDBCOperator.class.isAssignableFrom(clazz)){
-                    // 操作 Doris 集群
-                    IJDBCOperator ijdbcOperator = (IJDBCOperator) clazz.getDeclaredConstructor().newInstance();
-                    //TODO 获取 Fe IP 地址 this.taskMeta.getStageMeta().getTaskMetaMap(); 遍历寻找第一个 FEServer
-//                    Connection connection = ijdbcOperator.initConnector(
-//                            "root",
-//                            "",
-//                            null,
-//                            "7030",
-//                            ""
-//                    );
-
-
-
-
-
-                }else {
+                    // 初始化配置文件
+                    this.configOperation(clazz);
+                } else if (IJDBCOperator.class.isAssignableFrom(clazz)) {
+                    // 通过 JDBC 初始化 Doris 集群
+//                    this.jdbcDorisOperation(clazz, stepMeta);
+                } else {
                     throw new BException(
                             String.format(
                                     "该 class 未实现 %s %s %s 接口",
@@ -427,6 +400,105 @@ public abstract class AbstractTask implements ITask {
         this.jobService.updateTaskMemory(this.taskMeta, execStateEnum);
         // 更新当前作业的执行状态到数据库
         this.jobService.updateTaskDatabase(this.taskMeta);
+    }
+
+    /**
+     * Description: 初始化配置文件
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/11/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+     *
+     * @param clazz 需要初始化配置的类
+     * @throws NoSuchMethodException 如果找不到指定的构造方法
+     * @throws InvocationTargetException 如果调用构造方法时发生异常
+     * @throws InstantiationException 如果无法实例化对象
+     * @throws IllegalAccessException 如果访问权限不足
+     */
+    protected void configOperation(Class<?> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        //EASY-FIX 反射实例可缓存，降低开销
+        IConfig iConfig = (IConfig) clazz.getDeclaredConstructor().newInstance();
+
+        iConfig.init(this.jobService.pluginConfig(this.taskMeta));
+
+        //得到配置文件修改后的返回结果，准备入库
+        PluginConfigResult selfPluginConfigResult = iConfig.configSelf();
+
+        Assert.isTrue(
+                this.jobService.configSaveOrUpdateBatch(selfPluginConfigResult),
+                () -> new BException(
+                        String.format(
+                                "%s 配置文件修改失败",
+                                this.taskMeta.getComponentName()
+                        )
+                )
+        );
+    }
+
+    /**
+     * Description: 通过 JDBC 初始化 Doris 集群
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/11/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException
+     *
+     * @param clazz 需要操作的 JDBC 类
+     * @param stepMeta 当前步骤
+     * @throws NoSuchMethodException 如果找不到指定的构造方法
+     * @throws InvocationTargetException 如果调用构造方法时发生异常
+     * @throws InstantiationException 如果无法实例化对象
+     * @throws IllegalAccessException 如果访问权限不足
+     */
+    protected void jdbcDorisOperation(Class<?> clazz, StepMeta stepMeta) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
+        // 操作 Doris 集群
+        IJDBCOperator ijdbcOperator = (IJDBCOperator) clazz.getDeclaredConstructor().newInstance();
+
+        // 获取 Fe IP 地址 遍历寻找第一个 FEServer
+        TaskMeta feServerTaskMeta = this.taskMeta.getStageMeta()
+                .getTaskMetaMap()
+                .values()
+                .stream()
+                .filter(taskMeta -> "FEServer".equals(taskMeta.getComponentName()))
+                .findFirst()
+                .get();
+
+        Assert.notNull(
+                feServerTaskMeta,
+                () -> new BException("未发现 FEServer 组件")
+        );
+
+        try ( Connection connection = ijdbcOperator.initConnector(
+                "root",
+                "",
+                feServerTaskMeta.getNodeIp(),
+                "7030",
+                "")) {
+
+            // 执行 Doris 集群 SQL 操作
+            switch (stepMeta.getMethod()){
+                case "addFeFollower":
+                    ijdbcOperator.addFeFollower(connection, null, null);
+                    break;
+                case "addFeObserver":
+                    ijdbcOperator.addFeObserver(connection, null, null);
+                    break;
+                case "addBe":
+                    ijdbcOperator.addBe(connection, null, null);
+                    break;
+                default:
+                    log.warn("不支持的 Doris-JDBC 操作: {}", stepMeta.getMethod());
+            }
+
+        } catch (SQLException e) {
+            log.error(ExceptionUtil.stacktraceToString(e));
+        }
     }
 
 }

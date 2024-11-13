@@ -200,11 +200,6 @@ scrape_configs:
     metrics_path: "/metrics"
     static_configs:
       - targets: [ ]
-
-  - job_name: 'DORIS-FEServer'
-    metrics_path: "/metrics"
-    static_configs:
-      - targets: [ ]
         labels:
           group: fe
 

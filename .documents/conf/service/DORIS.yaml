@@ -108,7 +108,7 @@ datalight:
     components:
       - name: FEServer
         priority: 1
-        max: 2
+        max: 3
         min: 1
         mutexes: [ ]
         dependencies: [ ]
@@ -125,17 +125,17 @@ datalight:
                 interactions: [ ]
                 exits: '0'
                 timeout: 60000
-                sleep: 1000
+                sleep: 3000
 
-              - type: JAR
-                name: '添加 Fe Follower 到集群'
-                jar: 'plugins-doris-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.doris.jdbc.DorisClusterOperator'
-                method: 'addFeFollower'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
+#              - type: JAR
+#                name: '添加 Fe Follower 到集群'
+#                jar: 'plugins-doris-1.0.0.jar'
+#                clazz: 'cn.boundivore.dl.plugin.doris.jdbc.DorisClusterOperator'
+#                method: 'addFeFollower'
+#                args: [ ]
+#                interactions: [ ]
+#                exits: '0'
+#                sleep: 0
 
           - type: START
             start-state: STARTING
@@ -197,15 +197,15 @@ datalight:
                 timeout: 60000
                 sleep: 1000
 
-              - type: JAR
-                name: '添加 Be 到集群'
-                jar: 'plugins-doris-1.0.0.jar'
-                clazz: 'cn.boundivore.dl.plugin.doris.jdbc.DorisClusterOperator'
-                method: 'addBe'
-                args: [ ]
-                interactions: [ ]
-                exits: '0'
-                sleep: 0
+#              - type: JAR
+#                name: '添加 Be 到集群'
+#                jar: 'plugins-doris-1.0.0.jar'
+#                clazz: 'cn.boundivore.dl.plugin.doris.jdbc.DorisClusterOperator'
+#                method: 'addBe'
+#                args: [ ]
+#                interactions: [ ]
+#                exits: '0'
+#                sleep: 0
 
           - type: START
             start-state: STARTING

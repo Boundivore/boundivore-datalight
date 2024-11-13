@@ -131,7 +131,10 @@ public class ConfigLogicFEConf extends AbstractConfigLogic {
      * @return FE 可用网段
      */
     private String priorityNetworks() {
-        return super.currentNodeIp;
+        return String.format(
+                "%s/24",
+                super.currentNodeIp
+        );
     }
 
 }
