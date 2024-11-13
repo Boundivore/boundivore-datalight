@@ -507,13 +507,13 @@ public abstract class AbstractTask implements ITask {
             // 执行 Doris 集群 SQL 操作
             switch (stepMeta.getMethod()){
                 case "addFeFollower":
-                    ijdbcOperator.addFeFollower(connection, null, null);
+                    ijdbcOperator.addFeFollower(connection, this.taskMeta.getNodeIp(), "7010");
                     break;
                 case "addFeObserver":
-                    ijdbcOperator.addFeObserver(connection, null, null);
+                    ijdbcOperator.addFeObserver(connection, this.taskMeta.getNodeIp(), "7010");
                     break;
                 case "addBe":
-                    ijdbcOperator.addBe(connection, null, null);
+                    ijdbcOperator.addBe(connection, this.taskMeta.getNodeIp(), "7050");
                     break;
                 default:
                     log.warn("不支持的 Doris-JDBC 操作: {}", stepMeta.getMethod());
