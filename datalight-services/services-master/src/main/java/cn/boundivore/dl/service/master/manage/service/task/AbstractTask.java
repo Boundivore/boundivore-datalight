@@ -18,11 +18,14 @@ package cn.boundivore.dl.service.master.manage.service.task;
 
 import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
 import cn.boundivore.dl.base.enumeration.impl.ExecTypeEnum;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.BashException;
+import cn.boundivore.dl.orm.po.single.TDlComponent;
+import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.plugin.base.config.IConfig;
 import cn.boundivore.dl.plugin.base.jdbc.IJDBCOperator;
@@ -32,6 +35,7 @@ import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
 import cn.boundivore.dl.service.master.manage.service.job.JobService;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
 import cn.boundivore.dl.service.master.service.RemoteInvokeWorkerService;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ArrayUtil;
@@ -45,6 +49,7 @@ import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Description: 包装异步 Task 的执行逻辑，Task 线程运行性质：同服务、同组件、同节点
@@ -456,30 +461,46 @@ public abstract class AbstractTask implements ITask {
      * @throws InstantiationException 如果无法实例化对象
      * @throws IllegalAccessException 如果访问权限不足
      */
+    @Deprecated
     protected void jdbcDorisOperation(Class<?> clazz, StepMeta stepMeta) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+
 
         // 操作 Doris 集群
         IJDBCOperator ijdbcOperator = (IJDBCOperator) clazz.getDeclaredConstructor().newInstance();
 
+        Long clusterId = this.taskMeta.getStageMeta().getJobMeta().getClusterMeta().getCurrentClusterId();
         // 获取 Fe IP 地址 遍历寻找第一个 FEServer
-        TaskMeta feServerTaskMeta = this.taskMeta.getStageMeta()
-                .getTaskMetaMap()
-                .values()
-                .stream()
-                .sorted(Comparator.comparing(TaskMeta::getHostname))
-                .filter(taskMeta -> "FEServer".equals(taskMeta.getComponentName()))
+        List<TDlComponent> tDlComponentListByServiceName = this.jobService.getTDlComponentListByServiceName(
+                clusterId,
+                "DORIS"
+        );
+        TDlComponent tDlComponentFEServer = tDlComponentListByServiceName.stream()
+                .sorted(Comparator.comparing(TDlComponent::getNodeId))
+                .filter(component -> "FEServer".equals(component.getComponentName()) && component.getComponentState() == SCStateEnum.STARTED)
                 .findFirst()
                 .get();
 
         Assert.notNull(
-                feServerTaskMeta,
+                tDlComponentFEServer,
                 () -> new BException("未发现 FEServer 组件")
         );
+
+        List<TDlNode> tDlNodeList = this.jobService.getTDlNodeListById(
+                clusterId,
+                CollUtil.newArrayList(tDlComponentFEServer.getNodeId())
+        );
+
+        Assert.notEmpty(
+                tDlNodeList,
+                () -> new BException("未找到 FEServer 对应的节点信息")
+        );
+
+        String feServerNodeIp = tDlNodeList.get(0).getIpv4();
 
         try ( Connection connection = ijdbcOperator.initConnector(
                 "root",
                 "",
-                feServerTaskMeta.getNodeIp(),
+                feServerNodeIp,
                 "7030",
                 "")) {
 

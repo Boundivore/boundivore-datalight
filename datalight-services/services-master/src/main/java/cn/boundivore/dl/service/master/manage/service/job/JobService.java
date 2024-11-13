@@ -17,7 +17,9 @@
 package cn.boundivore.dl.service.master.manage.service.job;
 
 import cn.boundivore.dl.base.constants.ICommonConstant;
-import cn.boundivore.dl.base.enumeration.impl.*;
+import cn.boundivore.dl.base.enumeration.impl.ExecStateEnum;
+import cn.boundivore.dl.base.enumeration.impl.MasterWorkerEnum;
+import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
@@ -935,6 +937,24 @@ public class JobService {
      */
     public List<TDlComponent> getTDlComponentListByServiceName(Long clusterId, String serviceName) {
         return this.masterComponentService.getTDlComponentListByServiceName(clusterId, serviceName);
+    }
+
+    /**
+     * Description: 根据主机 ID 列表获取主机信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/11/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId 集群 ID
+     * @param nodeIdList 节点 ID
+     * @return List<TDlNode> 节点实体列表
+     */
+    public List<TDlNode> getTDlNodeListById(Long clusterId, List<Long> nodeIdList){
+        return this.masterNodeService.getNodeListInNodeIds(clusterId, nodeIdList);
     }
 
     /**
