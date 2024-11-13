@@ -44,6 +44,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Comparator;
 
 /**
  * Description: 包装异步 Task 的执行逻辑，Task 线程运行性质：同服务、同组件、同节点
@@ -356,7 +357,7 @@ public abstract class AbstractTask implements ITask {
                     this.configOperation(clazz);
                 } else if (IJDBCOperator.class.isAssignableFrom(clazz)) {
                     // 通过 JDBC 初始化 Doris 集群
-//                    this.jdbcDorisOperation(clazz, stepMeta);
+                    this.jdbcDorisOperation(clazz, stepMeta);
                 } else {
                     throw new BException(
                             String.format(
@@ -465,6 +466,7 @@ public abstract class AbstractTask implements ITask {
                 .getTaskMetaMap()
                 .values()
                 .stream()
+                .sorted(Comparator.comparing(TaskMeta::getHostname))
                 .filter(taskMeta -> "FEServer".equals(taskMeta.getComponentName()))
                 .findFirst()
                 .get();
