@@ -17,8 +17,6 @@
 package cn.boundivore.dl.plugin.doris.jdbc;
 
 import cn.boundivore.dl.plugin.base.jdbc.AbstractJDBCOperator;
-import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
@@ -42,28 +40,29 @@ public class DorisClusterOperator extends AbstractJDBCOperator {
                 ip,
                 port
         );
-        return getString(connection, sql);
+        return execSQL(connection, sql);
     }
 
     @Override
     public String addFeObserver(Connection connection, String ip, String port) {
         String sql = String.format(
-                "ALTER SYSTEM ADD OBSERVER %s:%s",
+                "ALTER SYSTEM ADD OBSERVER \"%s:%s\"",
                 ip,
                 port
         );
-        return getString(connection, sql);
+        return execSQL(connection, sql);
     }
 
     @Override
     public String addBe(Connection connection, String ip, String port) {
         String sql = String.format(
-                "ALTER SYSTEM ADD BACKEND %s:%s",
+                "ALTER SYSTEM ADD BACKEND \"%s:%s\"",
                 ip,
                 port
         );
-        return getString(connection, sql);
+        return execSQL(connection, sql);
     }
+
 
     /**
      * Description: 执行 SQL
@@ -79,27 +78,19 @@ public class DorisClusterOperator extends AbstractJDBCOperator {
      * @param sql 待执行的 SQL 语句
      * @return String 执行结果
      */
-    private String getString(Connection connection, String sql) {
+    private String execSQL(Connection connection, String sql) {
         log.info("Exec sql: {}", sql);
 
-        try (Statement stmt = connection.createStatement();
-             ResultSet result = stmt.executeQuery(sql)) {
-            ResultSetMetaData metaData = result.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            while (result.next()) {
-                for (int i = 1; i <= columnCount; i++) {
-                    log.info(result.getObject(i).toString());
-                    System.out.println(result.getObject(i));
-                }
-            }
+        try (Statement stmt = connection.createStatement()) {
+            int rowsAffected = stmt.executeUpdate(sql);
+            log.info("Rows affected: {}", rowsAffected);
+            return "Rows affected: " + rowsAffected;
         } catch (SQLException e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
+            log.error("Error executing SQL: {}", e.getMessage());
+            e.printStackTrace();
+            return "Error: " + e.getMessage();
         }
-
-        return null;
     }
-
-
 
     /**
      * Description: For Test
@@ -123,7 +114,9 @@ public class DorisClusterOperator extends AbstractJDBCOperator {
                 "7030",
                 ""
         )) {
-            dorisClusterOperator.addFeFollower(connection, "192.168.137.10", "7010");
+//            dorisClusterOperator.addFeFollower(connection, "192.168.137.10", "7010");
+            String execResult = dorisClusterOperator.addBe(connection, "192.168.137.11", "7050");
+            System.out.println("EXECResult: " + execResult);
 
             // 执行 SQL
             try (Statement stmt = connection.createStatement();
@@ -136,11 +129,9 @@ public class DorisClusterOperator extends AbstractJDBCOperator {
                     }
                 }
             } catch (SQLException e) {
-                log.error(ExceptionUtil.stacktraceToString(e));
                 e.printStackTrace();
             }
         } catch (SQLException e) {
-            log.error(ExceptionUtil.stacktraceToString(e));
             e.printStackTrace();
         }
     }
