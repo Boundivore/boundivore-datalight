@@ -97,8 +97,8 @@ datalight:
         type: COMPUTE
         desc: '流批一体计算框架'
         priority: 14
-        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN', 'DORIS' ]
-        optional-dependencies: [ ]
+        dependencies: [ 'ZOOKEEPER', 'HDFS', 'YARN']
+        optional-dependencies: [ 'DORIS' ]
         relatives: [ 'MONITOR' ]
       - name: FLINK
         type: COMPUTE
