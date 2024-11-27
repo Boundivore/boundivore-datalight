@@ -41,7 +41,7 @@ fi
 
 # 绝对值函数
 abs(){
-  [ "$1" -lt 0 ] && echo "$((-$1))" || echo "$1"
+    echo "$(echo "$1" | awk '{if($1>=0) print $1; else print -$1}')"
 }
 
 # 计算时间偏移是否超出阈值
