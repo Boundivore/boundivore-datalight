@@ -426,7 +426,7 @@ public class MasterFileService {
                     pathStream.forEach(path -> {
                         try {
                             Files.delete(path);
-                            log.debug("已删除临时文件: {}", path);
+                            log.info("已删除临时文件: {}", path);
                         } catch (IOException e) {
                             log.warn("删除文件失败: {}", path);
                         }
@@ -435,7 +435,7 @@ public class MasterFileService {
             }
             if (zipFilePath != null) {
                 Files.deleteIfExists(Paths.get(zipFilePath));
-                log.debug("已删除临时压缩包: {}", zipFilePath);
+                log.info("已删除临时压缩包: {}", zipFilePath);
             }
         } catch (IOException e) {
             log.warn("清理临时文件失败", e);
