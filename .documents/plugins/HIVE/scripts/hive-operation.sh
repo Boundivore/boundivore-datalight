@@ -112,19 +112,79 @@ start_tezui() {
 }
 
 stop_tezui() {
-  if [ -f "${TEZUI_PID_FILE}" ]; then
-    pid=$(cat "${TEZUI_PID_FILE}")
-    su "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/shutdown.sh"
-    if kill -0 "$pid" 2>/dev/null; then
-      kill "$pid" && rm -f "${TEZUI_PID_FILE}"
-      echo "TezUI stopped."
-    else
-      rm -f "${TEZUI_PID_FILE}"
-      echo "TezUI PID file was found but the process was not running. PID file removed."
+    local timeout=30
+    local force_kill=false
+
+    # 检查是否有tezui相关进程正在运行（不依赖pid文件）
+    local running_pids=$(ps -ef | grep "/tez/tomcat" | grep -v grep | awk '{print $2}')
+
+    if [ -z "$running_pids" ]; then
+        echo "No TezUI process found running."
+        # 清理可能存在的过期pid文件
+        [ -f "${TEZUI_PID_FILE}" ] && rm -f "${TEZUI_PID_FILE}"
+        return 0
     fi
-  else
-    echo "TezUI PID file does not exist. Check if TezUI is running."
-  fi
+
+    echo "Found running TezUI process(es): $running_pids"
+
+    # 尝试正常关闭
+    if [ -f "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/shutdown.sh" ]; then
+        echo "Attempting graceful shutdown using shutdown.sh..."
+        su "${USER_NAME}" -c "${CURRENT_SERVICE_DIR}/tez/tomcat/bin/shutdown.sh" || true
+        sleep 5  # 给一些时间让进程正常退出
+    fi
+
+    # 检查并终止所有相关进程
+    for pid in $running_pids; do
+        if ps -p "$pid" > /dev/null 2>&1; then
+            echo "Stopping TezUI process $pid..."
+
+            # 首先尝试正常终止
+            kill "$pid" 2>/dev/null || true
+
+            # 等待进程退出
+            local counter=0
+            while ps -p "$pid" > /dev/null 2>&1; do
+                counter=$((counter + 1))
+                if [ $counter -ge $timeout ]; then
+                    echo "Process $pid did not stop gracefully after $timeout seconds, forcing kill..."
+                    force_kill=true
+                    break
+                fi
+                sleep 1
+            done
+
+            # 如果进程仍然存在，强制终止
+            if [ "$force_kill" = true ]; then
+                echo "Forcing kill of process $pid..."
+                kill -9 "$pid" 2>/dev/null || true
+                sleep 1
+            fi
+
+            # 最终确认进程已经终止
+            if ps -p "$pid" > /dev/null 2>&1; then
+                echo "WARNING: Failed to stop process $pid"
+            else
+                echo "Successfully stopped process $pid"
+            fi
+        fi
+    done
+
+    # 清理PID文件
+    if [ -f "${TEZUI_PID_FILE}" ]; then
+        rm -f "${TEZUI_PID_FILE}"
+        echo "Removed PID file"
+    fi
+
+    # 最终确认没有遗留进程
+    running_pids=$(ps -ef | grep "/tez/tomcat" | grep -v grep | awk '{print $2}')
+    if [ -z "$running_pids" ]; then
+        echo "TezUI stopped successfully."
+        return 0
+    else
+        echo "WARNING: Some TezUI processes may still be running: $running_pids"
+        return 1
+    fi
 }
 
 # 执行相应的启动或停止命令
