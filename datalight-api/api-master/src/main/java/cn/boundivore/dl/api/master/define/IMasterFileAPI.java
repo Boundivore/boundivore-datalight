@@ -89,7 +89,7 @@ public interface IMasterFileAPI {
 //    ) throws Exception;
 
     @GetMapping(value = "/file/download")
-    @ApiOperation(notes = "下载文件接口", value = "下载文件接口 [Finished]")
+    @ApiOperation(notes = "下载配置文件", value = "下载配置文件 [Finished]")
     void download(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
