@@ -1,22 +1,15 @@
 package cn.boundivore.dl.api.master.define;
 
-import cn.boundivore.dl.base.response.impl.common.AbstractFileVo;
-import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
-import java.util.List;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -88,9 +81,9 @@ public interface IMasterFileAPI {
 //            MultipartFile[] fileArr
 //    ) throws Exception;
 
-    @GetMapping(value = "/file/download")
+    @GetMapping(value = "/file/downloadConfig")
     @ApiOperation(notes = "下载配置文件", value = "下载配置文件 [Finished]")
-    void download(
+    void downloadConfig(
             @ApiParam(name = "ClusterId", value = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             @NotNull

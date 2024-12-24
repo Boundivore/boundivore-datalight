@@ -17,13 +17,11 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterFileAPI;
-import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.service.MasterFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * Description: MasterFileController
@@ -42,12 +40,12 @@ public class MasterFileController implements IMasterFileAPI {
     private final MasterFileService masterFileService;
 
     @Override
-    public void download(Long clusterId,
-                                   Long nodeId,
-                                   String serviceName,
-                                   String filePathArr,
-                                   HttpServletResponse response) throws Exception {
-        this.masterFileService.download(
+    public void downloadConfig(Long clusterId,
+                               Long nodeId,
+                               String serviceName,
+                               String filePathArr,
+                               HttpServletResponse response) throws Exception {
+        this.masterFileService.downloadConfig(
                 clusterId,
                 nodeId,
                 serviceName,

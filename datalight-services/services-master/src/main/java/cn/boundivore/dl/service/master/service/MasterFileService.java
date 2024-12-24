@@ -16,7 +16,6 @@
  */
 package cn.boundivore.dl.service.master.service;
 
-import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.orm.po.single.TDlConfig;
 import lombok.RequiredArgsConstructor;
@@ -81,11 +80,11 @@ public class MasterFileService {
      * @param filePathArr 待下载的文件路径列表(英文逗号分隔)
      * @param response    HTTP响应对象
      */
-    public void download(Long clusterId,
-                         Long nodeId,
-                         String serviceName,
-                         String filePathArr,
-                         HttpServletResponse response) throws Exception {
+    public void downloadConfig(Long clusterId,
+                               Long nodeId,
+                               String serviceName,
+                               String filePathArr,
+                               HttpServletResponse response) throws Exception {
         // 获取配置文件列表
         List<String> pathList = Optional.ofNullable(filePathArr)
                 .map(str -> Arrays.stream(str.split(","))
