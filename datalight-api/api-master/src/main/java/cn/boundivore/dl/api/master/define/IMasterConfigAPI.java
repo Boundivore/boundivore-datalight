@@ -18,6 +18,7 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
+import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
@@ -98,5 +99,57 @@ public interface IMasterConfigAPI {
             @ApiParam(name = "ConfigPath", value = "配置文件路径")
             @RequestParam(value = "ConfigPath", required = true)
             String configPath
+    ) throws Exception;
+
+    @GetMapping(value = "/config/getConfigVersionInfo")
+    @ApiOperation(notes = "获取配置文件历史信息", value = "获取配置文件历史信息")
+    Result<ConfigHistoryVersionVo> getConfigVersionInfo(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId,
+
+            @ApiParam(name = "NodeId", value = "节点 ID")
+            @RequestParam(value = "NodeId", required = true)
+            Long nodeId,
+
+            @ApiParam(name = "ServiceName", value = "服务名称")
+            @RequestParam(value = "ServiceName", required = true)
+            String serviceName,
+
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
+            String filename,
+
+            @ApiParam(name = "ConfigPath", value = "配置文件路径")
+            @RequestParam(value = "ConfigPath", required = true)
+            String configPath
+    ) throws Exception;
+
+    @GetMapping(value = "/config/getConfigVersionDetail")
+    @ApiOperation(notes = "获取配置文件历史详细信息", value = "获取配置文件历史详细信息")
+    Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> getConfigVersionDetail(
+            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @RequestParam(value = "ClusterId", required = true)
+            Long clusterId,
+
+            @ApiParam(name = "NodeId", value = "节点 ID")
+            @RequestParam(value = "NodeId", required = true)
+            Long nodeId,
+
+            @ApiParam(name = "ServiceName", value = "服务名称")
+            @RequestParam(value = "ServiceName", required = true)
+            String serviceName,
+
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
+            String filename,
+
+            @ApiParam(name = "ConfigPath", value = "配置文件路径")
+            @RequestParam(value = "ConfigPath", required = true)
+            String configPath,
+
+            @ApiParam(name = "HistoryConfigVersion", value = "历史配置文件版本")
+            @RequestParam(value = "HistoryConfigVersion", required = true)
+            Long historyConfigVersion
     ) throws Exception;
 }

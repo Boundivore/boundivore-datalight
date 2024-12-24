@@ -20,13 +20,13 @@ import cn.boundivore.dl.api.master.define.IMasterConfigAPI;
 import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
+import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
 import cn.boundivore.dl.service.master.service.MasterConfigService;
 import cn.boundivore.dl.service.master.service.MasterConfigSyncService;
-import cn.dev33.satoken.annotation.SaCheckLogin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,6 +78,38 @@ public class MasterConfigController implements IMasterConfigAPI {
                 clusterId,
                 serviceName,
                 configPath
+        );
+    }
+
+    @Override
+    public Result<ConfigHistoryVersionVo> getConfigVersionInfo(Long clusterId,
+                                                               Long nodeId,
+                                                               String serviceName,
+                                                               String filename,
+                                                               String configPath) throws Exception {
+        return this.masterConfigService.getConfigVersionInfo(
+                clusterId,
+                nodeId,
+                serviceName,
+                filename,
+                configPath
+        );
+    }
+
+    @Override
+    public Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> getConfigVersionDetail(Long clusterId,
+                                                                 Long nodeId,
+                                                                 String serviceName,
+                                                                 String filename,
+                                                                 String configPath,
+                                                                 Long historyConfigVersion) throws Exception {
+        return this.masterConfigService.getConfigVersionDetail(
+                clusterId,
+                nodeId,
+                serviceName,
+                filename,
+                configPath,
+                historyConfigVersion
         );
     }
 

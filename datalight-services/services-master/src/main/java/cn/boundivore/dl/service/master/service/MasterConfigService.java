@@ -16,12 +16,15 @@
  */
 package cn.boundivore.dl.service.master.service;
 
+import cn.boundivore.dl.api.worker.define.IWorkerConfigAPI;
 import cn.boundivore.dl.base.constants.ICommonConstant;
 import cn.boundivore.dl.base.enumeration.impl.SCStateEnum;
 import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
+import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
@@ -795,9 +798,9 @@ public class MasterConfigService {
      * @return List<TDlConfig> 配置文件列表
      */
     public List<TDlConfig> getTDlConfigListByPathList(Long clusterId,
-                                                     Long nodeId,
-                                                     String serviceName,
-                                                     List<String> filePathList) {
+                                                      Long nodeId,
+                                                      String serviceName,
+                                                      List<String> filePathList) {
         List<TDlConfig> tDlConfigList = this.tDlConfigService.lambdaQuery()
                 .select()
                 .eq(TDlConfig::getClusterId, clusterId)
@@ -856,4 +859,115 @@ public class MasterConfigService {
                 );
     }
 
+    /**
+     * Description: 获取指定配置文件历史版本列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/12/24
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId   集群 ID
+     * @param nodeId      节点 ID
+     * @param serviceName 服务名称
+     * @param filename    文件名称
+     * @param configPath  配置文件路径
+     * @return Result<ConfigVersionVo> 配置文件历史版本列表
+     */
+    public Result<ConfigHistoryVersionVo> getConfigVersionInfo(Long clusterId,
+                                                               Long nodeId,
+                                                               String serviceName,
+                                                               String filename,
+                                                               String configPath) throws Exception {
+
+        TDlConfig tDlConfig = this.tDlConfigService.lambdaQuery()
+                .select()
+                .eq(TDlConfig::getClusterId, clusterId)
+                .eq(TDlConfig::getNodeId, nodeId)
+                .eq(TDlConfig::getServiceName, serviceName)
+                .eq(TDlConfig::getFilename, filename)
+                .eq(TDlConfig::getConfigPath, configPath)
+                .one();
+
+
+        Assert.notNull(
+                tDlConfig,
+                () -> new BException("未找到对应配置信息")
+        );
+
+        // 远程调用 Worker 获取历史配置文件信息
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(nodeId).getData();
+
+        IWorkerConfigAPI iWorkerConfigAPI = this.remoteInvokeWorkerService.iWorkerConfigAPI(nodeDetailVo.getNodeIp());
+
+
+        return iWorkerConfigAPI.getConfigVersionInfo(
+                tDlConfig.getConfigVersion(),
+                tDlConfig.getId(),
+                tDlConfig.getFilename(),
+                tDlConfig.getConfigPath()
+        );
+    }
+
+    /**
+     * Description: 获取指定历史配置文件详细信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/12/24
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId            集群 ID
+     * @param nodeId               节点 ID
+     * @param serviceName          服务名称
+     * @param filename             文件名称
+     * @param configPath           配置文件路径
+     * @param historyConfigVersion 历史配置文件版本
+     * @return Result<ConfigVersionVo> 配置文件历史版本列表
+     */
+    public Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> getConfigVersionDetail(Long clusterId,
+                                                                                       Long nodeId,
+                                                                                       String serviceName,
+                                                                                       String filename,
+                                                                                       String configPath,
+                                                                                       Long historyConfigVersion) throws Exception {
+
+        // 获取当前配置文件信息
+        TDlConfig tDlConfig = this.tDlConfigService.lambdaQuery()
+                .select()
+                .eq(TDlConfig::getClusterId, clusterId)
+                .eq(TDlConfig::getNodeId, nodeId)
+                .eq(TDlConfig::getServiceName, serviceName)
+                .eq(TDlConfig::getFilename, filename)
+                .eq(TDlConfig::getConfigPath, configPath)
+                .one();
+
+        // 远程调用 Worker 获取历史配置文件详情
+        AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(nodeId).getData();
+
+        IWorkerConfigAPI iWorkerConfigAPI = this.remoteInvokeWorkerService.iWorkerConfigAPI(nodeDetailVo.getNodeIp());
+
+        Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> configVersionDetail = iWorkerConfigAPI.getConfigVersionDetail(
+                tDlConfig.getFilename(),
+                tDlConfig.getConfigPath(),
+                historyConfigVersion
+        );
+
+        // 拼装剩余信息
+        configVersionDetail.getData()
+                .setClusterId(tDlConfig.getClusterId())
+                .setNodeId(nodeDetailVo.getNodeId())
+                .setNodeIp(nodeDetailVo.getNodeIp())
+                .setHostname(nodeDetailVo.getHostname())
+                .setServiceName(tDlConfig.getServiceName())
+                .setCurrentConfigVersion(tDlConfig.getConfigVersion())
+                .setHistoryConfigVersion(historyConfigVersion);
+
+
+        return configVersionDetail;
+    }
 }

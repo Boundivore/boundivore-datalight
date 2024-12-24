@@ -17,13 +17,10 @@
 package cn.boundivore.dl.service.worker.controller;
 
 import cn.boundivore.dl.api.worker.define.IWorkerConfigAPI;
-import cn.boundivore.dl.api.worker.define.IWorkerExecAPI;
-import cn.boundivore.dl.base.request.impl.common.TestRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
-import cn.boundivore.dl.base.request.impl.worker.ExecRequest;
+import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.worker.service.WorkerConfigService;
-import cn.boundivore.dl.service.worker.service.WorkerExecService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,6 +42,30 @@ public class WorkerConfigController implements IWorkerConfigAPI {
 
     @Override
     public Result<String> config(ConfigFileRequest request) {
-        return workerConfigService.config(request);
+        return this.workerConfigService.config(request);
+    }
+
+    @Override
+    public Result<ConfigHistoryVersionVo> getConfigVersionInfo(Long currentConfigVersion,
+                                                               Long currentConfigId,
+                                                               String filename,
+                                                               String configPath) throws Exception {
+        return this.workerConfigService.getConfigVersionInfo(
+                currentConfigVersion,
+                currentConfigId,
+                filename,
+                configPath
+        );
+    }
+
+    @Override
+    public Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> getConfigVersionDetail(String filename,
+                                                                                       String configPath,
+                                                                                       Long historyConfigVersion) throws Exception {
+        return this.workerConfigService.getConfigVersionDetail(
+                filename,
+                configPath,
+                historyConfigVersion
+        );
     }
 }

@@ -295,7 +295,7 @@ public class MasterFileService {
              OutputStream os = response.getOutputStream();
              BufferedOutputStream bos = new BufferedOutputStream(os, BUFFER_SIZE)) {
 
-            copyWithProgress(bis, bos, new File(zipFilePath).length());
+            this.copyWithProgress(bis, bos, new File(zipFilePath).length());
             bos.flush();  // 确保缓冲区数据写入
         }
     }
