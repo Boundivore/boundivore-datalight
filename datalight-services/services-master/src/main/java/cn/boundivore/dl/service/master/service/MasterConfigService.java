@@ -29,6 +29,7 @@ import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
 import cn.boundivore.dl.orm.mapper.custom.ComponentNodeMapper;
 import cn.boundivore.dl.orm.mapper.custom.ConfigNodeMapper;
+import cn.boundivore.dl.orm.po.TBasePo;
 import cn.boundivore.dl.orm.po.custom.ConfigNodeDto;
 import cn.boundivore.dl.orm.po.single.TDlConfig;
 import cn.boundivore.dl.orm.po.single.TDlConfigContent;
@@ -776,6 +777,83 @@ public class MasterConfigService {
                 .stream()
                 .map(TDlConfig::getConfigPath)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Description: 根据文件路径列表获取配置文件信息列表
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/12/24
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId    集群 ID
+     * @param nodeId       节点 ID
+     * @param filePathList 文件路径列表
+     * @return List<TDlConfig> 配置文件列表
+     */
+    public List<TDlConfig> getTDlConfigListByPathList(Long clusterId,
+                                                     Long nodeId,
+                                                     String serviceName,
+                                                     List<String> filePathList) {
+        List<TDlConfig> tDlConfigList = this.tDlConfigService.lambdaQuery()
+                .select()
+                .eq(TDlConfig::getClusterId, clusterId)
+                .eq(TDlConfig::getNodeId, nodeId)
+                .eq(TDlConfig::getServiceName, serviceName)
+                .in(TDlConfig::getConfigPath, filePathList)
+                .list();
+
+        return tDlConfigList;
+
+    }
+
+    /**
+     * Description: 根据配置文件列表获取对应配置文件内容集合
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/12/24
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param tDlConfigList 配置文件列表
+     * @return Map<Long, String> <配置文件内容 ID, 配置文件内容>
+     */
+    public Map<Long, String> getConfigContentMap(List<TDlConfig> tDlConfigList) {
+        // 参数校验
+        if (CollUtil.isEmpty(tDlConfigList)) {
+            return Collections.emptyMap();
+        }
+
+        // 获取所有配置内容ID
+        List<Long> configContentIdList = tDlConfigList.stream()
+                .map(TDlConfig::getConfigContentId)
+                .filter(Objects::nonNull)  // 过滤空值
+                .distinct()  // 去重
+                .collect(Collectors.toList());
+
+        if (CollUtil.isEmpty(configContentIdList)) {
+            return Collections.emptyMap();
+        }
+
+        // 查询并转换为Map
+        return this.tDlConfigContentService.lambdaQuery()
+                .select(TDlConfigContent::getId, TDlConfigContent::getConfigData)  // 只查询需要的字段
+                .in(TBasePo::getId, configContentIdList)
+                .list()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                TDlConfigContent::getId,
+                                TDlConfigContent::getConfigData,
+                                (existing, replacement) -> existing,
+                                HashMap::new
+                        )
+                );
     }
 
 }
