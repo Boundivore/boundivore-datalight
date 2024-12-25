@@ -26,6 +26,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Description: 修改配置请求体
  * Created by: Boundivore
@@ -47,30 +49,37 @@ public class ConfigFileRequest implements IRequest {
     private static final long serialVersionUID = 8083098193378451754L;
 
     @Schema(name = "Path", title = "配置文件路径", required = true)
-    @JsonProperty("Path")
+    @JsonProperty(value = "Path", required = true)
+    @NotNull(message = "配置文件路径不能为空")
     private String path;
 
     @Schema(name = "ConfigVersion", title = "当前版本号", required = true)
-    @JsonProperty("ConfigVersion")
+    @JsonProperty(value = "ConfigVersion", required = true)
+    @NotNull(message = "ConfigVersion不能为空")
     private Long configVersion;
 
     @Schema(name = "Filename", title = "配置文件名称", required = true)
-    @JsonProperty("Filename")
+    @JsonProperty(value = "Filename", required = true)
+    @NotNull(message = "配置文件名称不能为空")
     private String filename;
 
-    @Schema(name = "ContentBase64", title = "配置文件内容（Base64）", required = true)
-    @JsonProperty("ContentBase64")
+    @Schema(name = "ContentBase64", title = "配置文件内容(Base64)", required = true)
+    @JsonProperty(value = "ContentBase64", required = true)
+    @NotNull(message = "配置文件内容(Base64)不能为空")
     private String contentBase64;
 
     @Schema(name = "Sha256", title = "配置文件信息摘要", required = true)
-    @JsonProperty("Sha256")
+    @JsonProperty(value = "Sha256", required = true)
+    @NotNull(message = "配置文件信息摘要不能为空")
     private String sha256;
 
     @Schema(name = "User", title = "配置文件及其目录所属用户", required = true)
-    @JsonProperty("User")
+    @JsonProperty(value = "User", required = true)
+    @NotNull(message = "配置文件及其目录所属用户不能为空")
     private String user = "datalight";
 
     @Schema(name = "Group", title = "配置文件及其目录所属用户组", required = true)
-    @JsonProperty("Group")
+    @JsonProperty(value = "Group", required = true)
+    @NotNull(message = "配置文件及其目录所属用户组不能为空")
     private String group = "datalight";
 }

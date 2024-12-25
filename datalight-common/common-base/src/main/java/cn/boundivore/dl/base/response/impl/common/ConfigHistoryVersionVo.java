@@ -14,7 +14,7 @@
  * along with this program; if not, you can obtain a copy at
  * http://www.apache.org/licenses/LICENSE-2.0.
  */
-package cn.boundivore.dl.base.response.impl.master;
+package cn.boundivore.dl.base.response.impl.common;
 
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;

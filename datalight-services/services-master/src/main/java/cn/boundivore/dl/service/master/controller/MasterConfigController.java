@@ -18,13 +18,15 @@ package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.api.master.define.IMasterConfigAPI;
 import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
+import cn.boundivore.dl.base.request.impl.master.AbstractReverseSyncRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
-import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.Logs;
+import cn.boundivore.dl.service.master.service.MasterConfigReverseSyncService;
 import cn.boundivore.dl.service.master.service.MasterConfigService;
 import cn.boundivore.dl.service.master.service.MasterConfigSyncService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,10 @@ public class MasterConfigController implements IMasterConfigAPI {
     private final MasterConfigService masterConfigService;
 
     private final MasterConfigSyncService masterConfigSyncService;
+
+    private final MasterConfigReverseSyncService masterConfigReverseSyncService;
+
+
 
     @Override
     public Result<String> saveConfig(ConfigSaveRequest request) throws Exception {
@@ -111,6 +117,11 @@ public class MasterConfigController implements IMasterConfigAPI {
                 configPath,
                 historyConfigVersion
         );
+    }
+
+    @Override
+    public Result<String> reverseConfig(AbstractReverseSyncRequest.ReverseSyncRequest request) throws Exception {
+        return this.masterConfigReverseSyncService.reverseSyncConfig(request);
     }
 
 }

@@ -17,8 +17,10 @@
 package cn.boundivore.dl.service.worker.controller;
 
 import cn.boundivore.dl.api.worker.define.IWorkerConfigAPI;
+import cn.boundivore.dl.base.request.impl.worker.ConfigDiffRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
-import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.worker.ConfigDifferVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.worker.service.WorkerConfigService;
 import lombok.RequiredArgsConstructor;
@@ -67,5 +69,10 @@ public class WorkerConfigController implements IWorkerConfigAPI {
                 configPath,
                 historyConfigVersion
         );
+    }
+
+    @Override
+    public Result<ConfigDifferVo> configDiff(ConfigDiffRequest request) {
+        return this.workerConfigService.configDiff(request);
     }
 }

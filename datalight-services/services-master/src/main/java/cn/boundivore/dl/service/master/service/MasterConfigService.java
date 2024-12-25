@@ -23,8 +23,8 @@ import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
+import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeVo;
-import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
@@ -949,7 +949,7 @@ public class MasterConfigService {
         // 远程调用 Worker 获取历史配置文件详情
         AbstractNodeVo.NodeDetailVo nodeDetailVo = this.masterNodeService.getNodeDetailById(nodeId).getData();
 
-        IWorkerConfigAPI iWorkerConfigAPI = this.remoteInvokeWorkerService.iWorkerConfigAPI(nodeDetailVo.getNodeIp());
+        IWorkerConfigAPI iWorkerConfigAPI = this.remoteInvokeWorkerService.iWorkerConfigAPI(nodeDetailVo.getHostname());
 
         Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> configVersionDetail = iWorkerConfigAPI.getConfigVersionDetail(
                 tDlConfig.getFilename(),
@@ -970,4 +970,5 @@ public class MasterConfigService {
 
         return configVersionDetail;
     }
+
 }

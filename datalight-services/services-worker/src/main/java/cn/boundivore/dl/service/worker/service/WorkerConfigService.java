@@ -17,8 +17,10 @@
 package cn.boundivore.dl.service.worker.service;
 
 import cn.boundivore.dl.base.bash.BashResult;
+import cn.boundivore.dl.base.request.impl.worker.ConfigDiffRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
-import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.worker.ConfigDifferVo;
 import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.boot.bash.BashExecutor;
 import cn.boundivore.dl.cloud.utils.SpringContextUtil;
@@ -46,10 +48,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -728,5 +727,64 @@ public class WorkerConfigService {
         } catch (Exception e) {
             throw new BException("生成Base64编码失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * Description: 对比配置文件差异，并返回差异项
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/12/25
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 待检查的配置文件请求体
+     * @return Result<ConfigDifferVo> 配置文件差异列表
+     */
+    public Result<ConfigDifferVo> configDiff(ConfigDiffRequest request) {
+        // 构建返回结果对象
+        ConfigDifferVo configDifferVo = ConfigDifferVo.builder()
+                .clusterId(request.getClusterId())
+                .nodeId(request.getNodeId())
+                .serviceName(request.getServiceName())
+                .configDetailList(new ArrayList<>())
+                .build();
+
+        // 遍历检查每个配置文件
+        for (ConfigDiffRequest.ConfigInfoRequest configInfoRequest : request.getConfigInfoList()) {
+            String configFilePath = configInfoRequest.getConfigPath();
+            File configFile = new File(configFilePath);
+
+            if (!configFile.exists() || !configFile.isFile()) {
+                log.warn("配置文件不存在: {}", configFilePath);
+                continue;
+            }
+
+            // 读取文件内容
+            String content = FileUtil.readString(configFile, CharsetUtil.CHARSET_UTF_8);
+
+            // 生成 SHA256 摘要
+            String calculatedSha256 = this.generateSha256(content);
+
+            // 生成 Base64 编码
+            String base64Content = this.generateBase64(content);
+
+            // 比对SHA256值
+            if (!calculatedSha256.equals(configInfoRequest.getSha256())) {
+                // 如果不一致，添加到差异列表
+                ConfigDifferVo.ConfigDetailVo detailVo = ConfigDifferVo.ConfigDetailVo.builder()
+                        .filename(configInfoRequest.getFilename())
+                        .sha256(calculatedSha256)
+                        .configData(base64Content)
+                        .configPath(configInfoRequest.getConfigPath())
+                        .build();
+
+                configDifferVo.getConfigDetailList().add(detailVo);
+                log.info("发现配置文件差异: {}", configInfoRequest);
+            }
+        }
+
+        return Result.success(configDifferVo);
     }
 }

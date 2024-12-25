@@ -16,9 +16,10 @@
  */
 package cn.boundivore.dl.api.master.define;
 
+import cn.boundivore.dl.base.request.impl.master.AbstractReverseSyncRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveByGroupRequest;
 import cn.boundivore.dl.base.request.impl.master.ConfigSaveRequest;
-import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigSummaryListVo;
 import cn.boundivore.dl.base.result.Result;
@@ -152,4 +153,13 @@ public interface IMasterConfigAPI {
             @RequestParam(value = "HistoryConfigVersion", required = true)
             Long historyConfigVersion
     ) throws Exception;
+
+    @PostMapping(value = "/config/reverseSyncConfig")
+    @ApiOperation(notes = "反向同步配置文件", value = "反向同步配置文件")
+    Result<String> reverseConfig(
+            @RequestBody
+            @Valid
+            AbstractReverseSyncRequest.ReverseSyncRequest request
+    ) throws Exception;
+
 }

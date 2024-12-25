@@ -16,8 +16,10 @@
  */
 package cn.boundivore.dl.api.worker.define;
 
+import cn.boundivore.dl.base.request.impl.worker.ConfigDiffRequest;
 import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
-import cn.boundivore.dl.base.response.impl.master.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
+import cn.boundivore.dl.base.response.impl.worker.ConfigDifferVo;
 import cn.boundivore.dl.base.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PREFIX;
 
@@ -52,6 +56,7 @@ public interface IWorkerConfigAPI {
     @ApiOperation(notes = "修改配置文件", value = "修改配置文件")
     Result<String> config(
             @RequestBody
+            @Valid
             ConfigFileRequest request
     );
 
@@ -90,6 +95,14 @@ public interface IWorkerConfigAPI {
             @RequestParam(value = "HistoryConfigVersion", required = true)
             Long historyConfigVersion
     ) throws Exception;
+
+    @PostMapping(value = "/config/diff")
+    @ApiOperation(notes = "比较配置文件差异", value = "比较配置文件差异")
+    Result<ConfigDifferVo> configDiff(
+            @RequestBody
+            @Valid
+            ConfigDiffRequest request
+    );
 
 
 }
