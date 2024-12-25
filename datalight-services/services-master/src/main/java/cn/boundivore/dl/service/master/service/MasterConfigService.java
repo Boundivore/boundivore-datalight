@@ -377,6 +377,7 @@ public class MasterConfigService {
                 .eq(TDlConfigContent::getClusterId, clusterId)
                 .eq(TDlConfigContent::getSha256, sha256)
                 .eq(TDlConfigContent::getFilename, filename)
+                .last("LIMIT 1")
                 .one();
     }
 
