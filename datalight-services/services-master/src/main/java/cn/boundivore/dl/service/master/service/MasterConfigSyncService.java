@@ -73,13 +73,13 @@ public class MasterConfigSyncService {
                     configContentPersisted.getGroupTDlConfigContentMap()
             ).isSuccess();
         } else {
-            synchronized (this) {
+//            synchronized (this) {
                 log.info("{} 配置未全部就绪，准备同步初始化", request.getServiceName());
                 return this.masterConfigService.saveConfigOrUpdateBatch(
                         request,
                         configContentPersisted.getGroupTDlConfigContentMap()
                 ).isSuccess();
-            }
+//            }
         }
     }
 
@@ -122,9 +122,9 @@ public class MasterConfigSyncService {
      * @return Result<String> 同步分组保存配置文件结果
      */
     public Result<String> saveConfigByGroupSync(ConfigSaveByGroupRequest request) {
-        synchronized (this) {
+//        synchronized (this) {
             return this.masterConfigService.saveConfigByGroup(request);
-        }
+//        }
     }
 
     /**
