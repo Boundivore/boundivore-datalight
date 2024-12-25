@@ -114,7 +114,7 @@ public class MasterConfigReverseSyncService {
                 log.info("未发现配置文件差异，跳过更新");
             }
 
-            return Result.success("配置同步完成");
+            return Result.success();
         } catch (BException e) {
             log.error("配置同步失败: {}", e.getMessage());
             throw e;
