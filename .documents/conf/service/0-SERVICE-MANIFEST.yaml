@@ -142,3 +142,10 @@ datalight:
         dependencies: [ ]
         optional-dependencies: [ 'HDFS', 'SPARK']
         relatives: [ 'MONITOR' ]
+      - name: MINIO
+        type: STORAGE
+        priority: 21
+        desc: 'MINIO 是一个高性能的对象存储系统，设计用于存储大量非结构化数据，兼容 Amazon S3 API 接口'
+        dependencies: [ ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR' ]

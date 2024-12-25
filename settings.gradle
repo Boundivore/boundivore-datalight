@@ -74,4 +74,6 @@ include 'datalight-plugins:plugins-dolphinscheduler'
 findProject(':datalight-plugins:plugins-dolphinscheduler')?.name = 'plugins-dolphinscheduler'
 include 'datalight-plugins:plugins-doris'
 findProject(':datalight-plugins:plugins-doris')?.name = 'plugins-doris'
+include 'datalight-plugins:plugins-minio'
+findProject(':datalight-plugins:plugins-minio')?.name = 'plugins-minio'
 

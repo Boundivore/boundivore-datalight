@@ -119,3 +119,9 @@ datalight:
       port: '6040'
       path: '/'
       button-name-suffix: '-Web UI'
+
+    - service: MINIO
+      component: MinIOServer
+      port: '9600'
+      path: '/'
+      button-name-suffix: '-Web UI'

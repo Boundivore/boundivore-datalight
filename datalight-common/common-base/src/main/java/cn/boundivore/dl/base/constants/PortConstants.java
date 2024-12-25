@@ -47,6 +47,7 @@ public class PortConstants {
             put("LDAP-LDAPExporter", "9330");
             put("DORIS-FEServer", "6030");
             put("DORIS-BEServer", "6040");
+            put("MINIO-MinIOServer", "9600");
 
             put("DOLPHINSCHEDULER-DSMasterServer", "5679");
             put("DOLPHINSCHEDULER-DSWorkerServer", "1235");
