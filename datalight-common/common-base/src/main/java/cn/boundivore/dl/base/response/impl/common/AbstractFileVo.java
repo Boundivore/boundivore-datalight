@@ -70,8 +70,8 @@ public abstract class AbstractFileVo {
 
         private static final long serialVersionUID = -3025955230836468689L;
 
-        @ApiModelProperty(name = "FileName", value = "文件名", required = true)
-        @JsonProperty(value = "FileName", required = true)
+        @ApiModelProperty(name = "Filename", value = "文件名", required = true)
+        @JsonProperty(value = "Filename", required = true)
         private String fileName;
 
         @ApiModelProperty(name = "FilePath", value = "文件路径", required = true)

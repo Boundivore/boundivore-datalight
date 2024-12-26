@@ -58,8 +58,8 @@ public class ConfigFileRequest implements IRequest {
     @NotNull(message = "ConfigVersion不能为空")
     private Long configVersion;
 
-    @Schema(name = "FileName", title = "配置文件名称", required = true)
-    @JsonProperty(value = "FileName", required = true)
+    @Schema(name = "Filename", title = "配置文件名称", required = true)
+    @JsonProperty(value = "Filename", required = true)
     @NotNull(message = "配置文件名称不能为空")
     private String filename;
 

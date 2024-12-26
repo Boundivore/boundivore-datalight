@@ -86,8 +86,8 @@ public class ConfigListByGroupVo implements IVo {
         @JsonProperty(value = "Sha256", required = true)
         private String sha256;
 
-        @Schema(name = "FileName", title = "配置文件名称", required = true)
-        @JsonProperty(value = "FileName", required = true)
+        @Schema(name = "Filename", title = "配置文件名称", required = true)
+        @JsonProperty(value = "Filename", required = true)
         private String filename;
 
         @Schema(name = "ConfigPath", title = "配置文件绝对路径", required = true)

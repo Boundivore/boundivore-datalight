@@ -93,8 +93,8 @@ public interface IMasterConfigAPI {
             @RequestParam(value = "ServiceName", required = true)
             String serviceName,
 
-            @ApiParam(name = "FileName", value = "配置文件名称")
-            @RequestParam(value = "FileName", required = true)
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
             String filename,
 
             @ApiParam(name = "ConfigPath", value = "配置文件路径")
@@ -117,8 +117,8 @@ public interface IMasterConfigAPI {
             @RequestParam(value = "ServiceName", required = true)
             String serviceName,
 
-            @ApiParam(name = "FileName", value = "配置文件名称")
-            @RequestParam(value = "FileName", required = true)
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
             String filename,
 
             @ApiParam(name = "ConfigPath", value = "配置文件路径")
@@ -141,8 +141,8 @@ public interface IMasterConfigAPI {
             @RequestParam(value = "ServiceName", required = true)
             String serviceName,
 
-            @ApiParam(name = "FileName", value = "配置文件名称")
-            @RequestParam(value = "FileName", required = true)
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
             String filename,
 
             @ApiParam(name = "ConfigPath", value = "配置文件路径")

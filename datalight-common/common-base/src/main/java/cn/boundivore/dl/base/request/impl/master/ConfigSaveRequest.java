@@ -85,8 +85,8 @@ public class ConfigSaveRequest implements IRequest {
         @NotNull(message = "节点 ID 不能为空")
         private Long nodeId;
 
-        @Schema(name = "FileName", title = "配置文件名称", required = true)
-        @JsonProperty(value = "FileName", required = true)
+        @Schema(name = "Filename", title = "配置文件名称", required = true)
+        @JsonProperty(value = "Filename", required = true)
         @NotNull(message = "配置文件名称不能为空")
         private String filename;
 

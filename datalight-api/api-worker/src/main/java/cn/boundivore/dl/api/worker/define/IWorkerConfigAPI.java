@@ -71,8 +71,8 @@ public interface IWorkerConfigAPI {
             @RequestParam(value = "CurrentConfigId", required = true)
             Long currentConfigId,
 
-            @ApiParam(name = "FileName", value = "配置文件名称")
-            @RequestParam(value = "FileName", required = true)
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
             String filename,
 
             @ApiParam(name = "ConfigPath", value = "配置文件路径")
@@ -83,8 +83,8 @@ public interface IWorkerConfigAPI {
     @GetMapping(value = "/config/getConfigVersionDetail")
     @ApiOperation(notes = "获取配置文件历史详细信息", value = "获取配置文件历史详细信息")
     Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> getConfigVersionDetail(
-            @ApiParam(name = "FileName", value = "配置文件名称")
-            @RequestParam(value = "FileName", required = true)
+            @ApiParam(name = "Filename", value = "配置文件名称")
+            @RequestParam(value = "Filename", required = true)
             String filename,
 
             @ApiParam(name = "ConfigPath", value = "配置文件路径")

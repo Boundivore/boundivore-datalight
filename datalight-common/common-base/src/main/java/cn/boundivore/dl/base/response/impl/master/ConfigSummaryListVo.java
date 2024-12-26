@@ -18,8 +18,6 @@ package cn.boundivore.dl.base.response.impl.master;
 
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -69,7 +67,7 @@ public class ConfigSummaryListVo implements IVo {
     @AllArgsConstructor
     @EqualsAndHashCode(
             callSuper = false,
-            exclude = { "fileName" }
+            exclude = { "filename" }
     )
     @Schema(
             name = "ConfigPreVo.ConfigSummaryVo",
@@ -79,9 +77,9 @@ public class ConfigSummaryListVo implements IVo {
 
         private static final long serialVersionUID = 2091508959559431601L;
 
-        @Schema(name = "FileName", title = "配置文件名称", required = true)
-        @JsonProperty(value = "FileName", required = true)
-        private String fileName;
+        @Schema(name = "Filename", title = "配置文件名称", required = true)
+        @JsonProperty(value = "Filename", required = true)
+        private String filename;
 
         @Schema(name = "ConfigPath", title = "配置文件路径", required = true)
         @JsonProperty(value = "ConfigPath", required = true)
