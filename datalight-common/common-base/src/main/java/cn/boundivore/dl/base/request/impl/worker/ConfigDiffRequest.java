@@ -83,8 +83,8 @@ public class ConfigDiffRequest implements IRequest {
 
         private static final long serialVersionUID = -5675053746054474265L;
 
-        @Schema(name = "Filename", title = "配置文件名称", required = true)
-        @JsonProperty(value = "Filename", required = true)
+        @Schema(name = "FileName", title = "配置文件名称", required = true)
+        @JsonProperty(value = "FileName", required = true)
         @NotNull(message = "配置文件名称不能为空")
         private String filename;
 

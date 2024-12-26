@@ -79,8 +79,8 @@ public class ConfigDifferVo implements IVo {
 
         private static final long serialVersionUID = -5675053746054474265L;
 
-        @Schema(name = "Filename", title = "配置文件名称", required = true)
-        @JsonProperty(value = "Filename", required = true)
+        @Schema(name = "FileName", title = "配置文件名称", required = true)
+        @JsonProperty(value = "FileName", required = true)
         private String filename;
 
         @Schema(name = "Sha256", title = "配置文件内容信息摘要", required = true)

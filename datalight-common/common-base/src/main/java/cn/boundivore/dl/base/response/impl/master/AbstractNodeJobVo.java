@@ -460,8 +460,8 @@ public abstract class AbstractNodeJobVo {
         @JsonProperty(value = "FileDir", required = true)
         private String fileDir;
 
-        @Schema(name = "Filename", title = "文件名", required = true)
-        @JsonProperty(value = "Filename", required = true)
+        @Schema(name = "FileName", title = "文件名", required = true)
+        @JsonProperty(value = "FileName", required = true)
         private String filename;
 
         @Schema(name = "FileBytes", title = "文件总字节数", required = true)
