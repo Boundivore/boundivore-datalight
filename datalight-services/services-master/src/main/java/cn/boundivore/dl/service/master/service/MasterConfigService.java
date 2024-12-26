@@ -414,9 +414,9 @@ public class MasterConfigService {
                     .map(TDlConfig::getNodeId)
                     .collect(Collectors.toList());
 
-            Map<Long, TDlNode> nodeMap = masterNodeService.getNodeMap(nodeIdList);
+            Map<Long, TDlNode> nodeMap = this.masterNodeService.getNodeMap(nodeIdList);
 
-            Result<String> result = remoteInvokeWorkerService
+            Result<String> result = this.remoteInvokeWorkerService
                     .iWorkerConfigAPI(nodeMap.get(i.getNodeId()).getIpv4())
                     .config(configFileRequest);
 

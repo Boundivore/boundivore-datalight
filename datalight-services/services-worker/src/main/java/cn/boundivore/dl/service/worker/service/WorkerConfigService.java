@@ -96,7 +96,7 @@ public class WorkerConfigService {
 
             // 如果文件存在，进行备份
             if (FileUtil.exist(file)) {
-                this.backupExistingFile(file, request.getConfigVersion());
+                this.backupExistingFile(file, request.getConfigVersion() - 1L);
             }
 
             // 写入新内容并设置权限
