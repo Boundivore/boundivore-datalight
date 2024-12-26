@@ -253,7 +253,7 @@ public class MasterOperationPrometheusService {
 
 
         // 同步阻塞修改配置
-        this.masterConfigSyncService.saveConfigByGroupSync(
+        this.masterConfigSyncService.saveConfigByGroup(
                 configSaveByGroupRequest
         );
 

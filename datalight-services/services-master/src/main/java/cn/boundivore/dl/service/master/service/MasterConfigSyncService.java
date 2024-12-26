@@ -61,26 +61,21 @@ public class MasterConfigSyncService {
      * @return 成功返回 true，失败返回  false
      */
     public boolean saveConfigOrUpdateBatch(ConfigSaveRequest request) {
-        // 判断如果为有效的配置修改，则发送修改配置请求
-        ConfigContentPersistedMaps configContentPersisted = this.masterConfigService.getConfigContentPersisted(
-                request
-        );
+        // 获取配置内容持久化状态
+        ConfigContentPersistedMaps configContentPersisted = this.masterConfigService.getConfigContentPersisted(request);
 
+        // 记录详细日志
         if (configContentPersisted.isAllPersisted()) {
-            log.info("{} 配置已全部就绪，准备关联", request.getServiceName());
-            return this.masterConfigService.saveConfigOrUpdateBatch(
-                    request,
-                    configContentPersisted.getGroupTDlConfigContentMap()
-            ).isSuccess();
+            log.info("服务[{}]的配置已全部持久化，直接进行关联", request.getServiceName());
         } else {
-//            synchronized (this) {
-                log.info("{} 配置未全部就绪，准备同步初始化", request.getServiceName());
-                return this.masterConfigService.saveConfigOrUpdateBatch(
-                        request,
-                        configContentPersisted.getGroupTDlConfigContentMap()
-                ).isSuccess();
-//            }
+            log.info("服务[{}]的配置存在未持久化内容，将进行持久化处理", request.getServiceName());
         }
+
+        // 统一走保存/更新流程，依赖数据库事务和唯一索引保证一致性
+        return this.masterConfigService.saveConfigOrUpdateBatch(
+                request,
+                configContentPersisted.getGroupTDlConfigContentMap()
+        ).isSuccess();
     }
 
     /**
@@ -121,10 +116,8 @@ public class MasterConfigSyncService {
      * @param request 将要修改的配置文件分组
      * @return Result<String> 同步分组保存配置文件结果
      */
-    public Result<String> saveConfigByGroupSync(ConfigSaveByGroupRequest request) {
-//        synchronized (this) {
-            return this.masterConfigService.saveConfigByGroup(request);
-//        }
+    public Result<String> saveConfigByGroup(ConfigSaveByGroupRequest request) {
+        return this.masterConfigService.saveConfigByGroup(request);
     }
 
     /**

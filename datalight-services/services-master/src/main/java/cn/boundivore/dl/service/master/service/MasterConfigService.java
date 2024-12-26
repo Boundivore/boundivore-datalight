@@ -325,9 +325,11 @@ public class MasterConfigService {
                                                      String configData,
                                                      String sha256) {
 
+        String cacheKey = String.format("%d%s%s", clusterId, filename, sha256);
+
         TDlConfigContent tDlConfigContent = null;
         if (tDlConfigContentMap != null && !tDlConfigContentMap.isEmpty()) {
-            tDlConfigContent = tDlConfigContentMap.get(clusterId + filename + sha256);
+            tDlConfigContent = tDlConfigContentMap.get(cacheKey);
         }
 
         // 读取数据库中可能存在的配置文件内容
@@ -344,14 +346,36 @@ public class MasterConfigService {
             tDlConfigContent.setSha256(sha256);
             tDlConfigContent.setConfigData(configData);
 
-            Assert.isTrue(
-                    this.tDlConfigContentService.save(tDlConfigContent),
-                    () -> new DatabaseException("保存配置文件内容失败")
+            try {
+                this.tDlConfigContentService.save(tDlConfigContent);
+            } catch (Exception e) {
+                log.warn("保存配置内容失败，尝试重新读取: clusterId={}, filename={}, sha256={}",
+                        clusterId,
+                        filename,
+                        sha256
+                );
+                tDlConfigContent = this.getTDlConfigContentBySha256(clusterId, filename, sha256);
+            }
+
+            Assert.notNull(
+                    tDlConfigContent,
+                    () -> new DatabaseException(
+                            String.format(
+                                    "获取配置内容失败: clusterId=%d, filename=%s, sha256=%s",
+                                    clusterId,
+                                    filename,
+                                    sha256
+                            )
+                    )
             );
         }
 
-        return tDlConfigContent;
+        // 更新缓存
+        if (tDlConfigContentMap != null) {
+            tDlConfigContentMap.put(cacheKey, tDlConfigContent);
+        }
 
+        return tDlConfigContent;
     }
 
     /**

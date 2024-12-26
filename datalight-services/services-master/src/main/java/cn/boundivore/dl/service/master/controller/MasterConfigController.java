@@ -64,7 +64,7 @@ public class MasterConfigController implements IMasterConfigAPI {
 
     @Override
     public Result<String> saveConfigByGroup(ConfigSaveByGroupRequest request) throws Exception {
-        return this.masterConfigSyncService.saveConfigByGroupSync(request);
+        return this.masterConfigSyncService.saveConfigByGroup(request);
     }
 
     @Override
