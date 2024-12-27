@@ -99,7 +99,8 @@ public class ConfigLogicMinIOStartMinIOSh extends AbstractConfigLogic {
                 ))
                 .collect(Collectors.toList());
 
-        return urls.subList(0, urls.size() - 1).stream()
+        return urls.subList(0, urls.size() - 1)
+                .stream()
                 .map(url -> url + " \\")
                 .collect(Collectors.joining("\n"))
                 + "\n"
