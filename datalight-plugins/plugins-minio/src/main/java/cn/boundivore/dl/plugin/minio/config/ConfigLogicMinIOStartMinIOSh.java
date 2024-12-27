@@ -21,6 +21,7 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 
 import java.io.File;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -84,7 +85,7 @@ public class ConfigLogicMinIOStartMinIOSh extends AbstractConfigLogic {
      * @return String 分布式存储目录
      */
     private String storagePath() {
-        return super.currentMetaService.getMetaComponentMap()
+        List<String> urls =super.currentMetaService.getMetaComponentMap()
                 .keySet()
                 .stream()
                 .filter(k -> k.contains("MinIOServer"))
@@ -96,6 +97,12 @@ public class ConfigLogicMinIOStartMinIOSh extends AbstractConfigLogic {
                         super.dataDir(),
                         ConfigMINIO.SERVICE_NAME
                 ))
-                .collect(Collectors.joining(" /\n")) + "\n";
+                .collect(Collectors.toList());
+
+        return urls.subList(0, urls.size() - 1).stream()
+                .map(url -> url + " \\")
+                .collect(Collectors.joining("\n"))
+                + "\n"
+                + urls.get(urls.size() - 1);
     }
 }

@@ -23,8 +23,11 @@ import cn.boundivore.dl.base.request.impl.master.ConfigPreSaveRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigPreVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceDependenciesVo;
 import cn.boundivore.dl.base.result.Result;
+import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.exception.DatabaseException;
+import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.po.single.TDlConfigPre;
+import cn.boundivore.dl.orm.po.single.TDlNode;
 import cn.boundivore.dl.orm.po.single.TDlService;
 import cn.boundivore.dl.orm.service.single.impl.TDlConfigPreServiceImpl;
 import cn.boundivore.dl.service.master.resolver.ResolverYamlServiceDetail;
@@ -38,7 +41,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -56,6 +61,8 @@ import java.util.stream.Collectors;
 public class MasterConfigPreService {
 
     private final MasterServiceService masterServiceService;
+
+    private final MasterComponentService masterComponentService;
 
     private final TDlConfigPreServiceImpl tDlConfigPreService;
 
@@ -204,6 +211,79 @@ public class MasterConfigPreService {
     }
 
     /**
+     * Description: 部分预配置内容需要预加工处理
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/12/27
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param clusterId      集群 ID
+     * @param serviceName    服务名称
+     * @param placeHolderKey 预配置占位符 {{<具体 KEY>}}
+     * @param paramContent   用户填写的预配置文件内容
+     * @return String 预处理后的预配置信息
+     */
+    public String preprocessing(Long clusterId, String serviceName, String placeHolderKey, String paramContent) {
+        switch (serviceName) {
+            case "MINIO":
+                // MinIO 的特殊处理，将 MINIO-PLACEHOLDER.yaml，为 {{STORAGE_PATH}}  拼接 http://<节点名称>前缀
+                String dataDirPlaceholder = "{{STORAGE_PATH}}";
+                if (!placeHolderKey.equals(dataDirPlaceholder)) {
+                    return paramContent;
+                }
+
+                // 获取被部署的 MinIOServer 组件列表
+                List<TDlComponent> minIOServerTDlComponentList = this.masterComponentService.getTDlComponentByComponentName(
+                                clusterId,
+                                serviceName,
+                                "MinIOServer"
+                        )
+                        .stream()
+                        .filter(i -> i.getComponentState().isServiceDeployed())
+                        .collect(Collectors.toList());
+
+                //<NodeId, TDlNode>
+                Map<Long, TDlNode> componentNodeMap = this.masterComponentService.getComponentNodeMap(
+                        clusterId,
+                        minIOServerTDlComponentList
+                );
+
+                Assert.isTrue(
+                        minIOServerTDlComponentList.size() == componentNodeMap.size(),
+                        () -> new BException("未找到匹配的 MinIOServer 组件在节点中的分布")
+                );
+
+                /* 组装数据，以 paramContent = "/data/datalight/data/MINIO" 为例：
+                 * http://node01/data/datalight/data/MINIO \
+                 * http://node02/data/datalight/data/MINIO \
+                 * http://node03/data/datalight/data/MINIO
+                 */
+                List<String> urls = minIOServerTDlComponentList
+                        .stream()
+                        .filter(component -> component.getComponentState().isServiceDeployed())
+                        .map(component ->  String.format(
+                                "http://%s%s",
+                                componentNodeMap.get(component.getNodeId()),
+                                paramContent
+                                )
+                        )
+                        .collect(Collectors.toList());
+
+                return urls.subList(0, urls.size() - 1).stream()
+                        .map(url -> url + " \\")
+                        .collect(Collectors.joining("\n"))
+                        + "\n"
+                        + urls.get(urls.size() - 1);
+            default:
+                return paramContent;
+
+        }
+    }
+
+    /**
      * Description: 保存用户通过页面修改的预配置信息
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -244,9 +324,14 @@ public class MasterConfigPreService {
                                                     tDlConfigPre.setPlaceholder(property.getPlaceholder());
                                                     tDlConfigPre.setDefaultValue(property.getDefaultValue());
                                                     tDlConfigPre.setValue(
-                                                            StrUtil.isBlank(property.getValue()) ?
-                                                                    property.getDefaultValue() :
-                                                                    property.getValue()
+                                                            this.preprocessing(
+                                                                    clusterId,
+                                                                    service.getServiceName(),
+                                                                    property.getPlaceholder(),
+                                                                    StrUtil.isBlank(property.getValue()) ?
+                                                                            property.getDefaultValue() :
+                                                                            property.getValue()
+                                                            )
                                                     );
 
                                                     return tDlConfigPre;
@@ -356,5 +441,4 @@ public class MasterConfigPreService {
                 )
                 .collect(Collectors.toList());
     }
-
 }
