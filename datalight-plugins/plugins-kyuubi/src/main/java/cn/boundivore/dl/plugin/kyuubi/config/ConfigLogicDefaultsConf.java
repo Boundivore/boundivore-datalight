@@ -22,6 +22,8 @@ import cn.boundivore.dl.plugin.base.config.AbstractConfigLogic;
 import java.io.File;
 import java.util.Comparator;
 
+import static cn.boundivore.dl.plugin.kyuubi.config.ConfigLogicJmxYaml.SERVICE_NAME;
+
 
 /**
  * Description: 配置 server.properties 文件
@@ -53,6 +55,9 @@ public class ConfigLogicDefaultsConf extends AbstractConfigLogic {
         // {{kyuubi.ha.addresses}}
         String haAddresses = this.haAddresses();
 
+        // {{kyuubi.metadata.store.jdbc.url}}
+        String metaDataJdbcUrl = this.metaDataJdbcUrl();
+
         return replacedTemplated
                 .replace(
                         "{{kyuubi.frontend.bind.host}}",
@@ -62,7 +67,33 @@ public class ConfigLogicDefaultsConf extends AbstractConfigLogic {
                         "{{kyuubi.ha.addresses}}",
                         haAddresses
                 )
+                .replace(
+                        "{{kyuubi.metadata.store.jdbc.url}}",
+                        metaDataJdbcUrl
+                )
                 ;
+    }
+
+    /**
+     * Description: 获取 KyuubiServer MetaStore 存储位置
+     * EXAMPLE:  jdbc:sqlite:/data/datalight/data/KYUUBI/kyuubi_state_store.db
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2024/8/5
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return String Zookeeper 集群地址
+     */
+    private String metaDataJdbcUrl() {
+        return String.format(
+                "jdbc:sqlite:%s/%s/kyuubi_state_store.db",
+                super.dataDir(),
+                SERVICE_NAME
+
+        );
     }
 
     /**
