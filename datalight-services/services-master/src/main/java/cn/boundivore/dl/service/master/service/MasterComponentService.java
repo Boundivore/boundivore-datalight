@@ -79,7 +79,7 @@ public class MasterComponentService {
 
     private final TDlComponentServiceImpl tDlComponentService;
 
-    private final MasterConfigPreService masterConfigPreService;
+    private final MasterConfigPreCommonService masterConfigPreCommonService;
 
     private final ComponentNodeMapper componentNodeMapper;
 
@@ -999,9 +999,9 @@ public class MasterComponentService {
                     }
 
                     // 服务的配置文件目录以及模板目录
-                    List<ServiceDependenciesVo.ConfDirVo> confDirList = this.masterConfigPreService.getConfDirList(serviceName);
+                    List<ServiceDependenciesVo.ConfDirVo> confDirList = this.masterConfigPreCommonService.getConfDirList(serviceName);
                     // 服务预配置信息
-                    List<ServiceDependenciesVo.PropertyVo> propertyList = this.masterConfigPreService.getPropertyList(clusterId, serviceName);
+                    List<ServiceDependenciesVo.PropertyVo> propertyList = this.masterConfigPreCommonService.getPropertyList(clusterId, serviceName);
 
                     // 获取服务组件详细组件分布情况
                     List<ComponentNodeDto> componentNodeDtoList = this.componentNodeMapper.selectComponentNodeNotInStatesDto(
