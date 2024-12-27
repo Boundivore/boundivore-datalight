@@ -407,7 +407,11 @@ public class WorkerConfigService {
             }
 
             // 获取并处理所有版本文件信息
-            List<ConfigHistoryVersionVo.ConfigHistoryVersionSummaryVo> versionSummaries = LongStream.rangeClosed(1, currentConfigVersion)
+            List<ConfigHistoryVersionVo.ConfigHistoryVersionSummaryVo> versionSummaries = LongStream
+                    .rangeClosed(
+                            1,
+                            currentConfigVersion - 1L
+                    )
                     .parallel()
                     .mapToObj(version -> {
                         String versionFileName = String.format("%s.%d", filename, version);

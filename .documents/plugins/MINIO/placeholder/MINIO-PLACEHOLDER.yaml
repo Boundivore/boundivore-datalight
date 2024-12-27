@@ -2,23 +2,8 @@ datalight:
   service:
     name: 
     placeholder-infos:
-      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DORIS/templated/fe/conf/fe.conf'
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/MINIO/templated/bin/start-minio.sh'
         properties:
-          - placeholder: '{{meta_dir}}'
-            describe: 'Doris Fe Meta 目录'
-            default: '/data/datalight/data/DORIS/doris-meta'
-      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DORIS/templated/fe/bin/start_fe.sh'
-        properties:
-          - placeholder: '{{meta_dir}}'
-            describe: '确认 Doris Fe Meta 目录'
-            default: '/data/datalight/data/DORIS/doris-meta'
-      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DORIS/templated/be/conf/be.conf'
-        properties:
-          - placeholder: '{{storage_root_path}}'
-            describe: 'Doris Be 数据目录(多个目录以逗号分隔)'
-            default: '/data/datalight/data/DORIS/doris'
-      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DORIS/templated/be/conf/start_be.sh'
-        properties:
-          - placeholder: '{{storage_root_path}}'
-            describe: '确认 Doris Be 数据目录(多个目录以逗号分隔)'
-            default: '/data/datalight/data/DORIS/doris'
+          - placeholder: '{{STORAGE_PATH}}'
+            describe: 'MinIO 分布式数据存储目录'
+            default: '/data/datalight/data/MINIO'
