@@ -39,7 +39,7 @@ datalight:
           sleep: 0
 
         - type: COMMON_SCRIPT
-          name: '初始化部署服务所需的环境'
+          name: '初始化部署 FLINK 所需的环境'
           shell: 'service-init-env.sh'
           args: [ ]
           interactions: [ ]
@@ -48,7 +48,7 @@ datalight:
           sleep: 0
 
         - type: JAR
-          name: '初始化服务配置文件'
+          name: '初始化 FLINK 服务配置文件'
           jar: 'plugins-flink-1.0.0.jar'
           clazz: 'cn.boundivore.dl.plugin.flink.config.ConfigFLINK'
           args: [ ]

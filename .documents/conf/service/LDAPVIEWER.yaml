@@ -31,7 +31,7 @@ datalight:
     initialize:
       steps:
         - type: COMMON_SCRIPT
-          name: '清理过期的部署环境'
+          name: '清理 LDAPVIEWER 过期的部署环境'
           shell: 'service-remove.sh'
           args: [ ]
           interactions: [ ]
@@ -40,7 +40,7 @@ datalight:
           sleep: 0
 
         - type: COMMON_SCRIPT
-          name: '初始化部署服务所需的环境'
+          name: '初始化部署 LDAPVIEWER 服务所需的环境'
           shell: 'service-init-env.sh'
           args: [ ]
           interactions: [ ]
