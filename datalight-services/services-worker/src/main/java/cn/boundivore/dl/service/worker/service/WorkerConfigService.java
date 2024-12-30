@@ -131,7 +131,6 @@ public class WorkerConfigService {
     private void validateRequest(ConfigFileRequest request) {
         Assert.notNull(request, () -> new BException("请求参数不能为空"));
         Assert.notBlank(request.getPath(), () -> new BException("文件路径不能为空"));
-        Assert.notBlank(request.getContentBase64(), () -> new BException("文件内容不能为空"));
         Assert.notBlank(request.getUser(), () -> new BException("用户名不能为空"));
         Assert.notBlank(request.getGroup(), () -> new BException("用户组不能为空"));
         Assert.notNull(request.getConfigVersion(), () -> new BException("配置版本不能为空"));
