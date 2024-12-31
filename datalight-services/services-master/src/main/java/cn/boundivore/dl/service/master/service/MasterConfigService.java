@@ -244,7 +244,7 @@ public class MasterConfigService {
      * @param filename    文件名
      * @param configData  配置数据
      * @param sha256      SHA256 值
-     * @return TDlConfig 创建或更新后的 TDlConfig 对象
+     * @return TDlConfig 创建或更新后的 TDlConfig 对象，如果引用的内容没有变化，则返回 null
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
@@ -283,10 +283,14 @@ public class MasterConfigService {
                 sha256
         );
 
-        // EASY_TO_FIX: 此处可进一步优化性能：如果配置未发生变更，则不修改配置文件，直接远程写如配置文件内容到对应节点
-//        if (tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()) {
-//            return null;
-//        }
+        /*
+            判断，如果当前保存的配置文件的内容没有发生变化，
+            即引用 TDlConfigContent 的 ID 没有发生变化，
+            则不进行数据库操作，也不对远程节点进行操作
+        */
+        if(tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()){
+            return null;
+        }
 
         tDlConfig.setClusterId(clusterId);
         tDlConfig.setNodeId(nodeId);
