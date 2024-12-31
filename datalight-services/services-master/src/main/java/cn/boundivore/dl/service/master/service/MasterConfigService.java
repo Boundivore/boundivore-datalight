@@ -44,9 +44,11 @@ import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.service.master.bean.ConfigContentPersistedMaps;
 import cn.boundivore.dl.service.master.boardcast.ConfigEvent;
 import cn.boundivore.dl.service.master.boardcast.ConfigEventPublisher;
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Pair;
+import cn.hutool.core.util.CharsetUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -288,7 +291,7 @@ public class MasterConfigService {
             即引用 TDlConfigContent 的 ID 没有发生变化，
             则不进行数据库操作，也不对远程节点进行操作
         */
-        if(tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()){
+        if (tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()) {
             return null;
         }
 
@@ -881,7 +884,10 @@ public class MasterConfigService {
                 .collect(
                         Collectors.toMap(
                                 TDlConfigContent::getId,
-                                TDlConfigContent::getConfigData,
+                                tDlConfigContent -> Base64.decodeStr(
+                                        tDlConfigContent.getConfigData(),
+                                        StandardCharsets.UTF_8
+                                ),
                                 (existing, replacement) -> existing,
                                 HashMap::new
                         )
