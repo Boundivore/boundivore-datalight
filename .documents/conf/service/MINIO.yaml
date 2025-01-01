@@ -34,6 +34,15 @@ datalight:
           timeout: 60000
           sleep: 0
 
+        - type: SCRIPT
+          name: '检查并配置 datalight 用户 sudoers 权限'
+          shell: 'minio-sudo-datalight.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
         - type: JAR
           name: '初始化 MINIO 服务配置文件'
           jar: 'plugins-minio-1.0.0.jar'
