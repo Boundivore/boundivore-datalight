@@ -145,7 +145,7 @@ datalight:
       - name: MINIO
         type: STORAGE
         priority: 21
-        desc: 'MINIO 是一个高性能的对象存储系统，设计用于存储大量非结构化数据，兼容 Amazon S3 API 接口'
+        desc: '高性能对象存储系统，擅长大量非结构化数据'
         dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
