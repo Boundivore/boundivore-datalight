@@ -265,9 +265,9 @@ public class MasterConfigPreService {
                         .stream()
                         .filter(component -> component.getComponentState().isServiceDeployed())
                         .map(component ->  String.format(
-                                "http://%s%s",
-                                componentNodeMap.get(component.getNodeId()),
-                                paramContent
+                                    "http://%s%s",
+                                    componentNodeMap.get(component.getNodeId()).getHostname(),
+                                    paramContent
                                 )
                         )
                         .collect(Collectors.toList());
