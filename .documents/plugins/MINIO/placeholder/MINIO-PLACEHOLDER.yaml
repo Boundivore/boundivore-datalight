@@ -5,5 +5,5 @@ datalight:
       - templated-file-path: '{{DATALIGHT_DIR}}/plugins/MINIO/templated/bin/start-minio.sh'
         properties:
           - placeholder: '{{STORAGE_PATH}}'
-            describe: 'MinIO 分布式数据存储目录'
+            describe: 'MinIO 分布式数据存储目录,此处的目录必须确保是独立的驱动器挂载'
             default: '/data/datalight/data/MINIO'
