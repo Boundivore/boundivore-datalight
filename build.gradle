@@ -1,5 +1,5 @@
 group 'cn.boundivore.dl'
-version '1.5.10'
+version '1.6.11'
 
 
 buildscript {
