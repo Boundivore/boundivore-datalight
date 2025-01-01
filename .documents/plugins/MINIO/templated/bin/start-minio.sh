@@ -1,7 +1,6 @@
 #!/bin/bash
 export MINIO_ROOT_USER=admin
 export MINIO_ROOT_PASSWORD=adminadmin
-export MINIO_BROWSER_ROOTDRIVE_ENABLED=on
 
 LOG_DIR="{{LOG_DIR}}"
 
