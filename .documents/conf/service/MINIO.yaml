@@ -7,15 +7,9 @@ datalight:
       - service-conf-dir: '{{SERVICE_DIR}}/MINIO/bin'
         templated-dir: '{{DATALIGHT_DIR}}/plugins/MINIO/templated/bin'
 
-      - service-conf-dir: '{{SERVICE_DIR}}/MINIO/conf'
-        templated-dir: '{{DATALIGHT_DIR}}/plugins/MINIO/templated/conf'
-
-    #       TODO FOR TEST
-    #      - service-conf-dir: '{{SERVICE_DIR}}/MINIO/bin'
-    #        templated-dir: 'D:/datalight/plugins/MINIO/templated/bin'
-    #
-    #      - service-conf-dir: '{{SERVICE_DIR}}/MINIO/config'
-    #        templated-dir: 'D:/datalight/plugins/MINIO/templated/config'
+#       TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/MINIO/bin'
+#        templated-dir: 'D:/datalight/plugins/MINIO/templated/bin'
 
     config-event-handler-jar: 'plugins-minio-1.0.0.jar'
     config-event-handler-clazz: 'cn.boundivore.dl.plugin.minio.config.event.ConfigEventHandler'
