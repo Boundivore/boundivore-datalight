@@ -89,7 +89,7 @@ public class CoreJavaTest {
     @Test
     public void testSwaggerAPI() {
         // Swagger JSON文件的URL
-        String swaggerJsonUrl = "http://node01:8001/v3/api-docs?group=datalight";
+        String swaggerJsonUrl = "http://node01:8001/v3/api-docs?group=datalight-master";
 
         // 创建URL对象
         URL url = new URL(swaggerJsonUrl);

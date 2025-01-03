@@ -55,6 +55,9 @@ public class SwaggerConfig extends AbsBaseSwaggerConfig {
     @Value("${server.port}")
     private String port;
 
+    @Value("${spring.application.name}")
+    private String appName;
+
     @Override
     @SneakyThrows
     public SwaggerProperties printSwaggerInfo() {
@@ -62,20 +65,11 @@ public class SwaggerConfig extends AbsBaseSwaggerConfig {
         String hostName = inetAddress.getHostName();
         String ip = NetUtil.getIpByHost("localhost");
 
-//        docket.pathProvider(new RelativePath)
-
-        log.info("Swagger 文档地址：http://{}:{}/swagger-ui/index.html",
-                hostName,
-                port
-        );
-
-        log.info("Knife4J 文档地址： http://{}:{}/doc.html",
-                hostName,
-                port
-        );
-
         return SwaggerProperties.builder()
+                .hostname(hostName)
+                .ip(ip)
                 .port(port)
+                .groupName(appName)
                 .build();
     }
 

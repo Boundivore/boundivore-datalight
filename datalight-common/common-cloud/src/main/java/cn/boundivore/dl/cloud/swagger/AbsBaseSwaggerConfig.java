@@ -60,27 +60,39 @@ public abstract class AbsBaseSwaggerConfig {
         SwaggerProperties swaggerProperties = printSwaggerInfo();
 
         Docket docket = new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo())
+                .apiInfo(apiInfo(swaggerProperties))
 //                .globalRequestParameters(getGlobalRequestParameters())
                 .globalResponses(HttpMethod.GET, globalResponse())
                 .globalResponses(HttpMethod.POST, globalResponse())
+                .host(String.format("%s:%s", swaggerProperties.getIp(), swaggerProperties.getPort()))
                 .select()
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-//                .apis(RequestHandlerSelectors.basePackage("cn.boundivore.dl"))
+//                .apis(RequestHandlerSelectors.basePackage("cn.boundivore.eduwiz"))
                 .paths(PathSelectors.any())
                 .build()
-                .groupName("datalight")
+                .groupName(swaggerProperties.getGroupName())
                 .enable(true);
+
+        log.info("Swagger 文档地址：http://{}:{}/swagger-ui/index.html",
+                swaggerProperties.getHostname(),
+                swaggerProperties.getPort()
+        );
+
+        log.info("Knife4J 文档地址： http://{}:{}/doc.html",
+                swaggerProperties.getHostname(),
+                swaggerProperties.getPort()
+        );
+
         return docket;
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
         return new ApiInfoBuilder()
                 .title("DataLight")
                 .description("DataLight V1.0.0.0 [接口文档接口]")
-                .termsOfServiceUrl("https://www.boundivore.cn")
-                .contact(new Contact("boundivore", "boundivore", "boundivore@gmail.com"))
-                .version("V1.0.0.0")
+                .termsOfServiceUrl("http://www.boundivore.cn/")
+                .contact(new Contact("boundivore", "http://www.boundivore.cn/", "boundivore@foxmail.com"))
+                .version("V1.6.11")
                 .build();
     }
 

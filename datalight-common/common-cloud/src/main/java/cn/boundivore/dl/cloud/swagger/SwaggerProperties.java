@@ -32,7 +32,11 @@ import lombok.Data;
 @Data
 @Builder
 public class SwaggerProperties {
-    private String apiBasePackage;
+    private String hostname;
+
+    private String ip;
 
     private String port;
+
+    private String groupName;
 }
