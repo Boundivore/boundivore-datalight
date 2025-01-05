@@ -131,7 +131,7 @@ public abstract class AbstractConfig implements IConfig {
      * @return 模板文件列表
      */
     protected List<File> templatedFileList(String templatedDirStr) {
-        log.info("展示 {} 服务配置模板路径: {}", this.currentMetaService.getServiceName(), templatedDirStr);
+        log.info("展示 {} 服务配置模板目录: {}", this.currentMetaService.getServiceName(), templatedDirStr);
         List<File> templatedFileList = Arrays.stream(
                         Objects.requireNonNull(
                                 FileUtil.file(templatedDirStr).listFiles()
