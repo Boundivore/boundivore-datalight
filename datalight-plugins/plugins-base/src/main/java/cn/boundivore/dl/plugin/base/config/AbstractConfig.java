@@ -57,7 +57,10 @@ public abstract class AbstractConfig implements IConfig {
 
     @Override
     public PluginConfigResult configSelf() {
-        log.info("{} 初始化自身配置", this.currentMetaService.getServiceName());
+        log.info("{} 初始化自身配置, 准备处理目录: {}",
+                this.currentMetaService.getServiceName(),
+                this.currentMetaService.getConfDirList()
+        );
 
         PluginConfigResult pluginConfigResult = new PluginConfigResult(
                 this.currentMetaService.getPluginClusterMeta().getClusterId(),
@@ -131,7 +134,7 @@ public abstract class AbstractConfig implements IConfig {
      * @return 模板文件列表
      */
     protected List<File> templatedFileList(String templatedDirStr) {
-        log.info("展示 {} 服务配置模板目录: {}", this.currentMetaService.getServiceName(), templatedDirStr);
+        log.info("实际处理目录 {} 服务配置模板目录: {}", this.currentMetaService.getServiceName(), templatedDirStr);
         List<File> templatedFileList = Arrays.stream(
                         Objects.requireNonNull(
                                 FileUtil.file(templatedDirStr).listFiles()
