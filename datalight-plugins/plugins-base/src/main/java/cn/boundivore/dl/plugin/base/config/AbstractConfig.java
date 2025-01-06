@@ -134,12 +134,19 @@ public abstract class AbstractConfig implements IConfig {
      * @return 模板文件列表
      */
     protected List<File> templatedFileList(String templatedDirStr) {
-        log.info("实际处理目录 {} 服务配置模板目录: {}", this.currentMetaService.getServiceName(), templatedDirStr);
+        log.info("{} 实际处理服务配置模板目录: {}, 是否为目录: {}",
+                this.currentMetaService.getServiceName(),
+                templatedDirStr,
+                FileUtil.isDirectory(templatedDirStr)
+        );
+
         List<File> templatedFileList = Arrays.stream(
                         Objects.requireNonNull(
+                                // 如果该抽象路径名不表示一个目录，则此方法返回null。否则，将返回一个File对象数组
                                 FileUtil.file(templatedDirStr).listFiles()
                         )
-                ).filter(File::isFile)
+                )
+                .filter(File::isFile)
                 .collect(Collectors.toList());
 
         Assert.notEmpty(
