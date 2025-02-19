@@ -17,6 +17,10 @@
 package cn.boundivore.dl.boot.config;
 
 import cn.boundivore.dl.exception.BException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.json.JsonWriteFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
@@ -27,13 +31,17 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.context.request.async.TimeoutCallableProcessingInterceptor;
 import org.springframework.web.servlet.config.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PREFIX;
@@ -49,10 +57,68 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
  * Version: V1.0
  */
 @Configuration
+@Slf4j
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Value("${spring.application.name}")
     private String appName;
+
+    private final ObjectMapper objectMapper;
+
+    public WebMvcConfig(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+        log.info("WebMvcConfig初始化，ObjectMapper数字转字符串设置: {}",
+                objectMapper.isEnabled(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
+    }
+
+    @PostConstruct
+    public void logConverterConfig() {
+        if (log.isDebugEnabled()) {
+            log.debug("ObjectMapper配置信息:");
+            log.debug("- 实例: {}", objectMapper);
+            log.debug("- 数字转字符串设置: {}",
+                    objectMapper.isEnabled(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
+        }
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        // 清空默认的MappingJackson2HttpMessageConverter
+        converters.removeIf(converter -> converter instanceof MappingJackson2HttpMessageConverter);
+
+        // 创建新的ObjectMapper并配置
+        ObjectMapper newMapper = new ObjectMapper();
+        newMapper.enable(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature());
+
+        // 创建新的converter
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(newMapper);
+        converters.add(0, converter);  // 添加到首位，确保优先使用
+
+        log.debug("配置了自定义的MappingJackson2HttpMessageConverter");
+    }
+
+    @Override
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        log.info("扩展MessageConverters，当前converter数量: {}", converters.size());
+
+        converters.removeIf(converter ->
+                converter instanceof MappingJackson2HttpMessageConverter &&
+                        !converter.equals(converters.get(converters.size() - 1)));
+
+        log.info("移除其他Jackson converters后的数量: {}", converters.size());
+        converters.forEach(converter -> {
+            if (converter instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter jacksonConverter =
+                        (MappingJackson2HttpMessageConverter) converter;
+                log.info("最终的MappingJackson2HttpMessageConverter:");
+                log.info("- 类名: {}", jacksonConverter.getClass().getName());
+                log.info("- ObjectMapper实例: {}", jacksonConverter.getObjectMapper());
+                log.info("- 数字转字符串设置: {}",
+                        jacksonConverter.getObjectMapper().getFactory()
+                                .isEnabled(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS));
+            }
+        });
+    }
 
 
     /**
