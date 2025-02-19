@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.json.JsonWriteFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -65,20 +66,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final ObjectMapper objectMapper;
 
-    public WebMvcConfig(ObjectMapper objectMapper) {
+    public WebMvcConfig(@Qualifier("stringFormatObjectMapper") ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
-        log.info("WebMvcConfig初始化，ObjectMapper数字转字符串设置: {}",
+        log.info("WebMvcConfig初始化，使用stringFormatObjectMapper, 数字转字符串设置: {}",
                 objectMapper.isEnabled(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
-    }
-
-    @PostConstruct
-    public void logConverterConfig() {
-        if (log.isDebugEnabled()) {
-            log.debug("ObjectMapper配置信息:");
-            log.debug("- 实例: {}", objectMapper);
-            log.debug("- 数字转字符串设置: {}",
-                    objectMapper.isEnabled(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
-        }
     }
 
     @Override
@@ -86,15 +77,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         // 清空默认的MappingJackson2HttpMessageConverter
         converters.removeIf(converter -> converter instanceof MappingJackson2HttpMessageConverter);
 
-        // 创建新的ObjectMapper并配置
-        ObjectMapper newMapper = new ObjectMapper();
-        newMapper.enable(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature());
-
-        // 创建新的converter
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(newMapper);
+        // 使用已注入的objectMapper创建converter
+        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(objectMapper);
         converters.add(0, converter);  // 添加到首位，确保优先使用
 
-        log.debug("配置了自定义的MappingJackson2HttpMessageConverter");
+        log.info("配置了自定义的MappingJackson2HttpMessageConverter");
     }
 
     @Override
@@ -115,7 +102,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 log.info("- ObjectMapper实例: {}", jacksonConverter.getObjectMapper());
                 log.info("- 数字转字符串设置: {}",
                         jacksonConverter.getObjectMapper().getFactory()
-                                .isEnabled(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS));
+                                .isEnabled(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
             }
         });
     }
