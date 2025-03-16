@@ -1,3 +1,5 @@
+[[ENGLISH]](./.documents/docs/README(EN).md)
+
 # Boundivore-DataLight
 
 ## 一、简介
@@ -20,6 +22,8 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * [资源包下载地址](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `网盘提取码: data`
 
 * [视频教程](https://space.bilibili.com/3546708503955571/channel/seriesdetail?sid=4187881&ctype=0)
+
+* [支持与服务政策](./.documents/docs/开源 DataLight 大户数平台支持与服务政策.md)
 
 
 ## 二、软件架构
@@ -509,6 +513,7 @@ QQ 交流群：
 
 - **[Hutool](https://hutool.cn/)**：Hutool 是一个小而全的 Java 工具类库，通过简化代码和提供丰富的工具类，帮助开发者提高开发效率。它的功能涵盖了字符串操作、日期处理、文件操作、HTTP 请求等多个方面，是 Java 开发者的得力助手。
 - **[Sa-Token](https://sa-token.dev33.cn/)**：Sa-Token 是一个轻量级的 Java 权限认证框架，提供了简单易用的登录认证、权限验证、Session 会话管理等功能。它支持多种登录方式和权限控制策略，适用于各种 Java Web 应用。
+- **[Mybatis-Plus](https://baomidou.com/)**：MyBatis-Plus 是 MyBatis 的最佳搭档，是一个强大的 ORM 框架增强工具，秉承"只做增强不做改变"的理念。它提供了高效的单表 CRUD 操作、代码生成、自动分页、逻辑删除、自动填充等丰富功能，大幅简化开发流程并提升效率。
 
 希望这些推荐的项目能够帮助你在开发过程中提高效率，解决常见问题。
 
