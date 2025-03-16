@@ -1,6 +1,6 @@
-[[中文版]](./开源 DataLight 大数平台支持与服务政策.md)
+[[中文版]](/.documents/docs/开源DataLight大数平台支持与服务政策.md)
 
-[[ENGLISH]](./Support and Service Policy for Open Source DataLight Big Data Platform.md)
+[[ENGLISH]](/.documents/docs/Support-and-Service-Policy-for-Open-Source-DataLight-Big-Data-Platform.md)
 
 # Support and Service Policy for Open Source DataLight Big Data Platform
 

@@ -18,7 +18,7 @@ Resource summary:
 - [Development Plan](https://poe.com/chat/.documents/docs/开发规划.md)
 - [Resource Package Download](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `Extract Code: data`
 - [Video Tutorials](https://space.bilibili.com/3546708503955571/channel/seriesdetail?sid=4187881&ctype=0)
-- [Support and Service Policy](./.documents/docs/开源 DataLight 大数平台支持与服务政策.md)
+- [Support and Service Policy](/.documents/docs/Support-and-Service-Policy-for-Open-Source-DataLight-Big-Data-Platform.md)
 
 ## 2. Software Architecture
 
