@@ -74,35 +74,39 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // 清空默认的MappingJackson2HttpMessageConverter
-        converters.removeIf(converter -> converter instanceof MappingJackson2HttpMessageConverter);
-
-        // 使用已注入的objectMapper创建converter
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(objectMapper);
-        converters.add(0, converter);  // 添加到首位，确保优先使用
-
-        log.info("配置了自定义的MappingJackson2HttpMessageConverter");
     }
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("扩展MessageConverters，当前converter数量: {}", converters.size());
 
-        converters.removeIf(converter ->
-                converter instanceof MappingJackson2HttpMessageConverter &&
-                        !converter.equals(converters.get(converters.size() - 1)));
+        // 先打印所有converter类型
+        converters.forEach(converter ->
+                log.info("当前converter类型: {}", converter.getClass().getName())
+        );
 
-        log.info("移除其他Jackson converters后的数量: {}", converters.size());
-        converters.forEach(converter -> {
-            if (converter instanceof MappingJackson2HttpMessageConverter) {
+        // 移除所有Jackson converter
+        converters.removeIf(converter ->
+                converter instanceof MappingJackson2HttpMessageConverter);
+
+        // 添加我们的自定义converter到末尾
+        MappingJackson2HttpMessageConverter converter =
+                new MappingJackson2HttpMessageConverter(objectMapper);
+        converters.add(converter);
+
+        log.info("重新配置Jackson converters后的数量: {}", converters.size());
+
+        // 确认最终的converter配置
+        converters.forEach(conv -> {
+            if (conv instanceof MappingJackson2HttpMessageConverter) {
                 MappingJackson2HttpMessageConverter jacksonConverter =
-                        (MappingJackson2HttpMessageConverter) converter;
+                        (MappingJackson2HttpMessageConverter) conv;
                 log.info("最终的MappingJackson2HttpMessageConverter:");
                 log.info("- 类名: {}", jacksonConverter.getClass().getName());
                 log.info("- ObjectMapper实例: {}", jacksonConverter.getObjectMapper());
                 log.info("- 数字转字符串设置: {}",
-                        jacksonConverter.getObjectMapper().getFactory()
-                                .isEnabled(JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
+                        jacksonConverter.getObjectMapper().isEnabled(
+                                JsonWriteFeature.WRITE_NUMBERS_AS_STRINGS.mappedFeature()));
             }
         });
     }
