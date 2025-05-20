@@ -94,6 +94,11 @@ public class WorkerConfigService {
             // 创建并验证目录结构
             this.createAndValidateDirectories(file);
 
+            // 验证文件内容是否与本地现存的配置文件内容一致，如果一致，则说明未发生变化，则跳过更新。
+            if(this.isConfigConsistent(request)){
+                return Result.success();
+            }
+
             // 如果文件存在，进行备份
             if (FileUtil.exist(file)) {
                 this.backupExistingFile(file, request.getConfigVersion() - 1L);
@@ -113,6 +118,53 @@ public class WorkerConfigService {
         } catch (Exception e) {
             log.error("配置文件操作失败: {}", e.getMessage(), e);
             throw new BException("配置文件操作失败: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Description: 验证新配置文件内容是否与本地配置文件内容一致，通过配置文件内容的 sha256 判断
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2025/5/20
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: BException - 文件读取或校验失败时抛出
+     *
+     * @param request 新配置文件内容
+     * @return boolean 配置文件是否与本地一致
+     */
+    private boolean isConfigConsistent(ConfigFileRequest request) {
+        File file = FileUtil.file(request.getPath());
+
+        // 如果文件不存在，则肯定不一致
+        if (!FileUtil.exist(file) || !FileUtil.isFile(file)) {
+            log.info("目标配置文件不存在，需要更新: {}", request.getPath());
+            return false;
+        }
+
+        try {
+            // 读取本地文件内容
+            String localContent = FileUtil.readString(file, StandardCharsets.UTF_8);
+
+            // 计算本地文件的SHA256摘要
+            String localSha256 = this.generateSha256(localContent);
+
+            // 比较SHA256摘要
+            boolean isConsistent = StrUtil.equals(localSha256, request.getSha256());
+
+            if (isConsistent) {
+                log.info("配置文件内容一致，无需更新: {}", request.getPath());
+            } else {
+                log.info("配置文件内容不一致，需要更新: {}", request.getPath());
+                log.info("本地SHA256: {}, 新SHA256: {}", localSha256, request.getSha256());
+            }
+
+            return isConsistent;
+        } catch (Exception e) {
+            log.warn("配置文件一致性校验失败，将继续更新文件: {}, 错误: {}", request.getPath(), e.getMessage());
+            // 校验失败时，为安全起见返回false，表示需要更新文件
+            return false;
         }
     }
 

@@ -92,7 +92,7 @@ public abstract class AbsBaseSwaggerConfig {
                 .description("DataLight V1.0.0.0 [接口文档接口]")
                 .termsOfServiceUrl("http://www.boundivore.cn/")
                 .contact(new Contact("boundivore", "http://www.boundivore.cn/", "boundivore@foxmail.com"))
-                .version("V1.6.11")
+                .version("V1.7.12")
                 .build();
     }
 

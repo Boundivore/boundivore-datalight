@@ -1,6 +1,6 @@
 server:
   datalight:
-    version: 1.6.11
+    version: 1.7.12
     is-debug: false
     super-user: admin
     super-user-default-password: admin

@@ -1,0 +1,21 @@
+datalight:
+  service:
+    name: DINKY
+    placeholder-infos:
+      - templated-file-path: '{{DATALIGHT_DIR}}/plugins/DINKY/templated/config/application-mysql.yml'
+        properties:
+          - placeholder: '{{mysql.host}}'
+            describe: 'Dinky 元数据库主机名'
+            default: 'localhost'
+
+          - placeholder: '{{mysql.port}}'
+            describe: 'Dinky 元数据库端口号'
+            default: '3306'
+
+          - placeholder: '{{mysql.username}}'
+            describe: 'Dinky 元数据库用户名'
+            default: 'root'
+
+          - placeholder: '{{mysql.password}}'
+            describe: 'Dinky 元数据库密码'
+            default: '1qaz!QAZ'

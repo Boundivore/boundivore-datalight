@@ -149,3 +149,10 @@ datalight:
         dependencies: [ ]
         optional-dependencies: [ ]
         relatives: [ 'MONITOR' ]
+      - name: DINKY
+        type: COMPUTE
+        priority: 22
+        desc: '基于 Flink 的一站式实时计算、调度、开发平台'
+        dependencies: [ 'YARN', 'FLINK' ]
+        optional-dependencies: [ ]
+        relatives: [ 'MONITOR' ]

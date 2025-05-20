@@ -1,0 +1,127 @@
+datalight:
+  service:
+    name: DINKY
+    version: 1.2.3
+    tgz: dlc-dinky-1.2.3.tar.gz
+    conf-dirs:
+      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/exporter/conf'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DINKY/templated/exporter/conf'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/bin'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DINKY/templated/bin'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/config'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DINKY/templated/config'
+
+      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/config/jmx'
+        templated-dir: '{{DATALIGHT_DIR}}/plugins/DINKY/templated/config/jmx'
+
+
+#       TODO FOR TEST
+#      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/exporter/conf'
+#        templated-dir: 'D:/datalight/plugins/DINKY/templated/exporter/conf'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/bin'
+#        templated-dir: 'D:/datalight/plugins/DINKY/templated/bin'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/config'
+#        templated-dir: 'D:/datalight/plugins/DINKY/templated/config'
+#
+#      - service-conf-dir: '{{SERVICE_DIR}}/DINKY/config/jmx'
+#        templated-dir: 'D:/datalight/plugins/DINKY/templated/config/jmx'
+
+    config-event-handler-jar: 'plugins-dinky-1.0.0.jar'
+    config-event-handler-clazz: 'cn.boundivore.dl.plugin.dinky.config.event.ConfigEventHandler'
+
+    initialize:
+      steps:
+        - type: COMMON_SCRIPT
+          name: '清理过期的部署环境'
+          shell: 'service-remove.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 10000
+          sleep: 0
+
+        - type: COMMON_SCRIPT
+          name: '初始化部署 DINKY 所需的环境'
+          shell: 'service-init-env.sh'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          timeout: 60000
+          sleep: 0
+
+        - type: JAR
+          name: '初始化 DINKY 服务配置文件'
+          jar: 'plugins-dinky-1.0.0.jar'
+          clazz: 'cn.boundivore.dl.plugin.dinky.config.ConfigDINKY'
+          args: [ ]
+          interactions: [ ]
+          exits: '0'
+          sleep: 0
+
+    components:
+      - name: DinkyServer
+        priority: 1
+        max: 1
+        min: 1
+        mutexes: [ ]
+        dependencies: [ ]
+        actions:
+          - type: DEPLOY
+            start-state: DEPLOYING
+            success-state: STARTED
+            fail-state: SELECTED
+            steps:
+              - type: SCRIPT
+                name: '部署后启动 DinkyServer'
+                shell: 'dinky-operation.sh'
+                args: [ 'DinkyServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: START
+            start-state: STARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '启动 DinkyServer'
+                shell: 'dinky-operation.sh'
+                args: [ 'DinkyServer', 'start' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: STOP
+            start-state: STOPPING
+            success-state: STOPPED
+            fail-state: STARTED
+            steps:
+              - type: SCRIPT
+                name: '停止 DinkyServer'
+                shell: 'dinky-operation.sh'
+                args: [ 'DinkyServer', 'stop' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000
+
+          - type: RESTART
+            start-state: RESTARTING
+            success-state: STARTED
+            fail-state: STOPPED
+            steps:
+              - type: SCRIPT
+                name: '重启 DinkyServer'
+                shell: 'dinky-operation.sh'
+                args: [ 'DinkyServer', 'restart' ]
+                interactions: [ ]
+                exits: '0'
+                timeout: 60000
+                sleep: 1000

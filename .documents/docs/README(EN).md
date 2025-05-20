@@ -442,6 +442,7 @@ After completing the above content, please refer to the [Product Manual](https:/
 | KUDU            | TBD      |                                                           |                 |
 | IMPALA          | TBD      |                                                           |                 |
 | MINIO           | 20241218 | √                                                         | 2024-12         |
+| DINKY           | 1.2.3    | √                                                         | 2025-05         |
 | More....        |          |                                                           |                 |
 
 ## Participate in Open Source

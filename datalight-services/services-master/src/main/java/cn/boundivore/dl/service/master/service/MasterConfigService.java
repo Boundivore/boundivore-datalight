@@ -42,13 +42,13 @@ import cn.boundivore.dl.orm.service.single.impl.TDlConfigServiceImpl;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigEvent;
 import cn.boundivore.dl.plugin.base.bean.PluginConfigResult;
 import cn.boundivore.dl.service.master.bean.ConfigContentPersistedMaps;
+import cn.boundivore.dl.service.master.bean.ConfigUpdateBean;
 import cn.boundivore.dl.service.master.boardcast.ConfigEvent;
 import cn.boundivore.dl.service.master.boardcast.ConfigEventPublisher;
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.lang.Pair;
-import cn.hutool.core.util.CharsetUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -141,10 +141,10 @@ public class MasterConfigService {
         final String serviceName = request.getServiceName();
 
         // 根据请求中的配置列表进行处理
-        List<TDlConfig> tDlConfigList = request.getConfigList()
+        List<ConfigUpdateBean> tDlConfigList = request.getConfigList()
                 .stream()
                 .map(i -> {
-                            // 组装 TDlConfig 对象
+                            // 组装 ConfigUpdateBean 对象
                             return this.createOrUpdateTDlConfig(
                                     groupTDlConfigContentMap,
                                     clusterId,
@@ -158,22 +158,31 @@ public class MasterConfigService {
 
                         }
                 )
-                .filter(Objects::nonNull) // 过滤配置未发生变更的条目
                 .collect(Collectors.toList());
 
+
         // 批量保存或更新 TDlConfig 对象
-        if (!tDlConfigList.isEmpty()) {
+        // 只更新发生了变化的配置文件
+        List<TDlConfig> updatedTDlConfigList = tDlConfigList.stream()
+                .filter(ConfigUpdateBean::isUpdate)
+                .map(ConfigUpdateBean::getTDlConfig)
+                .collect(Collectors.toList());
+
+        if (!updatedTDlConfigList.isEmpty()) {
             Assert.isTrue(
-                    this.tDlConfigService.saveOrUpdateBatch(tDlConfigList),
+                    this.tDlConfigService.saveOrUpdateBatch(updatedTDlConfigList),
                     () -> new DatabaseException("批量保存配置文件失败")
             );
 
-            // 远程更新节点上对应的配置文件
-            this.saveConfig2NodeBatch(tDlConfigList);
-
-            // 在事务完成后执行发布 "配置变更" 事件
-            this.publishConfigChange(clusterId, serviceName);
         }
+
+        // 无论配置文件内容是否发生变化，都推送至远程节点，在 Worker 处判断是否需要修改。
+        this.saveConfig2NodeBatch(tDlConfigList.stream()
+                .map(ConfigUpdateBean::getTDlConfig)
+                .collect(Collectors.toList()));
+
+        // 在事务完成后执行发布 "配置变更" 事件
+        this.publishConfigChange(clusterId, serviceName);
 
         return Result.success();
     }
@@ -247,20 +256,20 @@ public class MasterConfigService {
      * @param filename    文件名
      * @param configData  配置数据
      * @param sha256      SHA256 值
-     * @return TDlConfig 创建或更新后的 TDlConfig 对象，如果引用的内容没有变化，则返回 null
+     * @return ConfigUpdateBean 创建或更新后的 TDlConfig 对象，如果引用的内容有变化，则 isUpdate 为 true，反之为 false
      */
     @Transactional(
             timeout = ICommonConstant.TIMEOUT_TRANSACTION_SECONDS,
             rollbackFor = DatabaseException.class
     )
-    public TDlConfig createOrUpdateTDlConfig(Map<String, TDlConfigContent> tDlConfigContentMap,
-                                             Long clusterId,
-                                             String serviceName,
-                                             Long nodeId,
-                                             String configPath,
-                                             String filename,
-                                             String configData,
-                                             String sha256) {
+    public ConfigUpdateBean createOrUpdateTDlConfig(Map<String, TDlConfigContent> tDlConfigContentMap,
+                                                    Long clusterId,
+                                                    String serviceName,
+                                                    Long nodeId,
+                                                    String configPath,
+                                                    String filename,
+                                                    String configData,
+                                                    String sha256) {
 
         TDlConfig tDlConfig = this.tDlConfigService.lambdaQuery()
                 .select()
@@ -286,14 +295,8 @@ public class MasterConfigService {
                 sha256
         );
 
-        /*
-            判断，如果当前保存的配置文件的内容没有发生变化，
-            即引用 TDlConfigContent 的 ID 没有发生变化，
-            则不进行数据库操作，也不对远程节点进行操作
-        */
-        if (tDlConfig.getConfigContentId().longValue() == tDlConfigContent.getId()) {
-            return null;
-        }
+        // 标记当前配置文件的内容是否发生变化
+        boolean isUpdate = tDlConfig.getConfigContentId().longValue() != tDlConfigContent.getId();
 
         tDlConfig.setClusterId(clusterId);
         tDlConfig.setNodeId(nodeId);
@@ -303,7 +306,7 @@ public class MasterConfigService {
         tDlConfig.setConfigPath(configPath);
         tDlConfig.setConfigVersion(tDlConfig.getConfigVersion() + 1L);
 
-        return tDlConfig;
+        return new ConfigUpdateBean(tDlConfig, isUpdate);
     }
 
     /**
@@ -730,7 +733,7 @@ public class MasterConfigService {
         final Long clusterId = request.getClusterId();
         final String serviceName = request.getServiceName();
 
-        final List<TDlConfig> tDlConfigList = request.getConfigGroupList()
+        final List<ConfigUpdateBean> tDlConfigList = request.getConfigGroupList()
                 .stream()
                 .flatMap(configGroupRequest -> configGroupRequest.getConfigNodeList()
                         .stream()
@@ -747,24 +750,31 @@ public class MasterConfigService {
                                 )
                         )
                 )
-                // 无变动的配置不更新
-                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
 
         // 批量保存或更新 TDlConfig 对象
-        if (!tDlConfigList.isEmpty()) {
+        // 只更新发生了变化的配置文件
+        List<TDlConfig> updatedTDlConfigList = tDlConfigList.stream()
+                .filter(ConfigUpdateBean::isUpdate)
+                .map(ConfigUpdateBean::getTDlConfig)
+                .collect(Collectors.toList());
+
+        if (!updatedTDlConfigList.isEmpty()) {
             Assert.isTrue(
-                    this.tDlConfigService.saveOrUpdateBatch(tDlConfigList),
+                    this.tDlConfigService.saveOrUpdateBatch(updatedTDlConfigList),
                     () -> new DatabaseException("批量保存配置文件失败")
             );
 
-            //远程更新节点上对应的配置文件
-            this.saveConfig2NodeBatch(tDlConfigList);
-
-            // 在事务完成后执行发布 "配置变更" 事件
-            this.publishConfigChange(clusterId, serviceName);
         }
+
+        // 无论配置文件内容是否发生变化，都推送至远程节点，在 Worker 处判断是否需要修改。
+        this.saveConfig2NodeBatch(tDlConfigList.stream()
+                .map(ConfigUpdateBean::getTDlConfig)
+                .collect(Collectors.toList()));
+
+        // 在事务完成后执行发布 "配置变更" 事件
+        this.publishConfigChange(clusterId, serviceName);
 
         // 更新组件是否需要重启标记
         List<Long> nodeIdList = request.getConfigGroupList()

@@ -214,3 +214,9 @@ scrape_configs:
     metrics_path: "/_prometheus/metrics"
     static_configs:
       - targets: [ ]
+
+  - job_name: "DINKY-DinkyServer"
+    metrics_path: "/actuator/prometheus"
+    static_configs:
+      - targets: [ ]
+        labels: null

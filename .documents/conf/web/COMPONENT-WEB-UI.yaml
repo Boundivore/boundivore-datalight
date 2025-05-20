@@ -125,3 +125,9 @@ datalight:
       port: '9600'
       path: '/'
       button-name-suffix: '-Web UI'
+
+    - service: DINKY
+      component: DinkyServer
+      port: '8810'
+      path: '/'
+      button-name-suffix: '-Web UI'

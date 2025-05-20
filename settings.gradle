@@ -76,4 +76,8 @@ include 'datalight-plugins:plugins-doris'
 findProject(':datalight-plugins:plugins-doris')?.name = 'plugins-doris'
 include 'datalight-plugins:plugins-minio'
 findProject(':datalight-plugins:plugins-minio')?.name = 'plugins-minio'
+include 'datalight-plugins:plugins-dinky'
+findProject(':datalight-plugins:plugins-dinky')?.name = 'plugins-dinky'
+include 'datalight-plugins:plugins-dinky'
+findProject(':datalight-plugins:plugins-dinky')?.name = 'plugins-dinky'
 
