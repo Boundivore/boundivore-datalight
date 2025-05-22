@@ -121,8 +121,8 @@ datalight:
       button-name-suffix: '-Web UI'
 
     - service: MINIO
-      component: MinIOServer
-      port: '9600'
+      component: NginxServer
+      port: '80'
       path: '/'
       button-name-suffix: '-Web UI'
 

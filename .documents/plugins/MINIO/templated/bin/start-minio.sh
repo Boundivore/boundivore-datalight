@@ -83,8 +83,8 @@ fi
 # 启动MinIO服务器
 nohup /srv/datalight/MINIO/minio server \
     --config-dir /srv/datalight/MINIO/conf \
-    --address "0.0.0.0:9539" \
-    --console-address ":9600" \
+    --address ":9000" \
+    --console-address ":9001" \
     {{STORAGE_PATH}} \
     > "${LOG_DIR}/minio-server.log" 2>&1 &
 
