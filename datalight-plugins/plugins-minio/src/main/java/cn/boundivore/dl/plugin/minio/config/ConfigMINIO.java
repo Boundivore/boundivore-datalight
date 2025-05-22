@@ -56,6 +56,10 @@ public class ConfigMINIO extends AbstractConfig {
                 return new ConfigLogicMinIOStartMinIOSh(super.pluginConfig).config(file, replacedTemplate);
             case "stop-minio.sh":
                 return new ConfigLogicMinIOStopMinIOSh(super.pluginConfig).config(file, replacedTemplate);
+            case "start-nginx.sh":
+                return new ConfigLogicNginxStartSh(super.pluginConfig).config(file, replacedTemplate);
+            case "nginx.conf":
+                return new ConfigLogicMinIONginxConf(super.pluginConfig).config(file, replacedTemplate);
             default:
                 if (log.isDebugEnabled()) {
                     log.debug("无处理文件: {}", file.getName());

@@ -54,15 +54,34 @@ case "${COMPONENT_NAME}" in
 "MinIOServer")
   case "$1" in
   "start")
-    su -c "${CURRENT_SERVICE_DIR}/bin/start-minio.sh" "${USER_NAME}"
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/start-minio.sh"
     ;;
   "stop")
-    su -c "${CURRENT_SERVICE_DIR}/bin/stop-minio.sh" "${USER_NAME}"
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/stop-minio.sh"
     ;;
   "restart")
-    su -c "${CURRENT_SERVICE_DIR}/bin/stop-minio.sh" "${USER_NAME}"
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/stop-minio.sh"
     sleep 3
-    su -c "${CURRENT_SERVICE_DIR}/bin/start-minio.sh" "${USER_NAME}"
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/start-minio.sh"
+    ;;
+  *)
+    echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
+    exit 1
+    ;;
+  esac
+  ;;
+"NginxServer")
+  case "$1" in
+  "start")
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/start-nginx.sh"
+    ;;
+  "stop")
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/stop-nginx.sh"
+    ;;
+  "restart")
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/stop-nginx.sh"
+    sleep 3
+    su - "${USER_NAME}" "${CURRENT_SERVICE_DIR}/bin/start-nginx.sh"
     ;;
   *)
     echo "Invalid operation. Usage: $0 ${COMPONENT_NAME} [start|stop|restart]"
