@@ -59,7 +59,7 @@ datalight:
       - name: MinIOServer
         priority: 1
         max: -1
-        min: 4
+        min: 3
         mutexes: [ ]
         dependencies: [ ]
         actions:
