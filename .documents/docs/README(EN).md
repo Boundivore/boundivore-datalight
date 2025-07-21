@@ -13,12 +13,13 @@ Resource summary:
 - [Backend Github Mirror Repository](https://github.com/Boundivore/boundivore-datalight)
 - [Frontend Gitee Main Repository](https://gitee.com/boundivore/boundivore-datalight-web)
 - [Frontend Github Mirror Repository](https://github.com/Boundivore/boundivore-datalight-web)
-- [Product Manual](https://poe.com/chat/.documents/docs/产品手册.md)
-- [Development Manual](https://poe.com/chat/.documents/docs/开发手册.md)
-- [Development Plan](https://poe.com/chat/.documents/docs/开发规划.md)
+- [Product Manual](./产品手册.md)
+- [Development Manual](./开发手册.md)
+- [Service Integration Guide](./服务集成指南.md)
+- [Development Plan](./开发规划.md)
 - [Resource Package Download](https://pan.baidu.com/s/1342bIcEBDQHdFA35KUTjbQ) `Extract Code: data`
 - [Video Tutorials](https://space.bilibili.com/3546708503955571/channel/seriesdetail?sid=4187881&ctype=0)
-- [Support and Service Policy](/.documents/docs/Support-and-Service-Policy-for-Open-Source-DataLight-Big-Data-Platform.md)
+- [Support and Service Policy](./Support-and-Service-Policy-for-Open-Source-DataLight-Big-Data-Platform.md)
 
 ## 2. Software Architecture
 
@@ -402,11 +403,11 @@ Note: The default username and password for the first login is: admin/admin
 
 The page looks like this:
 
-![Login](https://poe.com/chat/.documents/docs/assets/%E7%99%BB%E5%BD%95.png)
+![Login](./assets/%E7%99%BB%E5%BD%95.png)
 
 ## 7. Product Manual
 
-After completing the above content, please refer to the [Product Manual](https://poe.com/chat/.documents/docs/产品手册.md) to continue with page deployment operations.
+After completing the above content, please refer to the [Product Manual](.documents/docs/产品手册.md) to continue with page deployment operations.
 
 ## 8. Planned Supported Services
 
