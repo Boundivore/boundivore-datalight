@@ -164,15 +164,21 @@ public class RemoteInvokeGrafanaHandler {
                 // TODO 如果非第一次部署，则不执行  Grafana 基础配置（如修改密码，创建 org 等）
                 // TODO (如果非第一次部署，则修改密码过程会报错，在 catch 处中断后续没有必要的操作）
                 // TODO 后续可以通过 if 判断来优化跳过逻辑
-                this.configGrafanaBase(
-                        clusterId,
-                        grafanaUserMap,
-                        tDlNodeGrafana.getIpv4(),
-                        PortConstants.getExporterPort(
-                                grafanaServerTDlComponent.getServiceName(),
-                                grafanaServerTDlComponent.getComponentName()
-                        )
-                );
+                try {
+                    this.configGrafanaBase(
+                            clusterId,
+                            grafanaUserMap,
+                            tDlNodeGrafana.getIpv4(),
+                            PortConstants.getExporterPort(
+                                    grafanaServerTDlComponent.getServiceName(),
+                                    grafanaServerTDlComponent.getComponentName()
+                            )
+                    );
+                } catch (Exception e) {
+                    String errorLog = ExceptionUtil.stacktraceToString(e);
+                    log.error(errorLog);
+                    throw new BException(errorLog);
+                }
 
                 // 加载所有 Dashboard
                 this.initAllDashboard();
