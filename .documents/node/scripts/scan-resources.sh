@@ -12,7 +12,8 @@ ip addr show | grep inet | grep -E 'ens|eth' | grep -v 127.0.0.1 | grep -v 'inet
 lscpu | grep 'Architecture' | awk '{print $2}'
 
 # 获取 CPU 核数
-lscpu | sed -n '4p' | awk '{print $2}'
+# lscpu | sed -n '4p' | awk '{print $2}'
+nproc
 
 # 获取内存大小（以单位 M 表示）
 free -m | awk 'NR==2{print int($2)}'
@@ -23,7 +24,8 @@ df -m | grep -vE 'overlay|/var/lib/docker' | awk 'NR>1 {print $2}' | paste -sd+ 
 # 获取磁盘可用大小
 df -m | grep -vE 'overlay|/var/lib/docker' | awk 'NR>1 {print $4}' | paste -sd+ - | bc
 
-cat /etc/centos-release
+# cat /etc/centos-release
+cat /etc/system-release
 
 echo "$0 done."
 exit 0
