@@ -254,23 +254,30 @@ public abstract class AbstractConfig implements IConfig {
         //读取模板内容
         String replacedTemplate = FileUtil.readUtf8String(templatedFile);
 
-        //根据绝对路径获取当前占位符以及用户预配置内容 Map 集合
-        final Map<String, String> placeholderValueMap = configPreMap.get(templatedFile.getAbsolutePath());
+        replacedTemplate = replacedTemplate.replace("\r\n", "\n");
 
-        //当前配置文件没有预配置选项，直接返回
-        if (placeholderValueMap == null) {
+        //获取模板文件路径，转换为 Unix 风格的路径，确保与 configPreMap 中的键格式一致
+        String templatedFileName = templatedFile.getName();
+
+        List<Map<String, String>> configPreMapList = configPreMap.entrySet()
+                .stream()
+                .filter(entry -> entry.getKey().endsWith(templatedFileName))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toList());
+
+        if (configPreMapList.isEmpty()) {
             return replacedTemplate;
         }
 
-        //使用 .replace() 方法替换 replacedTemplate 字符串中的相应占位符
-        return placeholderValueMap.entrySet()
-                .stream()
-                .reduce(replacedTemplate,
-                        (content, entry) -> content.replace(
-                                entry.getKey(),
-                                entry.getValue()
-                        ),
-                        (a, b) -> b);
+        for (Map<String, String> subConfigPreMap : configPreMapList) {
+            Set<Map.Entry<String, String>> entries = subConfigPreMap.entrySet();
+            for (Map.Entry<String, String> entry : entries) {
+                String key = entry.getKey();
+                String value = entry.getValue();
+                replacedTemplate = replacedTemplate.replace(key, value);
+            }
+        }
+        return replacedTemplate;
     }
 
     /**
