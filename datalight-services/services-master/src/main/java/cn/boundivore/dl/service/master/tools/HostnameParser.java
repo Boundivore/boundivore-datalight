@@ -191,7 +191,7 @@ public class HostnameParser {
      */
     private static Set<String> findInvalidHostnames(Set<String> allHostnames) {
         Set<String> invalidHostnames = new HashSet<>();
-        Pattern pattern = Pattern.compile("[^a-zA-Z\\d@._]");
+        Pattern pattern = Pattern.compile("[^a-zA-Z\\d@._\\-]");
 
         for (String hostname : allHostnames) {
             Matcher matcher = pattern.matcher(hostname);

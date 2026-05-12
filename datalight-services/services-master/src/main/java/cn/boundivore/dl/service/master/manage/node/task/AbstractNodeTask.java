@@ -493,7 +493,9 @@ public abstract class AbstractNodeTask implements INodeTask {
      * @return 目标节点为当前 Master 节点，返回 true ，反之返回 false
      */
     private boolean isMasterNode(String targetHostname) {
-        return targetHostname.equals(DataLightEnv.MASTER_HOSTNAME);
+        // 同时比较主机名和 IP 地址
+        return targetHostname.equals(DataLightEnv.MASTER_HOSTNAME)
+                || targetHostname.equals(DataLightEnv.MASTER_IP);
     }
 
 
