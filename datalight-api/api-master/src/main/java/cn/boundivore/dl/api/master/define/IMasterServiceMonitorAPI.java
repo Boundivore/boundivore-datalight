@@ -26,6 +26,6 @@ public interface IMasterServiceMonitorAPI {
     Result<AbstractServiceMonitorVo.ServiceMonitorStatusResponse> getServiceMonitorStatus(
             @Schema(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
-            String clusterId
+            Long clusterId
     ) throws Exception;
 }

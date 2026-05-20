@@ -22,7 +22,7 @@ public class MasterServiceMonitorController implements IMasterServiceMonitorAPI 
     private final MasterServiceMonitorService masterServiceMonitorService;
 
     @Override
-    public Result<AbstractServiceMonitorVo.ServiceMonitorStatusResponse> getServiceMonitorStatus(String clusterId) throws Exception {
+    public Result<AbstractServiceMonitorVo.ServiceMonitorStatusResponse> getServiceMonitorStatus(Long clusterId) throws Exception {
         AbstractServiceMonitorVo.ServiceMonitorStatusResponse response = masterServiceMonitorService.getServiceMonitorStatus(clusterId);
         return Result.success(response);
     }
