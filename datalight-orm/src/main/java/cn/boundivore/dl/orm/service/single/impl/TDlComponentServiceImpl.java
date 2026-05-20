@@ -4,6 +4,7 @@ import cn.boundivore.dl.orm.po.single.TDlComponent;
 import cn.boundivore.dl.orm.mapper.single.TDlComponentMapper;
 import cn.boundivore.dl.orm.service.single.ITDlComponentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-09 11:37:19
  */
 @Service
+@Primary
 public class TDlComponentServiceImpl extends ServiceImpl<TDlComponentMapper, TDlComponent> implements ITDlComponentService {
 
 }
