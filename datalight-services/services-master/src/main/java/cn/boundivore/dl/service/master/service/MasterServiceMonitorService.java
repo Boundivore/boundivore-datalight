@@ -78,8 +78,7 @@ public class MasterServiceMonitorService {
             List<TDlComponent> allComponents = componentService.lambdaQuery()
                     .select()
                     .eq(TDlComponent::getClusterId, clusterId)
-                    .ne(TDlComponent::getComponentState, SCStateEnum.REMOVED)
-                    .ne(TDlComponent::getComponentState, SCStateEnum.UNSELECTED)
+                    .eq(TDlComponent::getComponentState, SCStateEnum.STARTED)
                     .list();
 
             if (CollUtil.isEmpty(allComponents)) {
