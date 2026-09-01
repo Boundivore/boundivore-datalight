@@ -30,7 +30,7 @@ export DATA_DIR="/data/datalight/data"
 # datalight-services-ai 仓库里的 Python 服务。默认不启用。
 # 不装 Python 也不影响 DataLight 正常运行。
 export DATALIGHT_AI_ENABLED="false"
-export DATALIGHT_AI_HOME="/opt/datalight-services-ai"
+export DATALIGHT_AI_HOME="/opt/datalight/services-ai"
 export DATALIGHT_AI_PORT="8010"
 export DATALIGHT_AI_UV_BIN=""
 

@@ -31,45 +31,103 @@ echo "jdk_repo_dir: ${jdk_repo_dir}"
 install_dir="/opt"
 profile_path="/etc/profile"
 
-# 服务侧 JDK 8
+# 下面两个名字是 directory.yaml 里 java-home / datalight-java-home 的落点，
+# 保持稳定。各发行版解压出来的真实目录名不一样（Oracle 是 jdk-17.0.13，
+# Temurin 带 +11 后缀，Zulu、Corretto 又是另一套），对不上时由脚本建软链抹平，
+# 配置不用跟着发行版改。
 service_jdk_dir_name="jdk1.8.0_202"
-service_jdk_tar_name="jdk-8u202-linux-x64.tar.gz"
+service_jdk_tar_glob="*8u*.tar.gz"
 
-# 平台侧 JDK 17
 datalight_jdk_dir_name="jdk-17.0.13"
-datalight_jdk_tar_name="jdk-17.0.13_linux-x64_bin.tar.gz"
+datalight_jdk_tar_glob="*17*.tar.gz"
+
+# 取某个 JDK 的主版本号。JDK 8 输出形如 1.8.0_202，JDK 9 以后形如 17.0.13
+# 与 node/scripts/check-jdk-settings.sh 保持同一套解析
+java_major_version() {
+  local java_bin="$1"
+  local raw
+  raw=$("${java_bin}" -version 2>&1 | awk -F '"' '/version/ {print $2}')
+  if [[ "${raw}" == 1.* ]]; then
+    echo "${raw}" | awk -F '.' '{print $2}'
+  else
+    echo "${raw}" | awk -F '.' '{print $1}'
+  fi
+}
 
 # 解压安装一套 JDK。已存在则跳过，保证脚本可重复执行。
-# $1 目录名  $2 安装包名
+# 文件名各发行版差别太大，光靠文件名判断不可靠，所以解压后用 java -version 核对。
+# $1 期望的稳定目录名  $2 安装包匹配模式  $3 期望主版本  $4 人看的用途说明
 install_jdk() {
   local dir_name="$1"
-  local tar_name="$2"
+  local tar_glob="$2"
+  local expect_major="$3"
+  local purpose="$4"
   local target_dir="${install_dir}/${dir_name}"
 
-  if [ -d "${target_dir}" ]; then
+  # 软链也算装过，所以用 -e 不用 -d
+  if [ -e "${target_dir}" ]; then
     echo "JDK already installed: ${target_dir}"
     return 0
   fi
 
-  if [ ! -f "${jdk_repo_dir}/${tar_name}" ]; then
-    echo "JDK package not found: ${jdk_repo_dir}/${tar_name}" >&2
+  local tar_path
+  tar_path=$(find "${jdk_repo_dir}" -maxdepth 1 -type f -name "${tar_glob}" 2>/dev/null | sort | head -n 1)
+
+  if [ -z "${tar_path}" ]; then
+    echo "" >&2
+    echo "找不到${purpose}的安装包。" >&2
+    echo "  期望位置: ${jdk_repo_dir}" >&2
+    echo "  匹配模式: ${tar_glob}" >&2
+    echo "请把 JDK ${expect_major} 的 linux-x64 安装包放进该目录后重新执行本脚本。" >&2
+    echo "" >&2
     return 1
   fi
 
-  echo "Installing ${dir_name} ..."
-  tar -zxf "${jdk_repo_dir}/${tar_name}" -C "${install_dir}" || return 1
-
-  if [ ! -d "${target_dir}" ]; then
-    echo "Unexpected directory layout in ${tar_name}, expected ${target_dir}" >&2
+  # 先看包里的顶层目录名，解压后才知道东西落在哪
+  local top_dir
+  top_dir=$(tar -tzf "${tar_path}" 2>/dev/null | head -n 1 | cut -d/ -f1)
+  if [ -z "${top_dir}" ]; then
+    echo "安装包无法读取或不是 tar.gz: ${tar_path}" >&2
     return 1
   fi
 
-  echo "${dir_name} installed."
+  echo "Installing ${purpose} from $(basename "${tar_path}") ..."
+  tar -zxf "${tar_path}" -C "${install_dir}" || return 1
+
+  local real_dir="${install_dir}/${top_dir}"
+  if [ ! -d "${real_dir}" ]; then
+    echo "解压结果与预期不符，包内顶层目录为 ${top_dir}，未在 ${install_dir} 下找到" >&2
+    return 1
+  fi
+
+  if [ ! -x "${real_dir}/bin/java" ]; then
+    echo "${real_dir}/bin/java 不存在或不可执行，这个包可能不是 JDK" >&2
+    return 1
+  fi
+
+  # 文件名可能骗人（jdk8u172 这种名字里也带 17），以 java -version 为准
+  local major
+  major=$(java_major_version "${real_dir}/bin/java")
+  if [ "${major}" != "${expect_major}" ]; then
+    echo "" >&2
+    echo "版本不符：${purpose}需要 JDK ${expect_major}，但 $(basename "${tar_path}") 实际是 JDK ${major}。" >&2
+    echo "请换成正确的安装包。已解压的目录 ${real_dir} 未做清理，确认后自行处理。" >&2
+    echo "" >&2
+    return 1
+  fi
+
+  # 发行版目录名与约定名不一致时建软链，让 directory.yaml 保持稳定
+  if [ "${top_dir}" != "${dir_name}" ]; then
+    ln -sfn "${real_dir}" "${target_dir}" || return 1
+    echo "已建立软链 ${target_dir} -> ${real_dir}"
+  fi
+
+  echo "${purpose} installed: ${target_dir} (JDK ${major})"
   return 0
 }
 
-install_jdk "${service_jdk_dir_name}" "${service_jdk_tar_name}" || exit 1
-install_jdk "${datalight_jdk_dir_name}" "${datalight_jdk_tar_name}" || exit 1
+install_jdk "${service_jdk_dir_name}" "${service_jdk_tar_glob}" "8" "大数据服务用的 JDK 8" || exit 1
+install_jdk "${datalight_jdk_dir_name}" "${datalight_jdk_tar_glob}" "17" "平台自身用的 JDK 17" || exit 1
 
 SERVICE_JAVA_HOME="${install_dir}/${service_jdk_dir_name}"
 DATALIGHT_JAVA_HOME="${install_dir}/${datalight_jdk_dir_name}"

@@ -18,8 +18,8 @@ datalight:
   # 默认关闭，不装 Python 也不影响 DataLight 正常运行。
   ai:
     enabled: false
-    # datalight-services-ai 仓库在节点上的路径，需提前执行过 uv sync
-    home: /opt/datalight-services-ai
+    # AIAgent 在节点上的路径。收在 datalight-dir 下，整棵树一个包交付
+    home: /opt/datalight/services-ai
     port: 8010
     # uv 可执行文件路径。留空则从 PATH 里找
     uv-bin: ""

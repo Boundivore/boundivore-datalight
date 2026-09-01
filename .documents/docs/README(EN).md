@@ -36,6 +36,11 @@ This software architecture implements a highly available, scalable distributed c
 - Components: Various components integrated into the platform.
 - KubeAPI: Service management that interacts with Kubernetes/KubeSphere API.
 
+Besides Master and Worker, the platform has an optional third role: **AIAgent**, whose process
+lives in [datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai). It sits
+alongside Master and Worker, starts and stops with the platform under a configuration switch, and
+is off by default. See section 9.
+
 ## 3. Concepts and Definitions
 
 - Service: HDFS, YARN, HIVE, etc. are referred to as services. Their names in this project are standardized as all uppercase, and service names are globally unique.
@@ -69,8 +74,25 @@ The following table lists the first-level functions of the DataLight platform an
 
 This project requires the following for compilation:
 
-- JDK 8
-- Gradle 7.4+
+- JDK 17
+- Gradle 9.2.1 (the repository ships a `gradlew` wrapper, so `./gradlew` works out of the box)
+
+### 5.1 About the Two JDKs
+
+The platform itself and the big data services it manages run on different JDKs. The two are
+independent and both must be installed:
+
+| Purpose | Version | Environment variable | Setting in `directory.yaml` |
+| --- | --- | --- | --- |
+| DataLight Master / Worker | JDK 17 | `DATALIGHT_JAVA_HOME` | `datalight-java-home` |
+| HDFS, YARN, HIVE and other services | JDK 8 | `JAVA_HOME` | `java-home` |
+
+The big data services stay on JDK 8 for compatibility. Do not upgrade them alongside the platform.
+On each node, the `java` on `PATH` points at the service-side JDK 8; the platform's launcher
+`bin/datalight.sh` explicitly uses `${DATALIGHT_JAVA_HOME}/bin/java` and does not rely on `PATH`.
+
+Both JDKs are installed by `assistant/scripts/init-jdk.sh` and verified by
+`node/scripts/check-jdk-settings.sh`.
 
 ## 6. Deployment Instructions
 
@@ -152,6 +174,11 @@ Clone this project and download the required service component packages and depe
   |                                                             |                                                              |          |
   | /opt/datalight/scripts                                      | Common script directory                                      | Yes      |
   | /opt/datalight/scripts/tools                                | General tool script directory                                | Yes      |
+  |                                                             |                                                              |          |
+  | /opt/datalight/services-ai                                  | AIAgent itself, i.e. the datalight-services-ai repository    | No       |
+  | /opt/datalight/services-ai/services-ai                      | AIAgent application code and dependency manifest             | No       |
+  | /opt/datalight/assistant/repo/jdk                           | Installers for both JDKs                                     | Yes      |
+  | /opt/datalight/assistant/repo/python                        | uv, Python runtime and offline dependencies for AIAgent      | No       |
 
 #### 6.3.1 Create Corresponding Directories
 
@@ -179,7 +206,30 @@ After cloning the project, open it with a code editor and perform the compilatio
 
 In the main project directory, find the .documents folder and copy its contents to the corresponding directories in the table above.
 
-#### 6.3.6 Prepare DLC Service Packages
+#### 6.3.6 Prepare Both JDKs
+
+Put the linux-x64 installers for JDK 8 and JDK 17 into
+`/opt/datalight/assistant/repo/jdk/`. `init-jdk.sh` picks them up and extracts them.
+
+Both are required; initialization aborts if either is missing. The script identifies packages by
+major version rather than by file name, so Oracle, Temurin, Zulu and Corretto all work. When the
+extracted directory name does not match the expected one, the script creates a symlink, so
+`directory.yaml` does not have to change per distribution.
+
+#### 6.3.7 Prepare AIAgent (optional)
+
+Skip this step if you are not enabling AIAgent; the rest of the platform is unaffected.
+
+Clone or extract
+[datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai) into
+`/opt/datalight/services-ai`, matching `datalight.ai.home` in `directory.yaml`.
+
+AIAgent needs Python 3.11 or newer plus uv; the Python shipped with CentOS 7 is too old. In an
+air-gapped environment these dependencies have to be distributed with the package. Tooling for
+that is still being built, so for now prepare the runtime on a machine with network access and
+copy it to the target node.
+
+#### 6.3.8 Prepare DLC Service Packages
 
 Go to the following address to download the DLC service packages:
 
@@ -445,6 +495,98 @@ After completing the above content, please refer to the [Product Manual](.docume
 | MINIO           | 20241218 | √                                                         | 2024-12         |
 | DINKY           | 1.2.3    | √                                                         | 2025-05         |
 | More....        |          |                                                           |                 |
+
+## 9. AIAgent
+
+The platform's AI capability is its own role, **AIAgent**, alongside Master and Worker. The
+process lives in the
+[datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai) repository.
+
+It gets its own role name because it is neither a Master nor a Worker, and configuration,
+startup, logs and documentation all need a way to refer to it.
+
+It starts and stops with the platform under a configuration switch and is off by default.
+DataLight runs normally on hosts without Python installed.
+
+### 9.1 What it does
+
+| Capability | Description |
+| --- | --- |
+| State Q&A | Query clusters, nodes, services, components, job progress, logs and metrics |
+| Fault diagnosis | Separate symptom from root cause, propose steps and how to verify them |
+| Configuration tuning | Read configuration, compare against earlier versions, suggest changes |
+| Conversational deployment | Fill in details over several turns, produce a per-node plan, execute after approval |
+| Automated operations | Automatic handling of predefined scenarios, with a rate ceiling |
+
+The entry point people use is the agent drawer in the top right of the console. The path is
+`front end -> Master -> AIAgent`, authenticated by the platform itself. AIAgent also serves a
+debug page at `http://<master>:8010/ui` that connects directly and bypasses platform
+authentication; use it to check the agent itself when no front end is running.
+
+### 9.2 Why it is not deployed by the platform
+
+It is not packaged into a DLC bundle and does not go through the Job/Stage/Task pipeline.
+
+The reason is chicken-and-egg: its core capability is conversational cluster deployment, and that
+is exactly the moment when no cluster exists. Packaging it as something the cluster deploys would
+break the very first step.
+
+It is also Python + uv, whereas the platform's service deployment model is built around tgz +
+shell + JDK. Forcing it into that model would require a separate distribution mechanism for
+virtual environments and offline dependencies, which is a lot of work for little gain.
+
+### 9.3 Enabling it
+
+Turn on the switch and set the path in `conf/env/directory.yaml`:
+
+~~~yaml
+datalight:
+  ai:
+    enabled: true
+    # Where AIAgent lives on the node, under /opt/datalight
+    home: /opt/datalight/services-ai
+    port: 8010
+    # Path to the uv executable; leave empty to look it up on PATH
+    uv-bin: ""
+~~~
+
+Then start and stop it with the same script as Master and Worker:
+
+~~~bash
+sh bin/datalight.sh start aiagent
+~~~
+
+~~~bash
+sh bin/datalight.sh stop aiagent
+~~~
+
+Model and Master account settings live in `services-ai/.env`; see `env.example` in that
+repository.
+
+### 9.4 Where its data comes from
+
+**AIAgent cannot reach the database directly.** Cluster metadata, job history and node logs all
+come through Master's REST APIs. Master exposes a set of aggregate endpoints for this, designed so
+one call returns a semantically complete snapshot:
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/v1/master/agent/cluster/snapshot` | Full picture: cluster, nodes, services, component states, active jobs |
+| `GET /api/v1/master/agent/health/summary` | Health summary: only abnormal nodes, abnormal components, components awaiting restart |
+| `GET /api/v1/master/agent/job/history` | Job history, newest first |
+| `GET /api/v1/master/agent/log/tail` | Tail of a component log; the server assembles the path, callers never pass one |
+
+These endpoints are open to people as well. They are not a back door built for the agent, and the
+front end can reuse them wherever it needs the same aggregate view.
+
+### 9.5 Safety boundaries
+
+No tool executes arbitrary commands, arbitrary SQL, or reads and writes arbitrary paths. Every
+change is graded by risk, and irreversible operations always require explicit human confirmation.
+
+For details see the
+[architecture notes](https://gitee.com/boundivore/datalight-services-ai/blob/master/services-ai/docs/architecture.en.md)
+in that repository.
 
 ## Participate in Open Source
 

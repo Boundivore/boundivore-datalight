@@ -185,6 +185,11 @@ clone 本项目，并下载所以来的服务组件包和依赖库库，包括�
   |                                                   |                                           |          |
   | /opt/datalight/scripts                            | 公共脚本目录                              | 是       |
   | /opt/datalight/scripts/tools                      | 通用工具脚本目录                          | 是       |
+  |                                                   |                                           |          |
+  | /opt/datalight/services-ai                        | AIAgent 本体，即 datalight-services-ai 仓库 | 否       |
+  | /opt/datalight/services-ai/services-ai            | AIAgent 应用代码与依赖清单                | 否       |
+  | /opt/datalight/assistant/repo/jdk                 | 两套 JDK 的安装包                         | 是       |
+  | /opt/datalight/assistant/repo/python              | AIAgent 用的 uv、Python 运行时与离线依赖  | 否       |
 
 #### 6.3.1  创建对应目录
 
@@ -212,7 +217,28 @@ https://gitee.com/boundivore/boundivore-datalight-web
 
 在主项目目录中，找到 .documents 文件夹，其下对应内容，拷贝至上述表格中对应的目录中即可。
 
-#### 6.3.6 准备 DLC 服务包
+#### 6.3.6 准备两套 JDK
+
+把 JDK 8 与 JDK 17 的 linux-x64 安装包放进 `/opt/datalight/assistant/repo/jdk/`，
+`init-jdk.sh` 会自动识别并解压。
+
+两个包都是必需的，缺任意一个初始化都会中断。脚本按主版本号识别，不认文件名，
+Oracle、Temurin、Zulu、Corretto 都可以，解压出的目录名与约定不一致时脚本会自建软链，
+`directory.yaml` 不用跟着改。
+
+#### 6.3.7 准备 AIAgent（可选）
+
+不启用 AIAgent 可以跳过本步，不影响平台其余部分。
+
+把 [datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai)
+克隆或解压到 `/opt/datalight/services-ai`，与 `directory.yaml` 里的
+`datalight.ai.home` 保持一致。
+
+AIAgent 需要 Python 3.11 及以上与 uv，CentOS 7 自带的 Python 版本不够。
+离线环境下这部分依赖需要随包分发，相关工具尚在完善中，
+当前请在能联网的环境准备好运行时后再拷贝到目标节点。
+
+#### 6.3.8 准备 DLC 服务包
 
 前往如下地址下载 DLC 服务包：
 
@@ -519,8 +545,8 @@ AIAgent 另有一个自带的调试页 `http://<主节点>:8010/ui`，直连该�
 datalight:
   ai:
     enabled: true
-    # datalight-services-ai 仓库在节点上的路径，需提前执行过 uv sync
-    home: /opt/datalight-services-ai
+    # AIAgent 在节点上的路径，收在 /opt/datalight 下
+    home: /opt/datalight/services-ai
     port: 8010
     # uv 可执行文件路径，留空则从 PATH 里找
     uv-bin: ""
