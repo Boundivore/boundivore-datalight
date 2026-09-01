@@ -20,16 +20,16 @@ import cn.boundivore.dl.base.request.impl.master.AbstractServiceComponentRequest
 import cn.boundivore.dl.base.response.impl.master.AbstractServiceComponentVo;
 import cn.boundivore.dl.base.response.impl.master.ServiceWebUIVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -45,7 +45,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterComponentAPI", tags = {"Master 接口：组件相关"})
+@Tag(name = "Master 接口：组件相关", description = "IMasterComponentAPI")
 @FeignClient(
         name = "IMasterComponentAPI",
         contextId = "IMasterComponentAPI",
@@ -54,44 +54,44 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterComponentAPI {
 
     @GetMapping(value = "/component/listByComponentName")
-    @ApiOperation(notes = "获取指定组件的列表信息", value = "获取指定组件的列表信息")
+    @Operation(summary = "获取指定组件的列表信息", description = "获取指定组件的列表信息")
     Result<AbstractServiceComponentVo.ComponentListVo> getComponentListByComponentName(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
-            @ApiParam(name = "ServiceName", value = "服务名称")
+            @Parameter(name = "ServiceName", description = "服务名称")
             @RequestParam(value = "ServiceName", required = true)
             String serviceName,
 
-            @ApiParam(name = "ComponentName", value = "组件名称")
+            @Parameter(name = "ComponentName", description = "组件名称")
             @RequestParam(value = "ComponentName", required = true)
             String componentName
     ) throws Exception;
 
     @GetMapping(value = "/component/listByServiceName")
-    @ApiOperation(notes = "获取指定服务下的组件分布信息", value = "获取指定服务下的组件分布信息")
+    @Operation(summary = "获取指定服务下的组件分布信息", description = "获取指定服务下的组件分布信息")
     Result<AbstractServiceComponentVo.ComponentVo> getComponentList(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
-            @ApiParam(name = "ServiceName", value = "服务名称")
+            @Parameter(name = "ServiceName", description = "服务名称")
             @RequestParam(value = "ServiceName", required = true)
             String serviceName
     ) throws Exception;
 
     @GetMapping(value = "/component/list")
-    @ApiOperation(notes = "获取服务下的组件信息列表并附带其状态信息", value = "获取服务下的组件信息列表并附带其状态信息")
+    @Operation(summary = "获取服务下的组件信息列表并附带其状态信息", description = "获取服务下的组件信息列表并附带其状态信息")
     Result<AbstractServiceComponentVo.ComponentVo> getComponentList(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
 
 
     @PostMapping(value = "/component/select")
-    @ApiOperation(notes = "选择准备部署的组件", value = "选择准备部署的组件")
+    @Operation(summary = "选择准备部署的组件", description = "选择准备部署的组件")
     Result<String> saveComponentSelected(
             @RequestBody
             @Valid
@@ -99,7 +99,7 @@ public interface IMasterComponentAPI {
     ) throws Exception;
 
     @PostMapping(value = "/component/removeBatchByIds")
-    @ApiOperation(notes = "批量移除组件", value = "批量移除组件")
+    @Operation(summary = "批量移除组件", description = "批量移除组件")
     Result<AbstractServiceComponentVo.RemoveComponentBatchVo> removeComponentBatchByIds(
             @RequestBody
             @Valid
@@ -107,7 +107,7 @@ public interface IMasterComponentAPI {
     ) throws Exception;
 
     @PostMapping(value = "/component/updateComponentRestartMark")
-    @ApiOperation(notes = "更新组件重启标记", value = "更新组件重启标记")
+    @Operation(summary = "更新组件重启标记", description = "更新组件重启标记")
     Result<String> updateComponentRestartMark(
             @RequestBody
             @Valid
@@ -116,21 +116,21 @@ public interface IMasterComponentAPI {
 
 
     @GetMapping(value = "/component/webUI/list")
-    @ApiOperation(notes = "获取指定集群、服务下的组件 WebUI 列表", value = "获取指定集群、服务下的组件 WebUI 列表")
+    @Operation(summary = "获取指定集群、服务下的组件 WebUI 列表", description = "获取指定集群、服务下的组件 WebUI 列表")
     Result<ServiceWebUIVo> getComponentWebUIList(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
-            @ApiParam(name = "ServiceName", value = "服务名称")
+            @Parameter(name = "ServiceName", description = "服务名称")
             @RequestParam(value = "ServiceName", required = true)
             String serviceName
     ) throws Exception;
 
     @GetMapping(value = "/component/datanode/decommission/refresh")
-    @ApiOperation(notes = "刷新所有 DataNode 退役情况", value = "刷新所有 DataNode 退役情况")
+    @Operation(summary = "刷新所有 DataNode 退役情况", description = "刷新所有 DataNode 退役情况")
     Result<String> refreshDataNodeDecommission(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;

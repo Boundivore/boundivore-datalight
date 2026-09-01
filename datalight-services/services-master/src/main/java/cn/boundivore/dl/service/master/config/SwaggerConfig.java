@@ -19,19 +19,12 @@ package cn.boundivore.dl.service.master.config;
 import cn.boundivore.dl.cloud.swagger.AbsBaseSwaggerConfig;
 import cn.boundivore.dl.cloud.swagger.SwaggerProperties;
 import cn.hutool.core.net.NetUtil;
-import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.net.InetAddress;
-
-import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 
 /**
@@ -39,15 +32,12 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/13
- * Modification description:
- * Modified by:
- * Modification time:
- * Version: V1.0
+ * Modification description: 由 springfox 迁移到 springdoc，适配 Spring Boot 3
+ * Modified by: Boundivore
+ * Modification time: 2026/9/1
+ * Version: V2.0
  */
 @Configuration
-@EnableOpenApi
-@EnableKnife4j
-@EnableSwagger2
 @Slf4j
 public class SwaggerConfig extends AbsBaseSwaggerConfig {
 
@@ -70,10 +60,5 @@ public class SwaggerConfig extends AbsBaseSwaggerConfig {
                 .port(port)
                 .groupName(appName)
                 .build();
-    }
-
-    @Bean
-    public BeanPostProcessor springfoxHandlerProviderBeanPostProcessor() {
-        return handlerProviderBeanPostProcessor();
     }
 }

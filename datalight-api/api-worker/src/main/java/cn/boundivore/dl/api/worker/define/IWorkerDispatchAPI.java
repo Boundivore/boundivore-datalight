@@ -18,9 +18,9 @@ package cn.boundivore.dl.api.worker.define;
 
 import cn.boundivore.dl.base.response.impl.common.AbstractDataLightDirVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +38,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IWorkerDispatchAPI", tags = {"Worker 接口：重分发文件相关"})
+@Tag(name = "Worker 接口：重分发文件相关", description = "IWorkerDispatchAPI")
 @FeignClient(
         name = "IWorkerDispatchAPI",
         contextId = "IWorkerDispatchAPI",
@@ -47,9 +47,9 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
 public interface IWorkerDispatchAPI {
 
     @GetMapping(value = "/dispatch/getDataLightDirTree")
-    @ApiOperation(notes = "获取当前节点 DataLight 部署目录树状集合", value = "获取当前节点 DataLight 部署目录树状集合")
+    @Operation(summary = "获取当前节点 DataLight 部署目录树状集合", description = "获取当前节点 DataLight 部署目录树状集合")
     Result<AbstractDataLightDirVo.DataLightDirCollectionVo> getDataLightDirTree(
-            @ApiParam(name = "DataLightDirectory", value = "DataLight 根目录")
+            @Parameter(name = "DataLightDirectory", description = "DataLight 根目录")
             @RequestParam(value = "DataLightDirectory", required = true)
             String dataLightDirectory
     ) throws Exception;

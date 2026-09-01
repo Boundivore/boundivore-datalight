@@ -19,9 +19,9 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.enumeration.impl.LogTypeEnum;
 import cn.boundivore.dl.base.response.impl.master.AbstractAuditVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +39,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterAuditAPI", tags = {"Master 接口：审计相关"})
+@Tag(name = "Master 接口：审计相关", description = "IMasterAuditAPI")
 @FeignClient(
         name = "IMasterAuditAPI",
         contextId = "IMasterAuditAPI",
@@ -48,57 +48,57 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterAuditAPI {
 
     @GetMapping(value = "/audit/getAuditLogSimpleList")
-    @ApiOperation(notes = "获取审计日志缩略信息列表", value = "获取审计日志缩略信息列表")
+    @Operation(summary = "获取审计日志缩略信息列表", description = "获取审计日志缩略信息列表")
     Result<AbstractAuditVo.AuditLogSimpleListVo> getAuditLogSimpleList(
-            @ApiParam(name = "CurrentPage", value = "当前页码")
+            @Parameter(name = "CurrentPage", description = "当前页码")
             @RequestParam(value = "CurrentPage", required = false)
             Long currentPage,
 
-            @ApiParam(name = "PageSize", value = "每页条目数")
+            @Parameter(name = "PageSize", description = "每页条目数")
             @RequestParam(value = "PageSize", required = false)
             Long pageSize,
 
-            @ApiParam(name = "Principal", value = "用户主体")
+            @Parameter(name = "Principal", description = "用户主体")
             @RequestParam(value = "Principal", required = false)
             String principal,
 
-            @ApiParam(name = "UserId", value = "用户 ID")
+            @Parameter(name = "UserId", description = "用户 ID")
             @RequestParam(value = "UserId", required = false)
             Long userId,
 
-            @ApiParam(name = "OpName", value = "操作名称")
+            @Parameter(name = "OpName", description = "操作名称")
             @RequestParam(value = "OpName", required = false)
             String opName,
 
-            @ApiParam(name = "StartTs", value = "起始时间(包含)")
+            @Parameter(name = "StartTs", description = "起始时间(包含)")
             @RequestParam(value = "StartTs", required = false)
             Long startTs,
 
-            @ApiParam(name = "EndTs", value = "结束时间(包含)")
+            @Parameter(name = "EndTs", description = "结束时间(包含)")
             @RequestParam(value = "EndTs", required = false)
             Long endTs,
 
-            @ApiParam(name = "Uri", value = "操作路径")
+            @Parameter(name = "Uri", description = "操作路径")
             @RequestParam(value = "Uri", required = false)
             String uri,
 
-            @ApiParam(name = "Ip", value = "操作 IP")
+            @Parameter(name = "Ip", description = "操作 IP")
             @RequestParam(value = "Ip", required = false)
             String Ip,
 
-            @ApiParam(name = "LogType", value = "日志类型")
+            @Parameter(name = "LogType", description = "日志类型")
             @RequestParam(value = "LogType", required = false)
             LogTypeEnum logType,
 
-            @ApiParam(name = "IsOrderByDescTs", value = "是否根据时间戳降序")
+            @Parameter(name = "IsOrderByDescTs", description = "是否根据时间戳降序")
             @RequestParam(value = "IsOrderByDescTs", required = false, defaultValue = "true")
             Boolean isOrderByDescTs
     ) throws Exception;
 
     @GetMapping(value = "/audit/getAuditLogDetail")
-    @ApiOperation(notes = "根据审计日志 ID 获取日志详情", value = "根据审计日志 ID 获取日志详情")
+    @Operation(summary = "根据审计日志 ID 获取日志详情", description = "根据审计日志 ID 获取日志详情")
     Result<AbstractAuditVo.AuditLogDetailVo> getAuditLogDetail(
-            @ApiParam(name = "AuditLogId", value = "审计日志 ID")
+            @Parameter(name = "AuditLogId", description = "审计日志 ID")
             @RequestParam(value = "AuditLogId", required = true)
             Long auditLogId
     ) throws Exception;

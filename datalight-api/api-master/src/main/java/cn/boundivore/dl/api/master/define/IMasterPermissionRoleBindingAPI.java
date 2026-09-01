@@ -19,13 +19,13 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.request.impl.master.AbstractPermissionRuleRequest;
 import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -40,7 +40,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterPermissionRoleBindingAPI", tags = {"Master 接口：权限角色绑定关系相关"})
+@Tag(name = "Master 接口：权限角色绑定关系相关", description = "IMasterPermissionRoleBindingAPI")
 @FeignClient(
         name = "IMasterPermissionRoleBindingAPI",
         contextId = "IMasterPermissionRoleBindingAPI",
@@ -49,7 +49,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterPermissionRoleBindingAPI {
 
     @PostMapping(value = "/permission/relation/attachPermissionRoleByPermissionRoleId")
-    @ApiOperation(notes = "绑定权限角色映射关系", value = "绑定权限角色映射关系")
+    @Operation(summary = "绑定权限角色映射关系", description = "绑定权限角色映射关系")
     Result<String> attachPermissionRoleByPermissionRoleId(
             @RequestBody
             @Valid
@@ -57,7 +57,7 @@ public interface IMasterPermissionRoleBindingAPI {
     ) throws Exception;
 
     @PostMapping(value = "/permission/relation/detachPermissionRoleByPermissionRoleId")
-    @ApiOperation(notes = "根据权限角色 ID 移除权限角色绑定关系", value = "根据权限角色 ID 移除权限角色绑定关系")
+    @Operation(summary = "根据权限角色 ID 移除权限角色绑定关系", description = "根据权限角色 ID 移除权限角色绑定关系")
     Result<String> detachPermissionRoleByPermissionRoleId(
             @RequestBody
             @Valid
@@ -65,7 +65,7 @@ public interface IMasterPermissionRoleBindingAPI {
     ) throws Exception;
 
     @PostMapping(value = "/permission/relation/detachPermissionRoleByRoleId")
-    @ApiOperation(notes = "根据角色 ID 移除权限角色绑定关系", value = "根据角色 ID 移除权限角色绑定关系")
+    @Operation(summary = "根据角色 ID 移除权限角色绑定关系", description = "根据角色 ID 移除权限角色绑定关系")
     Result<String> detachPermissionRoleByRoleId(
             @RequestBody
             @Valid

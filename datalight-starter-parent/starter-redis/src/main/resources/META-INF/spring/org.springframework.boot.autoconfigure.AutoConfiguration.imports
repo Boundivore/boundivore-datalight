@@ -1,0 +1,3 @@
+cn.boundivore.dl.starter.redis.RedisAutoConfiguration
+cn.boundivore.dl.starter.redis.lock.RedissonDistributedLock
+cn.boundivore.dl.starter.redis.template.RedisRepository

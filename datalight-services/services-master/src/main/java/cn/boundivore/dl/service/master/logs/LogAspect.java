@@ -22,7 +22,7 @@ import cn.boundivore.dl.boot.utils.ReactiveAddressUtil;
 import cn.boundivore.dl.service.master.env.DataLightEnv;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
@@ -220,7 +220,7 @@ public class LogAspect {
     }
 
     /**
-     * Description: 获取日志名称。如果没有指定日志名称，则尝试从 @ApiOperation 注解中获取。
+     * Description: 获取日志名称。如果没有指定日志名称，则尝试从 @Operation 注解中获取。
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
      * Creation time: 2024/6/11
@@ -238,10 +238,10 @@ public class LogAspect {
             Class<?> targetClass = joinPoint.getTarget().getClass();
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             Method method = methodSignature.getMethod();
-            ApiOperation apiOperation = this.getAnnotationFromMethodOrClass(method, targetClass, ApiOperation.class);
+            Operation operation = this.getAnnotationFromMethodOrClass(method, targetClass, Operation.class);
 
-            if (apiOperation != null) {
-                logName = apiOperation.notes();
+            if (operation != null) {
+                logName = operation.description();
             } else {
                 logName = String.format("%s#%s", targetClass.getName(), method.getName());
             }

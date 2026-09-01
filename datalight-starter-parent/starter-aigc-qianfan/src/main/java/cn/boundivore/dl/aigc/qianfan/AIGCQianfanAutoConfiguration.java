@@ -17,6 +17,7 @@
 package cn.boundivore.dl.aigc.qianfan;
 
 import cn.boundivore.dl.aigc.qianfan.properties.AIGCQianfanProperties;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.ComponentScan;
  * Modification time:
  * Version: V1.0
  */
+@AutoConfiguration
 @ComponentScan(basePackages = {"cn.boundivore.dl"})
 @EnableConfigurationProperties({AIGCQianfanProperties.class})
 public class AIGCQianfanAutoConfiguration {

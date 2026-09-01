@@ -17,6 +17,7 @@
 package cn.boundivore.dl.starter.redis.template;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisClusterNode;
@@ -43,6 +44,7 @@ import java.util.concurrent.TimeUnit;
  * Modification time:
  * Version: V1.0
  */
+@AutoConfiguration
 @Slf4j
 @SuppressWarnings("unchecked")
 public class RedisRepository {

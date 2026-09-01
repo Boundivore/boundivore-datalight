@@ -40,15 +40,15 @@ public class TDlInitProcedure extends TBasePo<TDlInitProcedure> {
     private ProcedureStateEnum procedureState;
 
     @Schema(name = "节点作业 ID")
-    @TableField(value = "node_job_id", updateStrategy = FieldStrategy.IGNORED)
+    @TableField(value = "node_job_id", updateStrategy = FieldStrategy.ALWAYS)
     private Long nodeJobId;
 
     @Schema(name = "当前操作的节点信息列表")
-    @TableField(value = "node_info_list_base64", updateStrategy = FieldStrategy.IGNORED)
+    @TableField(value = "node_info_list_base64", updateStrategy = FieldStrategy.ALWAYS)
     private String nodeInfoListBase64;
 
     @Schema(name = "作业 ID")
-    @TableField(value = "job_id", updateStrategy = FieldStrategy.IGNORED)
+    @TableField(value = "job_id", updateStrategy = FieldStrategy.ALWAYS)
     private Long jobId;
 
 

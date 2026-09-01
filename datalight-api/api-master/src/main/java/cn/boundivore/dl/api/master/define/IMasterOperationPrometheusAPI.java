@@ -17,9 +17,9 @@
 package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +37,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterOperationPrometheusAPI", tags = {"Master 接口：操作 Prometheus 相关"})
+@Tag(name = "Master 接口：操作 Prometheus 相关", description = "IMasterOperationPrometheusAPI")
 @FeignClient(
         name = "IMasterOperationPrometheusAPI",
         contextId = "IMasterOperationPrometheusAPI",
@@ -46,9 +46,9 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterOperationPrometheusAPI {
 
     @GetMapping(value = "/operation/prometheus/resetPrometheusConfig")
-    @ApiOperation(notes = "重置 Prometheus 配置", value = "重置 Prometheus 配置")
+    @Operation(summary = "重置 Prometheus 配置", description = "重置 Prometheus 配置")
     Result<String> resetPrometheusConfig(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;

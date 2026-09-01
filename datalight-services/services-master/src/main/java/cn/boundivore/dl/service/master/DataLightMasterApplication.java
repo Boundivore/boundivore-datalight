@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.service.master;
 
-import io.prometheus.client.CollectorRegistry;
+import io.prometheus.metrics.model.registry.PrometheusRegistry;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -52,8 +52,22 @@ public class DataLightMasterApplication extends SpringBootServletInitializer {
         SpringApplication.run(DataLightMasterApplication.class, args);
     }
 
+    /**
+     * Description: 暴露 Prometheus 默认注册表。
+     * Micrometer 1.13 起改用 Prometheus Java Client 1.x，CollectorRegistry 已由 PrometheusRegistry 取代。
+     * 这里显式返回 defaultRegistry，保证直接注册到默认注册表的指标同样能被采集到。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/3/29
+     * Modification description: CollectorRegistry 迁移为 PrometheusRegistry
+     * Modified by: Boundivore
+     * Modification time: 2026/9/1
+     * Throws:
+     *
+     * @return PrometheusRegistry Prometheus 默认注册表
+     */
     @Bean
-    public CollectorRegistry collectorRegistry() {
-        return CollectorRegistry.defaultRegistry;
+    public PrometheusRegistry prometheusRegistry() {
+        return PrometheusRegistry.defaultRegistry;
     }
 }

@@ -21,7 +21,7 @@ import cn.boundivore.dl.service.master.service.MasterFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Description: MasterFileController

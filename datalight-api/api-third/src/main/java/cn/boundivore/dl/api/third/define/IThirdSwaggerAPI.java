@@ -17,8 +17,8 @@
 package cn.boundivore.dl.api.third.define;
 
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +38,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IThirdSwaggerAPI", tags = {"Swagger 接口：调用 Swagger 接口"})
+@Tag(name = "Swagger 接口：调用 Swagger 接口", description = "IThirdSwaggerAPI")
 @FeignClient(
         name = "IThirdSwaggerAPI",
         contextId = "IThirdSwaggerAPI",
@@ -47,7 +47,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 public interface IThirdSwaggerAPI {
 
     @GetMapping(value = "/v3/api-docs")
-    @ApiOperation(notes = "获取 Swagger API 信息", value = "获取 Swagger API 信息")
+    @Operation(summary = "获取 Swagger API 信息", description = "获取 Swagger API 信息")
     Result<String> getSwaggerApiInfo(
             @RequestParam
             Map<String, String> queryParams

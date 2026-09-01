@@ -6,17 +6,18 @@ dependencies {
     implementation group: 'cn.hutool', name: 'hutool-all'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
-    implementation group: 'com.alibaba', name: 'fastjson'
+    implementation group: 'com.alibaba.fastjson2', name: 'fastjson2'
     implementation group: 'com.thoughtworks.xstream', name: 'xstream'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api'
     implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt'
 
     implementation  group: 'com.alibaba', name: 'transmittable-thread-local'
-    implementation group: 'com.alibaba', name: 'druid-spring-boot-starter'
-    implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter'
+    implementation group: 'com.alibaba', name: 'druid-spring-boot-3-starter'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-spring-boot3-starter'
+    // MyBatis-Plus 3.5.9 起，分页等依赖 JSqlParser 的能力拆到了独立模块
+    implementation group: 'com.baomidou', name: 'mybatis-plus-jsqlparser'
     implementation group: 'com.baomidou', name: 'mybatis-plus-generator'
-    implementation group: 'icu.mhb', name: 'mybatis-plus-join'
-    implementation group: 'mysql', name: 'mysql-connector-java'
+    implementation group: 'com.mysql', name: 'mysql-connector-j'
     implementation group: 'org.freemarker', name: 'freemarker'
 }

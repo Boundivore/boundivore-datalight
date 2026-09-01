@@ -18,13 +18,13 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractAIGCRequest;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -39,7 +39,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterAIGCAPI", tags = {"Master 接口：AIGC 内容生成相关"})
+@Tag(name = "Master 接口：AIGC 内容生成相关", description = "IMasterAIGCAPI")
 @FeignClient(
         name = "IMasterAIGCAPI",
         contextId = "IMasterAIGCAPI",
@@ -48,7 +48,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterAIGCAPI {
 
     @PostMapping(value = "/aigc/sendMessage")
-    @ApiOperation(notes = "向 AIGC 发送消息", value = "向 AIGC 发送消息")
+    @Operation(summary = "向 AIGC 发送消息", description = "向 AIGC 发送消息")
     Result<String> sendMessage(
             @RequestBody
             @Valid

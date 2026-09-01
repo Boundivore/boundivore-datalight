@@ -2,8 +2,8 @@ apply plugin: 'application'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'java'
 
-sourceSets {
-    mainClassName = 'cn.boundivore.dl.service.master.DataLightMasterApplication'
+application {
+    mainClass = 'cn.boundivore.dl.service.master.DataLightMasterApplication'
 }
 
 dependencies {
@@ -31,28 +31,27 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail'
 
 //    implementation group: 'cn.dev33', name: 'sa-token-jwt'
-    implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'
+    implementation group: 'cn.dev33', name: 'sa-token-spring-boot3-starter'
 
     implementation group: 'cn.hutool', name: 'hutool-all'
     implementation group: 'org.apache.poi', name: 'poi-ooxml'
     implementation group: 'xerces', name: 'xercesImpl'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
-    implementation group: 'com.alibaba', name: 'fastjson'
+    implementation group: 'com.alibaba.fastjson2', name: 'fastjson2'
     implementation group: 'com.thoughtworks.xstream', name: 'xstream'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api'
     implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt'
 
     implementation group: 'com.alibaba', name: 'transmittable-thread-local'
-    implementation group: 'com.alibaba', name: 'druid-spring-boot-starter'
-    implementation group: 'com.baomidou', name: 'mybatis-plus-boot-starter'
+    implementation group: 'com.alibaba', name: 'druid-spring-boot-3-starter'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-spring-boot3-starter'
+    implementation group: 'com.baomidou', name: 'mybatis-plus-jsqlparser'
     implementation group: 'com.baomidou', name: 'mybatis-plus-generator'
-    implementation group: 'icu.mhb', name: 'mybatis-plus-join'
-    implementation group: 'mysql', name: 'mysql-connector-java'
+    implementation group: 'com.mysql', name: 'mysql-connector-j'
     implementation group: 'org.freemarker', name: 'freemarker'
 
-    implementation 'log4j:log4j'
 
     implementation group: 'org.springframework.data', name: 'spring-data-commons'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
@@ -70,6 +69,7 @@ dependencies {
 
 //    implementation group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-discovery'
 //    implementation group: 'com.alibaba.cloud', name: 'spring-cloud-starter-alibaba-nacos-config'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'

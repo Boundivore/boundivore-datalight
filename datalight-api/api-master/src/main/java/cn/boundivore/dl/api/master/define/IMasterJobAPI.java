@@ -18,14 +18,14 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -40,7 +40,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterJobAPI", tags = {"Master 接口：作业异步任务管理相关"})
+@Tag(name = "Master 接口：作业异步任务管理相关", description = "IMasterJobAPI")
 @FeignClient(
         name = "IMasterJobAPI",
         contextId = "IMasterJobAPI",
@@ -49,50 +49,50 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterJobAPI {
 
     @GetMapping(value = "/job/getActiveJobId")
-    @ApiOperation(notes = "获取指定集群下正在活跃的 JobId", value = "获取指定集群下正在活跃的 JobId")
+    @Operation(summary = "获取指定集群下正在活跃的 JobId", description = "获取指定集群下正在活跃的 JobId")
     Result<AbstractJobVo.JobIdVo> getActiveJobId() throws Exception;
 
     @GetMapping(value = "/job/progress")
-    @ApiOperation(notes = "获取作业任务进度", value = "获取作业任务进度")
+    @Operation(summary = "获取作业任务进度", description = "获取作业任务进度")
     Result<AbstractJobVo.JobProgressVo> getJobProgress(
-            @ApiParam(name = "JobId", value = "JobId")
+            @Parameter(name = "JobId", description = "JobId")
             @RequestParam(value = "JobId", required = true)
             Long jobId
     ) throws Exception;
 
     @GetMapping(value = "/job/activeJobPlanProgress")
-    @ApiOperation(notes = "获取作业任务计划生成进度", value = "获取作业任务计划生成进度")
+    @Operation(summary = "获取作业任务计划生成进度", description = "获取作业任务计划生成进度")
     Result<AbstractJobVo.JobPlanProgressVo> getActiveJobPlanProgress() throws Exception;
 
 
     @GetMapping(value = "/job/getJobLogList")
-    @ApiOperation(notes = "获取作业日志信息列表", value = "获取作业日志信息列表")
+    @Operation(summary = "获取作业日志信息列表", description = "获取作业日志信息列表")
     Result<AbstractJobVo.JobLogListVo> getJobLogList(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             @NotNull(message = "集群 ID 不能为空")
             Long clusterId,
 
-            @ApiParam(name = "JobId", value = "作业 ID")
+            @Parameter(name = "JobId", description = "作业 ID")
             @RequestParam(value = "JobId", required = true)
             @NotNull(message = "作业 ID 不能为空")
             Long jobId,
 
-            @ApiParam(name = "NodeId", value = "节点 ID")
+            @Parameter(name = "NodeId", description = "节点 ID")
             @RequestParam(value = "NodeId", required = false)
             @NotNull(message = "节点 ID 不能为空")
             Long nodeId,
 
-            @ApiParam(name = "StageId", value = "阶段 ID")
+            @Parameter(name = "StageId", description = "阶段 ID")
             @RequestParam(value = "StageId", required = false)
             @NotNull(message = "阶段 ID 不能为空")
             Long stageId,
 
-            @ApiParam(name = "TaskId", value = "任务 ID")
+            @Parameter(name = "TaskId", description = "任务 ID")
             @RequestParam(value = "TaskId", required = false)
             Long taskId,
 
-            @ApiParam(name = "StepId", value = "步骤 ID")
+            @Parameter(name = "StepId", description = "步骤 ID")
             @RequestParam(value = "StepId", required = false)
             Long stepId
     ) throws Exception;

@@ -19,16 +19,16 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.request.impl.master.AbstractUserRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractUserVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -43,7 +43,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterUserAPI", tags = {"Master 接口：用户相关"})
+@Tag(name = "Master 接口：用户相关", description = "IMasterUserAPI")
 @FeignClient(
         name = "IMasterUserAPI",
         contextId = "IMasterUserAPI",
@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterUserAPI {
 
     @PostMapping(value = "/user/register")
-    @ApiOperation(notes = "用户注册", value = "用户注册")
+    @Operation(summary = "用户注册", description = "用户注册")
     Result<AbstractUserVo.UserInfoVo> register(
             @RequestBody
             @Valid
@@ -60,7 +60,7 @@ public interface IMasterUserAPI {
     ) throws Exception;
 
     @PostMapping(value = "/user/removeById")
-    @ApiOperation(notes = "移除用户", value = "移除用户")
+    @Operation(summary = "移除用户", description = "移除用户")
     Result<String> removeById(
             @RequestBody
             @Valid
@@ -68,7 +68,7 @@ public interface IMasterUserAPI {
     ) throws Exception;
 
     @PostMapping(value = "/user/login")
-    @ApiOperation(notes = "用户登录", value = "用户登录")
+    @Operation(summary = "用户登录", description = "用户登录")
     Result<AbstractUserVo.UserInfoVo> login(
             @RequestBody
             @Valid
@@ -76,15 +76,15 @@ public interface IMasterUserAPI {
     ) throws Exception;
 
     @GetMapping(value = "/user/logout")
-    @ApiOperation(notes = "用户登出", value = "用户登出")
+    @Operation(summary = "用户登出", description = "用户登出")
     Result<String> logout() throws Exception;
 
     @GetMapping(value = "/user/isLogin")
-    @ApiOperation(notes = "判断当前会话是否登录", value = "判断当前会话是否登录")
+    @Operation(summary = "判断当前会话是否登录", description = "判断当前会话是否登录")
     Result<Boolean> isLogin() throws Exception;
 
     @PostMapping(value = "/user/changePassword")
-    @ApiOperation(notes = "修改密码", value = "修改密码")
+    @Operation(summary = "修改密码", description = "修改密码")
     Result<String> changePassword(
             @RequestBody
             @Valid
@@ -92,14 +92,14 @@ public interface IMasterUserAPI {
     ) throws Exception;
 
     @GetMapping(value = "/user/getUserDetailById")
-    @ApiOperation(notes = "根据用户 ID 获取用户详细信息", value = "根据用户 ID 获取用户详细信息")
+    @Operation(summary = "根据用户 ID 获取用户详细信息", description = "根据用户 ID 获取用户详细信息")
     Result<AbstractUserVo.UserInfoVo> getUserDetailById(
-            @ApiParam(name = "UserId", value = "用户 Id", example = "1")
+            @Parameter(name = "UserId", description = "用户 Id", example = "1")
             @RequestParam(value = "UserId", required = true)
             Long userId
     ) throws Exception;
 
     @GetMapping(value = "/user/getUserDetailList")
-    @ApiOperation(notes = "获取已有的用户列表", value = "获取已有的用户列表")
+    @Operation(summary = "获取已有的用户列表", description = "获取已有的用户列表")
     Result<AbstractUserVo.UserInfoListVo> getUserDetailList() throws Exception;
 }

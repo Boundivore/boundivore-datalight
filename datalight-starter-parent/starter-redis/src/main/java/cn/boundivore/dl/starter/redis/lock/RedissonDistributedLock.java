@@ -18,10 +18,11 @@ package cn.boundivore.dl.starter.redis.lock;
 
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,6 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Modification time:
  * Version: V1.0
  */
+@AutoConfiguration
 @ConditionalOnClass(RedissonClient.class)
 @ConditionalOnProperty(prefix = "datalight.lock", name = "type", havingValue = "REDIS", matchIfMissing = true)
 public class RedissonDistributedLock implements IDistributedLock {

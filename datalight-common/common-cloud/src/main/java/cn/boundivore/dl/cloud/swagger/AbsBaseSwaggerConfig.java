@@ -18,139 +18,125 @@ package cn.boundivore.dl.cloud.swagger;
 
 
 import cn.boundivore.dl.base.result.ResultEnum;
-import io.swagger.annotations.ApiOperation;
-import lombok.SneakyThrows;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.servers.Server;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springdoc.core.customizers.OperationCustomizer;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
-import springfox.documentation.builders.*;
-import springfox.documentation.schema.ScalarType;
-import springfox.documentation.service.*;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.spring.web.plugins.WebFluxRequestHandlerProvider;
-import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
-
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Description: AbsBaseSwaggerConfig
+ * Description: 接口文档基础配置，由 Master 与 Worker 各自继承后提供自身的文档元信息
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2023/5/13
- * Modification description:
- * Modified by:
- * Modification time:
- * Version: V1.0
+ * Modification description: 由 springfox 迁移到 springdoc，适配 Spring Boot 3
+ * Modified by: Boundivore
+ * Modification time: 2026/9/1
+ * Version: V2.0
  */
-
 @Slf4j
 public abstract class AbsBaseSwaggerConfig {
 
+    /**
+     * 扫描接口定义与实现所在的根包
+     */
+    private static final String BASE_PACKAGE = "cn.boundivore.dl";
+
+    /**
+     * Description: 构建接口文档的全局元信息
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/5/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return OpenAPI 接口文档元信息
+     */
     @Bean
-    @SneakyThrows
-    public Docket createApi() {
-        SwaggerProperties swaggerProperties = printSwaggerInfo();
+    public OpenAPI createOpenApi() {
+        SwaggerProperties swaggerProperties = this.printSwaggerInfo();
 
-        Docket docket = new Docket(DocumentationType.OAS_30)
-                .apiInfo(apiInfo(swaggerProperties))
-//                .globalRequestParameters(getGlobalRequestParameters())
-                .globalResponses(HttpMethod.GET, globalResponse())
-                .globalResponses(HttpMethod.POST, globalResponse())
-                .host(String.format("%s:%s", swaggerProperties.getIp(), swaggerProperties.getPort()))
-                .select()
-                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
-//                .apis(RequestHandlerSelectors.basePackage("cn.boundivore.eduwiz"))
-                .paths(PathSelectors.any())
-                .build()
-                .groupName(swaggerProperties.getGroupName())
-                .enable(true);
-
-        log.info("Swagger 文档地址：http://{}:{}/swagger-ui/index.html",
+        log.info(
+                "接口文档地址：http://{}:{}/swagger-ui/index.html",
                 swaggerProperties.getHostname(),
                 swaggerProperties.getPort()
         );
 
-        log.info("Knife4J 文档地址： http://{}:{}/doc.html",
-                swaggerProperties.getHostname(),
-                swaggerProperties.getPort()
-        );
-
-        return docket;
+        return new OpenAPI()
+                .info(
+                        new Info()
+                                .title("DataLight")
+                                .description("DataLight 接口文档")
+                                .termsOfService("http://www.boundivore.cn/")
+                                .contact(
+                                        new Contact()
+                                                .name("boundivore")
+                                                .url("http://www.boundivore.cn/")
+                                                .email("boundivore@foxmail.com")
+                                )
+                                .version("V1.8.0")
+                )
+                .addServersItem(
+                        new Server().url(
+                                String.format(
+                                        "http://%s:%s",
+                                        swaggerProperties.getIp(),
+                                        swaggerProperties.getPort()
+                                )
+                        )
+                );
     }
 
-    private ApiInfo apiInfo(SwaggerProperties swaggerProperties) {
-        return new ApiInfoBuilder()
-                .title("DataLight")
-                .description("DataLight V1.0.0.0 [接口文档接口]")
-                .termsOfServiceUrl("http://www.boundivore.cn/")
-                .contact(new Contact("boundivore", "http://www.boundivore.cn/", "boundivore@foxmail.com"))
-                .version("V1.8.0")
+    /**
+     * Description: 按应用名称对接口分组
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2023/5/13
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return GroupedOpenApi 接口分组
+     */
+    @Bean
+    public GroupedOpenApi createGroupedOpenApi() {
+        return GroupedOpenApi.builder()
+                .group(this.printSwaggerInfo().getGroupName())
+                .packagesToScan(BASE_PACKAGE)
                 .build();
     }
 
-    private List<RequestParameter> getGlobalRequestParameters() {
-        List<RequestParameter> parameters = new ArrayList<>();
-        //设置请求头
-        parameters.add(new RequestParameterBuilder()
-                .name("token")
-                .description("RequestToken")
-                .required(false)
-                .in(ParameterType.HEADER)
-                .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-                .required(false)
-                .build());
-        return parameters;
-    }
-
-    private List<Response> globalResponse() {
-        List<Response> responseList = new ArrayList<>();
-        for (ResultEnum r : ResultEnum.values()) {
-            responseList.add(
-                    new ResponseBuilder()
-                            .code(r.getCode())
-                            .description(r.getMessageCN())
-                            .build()
-            );
-        }
-        return responseList;
-    }
-
-    public static BeanPostProcessor handlerProviderBeanPostProcessor() {
-        return new BeanPostProcessor() {
-            @Override
-            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
-                    customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
-                }
-                return bean;
+    /**
+     * Description: 为每个接口补充平台统一的返回码说明。
+     * springfox 时代通过 globalResponses 实现，springdoc 需要逐个接口定制。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return OperationCustomizer 接口定制器
+     */
+    @Bean
+    public OperationCustomizer globalResultCodeCustomizer() {
+        return (operation, handlerMethod) -> {
+            for (ResultEnum resultEnum : ResultEnum.values()) {
+                operation.getResponses()
+                        .addApiResponse(
+                                resultEnum.getCode(),
+                                new ApiResponse().description(resultEnum.getMessageCN())
+                        );
             }
-
-            private <T extends RequestMappingInfoHandlerMapping> void customizeSpringfoxHandlerMappings(List<T> mappings) {
-                List<T> copy = mappings.stream()
-                        .filter(mapping -> mapping.getPatternParser() == null)
-                        .collect(Collectors.toList());
-                mappings.clear();
-                mappings.addAll(copy);
-            }
-
-            @SuppressWarnings("unchecked")
-            private List<RequestMappingInfoHandlerMapping> getHandlerMappings(Object bean) {
-                try {
-                    Field field = ReflectionUtils.findField(bean.getClass(), "handlerMappings");
-                    field.setAccessible(true);
-                    return (List<RequestMappingInfoHandlerMapping>) field.get(bean);
-                } catch (IllegalArgumentException | IllegalAccessException e) {
-                    throw new IllegalStateException(e);
-                }
-            }
+            return operation;
         };
     }
 

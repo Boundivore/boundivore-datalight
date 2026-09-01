@@ -21,16 +21,16 @@ import cn.boundivore.dl.base.request.impl.worker.ConfigFileRequest;
 import cn.boundivore.dl.base.response.impl.common.ConfigHistoryVersionVo;
 import cn.boundivore.dl.base.response.impl.worker.ConfigDifferVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PREFIX;
 
@@ -44,7 +44,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IWorkerConfigAPI", tags = {"Worker 接口：配置文件相关"})
+@Tag(name = "Worker 接口：配置文件相关", description = "IWorkerConfigAPI")
 @FeignClient(
         name = "IWorkerConfigAPI",
         contextId = "IWorkerConfigAPI",
@@ -53,7 +53,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
 public interface IWorkerConfigAPI {
 
     @PostMapping(value = "/conf/modify")
-    @ApiOperation(notes = "修改配置文件", value = "修改配置文件")
+    @Operation(summary = "修改配置文件", description = "修改配置文件")
     Result<String> config(
             @RequestBody
             @Valid
@@ -61,43 +61,43 @@ public interface IWorkerConfigAPI {
     );
 
     @GetMapping(value = "/config/getConfigVersionInfo")
-    @ApiOperation(notes = "获取配置文件历史信息", value = "获取配置文件历史信息")
+    @Operation(summary = "获取配置文件历史信息", description = "获取配置文件历史信息")
     Result<ConfigHistoryVersionVo> getConfigVersionInfo(
-            @ApiParam(name = "CurrentConfigVersion", value = "当前配置文件版本")
+            @Parameter(name = "CurrentConfigVersion", description = "当前配置文件版本")
             @RequestParam(value = "CurrentConfigVersion", required = true)
             Long currentConfigVersion,
 
-            @ApiParam(name = "CurrentConfigId", value = "当前生效的配置文件 ID")
+            @Parameter(name = "CurrentConfigId", description = "当前生效的配置文件 ID")
             @RequestParam(value = "CurrentConfigId", required = true)
             Long currentConfigId,
 
-            @ApiParam(name = "Filename", value = "配置文件名称")
+            @Parameter(name = "Filename", description = "配置文件名称")
             @RequestParam(value = "Filename", required = true)
             String filename,
 
-            @ApiParam(name = "ConfigPath", value = "配置文件路径")
+            @Parameter(name = "ConfigPath", description = "配置文件路径")
             @RequestParam(value = "ConfigPath", required = true)
             String configPath
     ) throws Exception;
 
     @GetMapping(value = "/config/getConfigVersionDetail")
-    @ApiOperation(notes = "获取配置文件历史详细信息", value = "获取配置文件历史详细信息")
+    @Operation(summary = "获取配置文件历史详细信息", description = "获取配置文件历史详细信息")
     Result<ConfigHistoryVersionVo.ConfigVersionDetailVo> getConfigVersionDetail(
-            @ApiParam(name = "Filename", value = "配置文件名称")
+            @Parameter(name = "Filename", description = "配置文件名称")
             @RequestParam(value = "Filename", required = true)
             String filename,
 
-            @ApiParam(name = "ConfigPath", value = "配置文件路径")
+            @Parameter(name = "ConfigPath", description = "配置文件路径")
             @RequestParam(value = "ConfigPath", required = true)
             String configPath,
 
-            @ApiParam(name = "HistoryConfigVersion", value = "历史配置文件版本")
+            @Parameter(name = "HistoryConfigVersion", description = "历史配置文件版本")
             @RequestParam(value = "HistoryConfigVersion", required = true)
             Long historyConfigVersion
     ) throws Exception;
 
     @PostMapping(value = "/config/diff")
-    @ApiOperation(notes = "比较配置文件差异", value = "比较配置文件差异")
+    @Operation(summary = "比较配置文件差异", description = "比较配置文件差异")
     Result<ConfigDifferVo> configDiff(
             @RequestBody
             @Valid

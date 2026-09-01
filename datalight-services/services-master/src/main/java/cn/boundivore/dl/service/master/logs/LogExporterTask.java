@@ -100,7 +100,9 @@ public class LogExporterTask extends AbstractTask<String> {
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
-            this.tDlLogsService.saveBatch(tDlLogsList);
+            if (!this.tDlLogsService.saveBatch(tDlLogsList)) {
+                log.error("审计日志批量入库失败, 本批数量: {}", tDlLogsList.size());
+            }
 
         } catch (Exception e) {
             log.error(ExceptionUtil.stacktraceToString(e));

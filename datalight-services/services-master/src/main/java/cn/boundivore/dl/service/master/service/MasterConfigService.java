@@ -357,7 +357,10 @@ public class MasterConfigService {
             tDlConfigContent.setConfigData(configData);
 
             try {
-                this.tDlConfigContentService.save(tDlConfigContent);
+                // save 在唯一键冲突等场景下会抛异常，在乐观锁冲突等场景下只返回 false，两种都要兜住
+                if (!this.tDlConfigContentService.save(tDlConfigContent)) {
+                    throw new DatabaseException("保存配置内容返回失败");
+                }
             } catch (Exception e) {
                 log.warn("保存配置内容失败，尝试重新读取: clusterId={}, filename={}, sha256={}",
                         clusterId,

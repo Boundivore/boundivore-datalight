@@ -19,13 +19,13 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -40,7 +40,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterDeployAPI", tags = {"Master 接口：部署相关"})
+@Tag(name = "Master 接口：部署相关", description = "IMasterDeployAPI")
 @FeignClient(
         name = "IMasterDeployAPI",
         contextId = "IMasterDeployAPI",
@@ -48,7 +48,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterDeployAPI {
     @PostMapping(value = "/deploy")
-    @ApiOperation(notes = "部署服务", value = "部署服务")
+    @Operation(summary = "部署服务", description = "部署服务")
     Result<AbstractJobVo.JobIdVo> deploy(
             @RequestBody
             @Valid

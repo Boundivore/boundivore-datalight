@@ -19,16 +19,16 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.request.impl.master.HeartBeatRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigPreVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -43,7 +43,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterManageAPI", tags = {"Master 接口：管理相关"})
+@Tag(name = "Master 接口：管理相关", description = "IMasterManageAPI")
 @FeignClient(
         name = "IMasterManageAPI",
         contextId = "IMasterManageAPI",
@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterManageAPI {
 
     @PostMapping(value = "/manage/heartBeat")
-    @ApiOperation(notes = "接收 Worker 端发送的心跳包", value = "接收 Worker 端发送的心跳包")
+    @Operation(summary = "接收 Worker 端发送的心跳包", description = "接收 Worker 端发送的心跳包")
     Result<String> heartBeat(
             @RequestBody
             @Valid

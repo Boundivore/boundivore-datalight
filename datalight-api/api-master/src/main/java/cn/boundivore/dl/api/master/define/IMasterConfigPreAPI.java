@@ -19,16 +19,16 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.request.impl.master.ConfigPreSaveRequest;
 import cn.boundivore.dl.base.response.impl.master.ConfigPreVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -43,7 +43,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterConfigPreAPI", tags = {"Master 接口：预配置相关"})
+@Tag(name = "Master 接口：预配置相关", description = "IMasterConfigPreAPI")
 @FeignClient(
         name = "IMasterConfigPreAPI",
         contextId = "IMasterConfigPreAPI",
@@ -51,15 +51,15 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterConfigPreAPI {
     @GetMapping(value = "/config/pre/list")
-    @ApiOperation(notes = "根据待部署的服务组件获取预配置项", value = "根据待部署的服务组件获取预配置项")
+    @Operation(summary = "根据待部署的服务组件获取预配置项", description = "根据待部署的服务组件获取预配置项")
     Result<ConfigPreVo> getConfigPreList(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
 
     @PostMapping(value = "/config/pre/save")
-    @ApiOperation(notes = "设置预配置项", value = "设置预配置项")
+    @Operation(summary = "设置预配置项", description = "设置预配置项")
     Result<String> saveConfigPre(
             @RequestBody
             @Valid

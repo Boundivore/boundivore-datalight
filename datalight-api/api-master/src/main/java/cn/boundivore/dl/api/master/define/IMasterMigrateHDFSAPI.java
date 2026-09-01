@@ -20,16 +20,16 @@ import cn.boundivore.dl.base.request.impl.master.JobRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractJobVo;
 import cn.boundivore.dl.base.response.impl.master.ConfigListByGroupVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -44,7 +44,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterMigrateHDFSAPI", tags = {"Master 接口：迁移 HDFS 相关"})
+@Tag(name = "Master 接口：迁移 HDFS 相关", description = "IMasterMigrateHDFSAPI")
 @FeignClient(
         name = "IMasterMigrateHDFSAPI",
         contextId = "IMasterMigrateHDFSAPI",
@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 )
 public interface IMasterMigrateHDFSAPI {
     @PostMapping(value = "/migrate/hdfs")
-    @ApiOperation(notes = "迁移部署 HDFS 服务", value = "迁移部署 HDFS 服务")
+    @Operation(summary = "迁移部署 HDFS 服务", description = "迁移部署 HDFS 服务")
     Result<AbstractJobVo.JobIdVo> migrate(
             @RequestBody
             @Valid
@@ -61,9 +61,9 @@ public interface IMasterMigrateHDFSAPI {
 
 
     @GetMapping(value = "/migrate/getNewHdfsSiteConfigListByGroup")
-    @ApiOperation(notes = "获取迁移后最新的 NameNode 配置文件", value = "获取迁移后最新的 NameNode 配置文件")
+    @Operation(summary = "获取迁移后最新的 NameNode 配置文件", description = "获取迁移后最新的 NameNode 配置文件")
     Result<ConfigListByGroupVo> getNewHdfsSiteConfigListByGroup(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;

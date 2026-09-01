@@ -17,6 +17,7 @@
 package cn.boundivore.dl.ssh;
 
 import cn.boundivore.dl.ssh.properties.SshProperties;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -30,6 +31,7 @@ import org.springframework.context.annotation.ComponentScan;
  * Modification time:
  * Version: V1.0
  */
+@AutoConfiguration
 @ComponentScan(basePackages = {"cn.boundivore.dl"})
 @EnableConfigurationProperties({SshProperties.class})
 public class SshAutoConfiguration {

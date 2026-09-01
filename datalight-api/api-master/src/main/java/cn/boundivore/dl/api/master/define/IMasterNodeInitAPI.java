@@ -23,16 +23,16 @@ import cn.boundivore.dl.base.response.impl.master.AbstractNodeInitVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractNodeJobVo;
 import cn.boundivore.dl.base.response.impl.master.ParseHostnameVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -47,7 +47,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterNodeInitAPI", tags = {"Master 接口：节点初始化相关"})
+@Tag(name = "Master 接口：节点初始化相关", description = "IMasterNodeInitAPI")
 @FeignClient(
         name = "IMasterNodeInitAPI",
         contextId = "IMasterNodeInitAPI",
@@ -56,7 +56,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterNodeInitAPI {
 
     @PostMapping(value = "/node/init/hostname/parse")
-    @ApiOperation(notes = "Parse 解析节点主机名", value = "Parse 解析节点主机名")
+    @Operation(summary = "Parse 解析节点主机名", description = "Parse 解析节点主机名")
     Result<ParseHostnameVo> parseHostname(
             @RequestBody
             @Valid
@@ -64,7 +64,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/detect")
-    @ApiOperation(notes = "Detect 节点异步探测连通性", value = "Detect 节点异步探测连通性")
+    @Operation(summary = "Detect 节点异步探测连通性", description = "Detect 节点异步探测连通性")
     Result<AbstractNodeJobVo.NodeJobIdVo> detectNode(
             @RequestBody
             @Valid
@@ -72,7 +72,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/check")
-    @ApiOperation(notes = "Check 节点初始化检查", value = "Check 节点初始化检查")
+    @Operation(summary = "Check 节点初始化检查", description = "Check 节点初始化检查")
     Result<AbstractNodeJobVo.NodeJobIdVo> checkNode(
             @RequestBody
             @Valid
@@ -80,7 +80,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/dispatch")
-    @ApiOperation(notes = "Dispatch 分发节点安装包", value = "Dispatch 分发节点安装包")
+    @Operation(summary = "Dispatch 分发节点安装包", description = "Dispatch 分发节点安装包")
     Result<AbstractNodeJobVo.NodeJobIdVo> dispatchNode(
             @RequestBody
             @Valid
@@ -88,7 +88,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/startWorker")
-    @ApiOperation(notes = "StartWorker 启动节点 Worker 进程", value = "StartWorker 启动节点 Worker 进程")
+    @Operation(summary = "StartWorker 启动节点 Worker 进程", description = "StartWorker 启动节点 Worker 进程")
     Result<AbstractNodeJobVo.NodeJobIdVo> startNodeWorker(
             @RequestBody
             @Valid
@@ -96,15 +96,15 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @GetMapping(value = "/node/init/parse/list")
-    @ApiOperation(notes = "Parse 获取节点初始化列表", value = "Parse 获取节点初始化列表")
+    @Operation(summary = "Parse 获取节点初始化列表", description = "Parse 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initParseList(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
+            @Parameter(name = "ClusterId", description = "ClusterId")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
 
     @PostMapping(value = "/node/init/detect/list")
-    @ApiOperation(notes = "Detect 获取节点初始化列表", value = "Detect 获取节点初始化列表")
+    @Operation(summary = "Detect 获取节点初始化列表", description = "Detect 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initDetectList(
             @RequestBody
             @Valid
@@ -114,7 +114,7 @@ public interface IMasterNodeInitAPI {
 
 
     @PostMapping(value = "/node/init/check/list")
-    @ApiOperation(notes = "Check 获取节点初始化列表", value = "Check 获取节点初始化列表")
+    @Operation(summary = "Check 获取节点初始化列表", description = "Check 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initCheckList(
             @RequestBody
             @Valid
@@ -122,7 +122,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/dispatch/list")
-    @ApiOperation(notes = "Dispatch 获取节点初始化列表", value = "Dispatch 获取节点初始化列表")
+    @Operation(summary = "Dispatch 获取节点初始化列表", description = "Dispatch 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initDispatchList(
             @RequestBody
             @Valid
@@ -130,7 +130,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/startWorker/list")
-    @ApiOperation(notes = "StartWorker 获取节点初始化列表", value = "StartWorker 获取节点初始化列表")
+    @Operation(summary = "StartWorker 获取节点初始化列表", description = "StartWorker 获取节点初始化列表")
     Result<AbstractNodeInitVo.NodeInitVo> initStartWorkerList(
             @RequestBody
             @Valid
@@ -138,7 +138,7 @@ public interface IMasterNodeInitAPI {
     ) throws Exception;
 
     @PostMapping(value = "/node/init/add")
-    @ApiOperation(notes = "Add 服役节点到指定集群", value = "Add 服役节点到指定集群")
+    @Operation(summary = "Add 服役节点到指定集群", description = "Add 服役节点到指定集群")
     Result<String> addNode(
             @RequestBody
             @Valid

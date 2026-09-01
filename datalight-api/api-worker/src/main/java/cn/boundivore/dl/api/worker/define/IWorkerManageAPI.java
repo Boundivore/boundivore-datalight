@@ -18,8 +18,8 @@ package cn.boundivore.dl.api.worker.define;
 
 import cn.boundivore.dl.base.request.impl.worker.MasterMetaRequest;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +36,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IWorkerManageAPI", tags = {"Worker 接口：管理相关"})
+@Tag(name = "Worker 接口：管理相关", description = "IWorkerManageAPI")
 @FeignClient(
         name = "IWorkerManageAPI",
         contextId = "IWorkerManageAPI",
@@ -45,7 +45,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.WORKER_URL_PRE
 public interface IWorkerManageAPI {
 
     @PostMapping(value = "/manage/update/meta/master")
-    @ApiOperation(notes = "更新 Master 元数据信息", value = "更新 Master 元数据信息")
+    @Operation(summary = "更新 Master 元数据信息", description = "更新 Master 元数据信息")
     Result<String> updateMasterMeta(
             @RequestBody
             MasterMetaRequest request

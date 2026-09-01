@@ -17,8 +17,8 @@
 package cn.boundivore.dl.api.third.define;
 
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IThirdPrometheusAPI", tags = {"Prometheus 接口：直接调用 Prometheus 接口"})
+@Tag(name = "Prometheus 接口：直接调用 Prometheus 接口", description = "IThirdPrometheusAPI")
 @FeignClient(
         name = "IThirdPrometheusAPI",
         contextId = "IThirdPrometheusAPI",
@@ -45,11 +45,11 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 )
 public interface IThirdPrometheusAPI {
     @PostMapping(value = "/-/reload")
-    @ApiOperation(notes = "重新加载 Prometheus 配置", value = "重新加载 Prometheus 配置")
+    @Operation(summary = "重新加载 Prometheus 配置", description = "重新加载 Prometheus 配置")
     Result<String> reloadPrometheus();
 
     @PostMapping(value = "{path}")
-    @ApiOperation(notes = "Post 方式调用 Prometheus", value = "Post 方式调用 Prometheus")
+    @Operation(summary = "Post 方式调用 Prometheus", description = "Post 方式调用 Prometheus")
     Result<String> postPrometheus(
             @PathVariable("path")
             String path,
@@ -59,7 +59,7 @@ public interface IThirdPrometheusAPI {
     );
 
     @GetMapping(value = "{path}")
-    @ApiOperation(notes = "Get 方式调用 Prometheus", value = "Get 方式调用 Prometheus")
+    @Operation(summary = "Get 方式调用 Prometheus", description = "Get 方式调用 Prometheus")
     Result<String> getPrometheus(
             @PathVariable("path")
             String path,

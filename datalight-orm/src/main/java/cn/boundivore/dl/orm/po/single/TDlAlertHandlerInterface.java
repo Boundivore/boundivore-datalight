@@ -4,8 +4,7 @@ import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -22,12 +21,12 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_alert_handler_interface")
-@ApiModel(value = "TDlAlertHandlerInterface对象", description = "处理告警接口配置信息表")
+@Schema(name = "TDlAlertHandlerInterface对象", description = "处理告警接口配置信息表")
 public class TDlAlertHandlerInterface extends TBasePo<TDlAlertHandlerInterface> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("接收告警的地址")
+    @Schema(description = "接收告警的地址")
     @TableField("interface_uri")
     private String interfaceUri;
 

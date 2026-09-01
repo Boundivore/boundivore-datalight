@@ -18,7 +18,7 @@ package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.service.master.bean.PermissionBean;
 import cn.hutool.core.exceptions.ExceptionUtil;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -36,7 +36,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -72,7 +72,7 @@ public class MasterPermissionHandlerService {
     }
 
     /**
-     * Description: 扫描 Swagger ApiOperation 注解，并解析所有接口用于权限配置，
+     * Description: 扫描 Swagger Operation 注解，并解析所有接口用于权限配置，
      * 其中该注解中 nickname 属性为当前接口 URI 的唯一权限标识
      * Created by: Boundivore
      * E-mail: boundivore@foxmail.com
@@ -110,24 +110,23 @@ public class MasterPermissionHandlerService {
 
                 // 获取并遍历类中的所有方法
                 for (Method method : clazz.getDeclaredMethods()) {
-                    if (method.isAnnotationPresent(ApiOperation.class)) {
+                    if (method.isAnnotationPresent(Operation.class)) {
                         MappingBean mappingBean = extractHttpMethodPath(method);
 
                         String relativePath = mappingBean.getHttpPath() != null ? mappingBean.getHttpPath() : "";
                         String interfacePath = feignClientPath + relativePath;
                         String httpMethod = mappingBean.getHttpMethod();
-                        ApiOperation apiOperation = method.getAnnotation(ApiOperation.class);
+                        Operation operation = method.getAnnotation(Operation.class);
 
 //                        log.info("Path: {}, Class: {}, Method: {}, Operation: {}, Notes: {}, Nickname: {}",
 //                                fullPath,
 //                                classname,
 //                                method.getName(),
-//                                apiOperation.value(),
-//                                apiOperation.notes(),
-//                                apiOperation.nickname()
+//                                operation.summary(),
+//                                operation.description()
 //                        );
                         String permissionCode = this.getPermissionCode(clazz.getSimpleName(), method.getName());
-                        String permissionName = apiOperation.value();
+                        String permissionName = operation.summary();
                         log.info("Path: {}, PermissionCode: {}, PermissionName: {}, HttpMethod: {}",
                                 interfacePath,
                                 permissionCode,
@@ -221,7 +220,7 @@ public class MasterPermissionHandlerService {
      * Modification time:
      * Throws:
      *
-     * @param method 当前被 ApiOperation 注解标注的方法
+     * @param method 当前被 Operation 注解标注的方法
      * @return 返回 GetMapping 或 PostMapping 中的 value 值
      */
     private MappingBean extractHttpMethodPath(Method method) {

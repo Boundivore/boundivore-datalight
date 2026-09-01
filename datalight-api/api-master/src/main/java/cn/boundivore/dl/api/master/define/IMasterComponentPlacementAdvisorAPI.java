@@ -18,9 +18,9 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.response.impl.master.AbstractComponentPlacementVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +38,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterComponentPlacementAdvisorAPI", tags = {"Master 接口：自动推荐组件分布情况相关"})
+@Tag(name = "Master 接口：自动推荐组件分布情况相关", description = "IMasterComponentPlacementAdvisorAPI")
 @FeignClient(
         name = "IMasterComponentPlacementAdvisorAPI",
         contextId = "IMasterComponentPlacementAdvisorAPI",
@@ -47,13 +47,13 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterComponentPlacementAdvisorAPI {
 
     @GetMapping(value = "/advisor/getComponentPlacementRecommendation")
-    @ApiOperation(notes = "获取组件分布推荐", value = "获取组件分布推荐")
+    @Operation(summary = "获取组件分布推荐", description = "获取组件分布推荐")
     Result<AbstractComponentPlacementVo.PlacementAdvisorVo> getComponentPlacementRecommendation(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
-            @ApiParam(name = "ServiceNames", value = "多个服务名称(英文逗号拼接)")
+            @Parameter(name = "ServiceNames", description = "多个服务名称(英文逗号拼接)")
             @RequestParam(value = "ServiceNames", required = true)
             String serviceNames
     ) throws Exception;

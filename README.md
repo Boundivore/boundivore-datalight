@@ -79,8 +79,24 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 
 本项目编译需要满足如下需要：
 
-* JDK 8
-* Gradle 7.4+
+* JDK 17
+* Gradle 9.2.1（仓库自带 gradlew，直接用 ./gradlew 即可）
+
+### 5.1 关于两套 JDK
+
+平台自身与所纳管的大数据服务使用不同的 JDK，两者相互独立，部署时都要装：
+
+| 用途 | 版本 | 环境变量 | 配置项 |
+| --- | --- | --- | --- |
+| DataLight Master / Worker | JDK 17 | `DATALIGHT_JAVA_HOME` | `directory.yaml` 的 `datalight-java-home` |
+| HDFS、YARN、HIVE 等大数据服务 | JDK 8 | `JAVA_HOME` | `directory.yaml` 的 `java-home` |
+
+大数据服务停留在 JDK 8 是出于兼容性考虑，不要跟随平台一起升级。
+节点上 `PATH` 里的 `java` 指向服务侧的 JDK 8；平台的启动脚本 `bin/datalight.sh` 显式使用
+`${DATALIGHT_JAVA_HOME}/bin/java`，不依赖 `PATH`。
+
+两套 JDK 由 `assistant/scripts/init-jdk.sh` 一并安装，
+由 `node/scripts/check-jdk-settings.sh` 校验。
 
 ## 六、部署说明
 

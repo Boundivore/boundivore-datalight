@@ -21,6 +21,7 @@ import cn.boundivore.dl.cloud.utils.SpringContextUtilTest;
 import cn.boundivore.dl.exception.BException;
 import cn.boundivore.dl.service.master.resolver.yaml.YamlDirectory;
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.CharsetUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,11 +82,18 @@ public final class ResolverYamlDirectory {
                         ),
                         CharsetUtil.CHARSET_UTF_8
                 )
+                .replace("{{JAVA_HOME}}", datalight.getJavaHome())
+                .replace("{{DATALIGHT_JAVA_HOME}}", datalight.getDatalightJavaHome())
                 .replace("{{DATALIGHT_DIR}}", datalight.getDatalightDir())
                 .replace("{{SERVICE_DIR}}", datalight.getServiceDir())
                 .replace("{{LOG_DIR}}", datalight.getLogDir())
                 .replace("{{PID_DIR}}", datalight.getPidDir())
-                .replace("{{DATA_DIR}}", datalight.getDataDir());
+                .replace("{{DATA_DIR}}", datalight.getDataDir())
+                // ai 节点为可选配置，缺失时按未启用处理
+                .replace("{{AI_ENABLED}}", aiEnabled(datalight))
+                .replace("{{AI_HOME}}", aiValue(datalight == null || datalight.getAi() == null ? null : datalight.getAi().getHome()))
+                .replace("{{AI_PORT}}", aiPort(datalight))
+                .replace("{{AI_UV_BIN}}", aiValue(datalight == null || datalight.getAi() == null ? null : datalight.getAi().getUvBin()));
 
         FileUtil.writeString(
                 datalightEnvStr,
@@ -113,7 +121,101 @@ public final class ResolverYamlDirectory {
      * @param directoryYaml 当前解析后的配置文件
      */
     private static void checkConf(YamlDirectory directoryYaml) throws BException {
+        YamlDirectory.Directory datalight = directoryYaml.getDatalight();
+        Assert.notNull(
+                datalight,
+                () -> new BException("directory.yaml 缺少 datalight 配置节")
+        );
 
+        // 逐项校验，缺项直接在启动阶段拦下，不要等到部署时才暴露
+        checkNotBlank(datalight.getJavaHome(), "java-home");
+        checkNotBlank(datalight.getDatalightJavaHome(), "datalight-java-home");
+        checkNotBlank(datalight.getDatalightDir(), "datalight-dir");
+        checkNotBlank(datalight.getServiceDir(), "service-dir");
+        checkNotBlank(datalight.getLogDir(), "log-dir");
+        checkNotBlank(datalight.getPidDir(), "pid-dir");
+        checkNotBlank(datalight.getDataDir(), "data-dir");
+    }
+
+    /**
+     * Description: 取 AI 服务的启用开关。未配置视为未启用
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param datalight 目录配置
+     * @return String true 或 false
+     */
+    private static String aiEnabled(YamlDirectory.Directory datalight) {
+        if (datalight == null || datalight.getAi() == null || datalight.getAi().getEnabled() == null) {
+            return "false";
+        }
+        return String.valueOf(datalight.getAi().getEnabled());
+    }
+
+    /**
+     * Description: 取 AI 服务端口。未配置时给默认值
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param datalight 目录配置
+     * @return String 端口号
+     */
+    private static String aiPort(YamlDirectory.Directory datalight) {
+        if (datalight == null || datalight.getAi() == null || datalight.getAi().getPort() == null) {
+            return "8010";
+        }
+        return String.valueOf(datalight.getAi().getPort());
+    }
+
+    /**
+     * Description: 取可选字符串配置，null 统一转成空串，避免占位符替换出 "null"
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param value 原始值
+     * @return String 非空字符串
+     */
+    private static String aiValue(String value) {
+        return value == null ? "" : value;
+    }
+
+    /**
+     * Description: 校验配置项非空，且必须是绝对路径
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws: BException
+     *
+     * @param value 配置项的值
+     * @param key   配置项名称，用于异常提示
+     */
+    private static void checkNotBlank(String value, String key) throws BException {
+        Assert.notBlank(
+                value,
+                () -> new BException(String.format("directory.yaml 中 %s 不能为空", key))
+        );
+        Assert.isTrue(
+                value.startsWith("/"),
+                () -> new BException(String.format("directory.yaml 中 %s 必须是绝对路径: %s", key, value))
+        );
     }
 
     public static void main(String[] args) throws IOException {

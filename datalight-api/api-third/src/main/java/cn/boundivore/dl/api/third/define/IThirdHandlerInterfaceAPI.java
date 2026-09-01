@@ -17,8 +17,8 @@
 package cn.boundivore.dl.api.third.define;
 
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +38,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IThirdHandlerInterfaceAPI", tags = {"告警通知接口：调用告警外部通知接口"})
+@Tag(name = "告警通知接口：调用告警外部通知接口", description = "IThirdHandlerInterfaceAPI")
 @FeignClient(
         name = "IThirdHandlerInterfaceAPI",
         contextId = "IThirdHandlerInterfaceAPI",
@@ -47,7 +47,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
 public interface IThirdHandlerInterfaceAPI {
 
     @PostMapping(value = "", consumes = "application/json; charset=UTF-8")
-    @ApiOperation(notes = "向任意 URI 发送 POST 请求", value = "向任意 URI 发送 POST 请求")
+    @Operation(summary = "向任意 URI 发送 POST 请求", description = "向任意 URI 发送 POST 请求")
     Object sendPostRequest(
             @RequestBody
             String requestBody

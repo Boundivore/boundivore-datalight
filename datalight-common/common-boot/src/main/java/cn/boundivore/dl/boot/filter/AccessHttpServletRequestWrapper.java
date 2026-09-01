@@ -1,12 +1,11 @@
 package cn.boundivore.dl.boot.filter;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.ReadListener;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,7 +27,9 @@ public class AccessHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     public AccessHttpServletRequestWrapper(HttpServletRequest request) throws IOException {
         super(request);
-        if (ServletFileUpload.isMultipartContent(request)) {
+        // commons-fileupload 1.x 绑定 javax.servlet，Spring Boot 3 下不可用。
+        // isMultipartContent 本身只是判断 POST + multipart/ 前缀，直接判 Content-Type 即可
+        if (isMultipartContent(request)) {
             return;
         }
         StringBuilder sb = new StringBuilder();
@@ -39,6 +40,27 @@ public class AccessHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
         String body = sb.toString();
         this.body = body.getBytes(StandardCharsets.UTF_8);
+    }
+
+    /**
+     * Description: 判断是否为文件上传请求。文件上传的流不做复制，避免把大文件读进内存
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/1
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 当前请求
+     * @return boolean 是否为 multipart 请求
+     */
+    private static boolean isMultipartContent(HttpServletRequest request) {
+        if (!"POST".equalsIgnoreCase(request.getMethod())) {
+            return false;
+        }
+        String contentType = request.getContentType();
+        return contentType != null && contentType.toLowerCase().startsWith("multipart/");
     }
 
     public String getBody() {

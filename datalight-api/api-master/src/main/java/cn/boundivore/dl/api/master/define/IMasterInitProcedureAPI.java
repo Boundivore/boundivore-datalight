@@ -21,16 +21,16 @@ import cn.boundivore.dl.base.request.impl.master.AbstractProcedureRequest;
 import cn.boundivore.dl.base.request.impl.master.RemoveProcedureRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractInitProcedureVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -45,7 +45,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterInitProcedureAPI", tags = {"Master 接口：初始化步骤记录相关"})
+@Tag(name = "Master 接口：初始化步骤记录相关", description = "IMasterInitProcedureAPI")
 @FeignClient(
         name = "IMasterInitProcedureAPI",
         contextId = "IMasterInitProcedureAPI",
@@ -54,7 +54,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterInitProcedureAPI {
 
     @PostMapping(value = "/init/procedure/persist")
-    @ApiOperation(notes = "记录初始化步骤", value = "记录初始化步骤")
+    @Operation(summary = "记录初始化步骤", description = "记录初始化步骤")
     Result<AbstractInitProcedureVo.InitProcedureVo> persistInitStatus(
             @RequestBody
             @Valid
@@ -62,25 +62,25 @@ public interface IMasterInitProcedureAPI {
     ) throws Exception;
 
     @GetMapping(value = "/init/procedure/get")
-    @ApiOperation(notes = "获取当前初始化步骤信息", value = "获取当前初始化步骤信息")
+    @Operation(summary = "获取当前初始化步骤信息", description = "获取当前初始化步骤信息")
     Result<AbstractInitProcedureVo.InitProcedureVo> getInitProcedure(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
+            @Parameter(name = "ClusterId", description = "ClusterId")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
 
 
     @GetMapping(value = "/init/procedure/exists")
-    @ApiOperation(notes = "查询是否存在记录的步骤信息", value = "查询是否存在记录的步骤信息")
+    @Operation(summary = "查询是否存在记录的步骤信息", description = "查询是否存在记录的步骤信息")
     Result<Boolean> isExistInitProcedure(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
+            @Parameter(name = "ClusterId", description = "ClusterId")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
 
 
     @PostMapping(value = "/init/procedure/remove")
-    @ApiOperation(notes = "清除指定集群的初始化步骤信息记录", value = "清除指定集群的初始化步骤信息记录")
+    @Operation(summary = "清除指定集群的初始化步骤信息记录", description = "清除指定集群的初始化步骤信息记录")
     Result<String> removeInitProcedure(
             @RequestBody
             @Valid
@@ -88,13 +88,13 @@ public interface IMasterInitProcedureAPI {
     ) throws Exception;
 
     @GetMapping(value = "/init/procedure/check")
-    @ApiOperation(notes = "检查当前操作是否合法", value = "检查当前操作是否合法")
+    @Operation(summary = "检查当前操作是否合法", description = "检查当前操作是否合法")
     Result<Boolean> checkOperationIllegal(
-            @ApiParam(name = "ClusterId", value = "ClusterId")
+            @Parameter(name = "ClusterId", description = "ClusterId")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId,
 
-            @ApiParam(name = "ProcedureStateEnum", value = "ProcedureStateEnum")
+            @Parameter(name = "ProcedureStateEnum", description = "ProcedureStateEnum")
             @RequestParam(value = "ProcedureStateEnum", required = true)
             ProcedureStateEnum procedureStateEnum
     ) throws Exception;

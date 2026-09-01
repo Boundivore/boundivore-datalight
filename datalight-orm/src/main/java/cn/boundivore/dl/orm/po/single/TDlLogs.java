@@ -6,8 +6,7 @@ import cn.boundivore.dl.orm.po.TBasePo;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -24,60 +23,60 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 @TableName("t_dl_logs")
-@ApiModel(value = "TDlLogs对象", description = "日志埋点信息表")
+@Schema(name = "TDlLogs对象", description = "日志埋点信息表")
 public class TDlLogs extends TBasePo<TDlLogs> {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("日志名称")
+    @Schema(description = "日志名称")
     @TableField("log_name")
     private String logName;
 
-    @ApiModelProperty("用户 ID")
+    @Schema(description = "用户 ID")
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty("请求发生的时间戳")
+    @Schema(description = "请求发生的时间戳")
     @TableField("timestamp")
     private Long timestamp;
 
-    @ApiModelProperty("格式化日期")
+    @Schema(description = "格式化日期")
     @TableField("date_format")
     private String dateFormat;
 
-    @ApiModelProperty("日志类型")
+    @Schema(description = "日志类型")
     @TableField("log_type")
     private LogTypeEnum logType;
 
-    @ApiModelProperty("请求的类")
+    @Schema(description = "请求的类")
     @TableField("class_name")
     private String className;
 
-    @ApiModelProperty("请求的方法")
+    @Schema(description = "请求的方法")
     @TableField("method_name")
     private String methodName;
 
-    @ApiModelProperty("请求的来源 IP")
+    @Schema(description = "请求的来源 IP")
     @TableField("ip")
     private String ip;
 
-    @ApiModelProperty("请求的来源 URI")
+    @Schema(description = "请求的来源 URI")
     @TableField("uri")
     private String uri;
 
-    @ApiModelProperty("业务响应状态码")
+    @Schema(description = "业务响应状态码")
     @TableField("result_code")
     private String resultCode;
 
-    @ApiModelProperty("业务响应状态枚举")
+    @Schema(description = "业务响应状态枚举")
     @TableField("result_enum")
     private ResultEnum resultEnum;
 
-    @ApiModelProperty("请求入参")
+    @Schema(description = "请求入参")
     @TableField("params")
     private String params;
 
-    @ApiModelProperty("响应体结果")
+    @Schema(description = "响应体结果")
     @TableField("result")
     private String result;
 

@@ -20,7 +20,7 @@ import cn.boundivore.dl.ssh.tools.SshTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 /**
  * Description: Ssh 工具服务

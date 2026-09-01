@@ -18,8 +18,8 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.response.impl.master.DataLightVersionVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -36,7 +36,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterDataLightVersionAPI", tags = {"Master 接口：DataLight 版本信息相关"})
+@Tag(name = "Master 接口：DataLight 版本信息相关", description = "IMasterDataLightVersionAPI")
 @FeignClient(
         name = "IMasterDataLightVersionAPI",
         contextId = "IMasterDataLightVersionAPI",
@@ -45,6 +45,6 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterDataLightVersionAPI {
 
     @GetMapping(value = "/datalight/version")
-    @ApiOperation(notes = "获取 DataLight 版本信息", value = "获取 DataLight 版本信息")
+    @Operation(summary = "获取 DataLight 版本信息", description = "获取 DataLight 版本信息")
     Result<DataLightVersionVo> getDataLightVersion() throws Exception;
 }

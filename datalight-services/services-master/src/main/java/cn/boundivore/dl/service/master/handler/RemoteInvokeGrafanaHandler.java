@@ -269,7 +269,9 @@ public class RemoteInvokeGrafanaHandler {
                     grafanaUser1.getNewLoginPassword()
             );
             log.info("changeUserPassword: {}", changeUserPasswordResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
         // 2、为当前集群创建 Org，并获取 orgId
@@ -279,7 +281,9 @@ public class RemoteInvokeGrafanaHandler {
                     GRAFANA_BASE_ORG_NAME
             );
             log.info("createOrg: {}", createOrgResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
         Result<String> getOrgByNameResult = this.remoteInvokeGrafanaService.getOrgByName(
@@ -300,7 +304,9 @@ public class RemoteInvokeGrafanaHandler {
             );
             log.info("createUser2: {}", createUser2Result);
 
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
 
@@ -313,7 +319,9 @@ public class RemoteInvokeGrafanaHandler {
                     GrafanaUserRoleEnum.Admin.name()
             );
             log.info("addUser2InOrg: {}", addUser2InOrgResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
 
@@ -330,7 +338,9 @@ public class RemoteInvokeGrafanaHandler {
                     userId2
             );
             log.info("deleteUser2FromOrg: {}", deleteUser2FromOrgResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
         // 6、为当前集群 Org 创建用户（Editor），并获取该用户的 userId3
@@ -344,7 +354,9 @@ public class RemoteInvokeGrafanaHandler {
             );
             log.info("createUser3: {}", createUser3Result);
 
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
         // 7、将 userId3 加入到 orgId 中
@@ -356,7 +368,9 @@ public class RemoteInvokeGrafanaHandler {
                     GrafanaUserRoleEnum.Editor.name()
             );
             log.info("addUser3InOrg: {}", addUser3InOrgResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
         // 8、将 userId3 从主 MainOrg 中移除
@@ -373,7 +387,9 @@ public class RemoteInvokeGrafanaHandler {
                     userId3
             );
             log.info("deleteUser3FromOrg: {}", deleteUser3FromOrgResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
         // 9、删除已存在的 MONITOR-Prometheus datasource
@@ -383,7 +399,9 @@ public class RemoteInvokeGrafanaHandler {
                     "MONITOR-Prometheus"
             );
             log.info("deleteDataSource: {}", deleteDataSourceResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
 
 
@@ -410,7 +428,9 @@ public class RemoteInvokeGrafanaHandler {
                     grafanaUser2.getNewLoginPassword()
             );
             log.info("createDataSources: {}", createDataSourcesResult);
-        } catch (Exception ignore) {
+        } catch (Exception e) {
+            // 初始化步骤可重复执行，已存在等情况属预期，不中断流程；但失败原因必须留痕，否则网络或鉴权故障无从排查
+            log.warn("Grafana 初始化步骤未成功，已跳过: {}", e.getMessage());
         }
     }
 

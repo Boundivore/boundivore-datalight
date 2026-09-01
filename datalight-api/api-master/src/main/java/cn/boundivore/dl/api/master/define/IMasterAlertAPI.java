@@ -22,16 +22,16 @@ import cn.boundivore.dl.base.request.impl.master.AbstractAlertRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertHandlerVo;
 import cn.boundivore.dl.base.response.impl.master.AbstractAlertVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterAlertAPI", tags = {"Master 接口：告警相关"})
+@Tag(name = "Master 接口：告警相关", description = "IMasterAlertAPI")
 @FeignClient(
         name = "IMasterAlertAPI",
         contextId = "IMasterAlertAPI",
@@ -58,14 +58,14 @@ public interface IMasterAlertAPI {
 
 
     @PostMapping(value = "/testAlertInterface")
-    @ApiOperation(notes = "测试告警调用外部通知接口", value = "测试告警调用外部通知接口")
+    @Operation(summary = "测试告警调用外部通知接口", description = "测试告警调用外部通知接口")
     Object testAlertInterface(
             @RequestBody
             String body
     );
 
     @PostMapping(value = "/alert/alertHook")
-    @ApiOperation(notes = "接收原始告警信息", value = "接收原始告警信息")
+    @Operation(summary = "接收原始告警信息", description = "接收原始告警信息")
     Result<String> alertHook(
             @RequestBody
             @Valid
@@ -73,7 +73,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @PostMapping(value = "/alert/newAlertRule")
-    @ApiOperation(notes = "新建告警规则", value = "新建告警规则")
+    @Operation(summary = "新建告警规则", description = "新建告警规则")
     Result<AbstractAlertVo.AlertRuleVo> newAlertRule(
             @RequestBody
             @Valid
@@ -81,7 +81,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @PostMapping(value = "/alert/removeAlertRule")
-    @ApiOperation(notes = "移除告警规则", value = "移除告警规则")
+    @Operation(summary = "移除告警规则", description = "移除告警规则")
     Result<String> removeAlertRule(
             @RequestBody
             @Valid
@@ -90,24 +90,24 @@ public interface IMasterAlertAPI {
 
 
     @GetMapping(value = "/alert/getAlertSimpleList")
-    @ApiOperation(notes = "获取告警信息概览列表", value = "获取告警信息概览列表")
+    @Operation(summary = "获取告警信息概览列表", description = "获取告警信息概览列表")
     Result<AbstractAlertVo.AlertSimpleListVo> getAlertSimpleList(
-            @ApiParam(name = "ClusterId", value = "集群 ID")
+            @Parameter(name = "ClusterId", description = "集群 ID")
             @RequestParam(value = "ClusterId", required = true)
             Long clusterId
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertDetailById")
-    @ApiOperation(notes = "根据 ID 获取告警详细信息", value = "根据 ID 获取告警详细信息")
+    @Operation(summary = "根据 ID 获取告警详细信息", description = "根据 ID 获取告警详细信息")
     Result<AbstractAlertVo.AlertRuleVo> getAlertDetailById(
-            @ApiParam(name = "AlertId", value = "告警信息 ID")
+            @Parameter(name = "AlertId", description = "告警信息 ID")
             @RequestParam(value = "AlertId", required = true)
             Long alertId
     ) throws Exception;
 
 
     @PostMapping(value = "/alert/switchAlertEnabled")
-    @ApiOperation(notes = "启用、停用告警", value = "启用、停用告警")
+    @Operation(summary = "启用、停用告警", description = "启用、停用告警")
     Result<String> switchAlertEnabled(
             @RequestBody
             @Valid
@@ -115,7 +115,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @PostMapping(value = "/alert/updateAlertRule")
-    @ApiOperation(notes = "更新告警配置信息", value = "更新告警配置信息")
+    @Operation(summary = "更新告警配置信息", description = "更新告警配置信息")
     Result<AbstractAlertVo.AlertRuleVo> updateAlertRule(
             @RequestBody
             @Valid
@@ -123,7 +123,7 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @PostMapping(value = "/alert/newAlertHandlerInterface")
-    @ApiOperation(notes = "新增接口告警处理方式", value = "新增接口告警处理方式")
+    @Operation(summary = "新增接口告警处理方式", description = "新增接口告警处理方式")
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> newAlertHandlerInterface(
             @RequestBody
             @Valid
@@ -131,15 +131,15 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertHandlerInterfaceDetailsById")
-    @ApiOperation(notes = "根据 ID 获取告警接口处理方式详情", value = "根据 ID 获取告警接口处理方式详情")
+    @Operation(summary = "根据 ID 获取告警接口处理方式详情", description = "根据 ID 获取告警接口处理方式详情")
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> getAlertHandlerInterfaceDetailsById(
-            @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
+            @Parameter(name = "HandlerId", description = "告警处理方式 ID")
             @RequestParam(value = "HandlerId", required = true)
             Long handlerId
     ) throws Exception;
 
     @PostMapping(value = "/alert/updateAlertHandlerInterface")
-    @ApiOperation(notes = "更新告警接口处理方式", value = "更新告警接口处理方式")
+    @Operation(summary = "更新告警接口处理方式", description = "更新告警接口处理方式")
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceVo> updateAlertHandlerInterface(
             @RequestBody
             @Valid
@@ -147,12 +147,12 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertHandlerInterfaceList")
-    @ApiOperation(notes = "获取告警接口处理方式列表", value = "获取告警接口处理方式列表")
+    @Operation(summary = "获取告警接口处理方式列表", description = "获取告警接口处理方式列表")
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceList(
     ) throws Exception;
 
     @PostMapping(value = "/alert/getAlertHandlerInterfaceListByIdList")
-    @ApiOperation(notes = "根据 ID 列表获取告警接口处理方式列表", value = "根据 ID 列表获取告警接口处理方式列表")
+    @Operation(summary = "根据 ID 列表获取告警接口处理方式列表", description = "根据 ID 列表获取告警接口处理方式列表")
     Result<AbstractAlertHandlerVo.AlertHandlerInterfaceListVo> getAlertHandlerInterfaceListByIdList(
             @RequestBody
             @Valid
@@ -161,7 +161,7 @@ public interface IMasterAlertAPI {
 
 
     @PostMapping(value = "/alert/newAlertHandlerMail")
-    @ApiOperation(notes = "新增邮件告警处理方式", value = "新增邮件告警处理方式")
+    @Operation(summary = "新增邮件告警处理方式", description = "新增邮件告警处理方式")
     Result<AbstractAlertHandlerVo.AlertHandlerMailVo> newAlertHandlerMail(
             @RequestBody
             @Valid
@@ -169,15 +169,15 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertHandlerMailDetailsById")
-    @ApiOperation(notes = "根据 ID 获取告警邮件处理方式详情", value = "根据 ID 获取告警邮件处理方式详情")
+    @Operation(summary = "根据 ID 获取告警邮件处理方式详情", description = "根据 ID 获取告警邮件处理方式详情")
     Result<AbstractAlertHandlerVo.AlertHandlerMailVo> getAlertHandlerMailDetailsById(
-            @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
+            @Parameter(name = "HandlerId", description = "告警处理方式 ID")
             @RequestParam(value = "HandlerId", required = true)
             Long handlerId
     ) throws Exception;
 
     @PostMapping(value = "/alert/updateAlertHandlerMail")
-    @ApiOperation(notes = "更新告警邮件处理方式", value = "更新告警邮件处理方式")
+    @Operation(summary = "更新告警邮件处理方式", description = "更新告警邮件处理方式")
     Result<AbstractAlertHandlerVo.AlertHandlerMailVo> updateAlertHandlerMail(
             @RequestBody
             @Valid
@@ -185,12 +185,12 @@ public interface IMasterAlertAPI {
     ) throws Exception;
 
     @GetMapping(value = "/alert/getAlertHandlerMailList")
-    @ApiOperation(notes = "获取告警邮箱处理方式列表", value = "获取告警邮箱处理方式列表")
+    @Operation(summary = "获取告警邮箱处理方式列表", description = "获取告警邮箱处理方式列表")
     Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailList(
     ) throws Exception;
 
     @PostMapping(value = "/alert/getAlertHandlerMailListIdList")
-    @ApiOperation(notes = "根据 ID 列表获取告警邮件处理方式列表", value = "根据 ID 列表获取告警邮件处理方式列表")
+    @Operation(summary = "根据 ID 列表获取告警邮件处理方式列表", description = "根据 ID 列表获取告警邮件处理方式列表")
     Result<AbstractAlertHandlerVo.AlertHandlerMailListVo> getAlertHandlerMailListIdList(
             @RequestBody
             @Valid
@@ -199,7 +199,7 @@ public interface IMasterAlertAPI {
 
 
     @PostMapping(value = "/alert/bindAlertAndAlertHandler")
-    @ApiOperation(notes = "绑定或解绑告警与告警处理方式", value = "绑定或解绑告警与告警处理方式")
+    @Operation(summary = "绑定或解绑告警与告警处理方式", description = "绑定或解绑告警与告警处理方式")
     Result<String> bindAlertAndAlertHandler(
             @RequestBody
             @Valid
@@ -207,7 +207,7 @@ public interface IMasterAlertAPI {
     )throws Exception;
 
     @PostMapping(value = "/alert/removeBatchAlertHandler")
-    @ApiOperation(notes = "批量删除告警处理方式", value = "批量删除告警处理方式")
+    @Operation(summary = "批量删除告警处理方式", description = "批量删除告警处理方式")
     Result<String> removeBatchAlertHandler(
             @RequestBody
             @Valid
@@ -215,17 +215,17 @@ public interface IMasterAlertAPI {
     )throws Exception;
 
     @GetMapping(value = "/alert/getBindingAlertHandlerByAlertId")
-    @ApiOperation(notes = "根据告警 ID 获取告警与处理方式的绑定关系", value = "根据告警 ID 获取告警与处理方式的绑定关系")
+    @Operation(summary = "根据告警 ID 获取告警与处理方式的绑定关系", description = "根据告警 ID 获取告警与处理方式的绑定关系")
     Result<AbstractAlertHandlerVo.AlertHandlerListVo> getBindingAlertHandlerByAlertId(
-            @ApiParam(name = "AlertId", value = "告警 ID")
+            @Parameter(name = "AlertId", description = "告警 ID")
             @RequestParam(value = "AlertId", required = true)
             Long alertId
     ) throws Exception;
 
     @GetMapping(value = "/alert/getBindingAlertHandlerByHandlerId")
-    @ApiOperation(notes = "根据处理方式 ID 获取告警与处理方式的绑定关系", value = "根据处理方式 ID 获取告警与处理方式的绑定关系")
+    @Operation(summary = "根据处理方式 ID 获取告警与处理方式的绑定关系", description = "根据处理方式 ID 获取告警与处理方式的绑定关系")
     Result<AbstractAlertHandlerVo.HandlerAndAlertIdListVo> getBindingAlertHandlerByHandlerId(
-            @ApiParam(name = "HandlerId", value = "告警处理方式 ID")
+            @Parameter(name = "HandlerId", description = "告警处理方式 ID")
             @RequestParam(value = "HandlerId", required = true)
             Long handlerId
     ) throws Exception;

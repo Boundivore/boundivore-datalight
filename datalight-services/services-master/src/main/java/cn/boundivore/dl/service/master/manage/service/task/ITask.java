@@ -19,7 +19,7 @@ package cn.boundivore.dl.service.master.manage.service.task;
 
 import cn.boundivore.dl.service.master.manage.service.bean.TaskMeta;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.concurrent.Callable;
 
 /**

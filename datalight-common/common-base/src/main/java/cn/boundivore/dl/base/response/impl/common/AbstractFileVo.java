@@ -18,7 +18,6 @@ package cn.boundivore.dl.base.response.impl.common;
 
 import cn.boundivore.dl.base.response.IVo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +51,7 @@ public abstract class AbstractFileVo {
 
         private static final long serialVersionUID = 4258355989656536771L;
 
-        @ApiModelProperty(name = "UploadFileList", value = "上传成功的文件列表", required = true)
+        @Schema(name = "UploadFileList", description = "上传成功的文件列表", required = true)
         @JsonProperty(value = "UploadFileList", required = true)
         private List<SingleUploadFileVo> uploadFileList;
 
@@ -70,15 +69,15 @@ public abstract class AbstractFileVo {
 
         private static final long serialVersionUID = -3025955230836468689L;
 
-        @ApiModelProperty(name = "Filename", value = "文件名", required = true)
+        @Schema(name = "Filename", description = "文件名", required = true)
         @JsonProperty(value = "Filename", required = true)
         private String fileName;
 
-        @ApiModelProperty(name = "FilePath", value = "文件路径", required = true)
+        @Schema(name = "FilePath", description = "文件路径", required = true)
         @JsonProperty(value = "FilePath", required = true)
         private String filePath;
 
-        @ApiModelProperty(name = "FileNameSuffix", value = "文件扩展名", required = true)
+        @Schema(name = "FileNameSuffix", description = "文件扩展名", required = true)
         @JsonProperty(value = "FileNameSuffix", required = true)
         private String fileNameSuffix;
 

@@ -1,8 +1,8 @@
 apply plugin: 'application'
 apply plugin: 'org.springframework.boot'
 
-sourceSets {
-    mainClassName = 'cn.boundivore.dl.service.worker.DataLightWorkerApplication'
+application {
+    mainClass = 'cn.boundivore.dl.service.worker.DataLightWorkerApplication'
 }
 
 dependencies {
@@ -17,8 +17,6 @@ dependencies {
 
     implementation 'org.apache.logging.log4j:log4j-to-slf4j'
     implementation 'org.apache.logging.log4j:log4j-api'
-    implementation 'org.apache.logging.log4j:log4j'
-    implementation 'log4j:log4j'
 
     implementation project(":datalight-common:common-base")
     implementation project(":datalight-common:common-cloud")
@@ -27,7 +25,7 @@ dependencies {
     implementation group: 'cn.hutool', name: 'hutool-all'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations'
-    implementation group: 'com.alibaba', name: 'fastjson'
+    implementation group: 'com.alibaba.fastjson2', name: 'fastjson2'
     implementation group: 'com.thoughtworks.xstream', name: 'xstream'
     implementation group: 'com.nimbusds', name: 'nimbus-jose-jwt'
     implementation group: 'com.alibaba', name: 'transmittable-thread-local'
@@ -45,8 +43,9 @@ dependencies {
 
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-    implementation group: 'cn.dev33', name: 'sa-token-spring-boot-starter'
+    implementation group: 'cn.dev33', name: 'sa-token-spring-boot3-starter'
 
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'

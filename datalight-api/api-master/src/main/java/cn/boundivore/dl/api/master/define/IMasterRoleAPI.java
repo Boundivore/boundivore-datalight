@@ -19,16 +19,16 @@ package cn.boundivore.dl.api.master.define;
 import cn.boundivore.dl.base.request.impl.master.AbstractRoleRequest;
 import cn.boundivore.dl.base.response.impl.master.AbstractRolePermissionRuleVo;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -43,7 +43,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterRoleAPI", tags = {"Master 接口：角色相关"})
+@Tag(name = "Master 接口：角色相关", description = "IMasterRoleAPI")
 @FeignClient(
         name = "IMasterRoleAPI",
         contextId = "IMasterRoleAPI",
@@ -52,7 +52,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterRoleAPI {
 
     @PostMapping(value = "/role/newRole")
-    @ApiOperation(notes = "新建角色", value = "新建角色")
+    @Operation(summary = "新建角色", description = "新建角色")
     Result<AbstractRolePermissionRuleVo.RoleVo> newRole(
             @RequestBody
             @Valid
@@ -60,7 +60,7 @@ public interface IMasterRoleAPI {
     ) throws Exception;
 
     @PostMapping(value = "/role/switchRoleEnabled")
-    @ApiOperation(notes = "切换角色是否启用", value = "切换角色是否启用")
+    @Operation(summary = "切换角色是否启用", description = "切换角色是否启用")
     Result<AbstractRolePermissionRuleVo.RoleVo> switchRoleEnabled(
             @RequestBody
             @Valid
@@ -68,29 +68,29 @@ public interface IMasterRoleAPI {
     ) throws Exception;
 
     @GetMapping(value = "/role/getRoleById")
-    @ApiOperation(notes = "根据角色 ID 获取角色信息", value = "根据角色 ID 获取角色信息")
+    @Operation(summary = "根据角色 ID 获取角色信息", description = "根据角色 ID 获取角色信息")
     Result<AbstractRolePermissionRuleVo.RoleVo> getRoleById(
-            @ApiParam(name = "RoleId", value = "RoleId")
+            @Parameter(name = "RoleId", description = "RoleId")
             @RequestParam(value = "RoleId", required = true)
             Long roleId
     ) throws Exception;
 
     @GetMapping(value = "/role/getRoleList")
-    @ApiOperation(notes = "获取角色信息列表", value = "获取角色信息列表")
+    @Operation(summary = "获取角色信息列表", description = "获取角色信息列表")
     Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleList() throws Exception;
 
 
     @GetMapping(value = "/role/getRoleListByUserId")
-    @ApiOperation(notes = "根据用户 ID 获取角色信息列表", value = "根据用户 ID 获取角色信息列表")
+    @Operation(summary = "根据用户 ID 获取角色信息列表", description = "根据用户 ID 获取角色信息列表")
     Result<AbstractRolePermissionRuleVo.RoleListVo> getRoleListByUserId(
-            @ApiParam(name = "UserId", value = "UserId")
+            @Parameter(name = "UserId", description = "UserId")
             @RequestParam(value = "UserId", required = true)
             Long userId
     ) throws Exception;
 
 
     @PostMapping(value = "/role/removeRoleBatchByIdList")
-    @ApiOperation(notes = "根据角色 ID 列表移除角色", value = "根据角色 ID 列表移除角色")
+    @Operation(summary = "根据角色 ID 列表移除角色", description = "根据角色 ID 列表移除角色")
     Result<String> removeRoleBatchByIdList(
             @RequestBody
             @Valid

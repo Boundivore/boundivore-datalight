@@ -1,8 +1,25 @@
 datalight:
+  # 大数据服务（HDFS、YARN、HIVE 等）使用的 JDK。
+  # 这些服务对 JDK 版本有各自的兼容性要求，统一停留在 JDK 8，不要跟随平台升级。
+  # 该值会通过 {{JAVA_HOME}} 占位符写进各服务的配置模板。
   java-home: /opt/jdk1.8.0_202
+  # DataLight Master / Worker 自身使用的 JDK，固定 JDK 17。
+  # 与上面的 java-home 相互独立，改动前先确认平台已按 JDK 17 编译。
+  datalight-java-home: /opt/jdk-17.0.13
   datalight-dir: /opt/datalight
   service-dir: /srv/datalight
   # 以下基础目录不要修改，否则请检查所有可能的引用，要保持一致
   log-dir: /data/datalight/logs
   pid-dir: /data/datalight/pids
   data-dir: /data/datalight/data
+  # AI 智能体服务（datalight-services-ai）。
+  # 它是与 Master、Worker 平级的平台第三角色，不是被平台部署的大数据服务，
+  # 因此不进 DLC 包，由本开关控制随平台一起启停。
+  # 默认关闭，不装 Python 也不影响 DataLight 正常运行。
+  ai:
+    enabled: false
+    # datalight-services-ai 仓库在节点上的路径，需提前执行过 uv sync
+    home: /opt/datalight-services-ai
+    port: 8010
+    # uv 可执行文件路径。留空则从 PATH 里找
+    uv-bin: ""

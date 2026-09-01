@@ -1,6 +1,5 @@
 .gradle
 build/
-!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
@@ -74,3 +73,7 @@ out
 gen
 .gradle
 build
+
+# Gradle Wrapper 必须入库，否则 clone 之后无法构建。
+# 该豁免必须放在 *.jar 之后，否则会被覆盖。
+!gradle/wrapper/gradle-wrapper.jar

@@ -17,8 +17,8 @@
 package cn.boundivore.dl.api.third.define;
 
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.NONE_PREFIX;
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IThirdGrafanaAPI", tags = {"Grafana 接口：直接调用 Grafana 接口"})
+@Tag(name = "Grafana 接口：直接调用 Grafana 接口", description = "IThirdGrafanaAPI")
 @FeignClient(
         name = "IThirdGrafanaAPI",
         contextId = "IThirdGrafanaAPI",
@@ -47,7 +47,7 @@ public interface IThirdGrafanaAPI {
 
 
     @PostMapping(value = "/api/orgs")
-    @ApiOperation(notes = "创建组织", value = "创建组织")
+    @Operation(summary = "创建组织", description = "创建组织")
     Result<String> createOrg(
             @RequestHeader("Authorization")
             String token,
@@ -57,7 +57,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @PostMapping(value = "/api/admin/users")
-    @ApiOperation(notes = "创建用户", value = "创建用户")
+    @Operation(summary = "创建用户", description = "创建用户")
     Result<String> createUsers(
             @RequestHeader("Authorization")
             String token,
@@ -67,7 +67,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @PostMapping(value = "/api/orgs/{orgId}/users")
-    @ApiOperation(notes = "向指定组织中添加用户", value = "向指定组织中添加用户")
+    @Operation(summary = "向指定组织中添加用户", description = "向指定组织中添加用户")
     Result<String> addUserInOrg(
             @RequestHeader("Authorization")
             String token,
@@ -80,7 +80,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @DeleteMapping(value = "/api/orgs/{orgId}/users/{userId}")
-    @ApiOperation(notes = "从指定组织中删除用户", value = "从指定组织中删除用户")
+    @Operation(summary = "从指定组织中删除用户", description = "从指定组织中删除用户")
     Result<String> deleteUserFromOrg(
             @RequestHeader("Authorization")
             String token,
@@ -93,7 +93,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/datasources/name/{name}")
-    @ApiOperation(notes = "根据 UID 获取数据源信息", value = "根据 UID 获取数据源信息")
+    @Operation(summary = "根据 UID 获取数据源信息", description = "根据 UID 获取数据源信息")
     Result<String> getDatasourceByName(
             @RequestHeader("Authorization")
             String token,
@@ -103,7 +103,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @PostMapping(value = "/api/datasources")
-    @ApiOperation(notes = "创建 DataSources", value = "创建 DataSources")
+    @Operation(summary = "创建 DataSources", description = "创建 DataSources")
     Result<String> createDataSources(
             @RequestHeader("Authorization")
             String token,
@@ -113,7 +113,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @DeleteMapping(value = "/api/datasources/name/{datasourceName}")
-    @ApiOperation(notes = "根据名称删除 DataSource", value = "根据名称删除 DataSource")
+    @Operation(summary = "根据名称删除 DataSource", description = "根据名称删除 DataSource")
     Result<String> deleteDataSourceByName(
             @RequestHeader("Authorization")
             String token,
@@ -123,7 +123,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @PostMapping(value = "/api/dashboards/db")
-    @ApiOperation(notes = "创建或更新 Dashboard", value = "创建或更新 Dashboard")
+    @Operation(summary = "创建或更新 Dashboard", description = "创建或更新 Dashboard")
     Result<String> createOrUpdateDashboard(
             @RequestHeader("Authorization")
             String token,
@@ -133,7 +133,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @PatchMapping(value = "/api/orgs/{orgId}/users/{userId}")
-    @ApiOperation(notes = "更新指定组织下的用户", value = "更新指定组织下的用户")
+    @Operation(summary = "更新指定组织下的用户", description = "更新指定组织下的用户")
     Result<String> updateUserInOrg(
             @RequestHeader("Authorization")
             String token,
@@ -149,7 +149,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/orgs/{orgId}/users")
-    @ApiOperation(notes = "获取指定组织下的用户信息", value = "获取指定组织下的用户信息")
+    @Operation(summary = "获取指定组织下的用户信息", description = "获取指定组织下的用户信息")
     Result<String> getUserInOrg(
             @RequestHeader("Authorization")
             String token,
@@ -159,7 +159,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/orgs/name/{orgName}")
-    @ApiOperation(notes = "根据名称获取组织信息", value = "根据名称获取组织信息")
+    @Operation(summary = "根据名称获取组织信息", description = "根据名称获取组织信息")
     Result<String> getOrgByName(
             @RequestHeader("Authorization")
             String token,
@@ -169,7 +169,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/users/lookup")
-    @ApiOperation(notes = "根据登录账号获取用户信息", value = "根据登录账号获取用户信息")
+    @Operation(summary = "根据登录账号获取用户信息", description = "根据登录账号获取用户信息")
     Result<String> getUserByLoginName(
             @RequestHeader("Authorization")
             String token,
@@ -179,7 +179,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/users")
-    @ApiOperation(notes = "获取所有用户", value = "获取所有用户")
+    @Operation(summary = "获取所有用户", description = "获取所有用户")
     Result<String> searchAllUsers(
             @RequestHeader("Authorization")
             String token,
@@ -192,14 +192,14 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/orgs")
-    @ApiOperation(notes = "获取所有组织", value = "获取所有组织")
+    @Operation(summary = "获取所有组织", description = "获取所有组织")
     Result<String> searchAllOrgs(
             @RequestHeader("Authorization")
             String token
     );
 
     @DeleteMapping(value = "/api/admin/users/{userId}")
-    @ApiOperation(notes = "根据 ID 删除指定用户", value = "根据 ID 删除指定用户")
+    @Operation(summary = "根据 ID 删除指定用户", description = "根据 ID 删除指定用户")
     Result<String> deleteUserById(
             @RequestHeader("Authorization")
             String token,
@@ -209,7 +209,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @DeleteMapping(value = "/api/orgs/{orgId}")
-    @ApiOperation(notes = "根据 ID 删除指定组织", value = "根据 ID 删除指定组织")
+    @Operation(summary = "根据 ID 删除指定组织", description = "根据 ID 删除指定组织")
     Result<String> deleteOrgById(
             @RequestHeader("Authorization")
             String token,
@@ -219,7 +219,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @PutMapping(value = "/api/user/password")
-    @ApiOperation(notes = "变更用户名密码", value = "变更用户名密码")
+    @Operation(summary = "变更用户名密码", description = "变更用户名密码")
     Result<String> changeUserPassword(
             @RequestHeader("Authorization")
             String token,
@@ -229,7 +229,7 @@ public interface IThirdGrafanaAPI {
     );
 
     @GetMapping(value = "/api/admin/stats")
-    @ApiOperation(notes = "获取 Grafana 状态信息", value = "获取 Grafana 状态信息")
+    @Operation(summary = "获取 Grafana 状态信息", description = "获取 Grafana 状态信息")
     Result<String> getStats(
             @RequestHeader("Authorization")
             String token

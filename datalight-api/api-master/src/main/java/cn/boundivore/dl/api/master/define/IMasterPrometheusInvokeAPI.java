@@ -18,13 +18,13 @@ package cn.boundivore.dl.api.master.define;
 
 import cn.boundivore.dl.base.request.impl.master.InvokePrometheusRequest;
 import cn.boundivore.dl.base.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -39,7 +39,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
  * Modification time:
  * Version: V1.0
  */
-@Api(value = "IMasterPrometheusInvokeAPI", tags = {"Master 接口：代理调用 Prometheus 相关"})
+@Tag(name = "Master 接口：代理调用 Prometheus 相关", description = "IMasterPrometheusInvokeAPI")
 @FeignClient(
         name = "IMasterPrometheusInvokeAPI",
         contextId = "IMasterPrometheusInvokeAPI",
@@ -48,7 +48,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 public interface IMasterPrometheusInvokeAPI {
 
     @PostMapping(value = "/prometheus/invoke")
-    @ApiOperation(notes = "代理调用 Prometheus 接口", value = "代理调用 Prometheus 接口")
+    @Operation(summary = "代理调用 Prometheus 接口", description = "代理调用 Prometheus 接口")
     Result<String> invokePrometheus(
             @RequestBody
             @Valid

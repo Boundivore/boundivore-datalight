@@ -62,7 +62,6 @@ public class NewCodeGeneratorByAll {
                             .mapper("mapper.single")   //Mapper 包名
                             .xml("mapper.xml")  //Mapper XML 包名
                             .controller("controller") //Controller 包名
-                            .other("config")    //自定义包名(一般不在这里生成，而是后面编写的时候自己建包)
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "./src/main/resources/mapper"));    //配置 mapper.xml 路径信息：项目的 resources 目录下
                 })
                 //4、策略配置

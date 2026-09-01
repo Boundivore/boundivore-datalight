@@ -16,7 +16,7 @@
  */
 package cn.boundivore.dl.starter.redis.lock;
 
-import com.github.xiaoymin.knife4j.core.util.StrUtil;
+import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

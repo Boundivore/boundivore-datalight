@@ -1,9 +1,20 @@
+plugins {
+    id 'org.springframework.boot' version '3.3.4' apply false
+    id 'io.spring.dependency-management' version '1.1.4' apply false
+    id 'java'
+}
+
 group 'cn.boundivore.dl'
 version '1.8.0'
 
+allprojects {
+    group = rootProject.group
+    version = rootProject.version
 
-buildscript {
     repositories {
+        // Maven 中央仓库
+        mavenCentral()
+
         // 阿里云中央仓库
         maven {
             url 'https://maven.aliyun.com/repository/central'
@@ -34,237 +45,166 @@ buildscript {
             url 'https://jitpack.io'
         }
     }
-
-
-    dependencies {
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.13.RELEASE"
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.7.0"
-    }
-
 }
-
 
 subprojects {
     version = rootProject.version
     group = rootProject.group
 
-    // disable source dir generator
+    // 聚合模块本身不参与编译，仅向下传递配置
     if (project.childProjects.size() != 0) {
         return
     }
 
     apply plugin: 'java'
     apply plugin: 'io.spring.dependency-management'
+
     clean {
         delete 'out'
         delete 'build'
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
         withSourcesJar()
     }
 
     ext {
-        scalaVersion = '2.13.11'
+        // 平台基线：Master / Worker 运行在 JDK 17，大数据服务另行使用独立 JDK
+        springBootVersion = '3.3.4'
+        springCloudVersion = '2023.0.3'
+        alibabaCloudVersion = '2023.0.3.2'
 
-        okHttpVersion = '4.9.3'
-        retrofit2Version = '2.9.0'
+        saTokenVersion = '1.44.0'
+        springdocVersion = '2.6.0'
 
-        saTokenVersion = '1.37.0'
+        caffeineVersion = '3.1.8'
+        nimbusVersion = '9.40'
 
-        springBootVersion = '2.7.0'
-        springCloudVersion = "2021.0.3"
-        alibabaCloudVersion = "2021.0.1.0"
-//        ext['spring-security.version']='5.7.3'
-        springCloudOauth2Version = "2.2.5.RELEASE"
-        caffeineVersion = "2.9.2"
-        nimbusVersion = "8.4.1"
-        jjwtVersion = "0.9.1"
-        springFoxVersion = "3.0.0"
-        knife4jVersion = "3.0.3"
-        xiaoyminVersion = "2.0.8"
-        minioVersion = "8.4.5"
-        redissonVersion = "3.17.7"
-        aliyunOssVersion = "3.15.0"
+        druidVersion = '1.2.27'
+        mysqlJDBCVersion = '8.0.32'
+        mybatisPlusVersion = '3.5.12'
+        p6spyVersion = '3.9.1'
+        redissonVersion = '3.24.3'
 
-        druidVersion = "1.2.13"
-        mybatisPlusVersion = '3.5.2'
-        mybatisPlusJoinVersion = '1.1.4'
-        mybatisSpringVersion = '2.2.2'
-        flywayVersion = '6.3.2'
-//        mysqlJDBCVersion = '8.0.29'
-        mysqlJDBCVersion = '5.1.49'
-        p6spyVersion = "3.8.7"
-        logstashVersion = "5.3"
-        hibernateValidatorVersion = "6.2.3.Final"
-        poiOoxmlVersion = "5.2.3"
-        xercesVersion = "2.12.2"
-        reflectionsVersion = "0.10.2"
-
-        hutoolVersion = '5.8.16'
-        poiOoxmlVersion = "5.2.3"
-        xercesVersion = "2.12.2"
+        hutoolVersion = '5.8.32'
+        poiOoxmlVersion = '5.4.1'
+        xercesVersion = '2.12.2'
         pinyin4jVersion = '2.5.1'
-        httpClientVersion = '4.5.13'
+        httpClientVersion = '4.5.14'
+        commonsNetVersion = '3.11.1'
+        gsonVersion = '2.11.0'
+        googleJavaDiffUtilsVersion = '1.2.1'
+
+        jacksonVersion = '2.18.1'
+        fastjsonVersion = '2.0.53'
+        xStreamVersion = '1.4.20'
+
+        log4jVersion = '2.24.1'
+        logstashVersion = '8.0'
+
+        sshjVersion = '0.35.0'
+        agentProxySshjVersion = '0.0.9'
+
+        freemarkerVersion = '2.3.33'
+        init4JVersion = '0.5.4'
+        junitVersion = '5.10.3'
+        lombokVersion = '1.18.34'
+        mapstructVersion = '1.6.2'
+        lombokMapStructBindingVersion = '0.2.0'
+
+        ioMicroMeterVersion = '1.13.4'
+        alibabaTransmittable = '2.14.5'
+
+        apmToolkitVersion = '9.3.0'
+
         zookeeperVersion = '3.4.13'
         zookeeperCuratorVersion = '4.2.0'
 
-        commonsNetVersion = "3.1"
-        ioPrometheusVersion = "0.9.0"
-        gsonVersion = "2.8.6"
-        googleJavaDiffUtilsVersion = "1.2.1"
-        jacksonVersion = "2.13.4"
-        fastjsonVersion = "1.2.73"
-        xStreamVersion = "1.4.12"
-        log4jVersion = "1.2.17"
-        log4jSl4jVersion = "2.19.0"
-        scalaSshVersion = "0.11.1"
-        sshjVersion = "0.35.0"
-        agentProxySshjVersion = "0.0.9"
-
-        freemarkerVersion = "2.3.30"
-        init4JVersion = "0.5.4"
-        junitVersion = "5.9.2"
-        lombokVersion = "1.18.24"
-        mapstructVersion = '1.5.3.Final'
-        lombokMapStructBindingVersion = '0.2.0'
-
-        ioMicroMeterVersion = "1.9.4"
-        alibabaTransmittable = "2.14.0"
-
-        apmToolkitVersion = "8.12.0"
-        sentinelVersion = "1.8.5"
-
-        qianfanVersion = "0.0.5"
+        qianfanVersion = '0.0.5'
     }
-
-    repositories {
-        // 阿里云中央仓库
-        maven {
-            url 'https://maven.aliyun.com/repository/central'
-        }
-        // 阿里云公共仓库
-        maven {
-            url 'https://maven.aliyun.com/repository/public'
-        }
-        // 阿里云 Spring 仓库
-        maven {
-            url 'https://maven.aliyun.com/repository/spring'
-        }
-        // 华为云 Maven 仓库
-        maven {
-            url 'https://mirrors.huaweicloud.com/repository/maven/'
-        }
-        // 东软镜像 Maven 仓库
-        maven {
-            url 'https://mirrors.neusoft.edu.cn/maven2'
-        }
-        // 中国科学技术大学镜像 Maven 仓库
-        maven {
-            url 'https://mirrors.ustc.edu.cn/maven/repository/public'
-        }
-
-        // JitPack 仓库
-        maven {
-            url 'https://jitpack.io'
-        }
-    }
-
-
 
     tasks.withType(JavaCompile).configureEach {
         options.annotationProcessorPath = configurations.annotationProcessor
-        options.generatedSourceOutputDirectory.set(file("$buildDir/generated/"))
+        options.generatedSourceOutputDirectory.set(layout.buildDirectory.dir('generated'))
 
-        options.encoding = "UTF-8"
-//        options.compilerArgs += ['-Xlint:all']
+        options.encoding = 'UTF-8'
         options.compilerArgs += ['-Xdoclint:none', '-Xlint:none', '-nowarn']
-
     }
 
+    // 全局排除老旧 XML 解析器，避免 xpp3_min 污染 JAXP ServiceLoader 导致 logback 启动异常
+    configurations.all {
+        exclude group: 'xpp3', module: 'xpp3_min'
+        exclude group: 'xpp3', module: 'xpp3'
+        exclude group: 'org.ogce', module: 'xpp3'
+    }
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
             mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
             mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${alibabaCloudVersion}"
+            mavenBom "com.baomidou:mybatis-plus-bom:${mybatisPlusVersion}"
         }
 
         dependencies {
-
-
-            dependency group: 'org.scala-lang', name: 'scala-library', version: scalaVersion
-
-            dependency group: 'com.squareup.okhttp3', name: 'okhttp', version: okHttpVersion
-
-            dependency group: 'com.squareup.retrofit2', name: 'retrofit', version: retrofit2Version
-            dependency group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: retrofit2Version
-            dependency group: 'com.squareup.retrofit2', name: 'converter-jackson', version: retrofit2Version
-
+            // Sa-Token 权限认证，Spring Boot 3 需使用 spring-boot3-starter
             dependency group: 'cn.dev33', name: 'sa-token-core', version: saTokenVersion
             dependency group: 'cn.dev33', name: 'sa-token-jwt', version: saTokenVersion
-            dependency group: 'cn.dev33', name: 'sa-token-spring-boot-starter', version: saTokenVersion
-            dependency group: 'cn.dev33', name: 'sa-token-reactor-spring-boot-starter', version: saTokenVersion
+            dependency group: 'cn.dev33', name: 'sa-token-spring-boot3-starter', version: saTokenVersion
+            dependency group: 'cn.dev33', name: 'sa-token-reactor-spring-boot3-starter', version: saTokenVersion
             dependency group: 'cn.dev33', name: 'sa-token-alone-redis', version: saTokenVersion
-            dependency group: 'cn.dev33', name: 'sa-token-dao-redis-jackson', version: saTokenVersion
-            dependency group: 'cn.dev33', name: 'sa-token-oauth2', version: saTokenVersion
+            dependency group: 'cn.dev33', name: 'sa-token-redis-jackson', version: saTokenVersion
 
+            // 接口文档，springfox 不支持 Spring Boot 3，统一改用 springdoc
+            dependency group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: springdocVersion
+            dependency group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-api', version: springdocVersion
+            dependency group: 'org.springdoc', name: 'springdoc-openapi-starter-common', version: springdocVersion
 
-            dependency group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: springCloudOauth2Version
-            dependency group: 'io.jsonwebtoken', name: 'jjwt', version: jjwtVersion
             dependency group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: nimbusVersion
-            dependency group: 'io.minio', name: 'minio', version: minioVersion
-
             dependency group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: caffeineVersion
 
-            dependency group: 'com.alibaba', name: 'druid-spring-boot-starter', version: druidVersion
-            dependency group: 'mysql', name: 'mysql-connector-java', version: mysqlJDBCVersion
-            dependency group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: mybatisPlusVersion
-            dependency group: 'com.baomidou', name: 'mybatis-plus-generator', version: mybatisPlusVersion
-            dependency group: 'icu.mhb', name: 'mybatis-plus-join', version: mybatisPlusJoinVersion
-            dependency group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: mybatisSpringVersion
+            // 数据库
+            dependency group: 'com.alibaba', name: 'druid-spring-boot-3-starter', version: druidVersion
+            dependency group: 'com.mysql', name: 'mysql-connector-j', version: mysqlJDBCVersion
             dependency group: 'p6spy', name: 'p6spy', version: p6spyVersion
             dependency group: 'org.redisson', name: 'redisson-spring-boot-starter', version: redissonVersion
-            dependency group: 'com.aliyun.oss', name: 'aliyun-sdk-oss', version: aliyunOssVersion
 
             dependency group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: logstashVersion
 
             dependency group: 'cn.hutool', name: 'hutool-all', version: hutoolVersion
+            dependency group: 'org.apache.poi', name: 'poi', version: poiOoxmlVersion
             dependency group: 'org.apache.poi', name: 'poi-ooxml', version: poiOoxmlVersion
             dependency group: 'xerces', name: 'xercesImpl', version: xercesVersion
 
             dependency group: 'com.belerweb', name: 'pinyin4j', version: pinyin4jVersion
             dependency group: 'org.apache.httpcomponents', name: 'httpclient', version: httpClientVersion
-            dependency group: 'io.prometheus', name: 'simpleclient_httpserver', version: ioPrometheusVersion
             dependency group: 'commons-net', name: 'commons-net', version: commonsNetVersion
             dependency group: 'com.google.code.gson', name: 'gson', version: gsonVersion
             dependency group: 'com.googlecode.java-diff-utils', name: 'diffutils', version: googleJavaDiffUtilsVersion
-            dependency group: 'org.hibernate.validator', name: 'hibernate-validator', version: hibernateValidatorVersion
-            dependency group: 'org.apache.poi', name: 'poi-ooxml', version: poiOoxmlVersion
-            dependency group: 'xerces', name: 'xercesImpl', version: xercesVersion
-            dependency group: 'org.reflections', name: 'reflections', version: reflectionsVersion
 
-
+            // Jackson
             dependency group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
             dependency group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: jacksonVersion
+            dependency group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
             dependency group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-yaml', version: jacksonVersion
             dependency group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-xml', version: jacksonVersion
+            dependency group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: jacksonVersion
 
+            // fastjson2 支持 JDK 17
+            dependency group: 'com.alibaba.fastjson2', name: 'fastjson2', version: fastjsonVersion
 
-            dependency group: 'com.alibaba', name: 'fastjson', version: fastjsonVersion
             dependency group: 'com.thoughtworks.xstream', name: 'xstream', version: xStreamVersion
-            dependency group: 'log4j', name: 'log4j', version: log4jVersion
-            dependency group: 'org.apache.logging.log4j', name: 'log4j', version: log4jSl4jVersion
-            dependency group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jSl4jVersion
-            dependency group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jSl4jVersion
+
+            dependency group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4jVersion
+            dependency group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4jVersion
+            dependency group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4jVersion
 
             dependency group: 'org.ini4j', name: 'ini4j', version: init4JVersion
             dependency group: 'org.freemarker', name: 'freemarker', version: freemarkerVersion
 
-
-            dependency group: 'com.decodified', name: 'scala-ssh_3', version: scalaSshVersion
+            // SSH
             dependency group: 'com.hierynomus', name: 'sshj', version: sshjVersion
             dependency group: 'com.jcraft', name: 'jsch.agentproxy.sshj', version: agentProxySshjVersion
             dependency group: 'com.jcraft', name: 'jsch.agentproxy.connector-factory', version: agentProxySshjVersion
@@ -283,17 +223,15 @@ subprojects {
 
             dependency group: 'com.baidubce', name: 'qianfan', version: qianfanVersion
 
-
             dependency group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
             dependency group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstructVersion
+            dependency group: 'org.projectlombok', name: 'lombok', version: lombokVersion
             dependency group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: lombokMapStructBindingVersion
 
-
-            dependency group: 'com.github.xiaoymin', name: 'knife4j-spring-boot-starter', version: knife4jVersion
-//        dependency group: 'com.github.xiaoymin', name: 'swagger-bootstrap-ui', version: xiaoyminVersion
-            dependency group: 'com.github.xiaoymin', name: 'knife4j-micro-spring-boot-starter', version: xiaoyminVersion
-            dependency group: 'io.springfox', name: 'springfox-boot-starter', version: springFoxVersion
-
+            // Jakarta EE，Spring Boot 3 必需
+            dependency group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
+            dependency group: 'jakarta.validation', name: 'jakarta.validation-api', version: '3.0.2'
+            dependency group: 'jakarta.annotation', name: 'jakarta.annotation-api', version: '2.1.1'
         }
     }
 
@@ -301,34 +239,24 @@ subprojects {
         testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: junitVersion
         testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: junitVersion
 
-
-        implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion
-        annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion
-
         implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion
         annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: springBootVersion
 
         implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
         annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
         testImplementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-
-        implementation group: 'org.projectlombok', name: 'lombok', version: lombokVersion
-        annotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
         testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: lombokVersion
 
-        annotationProcessor group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: lombokMapStructBindingVersion
         implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: lombokMapStructBindingVersion
+        annotationProcessor group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: lombokMapStructBindingVersion
         testImplementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: lombokMapStructBindingVersion
 
         implementation group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
-        testImplementation group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
-
-        implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstructVersion
         annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstructVersion
+        testImplementation group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
         testAnnotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstructVersion
 
-        implementation group: 'io.springfox', name: 'springfox-boot-starter', version: springFoxVersion
-        implementation group: 'com.github.xiaoymin', name: 'knife4j-spring-boot-starter', version: knife4jVersion
-        implementation group: 'com.github.xiaoymin', name: 'knife4j-micro-spring-boot-starter', version: xiaoyminVersion
+        // 接口文档注解，全模块可用
+        implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-common', version: springdocVersion
     }
 }
