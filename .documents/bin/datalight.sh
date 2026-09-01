@@ -13,7 +13,7 @@ fi
 
 # 检查参数是否为空
 if [ -z "$1" ] || [ -z "$2" ]; then
-  echo "Usage: $0 <start|stop|restart> <master|worker|ai>"
+  echo "Usage: $0 <start|stop|restart> <master|worker|aiagent>"
   exit 1
 fi
 
@@ -110,11 +110,12 @@ start_service() {
   fi
 }
 
-# 启动 AI 智能体服务。它是与 Master、Worker 平级的平台第三角色，
-# 由 conf/env/datalight-env.sh 里的 DATALIGHT_AI_* 变量控制，默认不启用。
-start_ai_service() {
+# 启动 AIAgent。它是与 Master、Worker 平级的平台第三角色，进程本体是
+# datalight-services-ai 仓库里的 Python 服务，由 conf/env/datalight-env.sh
+# 里的 DATALIGHT_AI_* 变量控制，默认不启用。
+start_aiagent() {
   if [ "${DATALIGHT_AI_ENABLED}" != "true" ]; then
-    echo "AI 服务未启用，跳过。如需启用，请在 conf/env/directory.yaml 中把 datalight.ai.enabled 设为 true"
+    echo "AIAgent 未启用，跳过。如需启用，请在 conf/env/directory.yaml 中把 datalight.ai.enabled 设为 true"
     return 0
   fi
 
@@ -135,37 +136,37 @@ start_ai_service() {
   # shellcheck disable=SC2155
   local pid=$(pgrep -f "uvicorn app.main:app")
   if [ -n "${pid}" ]; then
-    echo "ai is already started"
+    echo "aiagent is already started"
     return 0
   fi
 
   local port="${DATALIGHT_AI_PORT:-8010}"
   cd "${DATALIGHT_AI_HOME}"
   nohup "${uv_bin}" run --directory services-ai uvicorn app.main:app     --host 0.0.0.0 --port "${port}" > /dev/null 2>&1 &
-  echo "ai starting in $!..."
+  echo "aiagent starting in $!..."
 
   local attempt=0
   while ! curl -s "http://localhost:${port}/api/v1/ai/py/health" | grep -q '"Code":"00000"'; do
     sleep 1
     attempt=$((attempt + 1))
     if [ ${attempt} -ge 60 ]; then
-      echo "ai failed to start after 60 attempts." >&2
+      echo "aiagent failed to start after 60 attempts." >&2
       return 1
     fi
   done
 
-  echo "ai started."
+  echo "aiagent started."
   return 0
 }
 
-stop_ai_service() {
+stop_aiagent() {
   # shellcheck disable=SC2155
   local pid=$(pgrep -f "uvicorn app.main:app")
   if [ -n "${pid}" ]; then
     kill "${pid}"
-    echo "ai stopped."
+    echo "aiagent stopped."
   else
-    echo "ai is not running."
+    echo "aiagent is not running."
   fi
 }
 
@@ -189,22 +190,22 @@ execute_operation() {
   local jar_name
   local api_type="$1"
 
-  # AI 服务是 Python 进程，不走 jar 那一套
-  if [ "$api_type" = "ai" ]; then
+  # AIAgent 是 Python 进程，不走 jar 那一套。ai 是 aiagent 的简写，两个都收
+  if [ "$api_type" = "aiagent" ] || [ "$api_type" = "ai" ]; then
     case "$operation" in
     "start")
-      start_ai_service
+      start_aiagent
       ;;
     "stop")
-      stop_ai_service
+      stop_aiagent
       ;;
     "restart")
-      stop_ai_service
+      stop_aiagent
       sleep 1
-      start_ai_service
+      start_aiagent
       ;;
     *)
-      echo "Invalid operation. Usage: $0 <start|stop|restart> <master|worker|ai>"
+      echo "Invalid operation. Usage: $0 <start|stop|restart> <master|worker|aiagent>"
       exit 1
       ;;
     esac
@@ -219,7 +220,7 @@ execute_operation() {
     jar_name=$(find "${app_dir}" -name "services-worker-*.jar" | sort -V | tail -n 1 | xargs basename)
     ;;
   *)
-    echo "Invalid component name. Supported components: master, worker, ai"
+    echo "Invalid component name. Supported components: master, worker, aiagent"
     exit 1
     ;;
   esac
@@ -237,7 +238,7 @@ execute_operation() {
     start_service "$jar_name" "$api_type" "$port"
     ;;
   *)
-    echo "Invalid operation. Usage: $0 <start|stop|restart> <master|worker|ai>"
+    echo "Invalid operation. Usage: $0 <start|stop|restart> <master|worker|aiagent>"
     exit 1
     ;;
   esac

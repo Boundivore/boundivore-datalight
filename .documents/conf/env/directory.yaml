@@ -12,9 +12,9 @@ datalight:
   log-dir: /data/datalight/logs
   pid-dir: /data/datalight/pids
   data-dir: /data/datalight/data
-  # AI 智能体服务（datalight-services-ai）。
-  # 它是与 Master、Worker 平级的平台第三角色，不是被平台部署的大数据服务，
-  # 因此不进 DLC 包，由本开关控制随平台一起启停。
+  # AIAgent：与 Master、Worker 平级的平台第三角色，进程本体是
+  # datalight-services-ai 仓库里的 Python 服务。
+  # 它不是被平台部署的大数据服务，因此不进 DLC 包，由本开关控制随平台一起启停。
   # 默认关闭，不装 Python 也不影响 DataLight 正常运行。
   ai:
     enabled: false

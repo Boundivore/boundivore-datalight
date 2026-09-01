@@ -14,7 +14,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * [后端 Github 镜像仓库](https://github.com/Boundivore/boundivore-datalight) 
 * [前端 Gitee 主仓库](https://gitee.com/boundivore/boundivore-datalight-web) 
 * [前端 Github 镜像仓库](https://github.com/Boundivore/boundivore-datalight-web) 
-* [智能体服务 Gitee 仓库](https://gitee.com/boundivore/datalight-services-ai) 
+* [AIAgent 智能体 Gitee 仓库](https://gitee.com/boundivore/datalight-services-ai) 
 * [产品手册](./.documents/docs/产品手册.md)
 * [开发手册](./.documents/docs/开发手册.md)
 
@@ -47,8 +47,8 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * Components：各类集成在平台中的组件；
 * KubeAPI：与 Kubernetes/KubeSphere API 交互的服务管理；
 
-除 Master 与 Worker 之外，平台还有一个可选的第三角色：智能体服务
-[datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai)。
+除 Master 与 Worker 之外，平台还有一个可选的第三角色：**AIAgent**，
+进程本体是 [datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai)。
 它与 Master、Worker 平级，由配置开关控制随平台启停，默认关闭，详见第九节。
 
 ## 三、概念与定义
@@ -57,7 +57,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * 组件：HDFS 中的独立进程，例如：NameNode、DataNode 等称之为组件，在本项目中的标准命名方式为帕斯卡命名法，且组件名称全局唯一。
 * 主进程：DataLight Master 进程称之为主进程，其所在节点称之为平台主节点。
 * 从进程：DataLight Worker 进程称之为从进程，其所在节点称之为平台从节点。
-* 智能体进程：datalight-services-ai 进程，与主从进程平级，默认不启用，可部署在主节点或独立节点。
+* 智能体进程：AIAgent 进程，与主从进程平级，进程本体是 datalight-services-ai，默认不启用，可部署在主节点或独立节点。
 
 ## 四、主要功能
 
@@ -80,7 +80,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 | 13 | 告警管理               | 是       |
 | 14 | 用户管理               | 是       |
 | 15 | 权限管理               | 是       |
-| 16 | 智能体问答与自动化运维 | 是（默认关闭） |
+| 16 | AIAgent 问答与自动化运维 | 是（默认关闭） |
 
 ## 五、编译环境
 
@@ -478,12 +478,13 @@ http://<Master-IP>:8001
 | DINKY | 1.2.3 | √ | 2025-05 |
 | More....        |  | |         |
 
-## 九、智能体服务
+## 九、AIAgent 智能体
 
-平台的 AI 能力独立成仓库：[datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai)。
+平台的 AI 能力独立成一个角色：**AIAgent**，与 Master、Worker 并列，进程本体在 [datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai) 仓库。
 
-它是与 Master、Worker 平级的**第三角色**，由配置开关控制随平台启停，默认关闭。
-不装 Python 也不影响 DataLight 正常运行。
+之所以单独给它一个角色名，是因为它既不是 Master 也不是 Worker，在配置、启停、日志、文档里都要被单独称呼。
+
+它由配置开关控制随平台启停，默认关闭。不装 Python 也不影响 DataLight 正常运行。
 
 <img src=".documents/docs/assets/datalight-services-ai-architecture.png" alt="datalight-services-ai" style="zoom:50%;" />
 
@@ -497,7 +498,8 @@ http://<Master-IP>:8001
 | 问答式部署 | 多轮补齐信息，生成逐节点展开的部署计划，人确认后执行 |
 | 自动化运维 | 预定义场景的自动处置，带频率上限 |
 
-服务自带问答界面，启动后打开 `http://<主节点>:8010/ui` 即可使用，不需要单独部署前端。
+正式入口是平台控制台右上角的智能体抽屉，链路是 `前端 → Master → AIAgent`，走平台自身的鉴权。
+AIAgent 另有一个自带的调试页 `http://<主节点>:8010/ui`，直连该服务不经平台鉴权，用于前端没起时验证智能体本身。
 
 ### 9.2 为什么不做成被平台部署的服务
 
@@ -527,18 +529,18 @@ datalight:
 之后与 Master、Worker 一样用同一个脚本启停：
 
 ~~~bash
-sh bin/datalight.sh start ai
+sh bin/datalight.sh start aiagent
 ~~~
 
 ~~~bash
-sh bin/datalight.sh stop ai
+sh bin/datalight.sh stop aiagent
 ~~~
 
 模型与 Master 账号的配置在 `services-ai/.env`，参见该仓库的 `env.example`。
 
 ### 9.4 数据从哪来
 
-**智能体服务不具备直连数据库的能力。** 集群元数据、作业历史、节点日志，
+**AIAgent 不具备直连数据库的能力。** 集群元数据、作业历史、节点日志，
 全部经由 Master 的 REST 接口获取。Master 侧为此提供了一组聚合接口：
 
 | 接口 | 用途 |
@@ -548,7 +550,7 @@ sh bin/datalight.sh stop ai
 | `GET /api/v1/master/agent/job/history` | 作业历史，按开始时间倒序 |
 | `GET /api/v1/master/agent/log/tail` | 组件日志尾部，路径由服务端拼装，调用方不传路径 |
 
-这些接口对人同样开放，不是给智能体单开的后门，前端需要相同的聚合视图时可直接复用。
+这些接口对人同样开放，不是给 AIAgent 单开的后门，前端需要相同的聚合视图时可直接复用。
 
 ### 9.5 安全边界
 

@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Description: MasterAgentController
- * 面向智能体服务的数据接口。日志内容体积大，统一关闭返回体打印
+ * 面向 AIAgent 的数据接口。日志内容体积大，统一关闭返回体打印
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com
  * Creation time: 2026/9/1

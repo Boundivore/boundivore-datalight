@@ -35,7 +35,7 @@ import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PRE
 /**
  * Description: AI 智能体对话入口。
  * <p>
- * 前端只跟 Master 打交道，由 Master 转发到 services-ai。
+ * 前端只跟 Master 打交道，由 Master 转发到 AIAgent。
  * 这样鉴权、审计、限流收在一处，Python 侧不需要理解平台的用户体系，
  * 也不必对浏览器直接暴露端口。
  * <p>

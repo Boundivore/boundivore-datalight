@@ -26,7 +26,8 @@ export LOG_DIR="{{LOG_DIR}}"
 export PID_DIR="{{PID_DIR}}"
 export DATA_DIR="{{DATA_DIR}}"
 
-# AI 智能体服务（datalight-services-ai）。与 Master、Worker 平级，默认不启用。
+# AIAgent：与 Master、Worker 平级的平台第三角色，进程本体是
+# datalight-services-ai 仓库里的 Python 服务。默认不启用。
 # 不装 Python 也不影响 DataLight 正常运行。
 export DATALIGHT_AI_ENABLED="{{AI_ENABLED}}"
 export DATALIGHT_AI_HOME="{{AI_HOME}}"

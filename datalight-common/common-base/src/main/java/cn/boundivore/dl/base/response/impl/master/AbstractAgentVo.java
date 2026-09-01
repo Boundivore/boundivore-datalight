@@ -34,8 +34,8 @@ import lombok.experimental.Accessors;
 import java.util.List;
 
 /**
- * Description: 智能体服务专用的聚合响应体。
- * datalight-services-ai 不直连数据库，所有数据都从这里取。
+ * Description: AIAgent 专用的聚合响应体。
+ * AIAgent 不直连数据库，所有数据都从这里取。
  * 这些接口同样对人开放，不是给 Agent 开的后门。
  * 设计上以「一次调用拿全一个语义完整的快照」为原则，减少 Agent 的往返次数与上下文消耗。
  * Created by: Boundivore

@@ -73,7 +73,7 @@ public abstract class AbstractAiAgentRequest {
         /**
          * 历史消息。由前端带入，服务端不落库。
          * 会话历史留在前端可以避免 Master 侧再引一套会话存储，
-         * 需要跨设备续聊时再考虑落到 services-ai 的 Redis 里。
+         * 需要跨设备续聊时再考虑落到 AIAgent 的 Redis 里。
          */
         @Schema(name = "History", title = "历史消息", required = false)
         @JsonProperty(value = "History", required = false)

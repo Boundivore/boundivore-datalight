@@ -50,8 +50,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
- * Description: 面向智能体服务的数据聚合逻辑。
- * datalight-services-ai 不直连数据库，集群元数据与节点日志一律经由这里取。
+ * Description: 面向 AIAgent 的数据聚合逻辑。
+ * AIAgent 不直连数据库，集群元数据与节点日志一律经由这里取。
  * 这些方法对人同样开放，前端需要相同的聚合视图时可直接复用。
  * Created by: Boundivore
  * E-mail: boundivore@foxmail.com

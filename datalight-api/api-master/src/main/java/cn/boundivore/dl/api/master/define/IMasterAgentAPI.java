@@ -29,8 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 /**
- * Description: 面向智能体服务的数据接口。
- * datalight-services-ai 不具备直连数据库的能力，集群元数据与节点日志一律从这里取。
+ * Description: 面向 AIAgent 的数据接口。
+ * AIAgent 不具备直连数据库的能力，集群元数据与节点日志一律从这里取。
  * 这些接口对人同样开放，不是给 Agent 单开的后门，前端需要同样的聚合视图时可直接复用。
  * 设计原则：一次调用返回一个语义完整的快照，减少调用方的往返次数。
  * Created by: Boundivore

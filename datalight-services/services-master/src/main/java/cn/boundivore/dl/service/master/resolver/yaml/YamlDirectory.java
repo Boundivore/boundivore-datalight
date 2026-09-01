@@ -39,7 +39,7 @@ public class YamlDirectory {
         private String dataDir;
 
         /**
-         * AI 智能体服务的接入配置。该服务与 Master、Worker 平级，由开关控制随平台启停，
+         * AIAgent 的接入配置。它与 Master、Worker 平级，由开关控制随平台启停，
          * 不是被平台部署的大数据服务，因此不进 DLC 包。
          */
         @JsonProperty("ai")
@@ -55,7 +55,7 @@ public class YamlDirectory {
         private Boolean enabled = false;
 
         /**
-         * datalight-services-ai 仓库在节点上的路径，需提前执行过 uv sync
+         * AIAgent 仓库（datalight-services-ai）在节点上的路径，需提前执行过 uv sync
          */
         @JsonProperty("home")
         private String home;

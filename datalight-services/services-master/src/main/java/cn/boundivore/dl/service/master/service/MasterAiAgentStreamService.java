@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * Description: AI 智能体流式对话的中转。
  * <p>
- * 链路是 前端 → Master → services-ai。前端不直连 services-ai，
+ * 链路是 前端 → Master → AIAgent。前端不直连 AIAgent，
  * 这样鉴权、审计、限流都收在 Master 一处，Python 侧只认内部调用密钥，
  * 不需要理解平台的用户体系。
  * <p>
@@ -63,12 +63,12 @@ public class MasterAiAgentStreamService {
     private static final MediaType JSON_MEDIA_TYPE = MediaType.parse("application/json; charset=utf-8");
 
     /**
-     * services-ai 的流式对话路径
+     * AIAgent 的流式对话路径
      */
     private static final String AI_CONVERSE_PATH = "/api/v1/ai/py/agent/converse/stream";
 
     /**
-     * 与 services-ai 约定的内部调用密钥请求头
+     * 与 AIAgent 约定的内部调用密钥请求头
      */
     private static final String INTERNAL_HEADER = "X-DataLight-Internal";
 
@@ -85,19 +85,19 @@ public class MasterAiAgentStreamService {
     private final ObjectMapper objectMapper;
 
     /**
-     * services-ai 服务地址
+     * AIAgent 服务地址
      */
     @Value("${datalight.ai.base-url:http://127.0.0.1:8010}")
     private String aiBaseUrl;
 
     /**
-     * 内部调用密钥，与 services-ai 的 DATALIGHT_AI_INTERNAL_TOKEN 同值
+     * 内部调用密钥，与 AIAgent 的 DATALIGHT_AI_INTERNAL_TOKEN 同值
      */
     @Value("${datalight.ai.internal-token:}")
     private String internalToken;
 
     /**
-     * 是否启用智能体服务。关闭时直接回一条 error 事件，不去连上游
+     * 是否启用 AIAgent。关闭时直接回一条 error 事件，不去连上游
      */
     @Value("${datalight.ai.enabled:false}")
     private boolean aiEnabled;
@@ -136,7 +136,7 @@ public class MasterAiAgentStreamService {
         this.applySseHeaders(response);
 
         if (!this.aiEnabled) {
-            this.writeSseError(response, "智能体服务未启用，请在 directory.yaml 中打开 datalight.ai.enabled");
+            this.writeSseError(response, "AIAgent 未启用，请在 directory.yaml 中打开 datalight.ai.enabled");
             return;
         }
 
@@ -178,7 +178,7 @@ public class MasterAiAgentStreamService {
                 log.warn("智能体上游响应异常: Code: {}, SessionId: {}", upstream.code(), request.getSessionId());
                 this.writeSseError(
                         response,
-                        String.format("智能体服务响应异常（HTTP %d）", upstream.code())
+                        String.format("AIAgent 响应异常（HTTP %d）", upstream.code())
                 );
                 return;
             }
@@ -188,7 +188,7 @@ public class MasterAiAgentStreamService {
             log.info("智能体流式对话中断: SessionId: {}, 原因: {}", request.getSessionId(), e.getMessage());
         } catch (Exception e) {
             log.error("智能体流式对话失败, sessionId={}", request.getSessionId(), e);
-            this.writeSseError(response, "智能体服务暂时不可用，请稍后重试");
+            this.writeSseError(response, "AIAgent 暂时不可用，请稍后重试");
         }
     }
 
