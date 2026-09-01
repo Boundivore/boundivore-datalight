@@ -59,6 +59,8 @@ dependencies {
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-loadbalancer'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign'
     implementation group: 'io.github.openfeign', name: 'feign-okhttp'
+    // SSE 透传用，显式声明避免以后换 feign 实现时被动断掉
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp'
 
     implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder'
     implementation group: 'org.apache.skywalking', name: 'apm-toolkit-logback-1.x'

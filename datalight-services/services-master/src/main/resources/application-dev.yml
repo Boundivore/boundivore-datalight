@@ -212,6 +212,15 @@ sa-token:
   is-log: true
 
 datalight:
+  # AI 智能体服务。前端只跟 Master 打交道，由 Master 转发到 services-ai
+  ai:
+    # 是否启用。关闭时对话接口直接返回 error 事件，不去连上游
+    enabled: false
+    # services-ai 服务地址
+    base-url: http://127.0.0.1:8010
+    # 内部调用密钥，需与 services-ai 的 DATALIGHT_AI_INTERNAL_TOKEN 同值。
+    # 本项目开源，生产环境务必改掉，不要沿用默认值
+    internal-token: ""
   audit:
     enable: true
     post-mapping-enable: true

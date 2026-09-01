@@ -81,6 +81,7 @@ subprojects {
 
         caffeineVersion = '3.1.8'
         nimbusVersion = '9.40'
+        okHttpVersion = '4.12.0'
 
         druidVersion = '1.2.27'
         mysqlJDBCVersion = '8.0.32'
@@ -163,6 +164,7 @@ subprojects {
             dependency group: 'org.springdoc', name: 'springdoc-openapi-starter-common', version: springdocVersion
 
             dependency group: 'com.nimbusds', name: 'nimbus-jose-jwt', version: nimbusVersion
+            dependency group: 'com.squareup.okhttp3', name: 'okhttp', version: okHttpVersion
             dependency group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: caffeineVersion
 
             // 数据库
