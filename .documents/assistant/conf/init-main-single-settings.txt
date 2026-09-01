@@ -8,6 +8,7 @@ init-hosts.sh
 init-user-group.sh
 init-datalight-env.sh
 init-jdk.sh
+init-os-repo.sh
 init-yum-install.sh
 init-chrony-server-config.sh
 init-chrony-client-config.sh

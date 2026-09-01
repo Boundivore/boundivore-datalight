@@ -16,10 +16,16 @@ FOLDER_NAME="yum-expect"
 TAR_NAME="yum-expect.tar.gz"
 
 # 解压 yum-expect 离线包
-tar -zxvf "$REPO_PATH/$TAR_NAME" -C "$PACKAGES_PATH"
+# 解到 repo 目录下，与后面找 rpm 的路径保持一致
+# （原先写的是未定义的 $PACKAGES_PATH，解压落点和查找路径对不上）
+if [ ! -f "$REPO_PATH/$TAR_NAME" ]; then
+    echo "离线包不存在: $REPO_PATH/$TAR_NAME" >&2
+    exit 1
+fi
+tar -zxf "$REPO_PATH/$TAR_NAME" -C "$REPO_PATH"
 
 # 安装 yum-expect 及其依赖项
-yum -y localinstall "$REPO_PATH/$FOLDER_NAME"/*.rpm
+yum -y install "$REPO_PATH/$FOLDER_NAME"/*.rpm
 
 # 安装完毕后，删除解压的目录
 rm -rf "${REPO_PATH:?}/${FOLDER_NAME:?}/"

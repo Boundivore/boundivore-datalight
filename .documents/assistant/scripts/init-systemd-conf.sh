@@ -17,8 +17,11 @@ sed -i '/^DefaultLimitNPROC=/d' "$system_conf"
 echo "DefaultLimitNOFILE=131072" >> "$system_conf"
 echo "DefaultLimitNPROC=131072" >> "$system_conf"
 
-# 修改文件 $limits_conf
-cp "$limits_conf" "$limits_conf.backup"
+# 备份只做一次。原先每次执行都覆盖 .backup，
+# 第二次跑就会把已经改过的内容当成原始备份存下来，真正的原始配置丢失。
+if [ -f "$limits_conf" ] && [ ! -f "$limits_conf.backup" ]; then
+    cp "$limits_conf" "$limits_conf.backup"
+fi
 
 # 使用覆盖模式修改文件
 cat > "/etc/security/limits.conf" << EOF
@@ -38,8 +41,11 @@ root        hard    nofile  131072
 *           hard    as      unlimited
 EOF
 
-# 修改文件 $nproc_conf
-cp "$nproc_conf" "$nproc_conf.backup"
+# 同上，只备份一次。该文件在部分系统上可能不存在，先判断
+if [ -f "$nproc_conf" ] && [ ! -f "$nproc_conf.backup" ]; then
+    cp "$nproc_conf" "$nproc_conf.backup"
+fi
+mkdir -p "$(dirname "$nproc_conf")"
 
 # 使用覆盖模式修改文件
 cat > "$nproc_conf" << EOF

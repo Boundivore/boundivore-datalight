@@ -112,7 +112,19 @@ Ensure you have sufficient hardware resources to deploy and run this project. Th
 
 This project currently only supports (other systems have not been tested):
 
-- CentOS 7.x (Recommended: CentOS-7-x86_64-DVD-2009.iso)
+- CentOS 8.x / Rocky Linux 8.x / AlmaLinux 8.x (x86_64)
+
+**CentOS 8 reached end of life on 2021-12-31 and its official mirrors are gone.** On a freshly
+installed machine, `yum install` fails immediately with
+`Failed to download metadata for repo 'appstream'`.
+`assistant/scripts/init-os-repo.sh` repoints the repositories at vault.centos.org and enables
+PowerTools and EPEL. It already runs before every install step in the initialization flow.
+
+With no legacy constraints, prefer Rocky Linux 8 or AlmaLinux 8: both are still maintained, their
+mirrors work, and the same scripts apply.
+
+PowerTools (called `crb` on Rocky/Alma) must be enabled. On EL8 the build-time dependencies
+`snappy-devel`, `lzo-devel` and `bzip2-devel` are not in BaseOS or AppStream.
 
 ### 6.3 Prepare Deployment Resources
 
@@ -224,10 +236,16 @@ Clone or extract
 [datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai) into
 `/opt/datalight/services-ai`, matching `datalight.ai.home` in `directory.yaml`.
 
-AIAgent needs Python 3.11 or newer plus uv; the Python shipped with CentOS 7 is too old. In an
-air-gapped environment these dependencies have to be distributed with the package. Tooling for
-that is still being built, so for now prepare the runtime on a machine with network access and
-copy it to the target node.
+AIAgent needs Python 3.11 or newer plus uv, and the system Python is too old, so the runtime is
+shipped with the package and does not depend on the system Python:
+
+| File | Purpose |
+| --- | --- |
+| `cpython-3.13.*-x86_64-unknown-linux-gnu-install_only.tar.gz` | Standalone CPython runtime, extract and run |
+| `uv-x86_64-unknown-linux-gnu.tar.gz` | Python package manager |
+| `wheels/` | Every dependency as a wheel, for offline installation |
+
+Place all three under `/opt/datalight/assistant/repo/python/`.
 
 #### 6.3.8 Prepare DLC Service Packages
 

@@ -123,7 +123,18 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 
 本项目目前仅支持（其他系统未测试）：
 
-- CentOS 7.x (推荐：CentOS-7-x86_64-DVD-2009.iso)
+- CentOS 8.x / Rocky Linux 8.x / AlmaLinux 8.x（x86_64）
+
+**CentOS 8 已于 2021-12-31 停止维护，官方镜像源已下线。** 干净安装的机器执行
+`yum install` 会直接报 `Failed to download metadata for repo 'appstream'`。
+`assistant/scripts/init-os-repo.sh` 会把软件源切到 vault.centos.org 并启用
+PowerTools 与 EPEL，初始化流程里已经排在所有安装动作之前。
+
+如果没有历史包袱，建议直接用 Rocky Linux 8 或 AlmaLinux 8，二者仍在维护，
+源是通的，脚本同样适用。
+
+PowerTools（Rocky/Alma 上叫 crb）必须启用：`snappy-devel`、`lzo-devel`、
+`bzip2-devel` 这些编译期依赖在 EL8 上不在 BaseOS/AppStream 里。
 
 ### 6.3 准备部署资源
 
@@ -234,9 +245,16 @@ Oracle、Temurin、Zulu、Corretto 都可以，解压出的目录名与约定不
 克隆或解压到 `/opt/datalight/services-ai`，与 `directory.yaml` 里的
 `datalight.ai.home` 保持一致。
 
-AIAgent 需要 Python 3.11 及以上与 uv，CentOS 7 自带的 Python 版本不够。
-离线环境下这部分依赖需要随包分发，相关工具尚在完善中，
-当前请在能联网的环境准备好运行时后再拷贝到目标节点。
+AIAgent 需要 Python 3.11 及以上与 uv，系统自带的 Python 版本不够，
+所以运行时随包分发，不依赖系统 Python：
+
+| 文件 | 说明 |
+| --- | --- |
+| `cpython-3.13.*-x86_64-unknown-linux-gnu-install_only.tar.gz` | 独立 CPython 运行时，解压即用 |
+| `uv-x86_64-unknown-linux-gnu.tar.gz` | Python 包管理器 |
+| `wheels/` | 全部依赖的 wheel，离线安装用 |
+
+这三样放到 `/opt/datalight/assistant/repo/python/`。
 
 #### 6.3.8 准备 DLC 服务包
 

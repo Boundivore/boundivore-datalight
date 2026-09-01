@@ -8,9 +8,6 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# 安装 expect 工具
-yum -y install expect
-
 # 获取当前脚本所在目录的绝对路径
 main_script_dir=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 echo "main_script_dir: ${main_script_dir}"
@@ -26,6 +23,16 @@ echo "conf_dir: ${conf_dir}"
 # 获取 scripts 目录
 script_dir=$(realpath "${assistant_dir}/scripts")
 echo "script_dir: ${script_dir}"
+
+# 软件源必须先准备好。CentOS 8 已停止维护，官方镜像下线，
+# 不换源的话下面每一条 yum 都会失败。
+sh "${script_dir}/init-os-repo.sh" || {
+  echo "软件源准备失败，后续安装无法进行" >&2
+  exit 1
+}
+
+# 安装 expect 工具，远程免密与交互自动化要用
+yum -y install expect
 
 # 获取 /xx/datalight 目录
 datalight_dir=$(realpath "${assistant_dir}/..")

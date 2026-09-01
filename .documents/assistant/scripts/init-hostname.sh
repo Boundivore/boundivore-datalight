@@ -14,11 +14,12 @@ echo "Bash Path: ${BASE_PATH}"
 # 参数顺序参考 init-main-single-node.sh
 hostname=$1
 
-# 修改主机名
+# 修改主机名。
+# EL7 起 hostnamectl 才是权威来源，/etc/sysconfig/network 里的 HOSTNAME=
+# 已经不起作用，EL8 上整个文件基本废弃。原先用 > 覆盖写，
+# 既写了不生效的 HOSTNAME=，又会清掉文件里原有的其他内容。
 modifyHostname(){
     echo "${hostname}" > /etc/hostname
-    echo "HOSTNAME=${hostname}" > /etc/sysconfig/network
-    echo "NOZEROCONF=yes" >> /etc/sysconfig/network
     hostnamectl set-hostname "${hostname}"
 }
 
