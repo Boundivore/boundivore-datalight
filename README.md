@@ -14,6 +14,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * [后端 Github 镜像仓库](https://github.com/Boundivore/boundivore-datalight) 
 * [前端 Gitee 主仓库](https://gitee.com/boundivore/boundivore-datalight-web) 
 * [前端 Github 镜像仓库](https://github.com/Boundivore/boundivore-datalight-web) 
+* [智能体服务 Gitee 仓库](https://gitee.com/boundivore/datalight-services-ai) 
 * [产品手册](./.documents/docs/产品手册.md)
 * [开发手册](./.documents/docs/开发手册.md)
 
@@ -46,12 +47,17 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 * Components：各类集成在平台中的组件；
 * KubeAPI：与 Kubernetes/KubeSphere API 交互的服务管理；
 
+除 Master 与 Worker 之外，平台还有一个可选的第三角色：智能体服务
+[datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai)。
+它与 Master、Worker 平级，由配置开关控制随平台启停，默认关闭，详见第九节。
+
 ## 三、概念与定义
 
 * 服务：HDFS、YARN、HIVE 等称之为服务，其名称在本项目中的标准命名为全大写，且服务名称全局唯一。
 * 组件：HDFS 中的独立进程，例如：NameNode、DataNode 等称之为组件，在本项目中的标准命名方式为帕斯卡命名法，且组件名称全局唯一。
 * 主进程：DataLight Master 进程称之为主进程，其所在节点称之为平台主节点。
 * 从进程：DataLight Worker 进程称之为从进程，其所在节点称之为平台从节点。
+* 智能体进程：datalight-services-ai 进程，与主从进程平级，默认不启用，可部署在主节点或独立节点。
 
 ## 四、主要功能
 
@@ -74,6 +80,7 @@ DataLight 是一个开源的大数据运维管理平台，用于简化和自动�
 | 13 | 告警管理               | 是       |
 | 14 | 用户管理               | 是       |
 | 15 | 权限管理               | 是       |
+| 16 | 智能体问答与自动化运维 | 是（默认关闭） |
 
 ## 五、编译环境
 
@@ -470,6 +477,90 @@ http://<Master-IP>:8001
 | MINIO           | 20241218 | √ | 2024-12  |
 | DINKY | 1.2.3 | √ | 2025-05 |
 | More....        |  | |         |
+
+## 九、智能体服务
+
+平台的 AI 能力独立成仓库：[datalight-services-ai](https://gitee.com/boundivore/datalight-services-ai)。
+
+它是与 Master、Worker 平级的**第三角色**，由配置开关控制随平台启停，默认关闭。
+不装 Python 也不影响 DataLight 正常运行。
+
+<img src=".documents/docs/assets/datalight-services-ai-architecture.png" alt="datalight-services-ai" style="zoom:50%;" />
+
+### 9.1 它能做什么
+
+| 能力 | 说明 |
+| --- | --- |
+| 状态问答 | 查集群、节点、服务、组件、作业进度、日志、监控指标 |
+| 故障诊断 | 分清现象与根因，给出处置步骤与验证方式 |
+| 配置优化 | 读配置、比对历史版本、给出调整建议 |
+| 问答式部署 | 多轮补齐信息，生成逐节点展开的部署计划，人确认后执行 |
+| 自动化运维 | 预定义场景的自动处置，带频率上限 |
+
+服务自带问答界面，启动后打开 `http://<主节点>:8010/ui` 即可使用，不需要单独部署前端。
+
+### 9.2 为什么不做成被平台部署的服务
+
+它不进 DLC 包，也不走 Job/Stage/Task 那套部署流程。
+
+理由是鸡生蛋：它的核心能力是问答式部署集群，而那正是集群还不存在的时刻。
+做成被集群部署的服务，第一步就走不通。
+
+另外它是 Python + uv，而平台的服务部署模型围绕 tgz + shell + JDK，
+硬套过去要为虚拟环境和离线依赖单独设计一套分发机制，改造量大收益低。
+
+### 9.3 启用方式
+
+在 `conf/env/directory.yaml` 中打开开关并指定路径：
+
+~~~yaml
+datalight:
+  ai:
+    enabled: true
+    # datalight-services-ai 仓库在节点上的路径，需提前执行过 uv sync
+    home: /opt/datalight-services-ai
+    port: 8010
+    # uv 可执行文件路径，留空则从 PATH 里找
+    uv-bin: ""
+~~~
+
+之后与 Master、Worker 一样用同一个脚本启停：
+
+~~~bash
+sh bin/datalight.sh start ai
+~~~
+
+~~~bash
+sh bin/datalight.sh stop ai
+~~~
+
+模型与 Master 账号的配置在 `services-ai/.env`，参见该仓库的 `env.example`。
+
+### 9.4 数据从哪来
+
+**智能体服务不具备直连数据库的能力。** 集群元数据、作业历史、节点日志，
+全部经由 Master 的 REST 接口获取。Master 侧为此提供了一组聚合接口：
+
+| 接口 | 用途 |
+| --- | --- |
+| `GET /api/v1/master/agent/cluster/snapshot` | 集群全景：集群 + 节点 + 服务 + 组件状态 + 活跃作业 |
+| `GET /api/v1/master/agent/health/summary` | 健康摘要：只返回异常节点、异常组件、待重启组件 |
+| `GET /api/v1/master/agent/job/history` | 作业历史，按开始时间倒序 |
+| `GET /api/v1/master/agent/log/tail` | 组件日志尾部，路径由服务端拼装，调用方不传路径 |
+
+这些接口对人同样开放，不是给智能体单开的后门，前端需要相同的聚合视图时可直接复用。
+
+### 9.5 安全边界
+
+以下几条由代码强制，不靠提示词约束：
+
+1. 不提供执行任意命令、任意 SQL、任意路径文件读写的工具
+2. 所有平台操作走 Master REST API，不直连数据库，不直接 SSH 到节点，不调 Worker 接口
+3. 不可逆操作（移除集群、删除节点、格式化存储）永远需要人确认，且要求手动输入具体值
+4. 自治级别分 L0 到 L4，默认 L0 只读问答，放开前需按规范逐级验证
+5. 传给模型的内容先脱敏，审计写入失败时操作中止
+
+详见该仓库的 [架构说明](https://gitee.com/boundivore/datalight-services-ai/blob/master/services-ai/docs/architecture.md)。
 
 ## 参与开源
 
