@@ -33,12 +33,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
@@ -133,6 +135,125 @@ public class MasterAiAgentController {
      * @param token   内部调用密钥
      * @return 当前存活实例数
      */
+    /**
+     * Description: 断线后续接事件流。
+     * <p>
+     * 浏览器刷新、切页面、网络抖动之后调这里。生成任务在 AIAgent 侧独立于连接运行，
+     * 断开不会中止它，所以能拿到断开期间产生的全部事件，包括最终结论。
+     * <p>
+     * cursor 传上次收到的最后一个事件序号加一。事件序号在 SSE 的 id 字段里。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @param cursor    起始事件序号
+     * @param response  SSE 输出
+     */
+    @GetMapping(
+            value = MASTER_URL_PREFIX + "/ai/agent/attach",
+            produces = MediaType.TEXT_EVENT_STREAM_VALUE
+    )
+    @Operation(summary = "断线续接智能体事件流", description = "从指定事件序号继续接收，生成任务不受连接断开影响")
+    @SaCheckLogin
+    @LogsIgnore
+    public void attach(
+            @RequestParam(value = "SessionId")
+            String sessionId,
+
+            @RequestParam(value = "Cursor", required = false, defaultValue = "0")
+            Long cursor,
+
+            HttpServletResponse response
+    ) {
+        this.masterAiAgentStreamService.attachStream(
+                sessionId,
+                cursor == null ? 0L : cursor,
+                response
+        );
+    }
+
+    /**
+     * Description: 取消正在进行的生成。
+     * <p>
+     * 引擎在轮之间检查取消标志，已经在跑的那一轮工具调用会执行完再停，
+     * 不会把远端调用中途掐断。已产出的内容照常写入历史。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @return Result<Boolean> 是否确实取消了某个正在运行的任务
+     */
+    @PostMapping(value = MASTER_URL_PREFIX + "/ai/agent/cancel")
+    @Operation(summary = "取消智能体生成", description = "在轮之间中止，已产出内容照常保留")
+    @SaCheckLogin
+    public Result<Boolean> cancel(
+            @RequestParam(value = "SessionId")
+            String sessionId
+    ) {
+        return Result.success(this.masterAiAgentStreamService.cancel(sessionId));
+    }
+
+    /**
+     * Description: 读取会话历史。
+     * <p>
+     * 前端重新打开页面时调这里回放对话。返回的是 AIAgent 存的富格式，
+     * 含工具调用轨迹，前端据此还原每条回答当时查了哪些工具。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @return Result<List<Map<String, Object>>> 历史消息
+     */
+    @GetMapping(value = MASTER_URL_PREFIX + "/ai/agent/history")
+    @Operation(summary = "读取智能体会话历史", description = "供前端重新打开页面时回放，含工具调用轨迹")
+    @SaCheckLogin
+    @LogsIgnore
+    public Result<List<Map<String, Object>>> history(
+            @RequestParam(value = "SessionId")
+            String sessionId
+    ) {
+        return Result.success(this.masterAiAgentStreamService.sessionHistory(sessionId));
+    }
+
+    /**
+     * Description: 清空会话历史。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @return Result<String> 操作结果
+     */
+    @PostMapping(value = MASTER_URL_PREFIX + "/ai/agent/history/clear")
+    @Operation(summary = "清空智能体会话历史", description = "用户点清空时调用")
+    @SaCheckLogin
+    public Result<String> clearHistory(
+            @RequestParam(value = "SessionId")
+            String sessionId
+    ) {
+        this.masterAiAgentStreamService.clearSessionHistory(sessionId);
+        return Result.success("SUCCESS");
+    }
+
     @PostMapping(value = MASTER_URL_PREFIX + "/ai/agent/register")
     @Operation(summary = "AIAgent 注册与心跳", description = "由 AIAgent 进程调用，非浏览器接口")
     @SaIgnore

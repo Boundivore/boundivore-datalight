@@ -17,7 +17,10 @@
 package cn.boundivore.dl.service.master.service;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractAiAgentRequest;
+import cn.boundivore.dl.exception.BException;
 import cn.dev33.satoken.stp.StpUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +37,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Proxy;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,6 +71,21 @@ public class MasterAiAgentStreamService {
      * AIAgent 的流式对话路径
      */
     private static final String AI_CONVERSE_PATH = "/api/v1/ai/py/agent/converse/stream";
+
+    /**
+     * AIAgent 的断线续接路径。浏览器刷新或网络抖动后从这里接着收事件
+     */
+    private static final String AI_ATTACH_PATH = "/api/v1/ai/py/agent/converse/attach";
+
+    /**
+     * AIAgent 的取消生成路径
+     */
+    private static final String AI_CANCEL_PATH = "/api/v1/ai/py/agent/converse/cancel";
+
+    /**
+     * AIAgent 的会话历史路径前缀
+     */
+    private static final String AI_SESSION_PATH = "/api/v1/ai/py/agent/sessions/";
 
     /**
      * 与 AIAgent 约定的内部调用密钥请求头
@@ -210,6 +230,248 @@ public class MasterAiAgentStreamService {
         } catch (Exception e) {
             log.error("智能体流式对话失败, sessionId={}", request.getSessionId(), e);
             this.writeSseError(response, "AIAgent 暂时不可用，请稍后重试");
+        }
+    }
+
+    /**
+     * Description: 断线后续接事件流。
+     * <p>
+     * 浏览器刷新、切页面、网络抖动之后调这里，从 cursor 之后继续收。
+     * 生成任务在 AIAgent 侧独立于连接运行，断开不会中止它，
+     * 所以续接能拿到断开期间产生的全部事件，包括最终结论。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @param cursor    上次收到的最后一个事件序号
+     * @param response  SSE 输出
+     */
+    public void attachStream(String sessionId, long cursor, HttpServletResponse response) {
+
+        this.applySseHeaders(response);
+
+        if (!this.aiEnabled) {
+            this.writeSseError(response, "AIAgent 未启用");
+            return;
+        }
+
+        final String targetBaseUrl = this.resolveTargetBaseUrl();
+        if (targetBaseUrl == null) {
+            this.writeSseError(response, "当前没有可用的 AIAgent 实例");
+            return;
+        }
+
+        final String userId = String.valueOf(StpUtil.getLoginIdAsLong());
+        final String url = String.format(
+                "%s%s?session_id=%s&user_id=%s&cursor=%d",
+                targetBaseUrl,
+                AI_ATTACH_PATH,
+                URLEncoder.encode(sessionId, StandardCharsets.UTF_8),
+                URLEncoder.encode(userId, StandardCharsets.UTF_8),
+                cursor
+        );
+
+        final Request httpRequest = new Request.Builder()
+                .url(url)
+                .get()
+                .header(INTERNAL_HEADER, this.internalToken == null ? "" : this.internalToken)
+                .header("Accept", "text/event-stream")
+                .build();
+
+        log.info("智能体断线续接: UserId: {}, SessionId: {}, Cursor: {}", userId, sessionId, cursor);
+
+        try (Response upstream = this.streamClient.newCall(httpRequest).execute()) {
+            final ResponseBody upstreamBody = upstream.body();
+            if (!upstream.isSuccessful() || upstreamBody == null) {
+                // 404 是常见情况：会话早就结束、保留期也过了，不算异常
+                this.writeSseError(
+                        response,
+                        upstream.code() == 404
+                                ? "没有可续接的生成任务，可能已经结束太久"
+                                : String.format("AIAgent 响应异常（HTTP %d）", upstream.code())
+                );
+                return;
+            }
+            this.pipe(upstreamBody.byteStream(), response.getOutputStream());
+        } catch (IOException e) {
+            log.info("智能体续接中断: SessionId: {}, 原因: {}", sessionId, e.getMessage());
+        } catch (Exception e) {
+            log.error("智能体续接失败, sessionId={}", sessionId, e);
+            this.writeSseError(response, "AIAgent 暂时不可用，请稍后重试");
+        }
+    }
+
+    /**
+     * Description: 取消正在进行的生成。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @return 是否确实取消了某个正在运行的任务
+     */
+    public boolean cancel(String sessionId) {
+        final String userId = String.valueOf(StpUtil.getLoginIdAsLong());
+        final String url = String.format(
+                "%s%s?session_id=%s&user_id=%s",
+                this.requireTargetBaseUrl(),
+                AI_CANCEL_PATH,
+                URLEncoder.encode(sessionId, StandardCharsets.UTF_8),
+                URLEncoder.encode(userId, StandardCharsets.UTF_8)
+        );
+
+        final String body = this.callJson(
+                new Request.Builder()
+                        .url(url)
+                        .post(RequestBody.create("", JSON_MEDIA_TYPE))
+                        .header(INTERNAL_HEADER, this.internalToken == null ? "" : this.internalToken)
+                        .build()
+        );
+
+        try {
+            final JsonNode node = this.objectMapper.readTree(body);
+            return node.path("Data").path("Cancelled").asBoolean(false);
+        } catch (Exception e) {
+            log.warn("解析取消结果失败, sessionId={}", sessionId, e);
+            return false;
+        }
+    }
+
+    /**
+     * Description: 读取会话历史，供前端重新打开页面时回放。
+     * <p>
+     * 原样返回 AIAgent 存的富格式，含工具调用轨迹。Master 不解析内容，
+     * 加字段时这里不用改。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     * @return 历史消息列表
+     */
+    public List<Map<String, Object>> sessionHistory(String sessionId) {
+        final String url = this.requireTargetBaseUrl()
+                + AI_SESSION_PATH
+                + URLEncoder.encode(sessionId, StandardCharsets.UTF_8)
+                + "/history";
+
+        final String body = this.callJson(
+                new Request.Builder()
+                        .url(url)
+                        .get()
+                        .header(INTERNAL_HEADER, this.internalToken == null ? "" : this.internalToken)
+                        .build()
+        );
+
+        try {
+            final JsonNode messages = this.objectMapper.readTree(body).path("Data").path("Messages");
+            if (!messages.isArray()) {
+                return List.of();
+            }
+            return this.objectMapper.convertValue(
+                    messages,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    }
+            );
+        } catch (Exception e) {
+            log.warn("解析会话历史失败, sessionId={}", sessionId, e);
+            return List.of();
+        }
+    }
+
+    /**
+     * Description: 清空会话历史。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param sessionId 会话 ID
+     */
+    public void clearSessionHistory(String sessionId) {
+        final String url = this.requireTargetBaseUrl()
+                + AI_SESSION_PATH
+                + URLEncoder.encode(sessionId, StandardCharsets.UTF_8)
+                + "/history";
+
+        this.callJson(
+                new Request.Builder()
+                        .url(url)
+                        .delete()
+                        .header(INTERNAL_HEADER, this.internalToken == null ? "" : this.internalToken)
+                        .build()
+        );
+    }
+
+    /**
+     * Description: 取实例地址，没有可用实例直接抛。
+     * <p>
+     * 非流式接口才用这个。流式接口不能抛异常——SSE 响应头已经发出去了，
+     * 抛出去客户端只会看到连接静默断开。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return 实例地址
+     */
+    private String requireTargetBaseUrl() {
+        if (!this.aiEnabled) {
+            throw new BException("AIAgent 未启用，请在 directory.yaml 中打开 datalight.ai.enabled");
+        }
+        final String baseUrl = this.resolveTargetBaseUrl();
+        if (baseUrl == null) {
+            throw new BException("当前没有可用的 AIAgent 实例，请确认 AIAgent 已启动");
+        }
+        return baseUrl;
+    }
+
+    /**
+     * Description: 发一次普通 JSON 请求并返回响应体。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 请求
+     * @return 响应体文本
+     */
+    private String callJson(Request request) {
+        try (Response response = this.streamClient.newCall(request).execute()) {
+            final ResponseBody body = response.body();
+            final String text = body == null ? "" : body.string();
+            if (!response.isSuccessful()) {
+                log.warn("AIAgent 接口返回非成功状态: Code: {}, Url: {}", response.code(), request.url());
+                throw new BException(String.format("AIAgent 响应异常（HTTP %d）", response.code()));
+            }
+            return text;
+        } catch (BException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("调用 AIAgent 接口失败, url={}", request.url(), e);
+            throw new BException("AIAgent 暂时不可用，请稍后重试");
         }
     }
 
