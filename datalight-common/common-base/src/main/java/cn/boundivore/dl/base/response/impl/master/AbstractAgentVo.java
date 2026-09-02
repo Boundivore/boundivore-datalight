@@ -31,6 +31,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -328,5 +329,51 @@ public abstract class AbstractAgentVo {
         @Schema(name = "Tag", title = "作业标签", required = true)
         @JsonProperty(value = "Tag", required = true)
         private String tag;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAgentVo.AgentInstanceVo",
+            description = "AbstractAgentVo.AgentInstanceVo 一个存活的 AIAgent 实例"
+    )
+    public final static class AgentInstanceVo implements IVo {
+
+        private static final long serialVersionUID = 7215830964810625837L;
+
+        @Schema(name = "BaseUrl", title = "实例地址", required = true)
+        @JsonProperty(value = "BaseUrl", required = true)
+        private String baseUrl;
+
+        @Schema(name = "Hostname", title = "实例所在主机名", required = true)
+        @JsonProperty(value = "Hostname", required = true)
+        private String hostname;
+
+        @Schema(name = "Version", title = "实例版本", required = true)
+        @JsonProperty(value = "Version", required = true)
+        private String version;
+
+        @Schema(name = "LastHeartbeatTime", title = "最近一次心跳时间毫秒", required = true)
+        @JsonProperty(value = "LastHeartbeatTime", required = true)
+        private Long lastHeartbeatTime;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAgentVo.AgentInstanceListVo",
+            description = "AbstractAgentVo.AgentInstanceListVo 存活的 AIAgent 实例列表"
+    )
+    public final static class AgentInstanceListVo implements IVo {
+
+        private static final long serialVersionUID = -1994518376254268819L;
+
+        @Schema(name = "InstanceList", title = "实例列表，为空表示当前没有可用的 AIAgent", required = true)
+        @JsonProperty(value = "InstanceList", required = true)
+        private List<AgentInstanceVo> instanceList = new ArrayList<>();
     }
 }

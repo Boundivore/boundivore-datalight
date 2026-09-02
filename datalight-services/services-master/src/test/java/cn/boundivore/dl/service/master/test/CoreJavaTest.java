@@ -16,8 +16,6 @@
  */
 package cn.boundivore.dl.service.master.test;
 
-import com.baidubce.qianfan.Qianfan;
-import com.baidubce.qianfan.model.chat.ChatResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
@@ -143,24 +141,4 @@ public class CoreJavaTest {
         connection.disconnect();
     }
 
-    @SneakyThrows
-    @Test
-    public void testQianfanAPI() {
-        String accessKey = "";
-        String secretKey = "";
-
-        Qianfan qianfan = new Qianfan(
-                accessKey,
-                secretKey
-        );
-
-        ChatResponse response = qianfan.chatCompletion()
-                .model("ERNIE-Speed-128K") // 使用model指定预置模型
-                // .endpoint("completions_pro") // 也可以使用endpoint指定任意模型 (二选一)
-                .addMessage("user", "你好") // 添加用户消息 (此方法可以调用多次，以实现多轮对话的消息传递)
-                .temperature(0.7) // 自定义超参数
-                .execute(); // 发起请求
-        System.out.println(response);
-
-    }
 }

@@ -95,13 +95,6 @@ public class DataLightEnv {
     @Value("${server.datalight.url.worker-port}")
     private String workerPort;
 
-    @Value("${aigc.qianfan.access-key}")
-    private String qianfanAccessKey;
-    @Value("${aigc.qianfan.secret-key}")
-    private String qianfanSecretKey;
-    @Value("${aigc.qianfan.model}")
-    private String qianfanModel;
-
     @PostConstruct
     public void init() {
         DataLightEnv.IS_DEBUG = this.isDebug;

@@ -77,3 +77,9 @@ build
 # Gradle Wrapper 必须入库，否则 clone 之后无法构建。
 # 该豁免必须放在 *.jar 之后，否则会被覆盖。
 !gradle/wrapper/gradle-wrapper.jar
+
+# 前端构建产物。由 boundivore-datalight-web 编译后拷进来，不入库
+datalight-services/services-master/src/main/resources/public/
+
+# 商务与客户文档，不进开源仓库
+/docs/

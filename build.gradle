@@ -123,7 +123,6 @@ subprojects {
         zookeeperVersion = '3.4.13'
         zookeeperCuratorVersion = '4.2.0'
 
-        qianfanVersion = '0.0.5'
     }
 
     tasks.withType(JavaCompile).configureEach {
@@ -223,7 +222,6 @@ subprojects {
             dependency group: 'org.apache.curator', name: 'curator-recipes', version: zookeeperCuratorVersion
             dependency group: 'org.apache.curator', name: 'curator-framework', version: zookeeperCuratorVersion
 
-            dependency group: 'com.baidubce', name: 'qianfan', version: qianfanVersion
 
             dependency group: 'org.mapstruct', name: 'mapstruct', version: mapstructVersion
             dependency group: 'org.mapstruct', name: 'mapstruct-processor', version: mapstructVersion

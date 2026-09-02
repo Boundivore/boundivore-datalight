@@ -85,10 +85,16 @@ public class MasterAiAgentStreamService {
     private final ObjectMapper objectMapper;
 
     /**
-     * AIAgent 服务地址
+     * AIAgent 服务地址的静态兜底配置。
+     * <p>
+     * 正常情况下地址来自注册表，由 AIAgent 主动上报。这里留一个配置项是给两种场景用的：
+     * 一是本地开发时不想起注册流程，直接指死；
+     * 二是网络环境特殊、AIAgent 上报的地址 Master 回连不通时，由运维强制指定。
+     * <p>
+     * 留空即表示走注册表，这也是默认值。配了就以配置为准，注册表里的忽略。
      */
-    @Value("${datalight.ai.base-url:http://127.0.0.1:8010}")
-    private String aiBaseUrl;
+    @Value("${datalight.ai.base-url:}")
+    private String aiBaseUrlOverride;
 
     /**
      * 内部调用密钥，与 AIAgent 的 DATALIGHT_AI_INTERNAL_TOKEN 同值
@@ -102,8 +108,12 @@ public class MasterAiAgentStreamService {
     @Value("${datalight.ai.enabled:false}")
     private boolean aiEnabled;
 
-    public MasterAiAgentStreamService(ObjectMapper objectMapper) {
+    private final MasterAiAgentRegistry registry;
+
+    public MasterAiAgentStreamService(ObjectMapper objectMapper,
+                                      MasterAiAgentRegistry registry) {
         this.objectMapper = objectMapper;
+        this.registry = registry;
         // 流式专用客户端：长读超时，且不走系统代理
         this.streamClient = new OkHttpClient.Builder()
                 .connectTimeout(CONNECT_TIMEOUT)
@@ -140,6 +150,17 @@ public class MasterAiAgentStreamService {
             return;
         }
 
+        // 地址解析：配置指定了就用配置，否则取注册表里心跳最新的实例
+        final String targetBaseUrl = this.resolveTargetBaseUrl();
+        if (targetBaseUrl == null) {
+            this.writeSseError(
+                    response,
+                    "当前没有可用的 AIAgent 实例。请确认 AIAgent 已启动，" +
+                            "且其 DATALIGHT_MASTER_BASE_URL 指向本 Master、内部密钥与本端一致"
+            );
+            return;
+        }
+
         final String userId = String.valueOf(StpUtil.getLoginIdAsLong());
 
         final Map<String, Object> payload = new LinkedHashMap<>();
@@ -154,7 +175,7 @@ public class MasterAiAgentStreamService {
         try {
             final String body = this.objectMapper.writeValueAsString(payload);
             httpRequest = new Request.Builder()
-                    .url(this.aiBaseUrl.replaceAll("/+$", "") + AI_CONVERSE_PATH)
+                    .url(targetBaseUrl + AI_CONVERSE_PATH)
                     .post(RequestBody.create(body, JSON_MEDIA_TYPE))
                     .header(INTERNAL_HEADER, this.internalToken == null ? "" : this.internalToken)
                     .header("Accept", "text/event-stream")
@@ -206,6 +227,28 @@ public class MasterAiAgentStreamService {
      * @param in  上游输入流
      * @param out 下游输出流
      */
+    /**
+     * Description: 解析本次请求该发往哪个 AIAgent 实例。
+     * <p>
+     * 优先取静态配置。配置留空时走注册表，取心跳最新的实例——
+     * 换节点部署的过渡期可能短暂出现新旧两个实例都还活着，取最新的能让流量尽快切过去。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return 实例地址，末尾不带斜杠；无可用实例时返回 null
+     */
+    private String resolveTargetBaseUrl() {
+        if (this.aiBaseUrlOverride != null && !this.aiBaseUrlOverride.trim().isEmpty()) {
+            return this.aiBaseUrlOverride.trim().replaceAll("/+$", "");
+        }
+        return this.registry.resolveBaseUrl();
+    }
+
     private void pipe(InputStream in, OutputStream out) throws IOException {
         final byte[] buffer = new byte[4096];
         int n;

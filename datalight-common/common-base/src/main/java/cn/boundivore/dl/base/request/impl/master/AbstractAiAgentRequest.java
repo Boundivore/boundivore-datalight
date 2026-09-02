@@ -79,4 +79,35 @@ public abstract class AbstractAiAgentRequest {
         @JsonProperty(value = "History", required = false)
         private List<Map<String, Object>> history = new ArrayList<>();
     }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Accessors(chain = true)
+    @Schema(
+            name = "AbstractAiAgentRequest.RegisterRequest",
+            description = "AbstractAiAgentRequest.RegisterRequest AIAgent 实例注册与心跳请求体"
+    )
+    public static class RegisterRequest implements IRequest {
+
+        private static final long serialVersionUID = 4821553092148174539L;
+
+        /**
+         * 实例自己上报的可达地址。
+         * 由 AIAgent 侧决定而不是 Master 从请求里取远端 IP，
+         * 因为跨网段、走网关或做了端口映射时，Master 看到的来源地址回连不了。
+         */
+        @Schema(name = "BaseUrl", title = "实例地址，形如 http://192.168.1.10:8010", required = true)
+        @JsonProperty(value = "BaseUrl", required = true)
+        @NotBlank(message = "实例地址不能为空")
+        private String baseUrl;
+
+        @Schema(name = "Hostname", title = "实例所在主机名", required = false)
+        @JsonProperty(value = "Hostname", required = false)
+        private String hostname;
+
+        @Schema(name = "Version", title = "实例版本", required = false)
+        @JsonProperty(value = "Version", required = false)
+        private String version;
+    }
 }

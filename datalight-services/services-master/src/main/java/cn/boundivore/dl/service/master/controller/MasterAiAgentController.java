@@ -17,23 +17,33 @@
 package cn.boundivore.dl.service.master.controller;
 
 import cn.boundivore.dl.base.request.impl.master.AbstractAiAgentRequest;
+import cn.boundivore.dl.base.response.impl.master.AbstractAgentVo;
+import cn.boundivore.dl.base.result.Result;
 import cn.boundivore.dl.service.master.logs.LogsIgnore;
+import cn.boundivore.dl.service.master.service.MasterAiAgentRegistry;
 import cn.boundivore.dl.service.master.service.MasterAiAgentStreamService;
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static cn.boundivore.dl.base.constants.IUrlPrefixConstants.MASTER_URL_PREFIX;
 
 /**
- * Description: AI 智能体对话入口。
+ * Description: AI 智能体对话入口与实例注册。
  * <p>
  * 前端只跟 Master 打交道，由 Master 转发到 AIAgent。
  * 这样鉴权、审计、限流收在一处，Python 侧不需要理解平台的用户体系，
@@ -56,10 +66,18 @@ public class MasterAiAgentController {
 
     private final MasterAiAgentStreamService masterAiAgentStreamService;
 
+    private final MasterAiAgentRegistry masterAiAgentRegistry;
+
+    /**
+     * 内部调用密钥，与 AIAgent 的 DATALIGHT_AI_INTERNAL_TOKEN 同值
+     */
+    @Value("${datalight.ai.internal-token:}")
+    private String internalToken;
+
     /**
      * Description: 智能体流式对话。
      * <p>
-     * 事件序列：meta / turn_start / delta / tool_call / tool_result / done / error，
+     * 事件序列：meta / turn_start / delta / tool_call / tool_result / plan / done / error，
      * data 为 JSON，字段用 PascalCase，与平台其他接口一致。
      * <p>
      * 返回体是持续的字节流，日志切面不要打印，否则日志文件会被撑爆。
@@ -92,5 +110,136 @@ public class MasterAiAgentController {
             HttpServletResponse response
     ) {
         this.masterAiAgentStreamService.streamConverse(request, response);
+    }
+
+    /**
+     * Description: AIAgent 实例注册与心跳。
+     * <p>
+     * 平台不引入 Nacos，改由 AIAgent 主动上报自己的地址。方向是反的，
+     * 因为 Master 是最先起来、地址最固定的角色，而 AIAgent 可能被部署到任意节点；
+     * 更关键的是问答式部署发生在集群还不存在时，那会儿查库定位根本无从谈起。
+     * <p>
+     * 本接口由 AIAgent 进程调用，不是浏览器，因此不走 satoken 登录态，
+     * 改用内部密钥校验。密钥未配置时拒绝注册，避免开源默认部署裸奔。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 注册请求
+     * @param token   内部调用密钥
+     * @return 当前存活实例数
+     */
+    @PostMapping(value = MASTER_URL_PREFIX + "/ai/agent/register")
+    @Operation(summary = "AIAgent 注册与心跳", description = "由 AIAgent 进程调用，非浏览器接口")
+    @SaIgnore
+    @LogsIgnore
+    public Result<String> register(
+            @RequestBody
+            @Valid
+            AbstractAiAgentRequest.RegisterRequest request,
+
+            @RequestHeader(value = "X-DataLight-Internal", required = false)
+            String token
+    ) {
+        this.checkInternalToken(token);
+
+        final int alive = this.masterAiAgentRegistry.register(
+                request.getBaseUrl(),
+                request.getHostname(),
+                request.getVersion()
+        );
+
+        return Result.success(String.valueOf(alive));
+    }
+
+    /**
+     * Description: AIAgent 主动下线。
+     * <p>
+     * 正常停止时调用，让路由立刻切走，不用等心跳超时。
+     * 进程被强杀时收不到这个调用，届时由 TTL 兜底。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @param request 下线请求，只用其中的地址
+     * @param token   内部调用密钥
+     * @return 操作结果
+     */
+    @PostMapping(value = MASTER_URL_PREFIX + "/ai/agent/unregister")
+    @Operation(summary = "AIAgent 主动下线", description = "由 AIAgent 进程调用，非浏览器接口")
+    @SaIgnore
+    @LogsIgnore
+    public Result<String> unregister(
+            @RequestBody
+            @Valid
+            AbstractAiAgentRequest.RegisterRequest request,
+
+            @RequestHeader(value = "X-DataLight-Internal", required = false)
+            String token
+    ) {
+        this.checkInternalToken(token);
+        this.masterAiAgentRegistry.unregister(request.getBaseUrl());
+        return Result.success("OK");
+    }
+
+    /**
+     * Description: 查看当前存活的 AIAgent 实例。
+     * <p>
+     * 前端用它决定是否展示智能体入口：没有存活实例时按钮置灰并说明原因，
+     * 好过让用户点开抽屉再看到一条报错。
+     * Created by: Boundivore
+     * E-mail: boundivore@foxmail.com
+     * Creation time: 2026/9/2
+     * Modification description:
+     * Modified by:
+     * Modification time:
+     * Throws:
+     *
+     * @return 存活实例列表
+     */
+    @GetMapping(value = MASTER_URL_PREFIX + "/ai/agent/instances")
+    @Operation(summary = "查看存活的 AIAgent 实例", description = "用于前端判断入口是否可用")
+    @SaCheckLogin
+    public Result<AbstractAgentVo.AgentInstanceListVo> instances() {
+        final List<AbstractAgentVo.AgentInstanceVo> list = new ArrayList<>();
+
+        for (MasterAiAgentRegistry.AgentInstance instance : this.masterAiAgentRegistry.aliveInstances()) {
+            list.add(
+                    new AbstractAgentVo.AgentInstanceVo()
+                            .setBaseUrl(instance.getBaseUrl())
+                            .setHostname(instance.getHostname())
+                            .setVersion(instance.getVersion())
+                            .setLastHeartbeatTime(instance.getLastHeartbeatTime())
+            );
+        }
+
+        return Result.success(
+                new AbstractAgentVo.AgentInstanceListVo()
+                        .setInstanceList(list)
+        );
+    }
+
+    /**
+     * 校验内部调用密钥。密钥没配置时一律拒绝，
+     * 不能因为「没配就放行」而让开源默认部署裸奔
+     */
+    private void checkInternalToken(String token) {
+        if (this.internalToken == null || this.internalToken.isEmpty()) {
+            throw new IllegalStateException(
+                    "未配置 datalight.ai.internal-token，拒绝 AIAgent 注册。" +
+                            "请在 directory.yaml 中设置该密钥，并与 AIAgent 侧保持一致"
+            );
+        }
+        if (!this.internalToken.equals(token)) {
+            throw new IllegalStateException("内部调用密钥不匹配，拒绝 AIAgent 注册");
+        }
     }
 }

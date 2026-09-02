@@ -217,8 +217,3 @@ datalight:
     post-mapping-enable: true
     get-mapping-enable: false
 
-aigc:
-  qianfan:
-    access-key: ""
-    secret-key: ""
-    model: ""
