@@ -190,6 +190,9 @@ public class MasterAiAgentStreamService {
         payload.put("AutonomyLevel", request.getAutonomyLevel() == null ? "" : request.getAutonomyLevel());
         payload.put("ConfirmToken", request.getConfirmToken() == null ? "" : request.getConfirmToken());
         payload.put("History", request.getHistory() == null ? java.util.List.of() : request.getHistory());
+        // 图片原样透传。Master 不解码不校验，那是 AIAgent 的事——
+        // 在这里再解一遍 base64 只是白白多占一份内存
+        payload.put("Images", request.getImages() == null ? java.util.List.of() : request.getImages());
 
         final Request httpRequest;
         try {
@@ -207,10 +210,11 @@ public class MasterAiAgentStreamService {
         }
 
         log.info(
-                "智能体流式对话开始: UserId: {}, SessionId: {}, HistorySize: {}",
+                "智能体流式对话开始: UserId: {}, SessionId: {}, HistorySize: {}, ImageCount: {}",
                 userId,
                 request.getSessionId(),
-                request.getHistory() == null ? 0 : request.getHistory().size()
+                request.getHistory() == null ? 0 : request.getHistory().size(),
+                request.getImages() == null ? 0 : request.getImages().size()
         );
 
         try (Response upstream = this.streamClient.newCall(httpRequest).execute()) {

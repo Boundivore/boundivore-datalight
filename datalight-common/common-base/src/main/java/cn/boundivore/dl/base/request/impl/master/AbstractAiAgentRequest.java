@@ -75,6 +75,14 @@ public abstract class AbstractAiAgentRequest {
          * 会话历史留在前端可以避免 Master 侧再引一套会话存储，
          * 需要跨设备续聊时再考虑落到 AIAgent 的 Redis 里。
          */
+        @Schema(
+                name = "Images",
+                title = "随本轮提问附带的图片，元素形如 {Data, Detail, Caption}",
+                required = false
+        )
+        @JsonProperty(value = "Images", required = false)
+        private List<Map<String, Object>> images = new ArrayList<>();
+
         @Schema(name = "History", title = "历史消息", required = false)
         @JsonProperty(value = "History", required = false)
         private List<Map<String, Object>> history = new ArrayList<>();
